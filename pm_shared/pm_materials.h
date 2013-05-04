@@ -30,4 +30,7 @@
 #define CHAR_TEX_GLASS		'Y'
 #define CHAR_TEX_FLESH		'F'
 
+// SOHL 1.9.1
+#define CHAR_TEX_SNOW		'N'
+
 #endif // !PM_MATERIALSH

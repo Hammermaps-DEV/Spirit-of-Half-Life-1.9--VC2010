@@ -96,6 +96,9 @@ typedef struct hull_s
 #define CHAR_TEX_GLASS		'Y'
 #define CHAR_TEX_FLESH		'F'
 
+// SOHL 1.9.1
+#define CHAR_TEX_SNOW		'N'
+
 #define STEP_CONCRETE	0		// default step sound
 #define STEP_METAL		1		// metal floor
 #define STEP_DIRT		2		// dirt, sand, rock
@@ -105,6 +108,10 @@ typedef struct hull_s
 #define STEP_SLOSH		6		// shallow liquid puddle
 #define STEP_WADE		7		// wading in liquid
 #define STEP_LADDER		8		// climbing ladder
+
+// SOHL 1.9.1
+#define STEP_SNOW		9		// walink on snow
+#define STEP_WOOD		10		// wood floor
 
 #define PLAYER_FATAL_FALL_SPEED		1024// approx 60 feet
 #define PLAYER_MAX_SAFE_FALL_SPEED	580// approx 20 feet
@@ -427,6 +434,18 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_dirt4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
+		// SOHL 1.9.1
+	case STEP_WOOD:
+		switch(irand)
+		{
+		// right foot
+		case 0:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_wood1.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		case 1:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_wood3.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		// left foot
+		case 2:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_wood2.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_wood4.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		}
+		break;
 	case STEP_VENT:
 		switch(irand)
 		{
@@ -507,6 +526,18 @@ void PM_PlayStepSound( int step, float fvol )
 		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_ladder4.wav", fvol, ATTN_NORM, 0, PITCH_NORM );	break;
 		}
 		break;
+	// SOHL 1.9.1
+	case STEP_SNOW:
+		switch(irand)
+		{
+		// right foot
+		case 0:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_snow1.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		case 1:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_snow3.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		// left foot
+		case 2:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_snow2.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		case 3:	pmove->PM_PlaySound( CHAN_BODY, "player/pl_snow4.wav", fvol, ATTN_NORM, 0, PITCH_NORM ); break;
+		}
+		break;
 	}
 }	
 
@@ -517,11 +548,13 @@ int PM_MapTextureTypeStepType(char chTextureType)
 		default:
 		case CHAR_TEX_CONCRETE:	return STEP_CONCRETE;	
 		case CHAR_TEX_METAL: return STEP_METAL;	
-		case CHAR_TEX_DIRT: return STEP_DIRT;	
+		case CHAR_TEX_DIRT: return STEP_DIRT;
+		case CHAR_TEX_WOOD: return STEP_WOOD; // SOHL 1.9.1
 		case CHAR_TEX_VENT: return STEP_VENT;	
 		case CHAR_TEX_GRATE: return STEP_GRATE;	
 		case CHAR_TEX_TILE: return STEP_TILE;
 		case CHAR_TEX_SLOSH: return STEP_SLOSH;
+		case CHAR_TEX_SNOW: return STEP_SNOW; // SOHL 1.9.1
 	}
 }
 
@@ -669,6 +702,12 @@ void PM_UpdateStepSound( void )
 				pmove->flTimeStepSound = fWalking ? 400 : 300;
 				break;
 
+			// SOHL 1.9.1
+			case CHAR_TEX_WOOD:	
+				fvol = fWalking ? 0.2 : 0.5;
+				pmove->flTimeStepSound = fWalking ? 400 : 300;
+				break;
+
 			case CHAR_TEX_VENT:	
 				fvol = fWalking ? 0.4 : 0.7;
 				pmove->flTimeStepSound = fWalking ? 400 : 300;
@@ -686,6 +725,12 @@ void PM_UpdateStepSound( void )
 
 			case CHAR_TEX_SLOSH:
 				fvol = fWalking ? 0.2 : 0.5;
+				pmove->flTimeStepSound = fWalking ? 400 : 300;
+				break;
+
+			// SOHL 1.9.1
+			case CHAR_TEX_SNOW:	
+				fvol = fWalking ? 0.25 : 0.55;
 				pmove->flTimeStepSound = fWalking ? 400 : 300;
 				break;
 			}

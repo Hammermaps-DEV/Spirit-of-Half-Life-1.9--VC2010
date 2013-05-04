@@ -1878,6 +1878,14 @@ float TEXTURETYPE_PlaySound(TraceResult *ptr,  Vector vecSrc, Vector vecEnd, int
 		rgsz[2] = "player/pl_dirt3.wav";
 		cnt = 3;
 		break;
+	// SOHL 1.9.1
+	case CHAR_TEX_SNOW: fvol = 0.9; fvolbar = 0.2;
+		rgsz[0] = "player/pl_snow1.wav";
+		rgsz[1] = "player/pl_snow3.wav";
+		rgsz[2] = "player/pl_snow2.wav";
+		rgsz[3] = "player/pl_snow4.wav";
+		cnt = 4;
+		break;
 	case CHAR_TEX_VENT:	fvol = 0.5; fvolbar = 0.3;
 		rgsz[0] = "player/pl_duct1.wav";
 		rgsz[1] = "player/pl_duct1.wav";

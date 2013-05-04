@@ -780,6 +780,18 @@ void ClientPrecache( void )
 	PRECACHE_SOUND("player/pl_wade3.wav");
 	PRECACHE_SOUND("player/pl_wade4.wav");
 
+	// SOHL 1.9.1
+	PRECACHE_SOUND("player/pl_snow1.wav");		// walk on snow
+	PRECACHE_SOUND("player/pl_snow2.wav");
+	PRECACHE_SOUND("player/pl_snow3.wav");
+	PRECACHE_SOUND("player/pl_snow4.wav");
+
+	// SOHL 1.9.1
+	PRECACHE_SOUND("player/pl_wood1.wav");		// walk on wood
+	PRECACHE_SOUND("player/pl_wood2.wav");
+	PRECACHE_SOUND("player/pl_wood3.wav");
+	PRECACHE_SOUND("player/pl_wood4.wav");
+
 	PRECACHE_SOUND("debris/wood1.wav");			// hit wood texture
 	PRECACHE_SOUND("debris/wood2.wav");
 	PRECACHE_SOUND("debris/wood3.wav");
