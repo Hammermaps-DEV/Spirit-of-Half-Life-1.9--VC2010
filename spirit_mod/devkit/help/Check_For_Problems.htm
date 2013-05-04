@@ -1,0 +1,52 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Check For Problems</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Dialogs: Check For Problems</FONT></FONT></H1>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/dialog_check_for_problems.gif" WIDTH="369" HEIGHT="327" VSPACE="0" HSPACE="0" BORDER="0"><BR>
+   <SPAN STYLE="font-style : italic;">hotkey: Alt+P</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   Opening this dialog will cause the editor to run through your map and 
+   notify you of any errors it finds.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   When you select one of the errors, the entity/solid will be 
+   highlighted (if applicable) and three options become available to 
+   you. 'Go to error' will center the 2d windows on the selected error 
+   object, 'Fix' will fix that error, and 'Fix all (of type)' will fix 
+   all errors of the selected type.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   Some common errors that may occur in your maps...</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <FONT COLOR="RED">Invalid solid structure</FONT><BR>
+   The solid has invalid structure, probably as a result of vertex 
+   manipulation. What this means is that the solid is not convex in 
+   every plane. You will need to either fix it, or if this is not 
+   possible, rebuild it.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <FONT COLOR="RED">Entity (entity_name) has unused keyvalues.</FONT><BR>
+   The entity contains keyvalues (variables) that are not used in its 
+   class. You can fix this error with the Fix button. Note that this 
+   error will pop up if you are taking advantage of custom compile tools 
+   which add keyvalues to entities, but you are not using an FGD file 
+   that has these special keyvalues listed.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <FONT COLOR="RED">There is no player start.</FONT><BR>
+   There is no player start in the map. To add one, select the Entity 
+   tool, drag the crosshairs to the position you want the player to 
+   start at, and press Enter.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <HR ALIGN=LEFT WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN>
+ </BODY>
+</HTML>

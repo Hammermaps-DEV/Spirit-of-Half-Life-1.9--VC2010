@@ -1,0 +1,12 @@
+game "SoHL:Custom Build"
+url_info "http://www.hlfx.ru/forum/forumdisplay.php?s=&forumid=15"
+version "1.9.1"
+size "19100695"
+hlversion "1110"
+type "Toolkit"
+startmap "tramtutor"
+trainmap "weathdemo"
+mpentity "info_player_deathmatch"
+gamedll "cl_dlls/server.dll"
+cldll "1"
+

@@ -1,0 +1,150 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>What's New in 3.4?</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT FACE="Impact"><FONT COLOR="NAVY">What's New in 3.4?</FONT></FONT></H1>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Version 3.4</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Features:</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">The most notable change in this 
+   version is the change in name to Valve Hammer Editor. The following 
+   changes have also been made:</SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    Splitter view layout is now preserved from session to session.<BR>
+    <LI CLASS="mvd-P">Dialog bars now pop to the top when the mouse 
+    cursor floats over them.<BR>
+    <LI CLASS="mvd-P">No longer renders the 3D views when the editor is 
+    not the active application. (This will fix most people's problems 
+    with running Hammer and Half-Life at the same time causing the editor 
+    to freeze)<BR>
+    <LI CLASS="mvd-P">Added Copy to Clipboard button to the process window.<BR>
+    <LI CLASS="mvd-P">Sped up time to bring up the Face Properties dialog 
+    when many brushes are selected.<BR>
+    <LI CLASS="mvd-P">Sped up 2D view scrolling.<BR>
+    <LI CLASS="mvd-P">Added timed selection of objects by depth in the 3D 
+    view when the left mouse button is held down.</P>
+   </UL>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Fixed:</SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    Fixed a random spinlock when rendering sprites.<BR>
+    <LI CLASS="mvd-P">Fixed texture rendering problems with sprites, etc.<BR>
+    <LI CLASS="mvd-P">Fixed freeze when starting map with sprites visible.<BR>
+    <LI CLASS="mvd-P">Fixed a crash in the path tool.<BR>
+    <LI CLASS="mvd-P">Fixed problem with texture shifts being reset when 
+    importing old MAP files.<BR>
+    <LI CLASS="mvd-P">Fixed black brushes caused by clipping.<BR>
+    <LI CLASS="mvd-P">Fixed a lockup when scaling certain brushes.<BR>
+    <LI CLASS="mvd-P">Fixed infinite lines in 3D view in vertex mode.<BR>
+    <LI CLASS="mvd-P">Fixed clipping causing duplicate solids.<BR>
+    <LI CLASS="mvd-P">Fixed decal repositioning.<BR>
+    <LI CLASS="mvd-P">Fixed camera angle view bug.<BR>
+    <LI CLASS="mvd-P">Fixed problem with running compile tools from paths 
+    with spaces.</P>
+   </UL>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   </P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Version 3.3</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Highlights:</SPAN><BR>
+   The editor has been given a facelift, with a completely rewritten 
+   OpenGL renderer for the 3D views. This enables the addition of engine 
+   rendering code for previews of such things as sprites and glow 
+   effects. Texturing, normally the most time-consuming aspect of 
+   mapmaking, has also been streamlined. And, a number of other 
+   productivity-enhancing features have taken the most common hitches 
+   out of mapmaking.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">OpenGL 3D Renderer</SPAN></FONT>.
+     The real-time renderer is much faster, more robust, and allows for 
+    animating visuals in the 3D view.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Texture
+     Locking</SPAN></FONT>. Texture alignment is now preserved through 
+    rotation, scaling, and flipping, allowing for the hassle-free 
+    construction of odd-angled geometry.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Powerful
+     Texture Application Features</SPAN></FONT>. Automatic texture 
+    continuity is guaranteed when lifting and applying from one face to 
+    another. Textures can be fit across one face or multiple faces, or 
+    aligned to the left, right, top, bottom, and center of faces with a 
+    single button click. Textures can be projected onto faces from an 
+    arbitrary viewpoint, useful for texturing cliff faces or other 
+    irregular geometry. In addition, texture axes are now displayed in 
+    the 3D view.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Sprite
+     Preview</SPAN></FONT>. Sprites are now automatically previewed in 
+    the 3D view, along with animation. Frame rate and scale key values 
+    are correctly reflected in the preview, eliminating the need to 
+    compile and run the map in the game engine when placing sprites.</P>
+   </UL>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Features:</SPAN><BR>
+   Aside from the above highlights, there have been a number of smaller 
+   changes as well.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-style : italic;"><FONT COLOR="NAVY">Go To Brush Number</FONT>.</SPAN> 
+    Brushes can now be found by entity / brush number for fast tracking 
+    down of compiler errors.<BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;"><FONT COLOR="NAVY">Iconic
+     Entities</FONT>.</SPAN> Any point entity can be set to render as a 
+    sprite icon in the 3D view through a specification in the FGD file, 
+    making it easy to distinguish between different entities in the 3D view.<BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;"><FONT COLOR="NAVY">3D
+     Preview of Tools</FONT><FONT COLOR="BLACK">.</FONT></SPAN> The brush 
+    creation, clipper, cordon bounds, and selection tools all render in 
+    the 3D view in real time, taking the guesswork out of previously 
+    painstaking operations.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Colored
+     Solid Entities</SPAN></FONT>. Solid entities can now be given a 
+    render color in the FGD file, for easier identification in the 2D or 
+    3D views.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">3D
+     Grid</SPAN></FONT>. A new 3D grid allows for easy visualization of 
+    brush sizes in the 3D view.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Missing
+     Texture Replacement</SPAN></FONT>. Added a Replace button to the 
+    texture bar, making it easy to replace textures when they are missing 
+    from the WAD file.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Texture
+     Usage Report</SPAN></FONT>. Statistics on unique textures, total 
+    texture memory, and WADs used in are reported in the Map Information dialog<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Enhanced
+     Camera Controls</SPAN></FONT>. Real-time keyboard sampling gives 
+    smooth camera movement in the 3D view. Holding down both mouse 
+    buttons now enables dollying the camera forward and back. The mouse 
+    wheel now zooms both the 2D and 3D views.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Point
+     and Click Entity Placement</SPAN></FONT>. Point entities can now be 
+    placed directly in the 3D view just by pointing and clicking.<BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;"><FONT COLOR="NAVY">Entity
+     Key Browse Button</FONT></SPAN>. Added a browse button to the Entity 
+    Properties dialog for typo-free setting of sprite, sound, and model keys.<BR>
+    <LI CLASS="mvd-P"><FONT COLOR="NAVY"><SPAN STYLE="font-style : italic;">Clipper
+     Measurements</SPAN></FONT>. Sizes of clipped brushes can be 
+    displayed in the 2D view while clipping. This is useful for clipping 
+    brushes to a particular size, or for matching with a specific texture.</P>
+   </UL>
+  <P>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

@@ -1,0 +1,94 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>3D View</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Options: 3D View</FONT></FONT></H1>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/dialog_options_3dviews.gif" WIDTH="410" HEIGHT="509" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   The 3D Views options allow you to set the behavior of the editor's 3D views.</P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-style : italic;font-weight : bold;">Note:</SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">&nbsp;if
+     you are familiar with previous versions of the editor, you may note 
+    the absence of the Hardware Acceleration checkbox. The Valve Hammer 
+    Editor will now always attempt to run in OpenGL mode, and if that 
+    isn't available through hardware, it will attempt to emulate it in software.</SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Performance</SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-style : italic;font-weight : bold;">Back clipping plane</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - This sets the distance in units at which the editor will </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">stop</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    drawing in it's 3D view. If you are finding the 3D performance to be 
+    too slow, set this to a lower value.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Filter
+     textures</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - when this feature is enabled, bilinear filtering is done on 
+    textures resulting in a smoother non-pixelated look when viewed 
+    closeup. Disabling this may result in a slight speed increase, or a 
+    dramatic speed increase on older video cards.</SPAN></P>
+   </UL>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <SPAN STYLE="font-style : normal;font-weight : normal;"><IMG SRC="gfx/texture_filter.gif" WIDTH="405" HEIGHT="221" VSPACE="0" HSPACE="0" BORDER="0"></SPAN></P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-style : normal;font-weight : bold;">Note:</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    if you disable texture filtering, this is known to cause texture 
+    swimming and loss of texture perspective correction. This generally 
+    occurs with older video cards.</SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : normal;font-weight : bold;">Navigation</SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-style : italic;font-weight : bold;">Use mouselook navigation</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - When this is enabled, &quot;mouselook navigation&quot; will be 
+    available. The z hotkey toggles this mode on and off. While on, 
+    moving the mouse will change the viewing angle in the 3D view, and 
+    the WASD keys can be used for forward, left, backward, and right movement.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Reverse
+     mouse Y axis</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - When you are using the mouse to navigate through the 3D view, if 
+    this is enabled pulling the mouse backwards will cause the view to 
+    look upward, and moving the mouse forward will cause the view to look downward.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Forward
+     speed</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - You can set the maximum forward movement speed here.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Time
+     to top speed</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - This is the amount of time it takes to go from 0 to the above 
+    maximum movement speed (basically this sets the acceleration).</SPAN></P>
+   </UL>
+  <P>
+   <SPAN STYLE="font-style : normal;font-weight : bold;">General</SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-style : italic;font-weight : bold;">Reverse 
+    selection order</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - User's of some video cards may find that when selecting objects in 
+    the 3D view, the furthest object will get selected rather than the 
+    one you clicked on. If you experience this problem, enable this to 
+    reverse the selection order.</SPAN></P>
+   </UL>
+  <P>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

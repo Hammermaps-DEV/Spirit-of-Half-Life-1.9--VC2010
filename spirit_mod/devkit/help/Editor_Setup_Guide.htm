@@ -1,0 +1,412 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Valve Hammer Editor 3.4 Setup Guide</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT FACE="Impact"><FONT COLOR="NAVY">Valve Hammer Editor 3.4 Setup Guide</FONT></FONT></H1>
+  <P>
+   Valve Hammer Editor 3.4 has had many changes made to it since version 
+   2.1, and some of these changes mean that you'll need to set things up 
+   a little differently compared to what you might be used to.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Before You Start</SPAN><BR>
+   Before you continue on to use Hammer, there are a few things you 
+   should keep in mind?:</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    Hammer 3.4 makes use of OpenGL for its 3D rendering. As such, driver 
+    compatability issues may exist, so be sure you are running the latest 
+    version of your OpenGL video drivers. Below are some links to the 
+    major driver pages.</P>
+   <UL>
+    <LI CLASS="mvd-P">
+    <P>
+     <A HREF="http://www.nvidia.com/Products/Drivers.nsf" TARGET="_new">NVIDIA
+      driver page</A><BR>
+     <LI CLASS="mvd-P"><A HREF="http://www.3dfx.com/" TARGET="_new">3DFX 
+     driver page</A><BR>
+     <LI CLASS="mvd-P"><A HREF="http://www.ati.com/support/" TARGET="_new">ATI
+      driver page</A><BR>
+     <LI CLASS="mvd-P"><A HREF="http://www.matrox.com/mga/drivers/home.htm" TARGET="_new">Matrox
+      driver page</A></P>
+    </UL>
+   <LI CLASS="mvd-P">
+   <P>
+    Hammer 3.4 only allows for the creation of Half-Life (and Half-Life 
+    mod) levels.</P>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-weight : normal;">In order for Hammer 3.4's 3D 
+    sprite preview to work, you must unpack the Sprites folder from your 
+    PAK file. For more information, see the <A HREF="Unpacking_Your_Pack.htm">Unpacking
+     Your PAK</A> tutorial. It is also recommended that you unpack your 
+    sounds and models folders from the PAK file.</SPAN></P>
+   </UL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Setup</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">The first thing you should do 
+   after installing Hammer is configure it's settings. The options 
+   settings can be reached by selecting Options from the Tools menu. 
+   There are six different tabs in the Option's dialog:</SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : normal;"><A HREF="#options1">Game Configurations</A></SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;"><A HREF="#options2">Build
+     Programs</A></SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;"><A HREF="#options3">General</A></SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;"><A HREF="#options4">2D
+     Views</A></SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;"><A HREF="#options5">3D
+     Views</A></SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;"><A HREF="#options6">Textures</A></SPAN></P>
+   </UL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : normal;">If you are going to use Hammer to 
+   compile your maps, you also need to setup the compile modes.</SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : normal;"><A HREF="#compile">Compile Setup</A></SPAN></P>
+   </UL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="options1"></A>Game Configurations</SPAN><BR>
+   The Game Configuration options allow you to setup the editor to edit 
+   Half-Life and it's mods. A separate configuration is needed for each 
+   game or mod.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/dialog_options_gameconfig.gif" WIDTH="410" HEIGHT="509" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Configuration</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">If this is a new installation of 
+   Hammer, there won't be any game configurations yet. Click Edit, then 
+   Add, and enter Half-Life (or whatever Half-Life mod you're setting up 
+   the editor for).</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : normal;">For new users, note that you can 
+   add more than one game configuration. This is handy if you plan on 
+   working on Half-Life levels </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">and</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+   Half-Life mod levels.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Game Data Files</SPAN><BR>
+   The game data file contains all of the entity information that will 
+   be used to create your maps. Hammer's game data files have the file 
+   extension .FGD. It must be present in order for you to create levels.</P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    Click on the Add button.</P>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    An Open dialog will appear. If it doesn't show the contents of your 
+    Hammer folder, browse to it.</P>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    In the FGD folder, browse to and select the game .FGD that you 
+    require. Hammer ships with game data files for Half-Life, Team 
+    Fortress 1.5, Counter-Strike, and Day of Defeat.</P>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    You will be taken back to the Options dialog. You will see that 
+    C:\Valve Hammer Editor\halflife.fgd (or wherever you've stored the 
+    FGD) has been added to the Game Data File list.</P>
+   </OL>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Note</SPAN>: There is a new version 
+    of the Half-Life game data file <A HREF="http://www.valve-erc.com/files/?file=/files/fgd/halflife-fgd_3x.zip">available
+     here</A>. You can unzip it into your Hammer directory and use the 
+    same steps as above to add it as your Half-Life game data file. Be 
+    sure to remove the previous version of the game data file first.</P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Texture Format </SPAN><SPAN STYLE="font-weight : normal;">and
+    </SPAN><SPAN STYLE="font-weight : bold;">Map Type</SPAN><BR>
+   The Hammer editor is only capable of creating Half-Life maps. As 
+   such, these two options are locked on WAD3 (Half-Life) for the 
+   texture format, and Half-Life for the map format.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Default PointEntity</SPAN> and <SPAN STYLE="font-weight : bold;">SolidEntity
+    class</SPAN><BR>
+   Select a default point and solid entity here. This controls which 
+   entity will appear selected when you go to place an entity. It is 
+   only a time-saving device. I recommend using info_player_start as the 
+   default point entity and func_door as the default solid entity.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Game Executable Directory</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">The value here should be the 
+   directory where your Half-Life executable is stored. The value should </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">not</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+   include hl.exe. For example, C:\Half-Life is correct, but 
+   C:\Half-Life\hl.exe is not.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Mod Directory</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">If you are setting up the editor 
+   for a mod, the game directory of the mod should go here. For example, 
+   if Half-Life is in C:\Half-Life, and you're setting up Hammer for 
+   Team Fortress Classic, the Mod Directory value would be 
+   C:\Half-Life\tfc. For a normal Half-Life game configuration, the Mod 
+   Directory should be set to C:\Half-Life\valve.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Game Directory</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">This value should be the base 
+   game directory for Half-Life. Keeping with the above examples, this 
+   would be C:\Half-Life\valve.</SPAN></P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Note:</SPAN><SPAN STYLE="font-weight : normal;"> 
+    The above two settings are required for the search paths for 
+    displaying sprites in the 3D view. They allow you to use custom 
+    development directories rather than locking you into using the 
+    standard Half-Life directories. For the most part, it is likely that 
+    you </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">will</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    be using the standard directories.</SPAN></P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">RMF Directory</SPAN><BR>
+   The value here is the directory where the editor will store your 
+   maps. I recommend using the maps folder that gets created in your 
+   Hammer directory.</P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Note: </SPAN>As a point of trivia, 
+    RMF stands for Rich Map Format. It is the Valve Hammer Editor's 
+    proprietary map format. Before a map can be compiled, it must be 
+    converted from an RMF file to a .MAP file. The editor handles this 
+    conversion automatically, but you can also do it manually by 
+    selecting Export to MAP from the Files menu.</P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="options2"></A>Build Programs</SPAN><BR>
+   The settings in the Build Programs dialog affect how the editor 
+   handles things when you compile your map. If you don't plan on using 
+   the editor to compile your maps, then this section is irrelevant and 
+   does not need to be filled out.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/dialog_options_buildprogs.gif" WIDTH="410" HEIGHT="509" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Configuration</SPAN><BR>
+   Choose which game configuration you are setting up the Build Programs 
+   for here. If you've only created a Half-Life game configuration, 
+   that's all you'll have access to here.</P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Note: </SPAN>If no Configuration is 
+    shown, click on the Ok button to return to the editor screen, then 
+    select Options from the Tools menu again and click on the Build 
+    Programs tab. The Configuration you've previously created should now 
+    be listed.</P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Game executable</SPAN><BR>
+   Specify the game executable here. If you know the path to the 
+   Half-Life executable, type in the path and filename here, otherwise, 
+   click on the Browse button and browse to the Half-Life directory. 
+   Select hl.exe and click the Open button.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">CSG, BSP, VIS, and RAD executable</SPAN><BR>
+   This is where you specify the compile tools to be used. The standard 
+   tools are, in order, qcsg.exe, qbsp2.exe, vis.exe, and qrad.exe. If 
+   you are using Zoner's compile tools, they will be hlcsg.exe, 
+   hlbsp.exe, hlvis.exe, and hlrad.exe. By default the tools are stored 
+   in the <SPAN STYLE="font-style : italic;">Valve Hammer Editor\tools</SPAN> folder.</P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Note: </SPAN>There is another file, 
+    lights.rad, in your <SPAN STYLE="font-style : italic;">Valve Hammer Editor\tools</SPAN> 
+    directory. It contains information that controls the texture lighting 
+    when you compile a Half-Life map. If you move the compile tools to a 
+    different directory, you must also move the lights.rad file.</P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Place compiled maps in this 
+   directory before running the game</SPAN><BR>
+   Compiled maps must be placed in a specific directory for Half-Life to 
+   recognize their existence. This directory is the Valve\Maps\ 
+   directory, located in your Half-Life folder. For example, my 
+   Half-Life game directory is D:\games\half-life, so my compiled-maps 
+   directory is D:\games\half-life\valve\maps. If no Maps directory 
+   exists in the Valve folder, you must create one.</P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Note:</SPAN><SPAN STYLE="font-weight : normal;"> 
+    If you are setting up the editor for mod editing, replace 
+    &quot;valve&quot; in the above example with the mod directory. For 
+    example, d:\games\half-life\tfc\maps.</SPAN></P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="options3"></A>General Options</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : normal;">You can leave these options at 
+   their default settings for now. Once you are familiar with Hammer, it 
+   is recommended you play around with these settings until you've got 
+   things set like you prefer. More information can be found in the <A HREF="General.htm">General</A> 
+   dialog page.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="options4"></A>2D Views</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : normal;">You can leave these options at 
+   their default settings for now. Once you are familiar with Hammer, it 
+   is recommended you play around with these settings until you've got 
+   things set like you prefer. More information can be found in the <A HREF="2D_Views.htm">2D
+    Views</A> dialog page.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="options5"></A>3D Views</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : normal;">You can leave these options at 
+   their default settings for now. Once you are familiar with Hammer it 
+   is recommended you play around with these settings until you've got 
+   things set like you prefer. More information can be found in the <A HREF="3D_View.htm">3D
+    Views</A> dialog page.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="options6"></A>Textures</SPAN><BR>
+   Without any textures installed, you cannot create a map. The main 
+   Half-Life texture file is halflife.wad, and it is located in your 
+   Half-Life directory, in the Valve folder. To add it to your Texture 
+   list, follow these steps.</P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    Click on the Textures options tab.<BR>
+    <LI CLASS="mvd-P">In the Textures options, click on the Add WAD button.<BR>
+    <LI CLASS="mvd-P">An Open dialog will appear. Use it to browse to 
+    your Half-Life directory.<BR>
+    <LI CLASS="mvd-P">Double-click on the Valve folder to view its contents.<BR>
+    <LI CLASS="mvd-P">Find halflife.wad and select it.<BR>
+    <LI CLASS="mvd-P">Click on the Open button to add it to your Textures list.</P>
+   </OL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Note</SPAN>: You can also add 
+   liquids.wad, xeno.wad, and decals.wad using the above steps. There 
+   are a number of other .WAD files that may be available in the Valve 
+   folder, including cached.wad, gfx.wad, pldecal.wad, and 
+   spraypaint.wad - do not use these. These files are generated by 
+   Half-Life and will not be the same on all user's systems.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="compile"></A>Compile Setup</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">If you are going to use the editor 
+   to compile your maps, there are two different compile modes for you 
+   to use: the normal compile mode and the advanced compile mode.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Normal Compile Mode</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">The normal compile mode allows 
+   for one button compiling with no further setup other than what has 
+   been mentioned above.</SPAN></P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/dialog_compile_normal.gif" WIDTH="294" HEIGHT="340" VSPACE="0" HSPACE="0" BORDER="0"></SPAN></P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-style : italic;font-weight : bold;">Additional game parameters</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - This is where you specify the additional parameters for the game 
+    executable. If you are compiling a map for a mod, be sure to include 
+    the -game &lt;moddir&gt; parameter as shown in the above picture. 
+    -dev and -console, also shown, are good parameters to use when 
+    testing maps.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Run
+     CSG, BSP, VIS, and RAD</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - These settings allow you to define which tools will be run along 
+    with a couple of their most basic parameters.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Don't
+     run the game</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - If this option is checked, the game will not be started after the 
+    map has finished compiling.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Save
+     visible objects only</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - If this option is checked, only objects that are not hidden will be 
+    compiled into the map.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Expert
+     (button)</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - Press this to go into Advanced Compile Mode.</SPAN></P>
+   </UL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-style : normal;font-weight : bold;">Note: </SPAN><SPAN STYLE="font-style : normal;font-weight : normal;">User's
+    of Worldcraft 2.x may remember that the normal compile mode did not 
+   work correctly. This problem is fixed now, and the normal compile 
+   mode can be used without error, but the advanced compile mode is 
+   still recommended due to it's increased versatility.</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-style : normal;font-weight : bold;">Advanced 
+   Compile Mode</SPAN><BR>
+   <SPAN STYLE="font-style : normal;font-weight : normal;">The advanced 
+   compile mode gives you much more freedom over how the compile process 
+   is performed.</SPAN></P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/dialog_compile_advanced_sm.gif" WIDTH="464" HEIGHT="281" VSPACE="0" HSPACE="0" BORDER="0"></SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : normal;">To make a standard compile setup, 
+   follow these steps:</SPAN></P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : normal;">Press the New button 8 times. 
+    Eight check-boxes will be created.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Click on the 
+    1st checkbox line. Click on the Cmds button and select Change 
+    Directory. Click on the Parms button and select Game Executable Directory.</SPAN></P>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Note: </SPAN>It is important that 
+    you select the commands from the Cmds menu rather than typing them in 
+    the Command text box. Although they may look the same, typing out the 
+    commands will cause problems in the compile.</P>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : normal;">Click on the 2nd checkbox line. 
+    Click on the Cmds button and select CSG program. In the Parameters 
+    text box, type $path\$file. It is very important that 
+    &quot;$path\$file&quot; be typed correctly.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Click on the 
+    3rd checkbox line. Click on the Cmds button and select BSP program. 
+    In the Parameters text box, type $path\$file.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Click on the 
+    4th checkbox line. Click on the Cmds button and select VIS program. 
+    In the Parameters text box, type $path\$file.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Click on the 
+    5th checkbox line. Click on the Cmds button and select LIGHT program. 
+    In the Parameters text box, type $path\$file.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Click on the 
+    6th checkbox line. Click on Copy File in the Cmds menu. In the 
+    Parameters text box, type $path\$file.bsp $bspdir\$file.bsp.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Click on the 
+    7th checkbox line. Click on Copy File in the Cmds menu. In the 
+    Parameters text box, type $path\$file.pts $bspdir\$file.pts. (The 
+    .pts file is created when there is a leak in your level)</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Click on the 
+    8th checkbox line. Click on Game Program in the Cmds menu. In the 
+    parameters text box, type </SPAN>+map $file. Other parameters you 
+    might also want to use are:</P>
+   <UL>
+    <LI CLASS="mvd-P">
+    <P STYLE="text-align : left;" ALIGN=LEFT>
+     <SPAN STYLE="font-style : italic;font-weight : bold;">-dev</SPAN> - 
+     this puts the game in developer mode, providing extra debugging 
+     information for you when you're testing your map.<BR>
+     <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">-console</SPAN> 
+     - this enables the in-game console which is accessible by pressing 
+     the ~ key.<BR>
+     <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">+set
+      deathmatch 1</SPAN> - this starts the game in deathmatch mode. Some 
+     games, like Counterstrike, require this.<BR>
+     <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">-game
+      &lt;moddir&gt;</SPAN> - this should be used when you're making a map 
+     for a mod. For example, if you're making a TFC map, you'd need to use 
+     the -game tfc parameter.</P>
+    </UL>
+   </OL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Conclusion</SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : normal;">Hammer is now setup for mapping. 
+   If you are new to mapping, it is best that you proceed to the <A HREF="Editor_3.x_User's_Guide.htm">User's
+    Guide</A> section to familiarize yourself with the basic functions 
+   of Valve Hammer Editor 3.4.</SPAN>
+ </BODY>
+</HTML>

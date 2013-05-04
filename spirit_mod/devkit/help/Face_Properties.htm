@@ -1,0 +1,120 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Face Properties</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Dialogs: Face Properties</FONT></FONT></H1>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/dialog_face_properties.gif" WIDTH="175" HEIGHT="430" VSPACE="0" HSPACE="0" BORDER="0"><BR>
+   <SPAN STYLE="font-style : italic;">Hotkey: Shift+A</SPAN></P>
+  <P>
+   The Face Properties dialog allows you to manipulate the texture 
+   properties of selected brush faces. To select a brush face, click on 
+   it in the 3D view with the left mouse button. To select multiple 
+   faces, hold down the Ctrl key while you do this. You can also select 
+   multiple brushes <SPAN STYLE="font-style : italic;">before</SPAN><SPAN STYLE="font-style : normal;"> 
+   bringing up the Face Properties tool.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-style : normal;font-weight : bold;">&quot;Right-Click&quot;
+    Texture Application</SPAN><BR>
+   <SPAN STYLE="font-style : normal;">A special feature of the Face 
+   Properties tool is that of being able to apply the current texture to 
+   a brush face by right-clicking on that face.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-style : normal;">In order to make the textures 
+   match up from one face to the next, first align the texture on one of 
+   the faces, lift the texture from that face (left-click by default), 
+   then Alt-right-click on the other faces one by one. The texture 
+   should flow continuously across all the faces.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Scale (X/Y)</SPAN><BR>
+   You can modify the scale of a texture to shrink or enlarge it. 
+   Numbers less than 1 shrink, and numbers greater than 1 enlarge. You 
+   can use negative values to mirror the texture in one or both planes.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Shift (X/Y)</SPAN><BR>
+   This simply allows you to shift the texture along the horizontal or 
+   vertical texture axes.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Rotation</SPAN><BR>
+   Rotation allows you to rotate the texture on a brush face.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Justify</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">There are six buttons you can 
+   press here: L (left), R (right), Fit (fit to face), T (top), B 
+   (bottom), and C (center on face). These allow you to quickly and 
+   easily align a texture on a brush.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Treat as one</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">If you have multiple faces 
+   selected, you can check this option to treat all the faces as one 
+   single face.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Align: World and Face</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">These checkboxes allow you to set 
+   the texture alignment style for the selected faces. World alignment 
+   causes textures to be aligned according to world coordinates (if 
+   you're familiar with versions of the editor before 3.3, this was the 
+   standard behavior). Face alignment uses the coordinates of the face 
+   as a basis for alignment.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Texture Group</SPAN><BR>
+   You can select which group of textures you want to use - either all 
+   of them, or individual texture WADs.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Current Texture</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">The name of the current texture 
+   is displayed here, along with a thumbnail picture of the texture.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Hide Mask</SPAN><BR>
+   If this button is toggled on, the selected brush face(s) will not 
+   appear as selected (with a reddish hue). This may make it easier to 
+   perform some texture manipulations.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Mode</SPAN><BR>
+   This lets you select what will happen when you click on a brush face 
+   with the left mouse button. The available options are Lift+Select, 
+   Lift, Select, Apply (texture only), Apply (texture + values), and 
+   Align to View.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-style : italic;font-weight : bold;">Lift+Select</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - Clicking on a brush face in the 3D view will select that face and 
+    make it's texture the current texture.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Lift</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - Clicking on a brush face will make it's texture the current texture 
+    without selecting the face.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Select</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - Clicking on a brush face will select that face without changing the 
+    current texture.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Apply
+     (texture only)</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - Clicking on a brush face will apply the current texture to that 
+    face without changing any of it's other properties.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Apply
+     (texture + values)</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - Clicking on a brush face will apply the current texture </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">and</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;">&nbsp;texture
+     properties.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Align
+     to View</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - This is like projecting a texture from the camera face, as if you 
+    were a slide projector and the texture is a slide. It's useful for 
+    painting a texture onto a cliff or other irregular things.</SPAN></P>
+   </UL>
+  <P>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

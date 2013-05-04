@@ -1,0 +1,109 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Map Operations</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Toolbars: Map Operations</FONT></FONT></H1>
+  <P>
+   <IMG SRC="gfx/toolbar_map_operations.gif" WIDTH="197" HEIGHT="112" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   The Map Operations toolbar allows you to perform a number of 
+   operations on objects in your map as well as setting default behavior 
+   for some mapping properties.</P>
+  <P>
+   <IMG SRC="gfx/mapoperation_carve.gif" WIDTH="23" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> <SPAN STYLE="font-weight : bold;">Carve</SPAN><SPAN STYLE="font-weight : normal;"> 
+   - </SPAN>When the Carve button is pressed, the selected brush will 
+   subtract its shape from the non-selected brushes around it.</P>
+  <P>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/mapoperation_grouping.gif" WIDTH="46" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN><SPAN STYLE="font-weight : bold;">Group/Ungroup</SPAN><SPAN STYLE="font-weight : normal;"> 
+   - </SPAN>Group/Ungroup binds two or more objects together so they may 
+   be acted upon simultaneously. This is not the same as VisGrouping. 
+   The two functions differ in that grouping provides a way of 
+   physically binding a group of objects together, while VisGrouping 
+   enables you to organize objects into a group that may still be worked 
+   upon as separate objects. For more information, see <A HREF="Grouping_and_VisGrouping.htm">Grouping
+    and VisGrouping</A>.</P>
+  <P>
+   <IMG SRC="gfx/mapoperation_ignoregroups.gif" WIDTH="23" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> <SPAN STYLE="font-weight : bold;">Ignore
+    Groups</SPAN> - Ignore Groups allows you to modify individual 
+   brushes that are part of a group or entity by temporarily disabling &quot;groups.&quot;</P>
+  <P>
+   <A NAME="hide_and_unhide"></A><IMG SRC="gfx/mapoperation_visibility.gif" WIDTH="69" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> <SPAN STYLE="font-weight : bold;">Hide
+    Selected/Unselected, Show All</SPAN> - Along with the <A HREF="Filter_Control.htm">Filter
+    Control</A> dialog, these buttons are used to control what does and 
+   doesn't appear in the 2D and 3D space of the editor. Hide Selected 
+   and Hide Unselected both create new VisGroups with the newly hidden 
+   objects, and Show All will make visible any hidden VisGroup. For more 
+   information on VisGroups, see <A HREF="Grouping_and_VisGrouping.htm">Grouping
+    and VisGrouping</A>.</P>
+  <P>
+   <IMG SRC="gfx/mapoperation_cutcopypaste.gif" WIDTH="69" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> <SPAN STYLE="font-weight : bold;">Cut,
+    Copy, Paste</SPAN><SPAN STYLE="font-weight : normal;"> - </SPAN>These
+    buttons follow the standard windows interface for cut/copy/paste.</P>
+  <P>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/mapoperation_cordoning.gif" WIDTH="46" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN><SPAN STYLE="font-weight : bold;">Toggle
+    Cordon State, Edit Cordon Bounds</SPAN><SPAN STYLE="font-weight : normal;"> 
+   - </SPAN>These buttons allow you to &quot;cordon off&quot; an area of 
+   your map. When the cordon state is toggled on, a thick red line will 
+   appear around that area. When you compile, only the inside of that 
+   red area will be compiled, and a box will be placed around the area 
+   to seal leaks.</P>
+  <P>
+   This is extremely useful when you are working on a large level and 
+   want to look at changes made in only a small area. Rather than wait a 
+   considerable amount of time for the entire map to compile, you can 
+   selectively compile only a small area by using the Cordon functions.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Note: </SPAN>Be sure to place a 
+   temporary player start within the bounds of the cordoned area before 
+   you test compile that section.</P>
+  <P>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/mapoperation_handleselect.gif" WIDTH="23" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN><SPAN STYLE="font-weight : bold;">Toggle
+    Select-by-Handles</SPAN><SPAN STYLE="font-weight : normal;"> - </SPAN>When
+    this option is toggled on, you will only be able to select objects 
+   by their center handles in the 2D view. To select objects by their 
+   center handles in 3D view, you must also be in wireframe mode. This 
+   is useful when there are several brushes overlapping in the 2D view, 
+   making the standard selection method (clicking on brush lines) 
+   awkward and inaccurate.</P>
+  <P>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/mapoperation_autoselection.gif" WIDTH="23" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN><SPAN STYLE="font-weight : bold;">Toggle
+    Auto-selection</SPAN><SPAN STYLE="font-weight : normal;"> - </SPAN>When
+    Toggle Auto-selection is toggled on, you can select multiple objects 
+   by simply clicking your mouse button and dragging a selection box 
+   around the objects. When this option is toggled off, you can also 
+   select multiple objects by dragging a selection box around the 
+   objects and then pressing Enter.</P>
+  <P>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/mapoperation_texturelock.gif" WIDTH="23" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN><SPAN STYLE="font-weight : bold;">Texture
+    Lock</SPAN><SPAN STYLE="font-weight : normal;"> - </SPAN>This button 
+   toggles texture lock mode on and off. Textures will then stay correct 
+   when you move or rotate a brush.</P>
+  <P>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/mapoperation_alignto.gif" WIDTH="23" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN><SPAN STYLE="font-weight : bold;">Align
+    to World/Face</SPAN><SPAN STYLE="font-weight : normal;"> - </SPAN>This
+    button toggles the texture alignment style between world alignment 
+   and face alignment. World alignment will align textures according to 
+   the world grid coordinates. Face alignment will align textures 
+   according to the brush face.</P>
+  <P>
+   <SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/mapoperation_runmap.gif" WIDTH="23" HEIGHT="22" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN><SPAN STYLE="font-weight : bold;">Run
+    Map</SPAN><SPAN STYLE="font-weight : normal;"> - </SPAN>This button 
+   brings up the current compile dialog. For more information on 
+   compiling you map, see Compiling and Running Your Level.</P>
+  <P>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

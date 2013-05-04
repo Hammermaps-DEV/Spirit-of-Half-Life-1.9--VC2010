@@ -1,0 +1,124 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>The 3D and 2D Views</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">The 3D and 2D Views</FONT></FONT></H1>
+  <P>
+   Before you can begin creating and placing solids and entities, you 
+   need to familiarize yourself with the editor's interface. By default, 
+   your working area is divided into 4 sections. The first (top, left) 
+   window is the 3D View, and the rest are the 2D views.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">The 3D View</SPAN><BR>
+   The 3D window is a dynamic 3D space where you can view your level 
+   from any angle. This is critical for checking textures and texture 
+   alignment, spotting leaks and just getting a sense of what your 
+   finished level will look like.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Using Cameras</SPAN><BR>
+   To take advantage of the 3D view, you need to be able to place 
+   cameras. Cameras determine your vantage point(s). Hammer provides you 
+   with precise control over the camera movements in your map.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/camera1.gif" WIDTH="135" HEIGHT="77" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   A camera in Hammer (as displayed in the 2D views) consists of two 
+   parts: the eye, and the viewing angle, which is represented by a line 
+   extending out from the eye. The length of the line that represents 
+   the viewing angle is not important, though it can help you aim the 
+   camera exactly at an object.</P>
+  <P>
+   While it is possible to move a single camera all over the map each 
+   time you need to look at something new in the 3D window, it is more 
+   convenient to have easy access to multiple cameras placed throughout 
+   the map. Hammer allows you to easily cycle through multiple cameras 
+   by pressing PageUp and PageDown.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Camera Placement</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">Placing cameras in Hammer is 
+   extremely simple. First, switch to Camera mode by pressing Shift+C, 
+   then h</SPAN>old Shift and with the left mouse button, click-drag a 
+   line in one of the 2D views. This will create a thin red line with a 
+   large dot at one end. The dot is the camera's position, and this is 
+   where the 3D camera view will originate. The red line is the camera's 
+   viewing angle. You can adjust either end of the line to change the 
+   view. Follow the above steps to create as many cameras in your level 
+   as you need.</P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Note: </SPAN>There are a number of 
+    options available to you when using multiple cameras. You must have 
+    the Camera tool selected to take advantage of these:</P>
+   <BLOCKQUOTE>
+    <P>
+     <SPAN STYLE="font-weight : bold;">PageUp: </SPAN>cycle up to the next 
+     camera position<BR>
+     <SPAN STYLE="font-weight : bold;">PageDn: </SPAN>cycle down to the 
+     last camera position<BR>
+     <SPAN STYLE="font-weight : bold;">Delete: </SPAN>delete the current 
+     camera position<BR>
+     <SPAN STYLE="font-weight : bold;">Shift: </SPAN>hold shift and 
+     click-drag with the left mouse button to create a new camera.</P>
+    </BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-style : normal;font-weight : bold;">Tip: </SPAN><SPAN STYLE="font-style : normal;">While
+     in camera mode, you can adjust the camera position by moving the eye 
+    or viewing angle in any of the 2d windows.</SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Mouselook/NoClip Style Movement</SPAN><BR>
+   Version 2.1 of Hammer introduced a new style of 3D View movement 
+   called mouselook movement. It is designed to be the same as when you 
+   are in the game and walking around with +mlook (mouselook) and the 
+   NoClip cheat both turned on. It can be enabled or disabled by 
+   pressing (lowercase) z.</P>
+  <P>
+   Moving your mouse around will change the player's direction of focus, 
+   while W and S control forward and backward movement, and A and D 
+   control sided to side (left and right strafing) movement.</P>
+  <P>
+   The old style keyboard shortcuts (listed below) still work. You can 
+   disable this new movement style by going into the 3D View options and 
+   disabling use mouselook navigation.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Keyboard Shortcuts</SPAN><BR>
+   There are a number of keyboard shortcuts that you can use to quickly 
+   maneuver through the 3D view without switching to the Camera tool.</P>
+  <P>
+   While holding the spacebar:</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    holding the left mouse button allows you to rotate your angle of view 
+    in any direction, while the viewing point remains stationary.<BR>
+    <LI CLASS="mvd-P">holding the right mouse button will allow you to 
+    move left, right, up, and down while keeping the viewing angle constant.<BR>
+    <LI CLASS="mvd-P">holding the left <SPAN STYLE="font-style : italic;">and</SPAN><SPAN STYLE="font-style : normal;"> 
+    right buttons and moving the mouse causes the view to strafe forward, 
+    backward, right, and left. (note that this makes the following 
+    behavior redundant).</SPAN></P>
+   </UL>
+  <P>
+   While holding the spacebar and Shift:</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    the left mouse button acts the same as above.<BR>
+    <LI CLASS="mvd-P">the right mouse button allows you to move forward 
+    and backward, as well as from side to side.</P>
+   </UL>
+  <P>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.4 User's Guide</A></SPAN>
+ </BODY>
+</HTML>

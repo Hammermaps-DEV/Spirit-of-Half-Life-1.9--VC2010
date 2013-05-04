@@ -1,0 +1,108 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>FGD format changes</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">FGD Format Changes</FONT></FONT></H1>
+  <P>
+   <SPAN STYLE="font-weight : normal;">A number of changes have been 
+   made to the FGD format to allow for enhanced entity properties and to 
+   facilitate the display of sprites in the 3D view.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Iconic Entities</SPAN><BR>
+   Iconic Entities are those entities that have a sprite associated with 
+   them. Icon sprites should be stored in Valve Hammer Editor\sprites 
+   and are referenced with the <SPAN STYLE="font-weight : bold;">iconsprite()</SPAN> 
+   helper. The format is like this:</P>
+  <P>
+   <SPAN STYLE="font-size : 8.0pt;">@PointClass </SPAN><SPAN STYLE="font-weight : bold;font-size : 8.0pt;">iconsprite(&quot;sprites/lightbulb.spr&quot;)</SPAN><SPAN STYLE="font-size : 8.0pt;"> 
+   base(Light) = light : &quot;Light Entity&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">[</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; &ldots;</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">]</SPAN></P>
+  <P>
+   Icon sprites should be of alphatest type.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Sprite-based Entities</SPAN><BR>
+   Sprite-based entities are those entities that have some connection to 
+   a sprite. For Half-Life, this includes the env_glow, env_sprite, and 
+   cycler_sprite. These entities use the <SPAN STYLE="font-weight : bold;">sprite()</SPAN> 
+   helper. Below is the modified version of the env_sprite.</P>
+  <P>
+   <SPAN STYLE="font-size : 8.0pt;">@PointClass </SPAN><SPAN STYLE="font-weight : bold;font-size : 8.0pt;">sprite()</SPAN><SPAN STYLE="font-size : 8.0pt;"> 
+   base(Targetname, RenderFields) size(-4 -4 -4, 4 4 4) = env_sprite : &quot;Sprite&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">[</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; framerate(string) : 
+   &quot;Framerate&quot; : &quot;10.0&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; model(</SPAN><SPAN STYLE="font-weight : bold;font-size : 8.0pt;">sprite</SPAN><SPAN STYLE="font-size : 8.0pt;">)
+    : &quot;Sprite Name&quot; : &quot;sprites/glow01.spr&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; scale(string) : 
+   &quot;Scale&quot; : &quot;&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; spawnflags(flags) =</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; [</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; &nbsp; 1: &quot;Start on&quot;
+    : 0</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; &nbsp; 2: &quot;Play 
+   Once&quot; : 0</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">&nbsp; ]</SPAN><BR>
+   <SPAN STYLE="font-size : 8.0pt;">]</SPAN></P>
+  <P>
+   The first difference is the addition of the <SPAN STYLE="font-weight : bold;">sprite()</SPAN> 
+   helper in the definition line. The other is that the model key is now 
+   a <SPAN STYLE="font-weight : bold;">sprite</SPAN> type, rather than a 
+   generic string. The sprite listed in this key will be displayed in 
+   the 3D view.</P>
+  <P>
+   The sprite() helper is looking specifically for the model key. It 
+   will also look at the value of the framerate, scale, and rendermode 
+   keys, so the sprite will be displayed as it is meant to (ie: animated 
+   sprites animate at the specified framerate).</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">File Browsing</SPAN><BR>
+   Any entity property that accepts the path/filename of a sprite, 
+   sound, or model should now be of the sprite, sound, or studio type, 
+   rather than just a simple string.</P>
+  <P>
+   <SPAN STYLE="font-size : 9.0pt;">&nbsp; model(</SPAN><SPAN STYLE="font-weight : bold;font-size : 9.0pt;">sprite</SPAN><SPAN STYLE="font-size : 9.0pt;">)
+    : &quot;Sprite Name&quot; : &quot;sprites/glow01.spr&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 9.0pt;">&nbsp; model(</SPAN><SPAN STYLE="font-weight : bold;font-size : 9.0pt;">studio</SPAN><SPAN STYLE="font-size : 9.0pt;">)
+    : &quot;Model Name&quot; : &quot;models/can.mdl&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 9.0pt;">&nbsp; message(</SPAN><SPAN STYLE="font-weight : bold;font-size : 9.0pt;">sound</SPAN><SPAN STYLE="font-size : 9.0pt;">)
+    : &quot;WAV Name&quot;</SPAN></P>
+  <P>
+   The result of using these key types rather than the generic string 
+   type is the entity properties will have a button beside them allowing 
+   you to browse through the appropriate game directories for the files. 
+   This does not provide any preview capabilities.</P>
+  <P>
+   For this to work correctly, you must have the sprite, model, and 
+   sound folders unpacked from the PAK files to the appropriate 
+   directories. Wally (the texture editor) provides a simple UI for 
+   exploring and exporting files from the PAK file. Wally is available 
+   at <A HREF="http://www.telefragged.com/wally/">http://www.telefragged.com/wally/</A>.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Decals</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">The decal entity definition now 
+   requires the addition of the </SPAN><SPAN STYLE="font-weight : bold;">decal()</SPAN><SPAN STYLE="font-weight : normal;"> 
+   helper to make it work properly in the editor.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-size : 9.0pt;">@PointClass </SPAN><SPAN STYLE="font-weight : bold;font-size : 9.0pt;">decal()</SPAN><SPAN STYLE="font-size : 9.0pt;"> 
+   base(Targetname, Appearflags) = infodecal : &quot;Decal&quot;</SPAN><BR>
+   <SPAN STYLE="font-size : 9.0pt;">[</SPAN><BR>
+   <SPAN STYLE="font-size : 9.0pt;">&nbsp; texture(decal)</SPAN><BR>
+   <SPAN STYLE="font-size : 9.0pt;">]</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : normal;">Without the </SPAN><SPAN STYLE="font-weight : bold;">decal()</SPAN><SPAN STYLE="font-weight : normal;"> 
+   helper, decals will appear as small square blocks in the editor's 3D view.</SPAN></P>
+  <P>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

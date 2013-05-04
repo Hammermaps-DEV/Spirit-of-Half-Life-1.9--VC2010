@@ -1,0 +1,99 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Creating Entities</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Creating Entities</FONT></FONT></H1>
+  <P>
+   Entities give life to your level. They are the monsters, doors, 
+   switches and lights that turn your static architecture into an 
+   interactive environment. Careful use of entities is critical to 
+   creating an interesting, unique and fun level for others to play.</P>
+  <P>
+   Unlike solids, entities are not created within the editor. Most users 
+   will simply choose from a pre-existing set of entities provided with 
+   Half-Life. Once you have selected the appropriate entity, the editor 
+   gives you control over its placement and other properties.</P>
+  <P>
+   There are two types of entities: point-based and brush-based.</P>
+  <P>
+   Point-based entities exist only at a certain exact point. Examples 
+   include lights, monsters, and player start points. (Monsters <SPAN STYLE="font-style : italic;">do</SPAN> 
+   have an area, but it is defined by the game code and is not 
+   modifiable from within the map.) Some point type entities are just 
+   that: points. For example, the env_beam entity, which controls 
+   Half-Life's beam effects, uses two info_target entities as targets 
+   and the beam of light runs between these two points.</P>
+  <P>
+   Brush-based entities are entities that depend on either a brush for 
+   their physical presence (like doors, trains, and other moving 
+   entities) or an &quot;area&quot; (like triggers, which require an 
+   activation field).</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Point-based entity placement</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">Placement of point entities is simple:</SPAN></P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P>
+    Press Shift+E to go into entity mode..<BR>
+    <LI CLASS="mvd-P">From the <A HREF="New_Objects.htm">New Objects</A> 
+    toolbar, select the entity you want.</P>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Note</SPAN>: the entity list in the 
+    New Objects dialog is for point-based entities only. For information 
+    on brush-based entities, please refer to the following section.</P>
+   <LI CLASS="mvd-P">
+   <P>
+    Click in a 2D window, then position the entity cursor with the mouse.<BR>
+    <LI CLASS="mvd-P">Pressing Enter will create the entity.</P>
+   </OL>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Tip</SPAN>: You will most likely 
+    need to edit the entity properties after you place a point-based 
+    entity. Select the entity and press Alt-Enter to view the entities 
+    properties dialog box. This dialog pops up automatically for 
+    brush-based entities.</P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Brush-based entity placement</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">Brush-based entities are a bit 
+   more complicated than point-based entities, but should not pose any 
+   difficulties once you know their basics.</SPAN></P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <A HREF="Creating_Solids.htm">Create the object</A> where you would 
+    like it. You can use as many brushes as you'd like when building a 
+    brush-based entity.<BR>
+    <LI CLASS="mvd-P">Select the entire object.<BR>
+    <LI CLASS="mvd-P">Press the Ctrl+T hotkey, which will turn the 
+    selected objects into a brush based entity and...<BR>
+    <LI CLASS="mvd-P">...bring up the entity properties dialog. Select 
+    the appropriate entity from the Class list box. Once the entity type 
+    is selected, you can modify the entity properties as needed.</P>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Tip</SPAN>: Bring up the entity 
+    properties for a brush-based entity the same way you do for a 
+    point-based entity: select it and press Alt-Enter.</P>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    You will notice that brush-based entities appear as a different color 
+    in the 2D windows, typically purple.</P>
+   </OL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <HR ALIGN=LEFT WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

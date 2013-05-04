@@ -1,0 +1,171 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Map Tools</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Toolbars: Map Tools</FONT></FONT></H1>
+  <P>
+   <IMG SRC="gfx/toolbar_map_tools.gif" WIDTH="314" HEIGHT="114" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   The Map Tools toolbar lets you switch between the different editing 
+   modes. This toolbar can safely be closed as each button also links to 
+   a hotkey.</P>
+  <P>
+   <IMG SRC="gfx/maptool_selection.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> <SPAN STYLE="font-weight : bold;">Selection<SPAN STYLE="font-weight : normal;"> 
+   - (Shift+S) </SPAN></SPAN>The selection tool allows you to accomplish 
+   a number of things. To simply select an object, click once. Continue 
+   clicking on the selected area to cycle through the three basic 
+   transformation modes (resize, rotate, and shear).</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    Resize mode allows you to grab any corner or edge of the selected 
+    object and resize it by pulling it to the desired size.<BR>
+    <LI CLASS="mvd-P">In rotate mode, you can grab any corner of a 
+    selected object and pull it around to rotate the object into any 
+    position you wish. If you have the rotations set to 15 degrees by 
+    default (this is set in the 2D Views options), this can be overridden 
+    by holding shift while you rotate the object.<BR>
+    <LI CLASS="mvd-P">Shear mode lets drag the edges of an object 
+    parallel to its surface. For example, if you grab the top edge of a 
+    selected object while in shear mode, you would be able to drag that 
+    edge right or left.</P>
+   </UL>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/maptools_selection_actions.gif" WIDTH="199" HEIGHT="85" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Tip: </SPAN>You can clone a 
+    selected object by holding down the shift button and click-dragging 
+    the object. This can be done regardless of what selection mode the 
+    object is in (resize, rotate, or shear). See <A HREF="Creating_Solids.htm">Creating
+     Solids</A> for more information.</P>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-weight : bold;">Note</SPAN>: While in selection 
+    mode, you can select multiple objects by dragging a selection box 
+    around them and pressing Enter. If Auto-Selection is toggled on, 
+    pressing Enter is not necessary.</P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_magnify.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Magnify</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+G) </SPAN></SPAN>This tool allows you to increase the 
+   magnification factor of the 2D views. Zoom back out again by clicking 
+   the right mouse button. You can also zoom in and out by pressing the 
+   number keys while the mouse cursor is in a 2D view, or by using the + 
+   and - keys.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_camera.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Camera</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+C) </SPAN></SPAN>This tool allows you to place and modify 
+   cameras within your level. While in camera mode, hold shift and left-click-drag
+    a line to create the camera. A line with a dot (the view point) will 
+   be drawn in the 2D views, where you can adjust it until it is 
+   pointing in the direction you'd like. To place more than one camera 
+   in a level, just repeat the above steps.</P>
+  <P>
+   Cameras are good for helping you visualize the creation of your 
+   level. They are especially useful when using the Vertex Manipulation 
+   tool as they allow you to see exactly what you are doing to a brush. 
+   You will find multiple cameras especially useful if you are working 
+   on several areas of a level at once. Placing a new camera in an area 
+   negates the need to search for that area when you want to work on it again.</P>
+  <P>
+   When you're in camera mode, you can cycle through all available 
+   cameras by pressing the PageUp/PageDn keys. To delete the current 
+   camera, press Delete. More information can be found in <A HREF="The_3D_and_2D_Views.htm">The
+    3D and 2D Views</A>.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_entity.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Entity</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+E) </SPAN></SPAN>This tool allows you to place point-based 
+   entities in a map. (Point-based entities are those entities which 
+   exist only at a point, and do not rely on a brush for their effect) 
+   Once selected, the <A HREF="New_Objects.htm">New Objects</A> dialog 
+   will contain a list of entities from which to choose. Click on one of 
+   the 2D views and press Enter to place the entity. If Snap To Grid is 
+   enabled, the new entities will be snapped to the grid. </P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Note</SPAN>: In order to place a 
+    brush-based entity (a func_door for example) you must first create 
+    the brush with the Block Tool (see below), then select it, and press 
+    Ctrl+T. You will be given a list of entities to choose from which 
+    will be different than those shown with the Entity Tool. </P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_block.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Block</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+B) </SPAN></SPAN>his is the basic creation tool available to 
+   you. It allows you to create any of the different types of primitive 
+   shapes. For more information, see <A HREF="Creating_Solids.htm">Creating
+    Solids</A>.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_texapp.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Texture
+    Application</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+A) </SPAN></SPAN>This toggles the <A HREF="Face_Properties.htm">Face
+    Properties</A> dialog on and off. This dialog allows you to edit the 
+   texture properties of individual brush faces. For more information, 
+   see <A HREF="Texturing_Solids.htm">Texturing Solids</A>.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_applytex.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Apply
+    Current Texture</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+T) </SPAN></SPAN>When pressed, the current texture is 
+   applied to every face of the selected brushes. For more information, 
+   see <A HREF="Texturing_Solids.htm">Texturing Solids</A>.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_decal.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Apply
+    Decal</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+D) </SPAN></SPAN>A decal is a texture that can be placed on 
+   top of another texture. Common examples include scorch marks or 
+   bullet holes. Use the Apply Decal button to place a decal in the 3D 
+   window. Decal textures can be viewed and selected in the Textures 
+   window. Half-Life's decal textures are designated by the use of a { 
+   as the first character in the texture name.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_clip.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"></SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;"> Clip</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+X) </SPAN></SPAN>Clipping allows you to slice the currently 
+   selected brush. You have the option of only splitting the brush, or 
+   actually slicing a piece right off. For more info, see <A HREF="Reshaping_Solids.htm">Reshaping
+    Solids</A>.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_vertex.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Vertex
+    Manipulation</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+V) </SPAN></SPAN>Vertex manipulation gives you complete 
+   control over the shape of a brush. You can reshape the brush by 
+   manipulating individual vertices and brush edges. For more 
+   information, see <A HREF="Reshaping_Solids.htm">Reshaping Solids</A>.</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"><IMG SRC="gfx/maptool_path.gif" WIDTH="47" HEIGHT="39" VSPACE="0" HSPACE="0" BORDER="0"> </SPAN></SPAN><SPAN STYLE="font-weight : normal;"><SPAN STYLE="font-weight : bold;">Path</SPAN></SPAN><SPAN STYLE="font-weight : bold;"><SPAN STYLE="font-weight : normal;"> 
+   - (Shift+P) </SPAN></SPAN>This tool greatly simplifies the creation 
+   of paths for trains and monsters. It allows you to create dynamic 
+   paths that you can add and delete nodes to. </P>
+  <P>
+   With the Path Tool selected...</P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P>
+    Hold Shift and the left mouse button, and drag a line in a 2D view. 
+    This creates the first two path points.<BR>
+    <LI CLASS="mvd-P">A dialog box will pop up where you can set the name 
+    of the path, the path direction (one way, circular, or ping-pong), 
+    and the entity type (typically path_corner or path_track). <BR>
+    <LI CLASS="mvd-P">To add new points to the path, click on one of the 
+    existing path points, hold Ctrl and drag with the left mouse button. 
+    Do this as needed until you have your path complete.</P>
+   </OL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">note</SPAN>: The start of the path 
+   is denoted by the point with the green circle around it.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <HR ALIGN=LEFT WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

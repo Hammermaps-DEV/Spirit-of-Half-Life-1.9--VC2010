@@ -1,0 +1,191 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Reshaping Solids</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Reshaping Solids</FONT></FONT></H1>
+  <P>
+   Once you've created a simple, textured solid, you can use Hammer's 
+   tools for refining your work. These tools include vertex 
+   manipulation, face splitting, clip planes and carving. Each of these 
+   tools lets you customize your solids by modifying the basic shapes 
+   you started with. You will find that you can achieve the same or 
+   similar effect using different tools; some are just faster and easier 
+   than others when it comes to making the precise change you are trying 
+   to make.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <A HREF="#vertex_manipulation">Vertex Manipulation</A><BR>
+    <LI CLASS="mvd-P"><A HREF="#face_splitting">Face Splitting</A><BR>
+    <LI CLASS="mvd-P"><A HREF="#vertex_scaling">Vertex Scaling</A><BR>
+    <LI CLASS="mvd-P"><A HREF="#clip_planes">Clip Planes</A><BR>
+    <LI CLASS="mvd-P"><A HREF="#carving">Carving</A></P>
+   </UL>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><A NAME="vertex_manipulation"></A>Vertex
+    Manipulation</SPAN><BR>
+   Vertex manipulation allows you to move individual vertices and edges 
+   of a solid, easily creating irregular shapes. This lets you make 
+   shapes that are impossible with plane clipping, and extremely 
+   difficult to do with carving. Vertex manipulation is also is useful 
+   for modifying specific pieces of a group of objects, where resizing 
+   would interfere with other objects in the group.</P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Note: </SPAN>While Vertex 
+    Manipulation makes the creation of new complex shapes easy, it also 
+    make the creation of invalid shapes easy. Remember that concave 
+    shapes are not valid within the editor.</P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Vertices and Edges</SPAN><BR>
+   A vertex (or plural, vertices) is a corner of a solid. Moving one 
+   vertex will not effect any other vertex, but it will change the 
+   position of any edges associated with it. An edge is a point between 
+   two vertices which, when moved, will change the position of its two 
+   associated vertices, as well as their associated edges (no other 
+   vertices are effected besides the first two).</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/vertex1.gif" WIDTH="469" HEIGHT="218" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P>
+    Select the object(s) you would like to manipulate. (fig. 1)<BR>
+    <LI CLASS="mvd-P">Select the vertex manipulation (VM) tool from the 
+    MapTools toolbar. The selected solid will turn into a wireframe-type 
+    solid with partial shading (fig. 2). Vertices will be marked as white 
+    dots, and edges as yellow dots.</P>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Note</SPAN>: You can keep pressing 
+    the VM button, or press Shift-V, to cycle through the 3 VM modes. 
+    They are: vertices and edges (default), vertices only, and edges only.</P>
+   <LI CLASS="mvd-P">
+   <P>
+    Click on the vertices/edges you want to move. They will be 
+    highlighted (fig. 3). Note that you can move both vertices and edges.<BR>
+    <LI CLASS="mvd-P">You can either drag the selected vertices or edges 
+    with the mouse, or move them in the selected 2D view using the arrow keys.</P>
+   </OL>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Tip</SPAN>: To undo anything done 
+    in VM mode, you will have to first exit VM mode.</P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><A NAME="face_splitting"></A>Face Splitting</SPAN><BR>
+   Face splitting allows you to add additional faces to a brush. This is 
+   a useful tool when you want to add complexity to an object in your 
+   level. Simply select two opposing edges (fig. 3) and press Ctrl+F. 
+   This will turn the two edges into vertices, and place a new edge 
+   between them (fig.4).</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><A NAME="vertex_scaling"></A>Vertex Scaling</SPAN><BR>
+   Vertex scaling allows you to select a number of vertices and change 
+   their scale in relation to each other. The process is quite simple.</P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P>
+    Select an object.<BR>
+    <LI CLASS="mvd-P">Go into Vertex Manipulation mode.<BR>
+    <LI CLASS="mvd-P">Select a number of vertices. In the example picture 
+    below, all of the vertices on the top of a block have been selected.<BR>
+    <LI CLASS="mvd-P">Press Alt-E to bring up the Vertex Scaling box. You 
+    can press the up or down arrows to move in 0.1 increments, or enter a 
+    scale value directly in the text area. The scale changes will 
+    automatically be reflected on the selected object.<BR>
+    <LI CLASS="mvd-P">When you are done with the scaling, press Escape to 
+    close the Scale box.</P>
+   </OL>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/vertex2.gif" WIDTH="386" HEIGHT="204" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;"><A NAME="clip_planes"></A>Clip Planes</SPAN><BR>
+   Clip planes let you make a precise cut in a solid, dividing it into 
+   two pieces. You then have the option of keeping one or both of the 
+   resulting two solids. You may find using Clip Planes quicker and more 
+   efficient than carving or vertex manipulation.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/clipping1.gif" WIDTH="383" HEIGHT="255" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    Select the object to be clipped. (fig. 1)<BR>
+    <LI CLASS="mvd-P">Select the Clip Plane button on the MapTools toolbar.</P>
+   <P>
+    <SPAN STYLE="font-weight : bold;">Note</SPAN>: You can cycle through 
+    the clip modes by clicking on the clip plane button, or by pressing 
+    Shift-X (fig.2, 3, 4). You can move both points of the clip line by 
+    holding CTRL and dragging one point of it.</P>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    Drag a line across the selected object. (fig. 2) This is the clip 
+    line. The part of the object to be kept will be highlighted in thick 
+    white lines.<BR>
+    <LI CLASS="mvd-P">When you are satisfied with the resulting object, 
+    press Enter to perform the clip. (fig. 5, 6)</P>
+   </OL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   Version 3.3 of the Valve Hammer Editor added a feature to display the 
+   size of the solid area of the clipped brush. This is useful if you're 
+   trying to clip a brush to an exact size.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/clipping2.gif" WIDTH="191" HEIGHT="143" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   To toggle this on and off, have a 2D view in focus and press the o hotkey.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;"><A NAME="carving"></A>Carving</SPAN><BR>
+   In the editor, any solid can be used to carve a volume out of other 
+   solids. For example, you can place a solid within the room's wall and 
+   tell Hammer to subtract the solid from the wall -- effectively 
+   punching a hole right through the wall! This feature is not limited 
+   to using cubic shapes as a carving tool: any solid -- cylinders, 
+   cubes and wedges -- can be used to carve other solids.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   While carving, especially with a cylinder, it is best to carve the 
+   smallest areas possible. For example, if you attempt to create a hole 
+   in a large wall using the cylinder, the editor will automatically 
+   break the wall face into several pieces, something you don't want. 
+   Instead, a more efficient way to carve would be to first carve a 
+   square hole (the same size as the circle) and leave the square in 
+   place. Then you can take the cylinder and carve a hole in the small 
+   square. This will eliminate the splintering effect for the wall.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/carving1.gif" WIDTH="330" HEIGHT="241" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    In this step, you have the object you want to carve into (in blue), 
+    and the object you will be carving with (in red). The red object 
+    should be selected.<BR>
+    <LI CLASS="mvd-P">Position the carving object so that it is where you 
+    want the hole to be.<BR>
+    <LI CLASS="mvd-P">Press Ctrl+Shift+C, or right click on the selected 
+    object and select Carve. You can also press the Carve button on the 
+    MapOperations toolbar.<BR>
+    <LI CLASS="mvd-P">Either delete the object you used to make the 
+    carve, or use it to fill the hole. (For example, use the piece carved 
+    out of a doorway as the door.)</P>
+   </OL>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <SPAN STYLE="font-weight : bold;">Note: </SPAN>In the picture above, 
+   you can see that the cube (which was previously one object) is now 
+   broken into 4 separate objects. This is because the game engine 
+   cannot handle concave objects, and the editor has broken it into 
+   convex pieces.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <HR ALIGN=LEFT WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

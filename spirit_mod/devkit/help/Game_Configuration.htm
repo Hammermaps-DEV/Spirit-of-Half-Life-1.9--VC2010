@@ -1,0 +1,85 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Game Configuration</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Options: Game Configurations</FONT></FONT></H1>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/dialog_options_gameconfig.gif" WIDTH="410" HEIGHT="509" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   The Game Configuration options allow you to setup the editor to edit 
+   Half-Life and it's mods. A separate configuration is needed for each 
+   game or mod.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-style : italic;font-weight : bold;">Configuration</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - if this is a new installation of the Valve Hammer Editor, this 
+    drop-down menu will be empty, otherwise your different game 
+    configurations will be listed here. If you've installed over a 
+    previous version of the editor, be sure to go through each 
+    configuration and make sure all of the settings are still correct.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Edit
+     button</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - clicking on this brings up a small dialog that allows you to 
+    create, rename, and delete game configurations. If this is a fresh install,
+     you'll need to at least create one game configuration before you can 
+    use it.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Game
+     data files</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - every game configuration needs at least one game data file. The 
+    game data file contains all of the entity information for a game or 
+    mod. Except in special cases, you should only be using one game data 
+    file. The buttons beside this text box are used to add, edit, or 
+    remove game data files.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Texture
+     format</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - You only have one choice here, the WAD3 texture format, which 
+    Half-Life and its mods use.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Map
+     type</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - Again, you only have the one choice here - the Half-Life map format.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Default
+     Point- and SolidEntity class</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;">&nbsp;-
+     The settings here depend largely on personal taste - they define the 
+    default point and solid entities. If unchanged, they will be set to 
+    the first point and solid entity found in the game data file.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Game
+     executable directory</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;">&nbsp;-
+     This should be set to the folder that the Half-Life executable is in 
+    (ie: c:\Half-Life). The value entered here links to the $exedir 
+    variable in the advanced compile mode.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Mod
+     directory</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - This should be set to the mod directory. Going with the above 
+    example for the executable directory, if you were setting this up for 
+    TFC, the value here would be c:\Half-Life\tfc. The value entered here 
+    links to the $moddir variable in the advanced compile mode.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">Game
+     directory</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    - This should be set to the default game directory - ie: 
+    c:\Half-Life\valve. The value entered here links to the $gamedir 
+    variable in the advanced compile mode.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-style : italic;font-weight : bold;">RMF
+     directory</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> -</SPAN><SPAN STYLE="font-style : italic;font-weight : normal;"> </SPAN><SPAN STYLE="font-style : normal;font-weight : normal;">Here
+     you shou</SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">ld
+     specify </SPAN><SPAN STYLE="font-style : normal;font-weight : normal;">the
+     default map directory for this game configuration. When you save a 
+    map that uses this game config, it will be saved here.</SPAN></P>
+   </UL>
+  <P>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

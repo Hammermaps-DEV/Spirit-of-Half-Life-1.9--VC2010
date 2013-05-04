@@ -1,0 +1,124 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Grouping and VisGrouping</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Grouping and VisGrouping</FONT></FONT></H1>
+  <P>
+   Even relatively modest levels can contain hundreds--even 
+   thousands--of objects. Hammer offers two ways of keeping track of 
+   items in your level: normal grouping and visibility grouping (VisGroups).</P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Note:</SPAN><SPAN STYLE="font-weight : normal;"> 
+   VisGroup refers to &quot;visibility group&quot; and has nothing at 
+   all to do with the Vis compile tool. VisGroups only affect what you 
+   see in the editor and have no in-game effect.</SPAN></P>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Grouping</SPAN><BR>
+   Normal grouping is used to literally &quot;glue&quot; things together.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <SPAN STYLE="font-weight : bold;"><IMG SRC="gfx/grouping1.gif" WIDTH="350" HEIGHT="130" VSPACE="0" HSPACE="0" BORDER="0"></SPAN></P>
+  <P>
+   The object shown above is made of eight brushes. If you were to click 
+   on a single brush when the object is ungrouped, only that brush would 
+   be selected; you'd have to ctrl-click each piece to select the whole 
+   thing (or drag a selection box over the whole thing). When the object 
+   is grouped, however, you can click on any individual brush to select 
+   everything in entire group.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    brushes do not need to touch in order to be grouped together<BR>
+    <LI CLASS="mvd-P">groups may contain any combination of brushes and entities<BR>
+    <LI CLASS="mvd-P">you can work on an individual piece of a group of 
+    objects by enabling the ignore groups option<BR>
+    <LI CLASS="mvd-P">grouped objects can be combined with VisGroups (see below)</P>
+   </UL>
+  <P>
+   <SPAN STYLE="font-weight : bold;">VisGroups</SPAN><BR>
+   VisGroups stands for visibility groups. VisGroups make managing 
+   objects easy by letting you control what you see on your screen. With 
+   VisGroups, you can arbitrarily assign objects to a specific group; 
+   you can then turn the visibility of that group on and off. Let's say 
+   you have the following section in your map:</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/visgroups1.gif" WIDTH="231" HEIGHT="165" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   Now, you'd like to be able to make the furniture a group, but you 
+   still want to move each piece around independently from the others. 
+   This is precisely what VisGroups are good for.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/visgroups2.gif" WIDTH="231" HEIGHT="165" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   First, select the furniture pieces, then click on the hide selected 
+   objects button. This will do two things: hide the objects in the 2D 
+   and 3D views, and create a new VisGroup with the selected objects.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/visgroups3.gif" WIDTH="320" HEIGHT="209" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   The new VisGroup will appear in the <A HREF="Filter_Control.htm">Filter
+    Control</A> toolbar named after the number of objects it contains. 
+   To change the name of the VisGroup to something more suitable, select 
+   the VisGroup, then click on it again. You will be able to change the 
+   name to whatever you like. You can also click to the left of the name 
+   and a hand will appear next to the VisGroup. This is how you set 
+   which VisGroups are visible and which are not. You must press the 
+   Apply button for the changes to take effect.</P>
+  <P>
+   Some things you can do with the mouse in the <A HREF="Filter_Control.htm">Filter
+    Control</A> toolbar:</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    drag one group onto another group (this will cause the first group to 
+    be merged with the second group, and the resulting group will keep 
+    the name of the second)<BR>
+    <LI CLASS="mvd-P">drag a group out of the Filter Control dialog (this 
+    will allow you to delete VisGroupings)</P>
+   </UL>
+  <P>
+   If you make the furniture group visible, then select it and press the 
+   Mark button, the group will be highlighted in the 2D and 3D views.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/visgroups4.gif" WIDTH="231" HEIGHT="165" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   The other two options available to you are Purge and Edit. Pressing 
+   the Purge button removes any VisGroups from the Filter Control dialog 
+   that do not actually contain any objects (which is possible if you 
+   have deleted objects or made one VisGroup part of another).</P>
+  <P>
+   The Edit button brings up the Object Groups dialog.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/visgroups5.gif" WIDTH="357" HEIGHT="227" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   This dialog allows you to change the name and color of existing 
+   VisGroups, or delete them. Deleting the VisGroup does not actually 
+   delete the group's objects, it just eliminates the VisGroup, making 
+   them individual unlinked objects. You also have the option of 
+   creating new (empty) VisGroups with the New Group button.</P>
+  <P>
+   The last way you can use VisGroups is through an object's <A HREF="Object_Properties_dialog.htm">properties</A>,
+    in the VisGroup tab.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/visgroups6.gif" WIDTH="391" HEIGHT="232" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   The above dialog will also be a part of an entity's <A HREF="Object_Properties_dialog.htm">Properties</A> 
+   dialog. To assign the object to a VisGroup, just select the 
+   appropriate group. To remove the VisGrouping from this object, click 
+   on (no group).</P>
+  <P>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Editor_3.x_User's_Guide.htm">Return
+    to the Valve Hammer Editor 3.x User's Guide</A></SPAN></P>
+  <P>
+   <!-- $MVD$:spaceretainer() -->&nbsp;
+ </BODY>
+</HTML>

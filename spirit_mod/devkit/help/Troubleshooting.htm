@@ -1,0 +1,279 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Troubleshooting</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1 STYLE="text-align : left;" ALIGN=LEFT>
+   <FONT FACE="Impact"><FONT COLOR="NAVY"><A NAME="top"></A>Troubleshooting</FONT></FONT></H1>
+  <P>
+   Below are some of the most common questions and answers from Design 
+   Support mail.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    <A HREF="#faq1"><SPAN STYLE="font-weight : normal;text-decoration : none;">What
+     information should I send to </SPAN></A><SPAN STYLE="font-weight : normal;"><A HREF="#faq1"><SPAN STYLE="text-decoration : none;">Design</SPAN></A></SPAN><A HREF="#faq1"><SPAN STYLE="font-weight : normal;text-decoration : none;"> Support?</SPAN></A><BR>
+    <LI CLASS="mvd-P"><A HREF="#faq2"><SPAN STYLE="font-weight : normal;text-decoration : none;">How
+     do I copy the contents of the compile Process Window?</SPAN></A><BR>
+    <LI CLASS="mvd-P"><A HREF="#faq3"><SPAN STYLE="font-weight : normal;text-decoration : none;">How
+     do I setup </SPAN></A><SPAN STYLE="font-weight : normal;"><A HREF="#faq3"><SPAN STYLE="text-decoration : none;">the
+     editor</SPAN></A></SPAN><A HREF="#faq3"><SPAN STYLE="font-weight : normal;text-decoration : none;">?</SPAN></A><BR>
+    <LI CLASS="mvd-P"><A HREF="#faq4"><SPAN STYLE="font-weight : normal;text-decoration : none;">I'm
+     getting the error &quot;Couldn't Validate Half-Life&quot;.</SPAN></A><BR>
+    <LI CLASS="mvd-P"><A HREF="#faq5"><SPAN STYLE="font-weight : normal;text-decoration : none;">My
+     multiplayer map isn't appearing in the multiplayer map list.</SPAN></A><BR>
+    <LI CLASS="mvd-P"><A HREF="#faq6"><SPAN STYLE="font-weight : normal;text-decoration : none;">One
+     of my toolbars is missing! How do I get it back?</SPAN></A><BR>
+    <LI CLASS="mvd-P"><A HREF="#faq7"><SPAN STYLE="font-style : normal;font-weight : normal;text-decoration : none;">How
+     do I get back to having 4 views - the 3D, top, front, and side views?</SPAN></A><BR>
+    <LI CLASS="mvd-P"><A HREF="#faq8"><SPAN STYLE="font-weight : normal;text-decoration : none;">My
+     level has a leak. How do I fix it?</SPAN></A><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;"><A HREF="#faq9"><SPAN STYLE="text-decoration : none;">My
+     sprites have suddenly turned into textures!</SPAN></A></SPAN></P>
+   </UL>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   </P>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq1"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>What
+    information should I send to Design Support?</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-style : normal;">Before you email <A HREF="mailto:tools@valvesoftware.com">Design 
+    Support</A>, make sure you've setup the editor as outlined in the <A HREF="Valve Hammer Editor_Setup_Guide.htm">Valve
+     Hammer Editor 3.4 Setup Guide</A>, otherwise you will be referred 
+    there before any help can be provided.</SPAN></P>
+   <P>
+    <SPAN STYLE="font-style : normal;">When emailing <A HREF="mailto:tools@valvesoftware.com">Design 
+    Support</A>, be sure to include the following pieces of information:</SPAN></P>
+   <UL>
+    <LI CLASS="mvd-P">
+    <P>
+     <SPAN STYLE="font-style : normal;">What operating system you're using.</SPAN><BR>
+     <LI CLASS="mvd-P"><SPAN STYLE="font-style : normal;">What video card 
+     you're using (and in the case of multiple video cards, </SPAN><SPAN STYLE="font-style : italic;">all</SPAN><SPAN STYLE="font-style : normal;">&nbsp;of
+      the video cards you're using).</SPAN><BR>
+     <LI CLASS="mvd-P"><SPAN STYLE="font-style : normal;">Which video 
+     drivers you're using.</SPAN><BR>
+     <LI CLASS="mvd-P"><SPAN STYLE="font-style : normal;">Anytime 
+     compiling or running a map is involved in the problem, provide the 
+     complete contents of the compile Process Window in your email (see 
+     note below).</SPAN></P>
+    </UL>
+   <P>
+    <SPAN STYLE="font-style : normal;">This information isn't always 
+    required, but it can really speed up the problem resolution when all 
+    information is available.</SPAN></P>
+   <P>
+    <SPAN STYLE="font-style : normal;"><A HREF="#top"><SPAN STYLE="font-size : 10.0pt;">(top)</SPAN></A></SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq2"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>How
+    do I copy the contents of the compile Process Window?</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    When debugging map problems, one of the most important bits of 
+    information is the compile process output. <A HREF="javascript:BSSCPopup('Popup_Compile_Process_Window.htm');" ONMOUSEOVER="if (parseInt(navigator.appVersion) >= 4) BSPSPopupOnMouseOver(event)" CLASS="BSSCPopup">This
+     is the compile Process Window</A> (the actual contents when you see 
+    it will be similar, but may not be exactly alike).</P>
+   <P>
+    Right-click inside the window. A small menu will pop up. Choose <SPAN STYLE="font-style : italic;">Select
+     All</SPAN>. All of the text in the Process Window will become 
+    selected. Now, right-click on the selected text and this time choose <SPAN STYLE="font-style : italic;">Copy</SPAN>.
+     You can now paste it wherever you like (ie: into an email, if you're 
+    emailing Design Support).</P>
+   <P>
+    <SPAN STYLE="font-style : normal;"><A HREF="#top"><SPAN STYLE="font-size : 10.0pt;">(top)</SPAN></A></SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq3"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>How
+    do I setup the editor?</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    For information on this, please refer to the <A HREF="Valve Hammer Editor_Setup_Guide.htm">Valve
+     Hammer Editor 3.4 Setup Guide</A>.</P>
+   <P>
+    <SPAN STYLE="font-style : normal;"><A HREF="#top"><SPAN STYLE="font-size : 10.0pt;">(top)</SPAN></A></SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq4"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>I'm
+    getting the error &quot;Couldn't Validate Half-Life&quot;.</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    This error occurs when you try to run the Half-Life executable 
+    without first changing to the Half-Life folder. There are a number of 
+    reasons this can happen.</P>
+   <UL>
+    <LI CLASS="mvd-P">
+    <P>
+     The editor and/or the advanced compile mode is setup incorrectly. 
+     Make sure you've set things up as outlined in the <A HREF="Valve Hammer Editor_Setup_Guide.htm">Valve
+      Hammer Editor 3.4 Setup Guide</A>.</P>
+    <LI CLASS="mvd-P">
+    <P>
+     The editor's advanced compile mode can appear to be setup correctly 
+     and certain commands will appear to fail for no reason. This most 
+     commonly happens with the Change Directory and Copy File commands. 
+     When this type of error occurs, you will see the following type of 
+     output in the compile Process Window:</P>
+    <UL>
+     <P>
+      <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">** Executing...</FONT></SPAN><BR>
+      <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">** Command: 
+      Change Directory</FONT></SPAN><BR>
+      <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">** Parameters: D:\games\Half-Life</FONT></SPAN></P>
+     <P>
+      <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">* Could not 
+      execute the command:</FONT></SPAN><BR>
+      <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">&nbsp; 
+      &quot;Change Directory&quot; D:\games\Half-Life\valve</FONT></SPAN><BR>
+      <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">* Windows gave 
+      the error message:</FONT></SPAN><BR>
+      <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">&nbsp; 
+      &quot;The operation completed successfully.&quot;</FONT></SPAN></P>
+     </UL>
+    <P>
+     Even though it looks correct, and the parameter is a valid directory, 
+     it produces that error. Confusing huh? :) To fix a command you've 
+     already created, just select it, then select the appropriate command 
+     from the Cmds menu. Nothing will appear to change, but it <SPAN STYLE="font-style : italic;">will</SPAN> 
+     be fixed.</P>
+    </UL>
+   <P>
+    <SPAN STYLE="font-style : normal;"><A HREF="#top"><SPAN STYLE="font-size : 10.0pt;">(top)</SPAN></A></SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq5"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>My
+    multiplayer map isn't appearing in the multiplayer map list.</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    For a level to appear in the multiplayer map list, it must have an 
+    info_player_deathmatch in it.</P>
+   <P>
+    The info_player_deathmatch entity creates a player spawn point for 
+    multiplayer games. When a player spawns in a level (either because he 
+    is just entering the level, or he has just died and is respawning) 
+    his location will be picked randomly from all of the available 
+    info_player_deathmatch spawn points.</P>
+   <P>
+    Its a good idea to include a large number of these spawn points to 
+    prevent predictable spawning.</P>
+   <P>
+    <SPAN STYLE="font-style : normal;"><A HREF="#top"><SPAN STYLE="font-size : 10.0pt;">(top)</SPAN></A></SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq6"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>One
+    of my toolbars is missing! How do I get it back?</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-style : normal;font-weight : normal;">This requires 
+    a bit of registry tweaking. Load up Regedit by selecting </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">Run</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    from the Start menu and typing <FONT COLOR="MAROON">regedit</FONT>, 
+    then pressing the Enter key.</SPAN></P>
+   <P>
+    <SPAN STYLE="font-style : normal;font-weight : normal;">Once in 
+    Regedit, expand the following path:</SPAN></P>
+   <BLOCKQUOTE>
+    <P>
+     <SPAN STYLE="font-size : 10.0pt;"><FONT COLOR="MAROON">HKEY_CURRENT_USER\Software\Valve\Valve
+      Hammer Editor</FONT></SPAN></P>
+    </BLOCKQUOTE>
+   <P>
+    In Regedit's Valve Hammer Editor folder, select and delete the key 
+    called Barstate-Summary. This will reset all of the toolbars to their 
+    default positions.</P>
+   <P>
+    <SPAN STYLE="font-style : normal;"><A HREF="#top"><SPAN STYLE="font-size : 10.0pt;">(top)</SPAN></A></SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq7"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>How
+    do I get back to having 4 views - the 3D, top, front, and side views?</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-style : normal;font-weight : normal;">Select </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">Options</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    from the Tools menu. Click on the </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">General</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    tab. Under Window Setup where it says </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">Use
+     independent window configurations</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;">,
+     make sure there is </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">not</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+    a check next to that option, then close and restart the editor.</SPAN></P>
+   <P>
+    <SPAN STYLE="font-style : normal;"><A HREF="#top"><SPAN STYLE="font-size : 10.0pt;">(top)</SPAN></A></SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq8"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>My
+    level has a leak. How do I fix it?</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    For information on this, please refer to the tutorial entitled <SPAN STYLE="font-style : italic;"><A HREF="How_do_I_fix_leaks_in_my_level_.htm">How
+     to I fix leaks in my level?</A></SPAN></P>
+   <P>
+    <SPAN STYLE="font-style : normal;font-size : 10.0pt;">(top)</SPAN></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-style : italic;font-weight : bold;"><A NAME="faq9"></A><A HREF="#top"><IMG SRC="gfx/up.gif" WIDTH="12" HEIGHT="12" VSPACE="0" HSPACE="0" BORDER="0"></A>My
+    sprites have suddenly turned into textures!</SPAN></P>
+  <BLOCKQUOTE>
+   <P>
+    <SPAN STYLE="font-style : normal;font-weight : normal;">There is an 
+    issue where, if you open a new 3D window (or close the existing one 
+    then open a new one), sprites are displayed as seemingly random 
+    textures in the 3D view. To fix this, save your map, then close and 
+    reload it.</SPAN></P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <HR ALIGN=CENTER WIDTH="100%" SIZE="2">
+   </P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <!-- $MVD$:spaceretainer() -->&nbsp;</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <SPAN STYLE="font-size : 8.0pt;"><FONT COLOR="SILVER"><SPAN STYLE="font-style : italic;">why
+    are you looking down here? there's nothing to see!</SPAN></FONT></SPAN>
+ <script>
+<!--
+BSSCCreatePopupDiv();
+//-->
+ </script></BODY>
+</HTML>

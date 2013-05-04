@@ -1,0 +1,69 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>Unpacking Your Pack</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">Unpacking Your Pack</FONT></FONT></H1>
+  <P>
+   Half-Life stores the majority of it's content in PAK files. The PAK 
+   file is an archive that contains files in a specific directory 
+   structure that the game can read from.</P>
+  <P>
+   For editing purposes, it is most preferable when some or all of a 
+   PAK's contents is &quot;unpacked&quot; - that is, that the contents 
+   reside in their normal directory structure rather than inside the PAK file.</P>
+  <P>
+   There are a number of benefits to having the PAK file.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    easy access to sounds, sprites, and model files.<BR>
+    <LI CLASS="mvd-P">for mod makers, easy to add and remove contents<BR>
+    <LI CLASS="mvd-P">makes it possible to &quot;browse&quot; for content 
+    in the editor's entity properties, where applicable<BR>
+    <LI CLASS="mvd-P">make it possible for the editor to display sprites 
+    in the 3D view (Hammer does not read out of the PAK file)</P>
+   </UL>
+  <P>
+   The first thing you need is a program capable of browsing and editing 
+   the PAK file. Wally is a good tool for this, since it's also a 
+   fantastic texture editor and is freely available. You can get Wally 
+   from it's website, here -</P>
+  <BLOCKQUOTE>
+   <P>
+    <A HREF="http://www.telefragged.com/wally/" TARGET="_new">http://www.telefragged.com/wally/</A></P>
+   </BLOCKQUOTE>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Unpacking</SPAN><BR>
+   <SPAN STYLE="font-weight : normal;">Unpacking PAK contents is pretty 
+   simple. The following example shows how to unpack the Sprite folder.</SPAN></P>
+  <OL>
+   <LI CLASS="mvd-P">
+   <P>
+    <SPAN STYLE="font-weight : normal;">Load Wally and click on Open in 
+    the File menu. Browse to the Half-Life folder. Double-click on the 
+    valve folder. Click on pak0.pak and press the Open button.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">A window will 
+    open with the contents of the PAK file displayed. Right-click on the 
+    Sprites folder and select Export. In the Destination text box, browse 
+    to and select the valve folder inside your Half-Life folder.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">Press the Ok 
+    button to extract the files.</SPAN><BR>
+    <LI CLASS="mvd-P"><SPAN STYLE="font-weight : normal;">That's it.</SPAN></P>
+   </OL>
+  <P>
+   <SPAN STYLE="font-weight : normal;">It's important to maintain the 
+   correct directory structure of files. If you're unpacking a PAK that 
+   is in a specific game directory, the unpacked files should be 
+   exported </SPAN><SPAN STYLE="font-style : italic;font-weight : normal;">only</SPAN><SPAN STYLE="font-style : normal;font-weight : normal;"> 
+   to that game directory.</SPAN>
+ </BODY>
+</HTML>

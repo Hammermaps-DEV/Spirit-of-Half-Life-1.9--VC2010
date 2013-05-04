@@ -1,0 +1,153 @@
+<HTML>
+ <HEAD>
+  <!-- $MVD$:app("RoboHELP HTML Edition by Blue Sky Software, portions by MicroVision Dev. Inc.","769") -->
+  <!-- $MVD$:template("","0","0") -->
+  <!-- $MVD$:fontset("Arial","Arial") -->
+  <!-- $MVD$:fontset("Impact","Impact") -->
+  <TITLE>How can I reduce polygon counts?</TITLE>
+  <META NAME="generator" CONTENT="RoboHELP by Blue Sky Software www.blue-sky.com HTML Edition">
+  <SCRIPT LANGUAGE="javascript" TITLE="BSSC Special Effects" SRC="BSSCDHTM.js">
+ </SCRIPT><LINK
+  REL="StyleSheet" HREF="default.css"></HEAD>
+  <BODY ONLOAD="BSSCOnLoad();" ONCLICK="BSSCOnClick();" ONUNLOAD="BSSCOnUnload();">
+  <H1>
+   <FONT COLOR="NAVY"><FONT FACE="Impact">How can I reduce polygon counts?</FONT></FONT></H1>
+  <P>
+   <SPAN STYLE="font-weight : bold;">Polygon Reduction Methods: A quick 
+   and dirty guide.</SPAN><BR>
+   This article originally started out as an email to someone, but it 
+   kept going on and on and on. So, here it is. I'm not claiming this is 
+   a complete guide to low polygon counts, but its some quick advice 
+   that's good to know.</P>
+  <P>
+   There are a number of things to keep in mind concerning r_speeds / 
+   polygon count.</P>
+  <UL>
+   <LI CLASS="mvd-P">
+   <P>
+    entity brushes will not break up other solid brushes, world brushes 
+    will That is, if you have a 10 sided cylinder that makes contact with 
+    a flat brush, that flat brush will be broken into many pieces 
+    (polygons). This can affect both how the brush looks and how many 
+    polygons are required to be drawn. There are two main ways to work 
+    around this problem</P>
+   <UL TYPE="disc">
+    <LI CLASS="mvd-P">
+    <P>
+     where one object meets another, leave a 1 (or more) unit gap. This is 
+     best done when the player can't see the area where the gap is (ie: at 
+     the top of a pillar, or under some shallow water.<BR>
+     <LI CLASS="mvd-P">where one object meets another, leave a small gap 
+     and join the two objects with a func_wall. For example, if you've got 
+     a set of pipes that meet up with a wall, put a pipe flange on the 
+     wall and connect the pipe to that. Make the flange a func_wall.</P>
+    </UL>
+   </UL>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <IMG SRC="gfx/rspeeds4.jpg" WIDTH="320" HEIGHT="247" VSPACE="0" HSPACE="0" BORDER="0"></P>
+  <P>
+   Below are some screenshots of the above concepts in action. I used 
+   columns as examples but the concept is applicable to many different things.</P>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <A HREF="javascript:BSSCPopup('Popup_Rspeeds_1.htm');" ONMOUSEOVER="if (parseInt(navigator.appVersion) >= 4) BSPSPopupOnMouseOver(event)" CLASS="BSSCPopup"><IMG SRC="gfx/rspeeds1_sm.jpg" WIDTH="320" HEIGHT="240" VSPACE="0" HSPACE="0" BORDER="0"></A></P>
+  <CENTER>
+   <P STYLE="text-align : center;" ALIGN=CENTER>
+    <TABLE WIDTH="320" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+     <TR>
+      <TD WIDTH="320" VALIGN=TOP>
+       <P STYLE="text-align : center;" ALIGN=CENTER>
+        <SPAN STYLE="font-size : 10.0pt;">This picture shows a normal column 
+        with no polygon reduction efforts made. Click to see a larger picture.</SPAN></TD>
+     </TR>
+    </TABLE></P>
+   </CENTER>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <SPAN STYLE="font-size : 10.0pt;"><A HREF="Popup_Rspeeds_2.htm"><IMG SRC="gfx/rspeeds2_sm.jpg" WIDTH="320" HEIGHT="240" VSPACE="0" HSPACE="0" BORDER="0"></A></SPAN></P>
+  <CENTER>
+   <P STYLE="text-align : center;" ALIGN=CENTER>
+    <TABLE WIDTH="320" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+     <TR>
+      <TD WIDTH="320" VALIGN=TOP>
+       <P STYLE="text-align : center;" ALIGN=CENTER>
+        <SPAN STYLE="font-size : 10.0pt;">This picture shows a normal column 
+        with the above mentioned polygon reduction methods. Click to see a 
+        larger picture.</SPAN></TD>
+     </TR>
+    </TABLE></P>
+   </CENTER>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   The above two pictures were taken in software mode with r_drawflat 
+   turned on. This will draw the world in flat/solid polygons (similar 
+   to the editor's flat-shaded view). This is an excellent way of 
+   checking out your level for areas that may be causing problems with 
+   high polygon counts.</P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-style : italic;font-weight : bold;font-size : 10.0pt;">Note:
+     </SPAN><SPAN STYLE="font-style : italic;font-size : 10.0pt;">To turn 
+    on r_drawflat, type </SPAN><SPAN STYLE="font-style : italic;font-weight : bold;font-size : 10.0pt;">r_drawflat
+     1</SPAN><SPAN STYLE="font-style : italic;font-size : 10.0pt;"> in 
+    the Half-Life console. You need to have run Half-Life with the </SPAN><SPAN STYLE="font-style : italic;font-weight : bold;font-size : 10.0pt;">-dev</SPAN><SPAN STYLE="font-style : italic;font-size : 10.0pt;"> 
+    and </SPAN><SPAN STYLE="font-style : italic;font-weight : bold;font-size : 10.0pt;">-console</SPAN><SPAN STYLE="font-style : italic;font-size : 10.0pt;"> 
+    parameters for this to work (but then, you should use those 
+    parameters anyway when you're testing maps).</SPAN></P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : center;" ALIGN=CENTER>
+   <A HREF="Popup_Rspeeds_3.htm"><IMG SRC="gfx/rspeeds3_sm.jpg" WIDTH="320" HEIGHT="240" VSPACE="0" HSPACE="0" BORDER="0"></A></P>
+  <CENTER>
+   <P STYLE="text-align : center;" ALIGN=CENTER>
+    <TABLE WIDTH="320" CELLPADDING="2" CELLSPACING="0" BORDER="0">
+     <TR>
+      <TD WIDTH="320" VALIGN=TOP>
+       <P STYLE="text-align : center;" ALIGN=CENTER>
+        <SPAN STYLE="font-size : 10.0pt;">This picture shows a normal in-game 
+        shot of both columns.</SPAN></TD>
+     </TR>
+    </TABLE></P>
+   </CENTER>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   There isn't a heck of a lot of difference between the two columns, 
+   except that the column on the right has a much lower polygon count.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   Another thing to keep in mind is texture size. The compile tools 
+   split brushes along their texture sizes. For instance, if you apply a 
+   128 x 128 texture to a large wall, that wall would be split into 
+   128x128 polygons. If you change the scale of the the texture to X*2 
+   and Y*2, the wall will be split into 256x256 polygons. The scale of a 
+   texture can have a big effect on the the number of polygons. Whenever 
+   possible, when it wont be visually negative, increase the scale of a 
+   texture (this isn't that often, mind you, but for outdoor areas, it 
+   can be handy).</P>
+  <BLOCKQUOTE>
+   <P STYLE="text-align : left;" ALIGN=LEFT>
+    <SPAN STYLE="font-style : italic;font-weight : bold;font-size : 10.0pt;">Note:</SPAN><SPAN STYLE="font-style : italic;font-size : 10.0pt;"> 
+    You can access the scale properties of a texture in Hammer by 
+    pressing shift+A to bring up the Texture Application Tool, then 
+    clicking on a brush face to select it. Modify its scale and press the 
+    Apply button to change the brush face.</SPAN></P>
+   </BLOCKQUOTE>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   You'll notice in the included pictures that the walls and 
+   ceiling/floor are single polygons. What I've done is stretched them 
+   to X*1000 Y*1000 scale. In the in-game shot, you'll see that this 
+   produces a flat shaded texture. The only time you would do this in a 
+   real map would be one that is completely surrounded by blackness, 
+   when the stretched texture wouldn't be visible. Of course, in that 
+   case, you could just use the black sky.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   Last, remember that the game engine isn't as smart as you. Or maybe 
+   its a whole lot smarter. It can see through doors (and any other 
+   brush entity), and can see somewhat around corners. Make sure you 
+   have world brushes sufficiently blocking sight into other areas, 
+   otherwise the engine will be drawing those areas too.</P>
+  <P STYLE="text-align : left;" ALIGN=LEFT>
+   <HR ALIGN=LEFT WIDTH="100%" SIZE="2">
+   <SPAN STYLE="font-size : 10.0pt;">This article originally appeared at 
+   the </SPAN><A HREF="WWW_Reference.htm"><SPAN STYLE="font-size : 10.0pt;">Half-Life
+    Editing Resource Center</SPAN></A>
+ <script>
+<!--
+BSSCCreatePopupDiv();
+//-->
+ </script></BODY>
+</HTML>

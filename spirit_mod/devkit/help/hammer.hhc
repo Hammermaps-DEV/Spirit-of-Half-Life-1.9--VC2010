@@ -1,0 +1,275 @@
+<html>
+<!-- Sitemap 1.0 -->
+<object type="text/site properties">
+  <param name="SiteType" value="toc">
+  <param name="Image Width" value="16">
+  <param name="Window Styles" value="0x800002">
+  <param name="ExWindow Styles" value="0x100">
+</object>
+<ul>
+  <li><object type="text/sitemap">
+    <param name="Name" value="Welcome to Valve Hammer Editor 3.4!">
+    <param name="Local" value="Editor.htm">
+  </object>
+  <li><object type="text/sitemap">
+    <param name="Name" value="What's New in 3.4?">
+    <param name="Local" value="What's_New_in_3.x_.htm">
+  </object>
+  <li><object type="text/sitemap">
+    <param name="Name" value="User's Guide">
+  </object>
+  <ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Valve Hammer Editor 3.4 User's Guide">
+      <param name="Local" value="Editor_3.x_User's_Guide.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Introduction to Editing">
+      <param name="Local" value="Introduction_to_Editing.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="The 3D and 2D Views">
+      <param name="Local" value="The_3D_and_2D_Views.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Menus">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Menus">
+        <param name="Local" value="Menus.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="File">
+        <param name="Local" value="The_File_Menu.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Edit">
+        <param name="Local" value="The_Edit_Menu.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Map">
+        <param name="Local" value="The_Map_Menu.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="View">
+        <param name="Local" value="The_View_Menu.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Tools">
+        <param name="Local" value="The_Tools_Menu.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Window">
+        <param name="Local" value="The_Window_Menu.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Help">
+        <param name="Local" value="The_Help_Menu.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Dialogs">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Dialogs">
+        <param name="Local" value="Dialogs.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Check For Problems">
+        <param name="Local" value="Check_For_Problems.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Entity Report">
+        <param name="Local" value="Entity_Report.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Face Properties">
+        <param name="Local" value="Face_Properties.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Go To Brush">
+        <param name="Local" value="Go_To_Brush.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Hollow">
+        <param name="Local" value="Hollow.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Map Information">
+        <param name="Local" value="Map_Information.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Object Properties">
+        <param name="Local" value="Object_Properties_dialog.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Options">
+      </object>
+      <ul>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Options">
+          <param name="Local" value="Options.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="2D Views">
+          <param name="Local" value="2D_Views.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="3D View">
+          <param name="Local" value="3D_View.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Build Programs">
+          <param name="Local" value="Build_Programs.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Game Configurations">
+          <param name="Local" value="Game_Configuration.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="General">
+          <param name="Local" value="General.htm">
+        </object>
+        <li><object type="text/sitemap">
+          <param name="Name" value="Textures">
+          <param name="Local" value="Textures.htm">
+        </object>
+        </ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Replace Textures">
+        <param name="Local" value="Replace_Textures.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Prefab Factory">
+        <param name="Local" value="Prefab_Factory.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Transform">
+        <param name="Local" value="Transform.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Toolbars">
+    </object>
+    <ul>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Toolbars">
+        <param name="Local" value="Toolbars.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Map Tools">
+        <param name="Local" value="Map_Tools.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Map Operations">
+        <param name="Local" value="Map_Operations.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Map View">
+        <param name="Local" value="Map_View.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Textures">
+        <param name="Local" value="Textures_toolbar.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Filter Control">
+        <param name="Local" value="Filter_Control.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="New Objects">
+        <param name="Local" value="New_Objects.htm">
+      </object>
+      <li><object type="text/sitemap">
+        <param name="Name" value="Status Bar">
+        <param name="Local" value="Status_Bar.htm">
+      </object>
+      </ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Creating Solids">
+      <param name="Local" value="Creating_Solids.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Texturing Solids">
+      <param name="Local" value="Texturing_Solids.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Reshaping Solids">
+      <param name="Local" value="Reshaping_Solids.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Creating Entities">
+      <param name="Local" value="Creating_Entities.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Using the Arch Tool">
+      <param name="Local" value="Using_the_Arch_Tool.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Grouping and VisGrouping">
+      <param name="Local" value="Grouping_and_VisGrouping.htm">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Creating and Using Prefabs">
+      <param name="Local" value="Creating_and_Using_Prefabs.htm">
+    </object>
+    </ul>
+  <li><object type="text/sitemap">
+    <param name="Name" value="Reference">
+  </object>
+  <ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Valve Hammer Editor 3.4 Setup Guide">
+      <param name="Local" value="Editor_Setup_Guide.htm">
+      <param name="ImageNumber" value="17">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="WWW Reference">
+      <param name="Local" value="WWW_Reference.htm">
+      <param name="ImageNumber" value="17">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Hotkey Reference">
+      <param name="Local" value="Hotkey_Reference.htm">
+      <param name="ImageNumber" value="17">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Troubleshooting">
+      <param name="Local" value="Troubleshooting.htm">
+      <param name="ImageNumber" value="41">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="FGD Format Changes">
+      <param name="Local" value="FGD_format_changes.htm">
+      <param name="ImageNumber" value="17">
+    </object>
+    </ul>
+  <li><object type="text/sitemap">
+    <param name="Name" value="Tutorials">
+  </object>
+  <ul>
+    <li><object type="text/sitemap">
+      <param name="Name" value="How do I fix leaks in my level?">
+      <param name="Local" value="How_do_I_fix_leaks_in_my_level_.htm">
+      <param name="ImageNumber" value="11">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="How do I access the Half-Life console?">
+      <param name="Local" value="How_do_I_access_the_Half-Life_console_.htm">
+      <param name="ImageNumber" value="11">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="How can I reduce polygon counts?">
+      <param name="Local" value="How_can_I_reduce_polygon_counts_.htm">
+      <param name="ImageNumber" value="11">
+    </object>
+    <li><object type="text/sitemap">
+      <param name="Name" value="Unpacking Your Pack">
+      <param name="Local" value="Unpacking_Your_Pack.htm">
+      <param name="ImageNumber" value="11">
+    </object>
+    </ul>
+</ul>
+</html>
