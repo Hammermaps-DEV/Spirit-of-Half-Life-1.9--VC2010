@@ -807,10 +807,10 @@ void ClientPrecache( void )
 	PRECACHE_SOUND( SOUND_FLASHLIGHT_ON );
 	PRECACHE_SOUND( SOUND_FLASHLIGHT_OFF );
 
-// player gib sounds
+	// player gib sounds
 	PRECACHE_SOUND("common/bodysplat.wav");
 
-// player pain sounds
+	// player pain sounds
 	PRECACHE_SOUND("player/pl_pain2.wav");
 	PRECACHE_SOUND("player/pl_pain4.wav");
 	PRECACHE_SOUND("player/pl_pain5.wav");
@@ -820,7 +820,6 @@ void ClientPrecache( void )
 	PRECACHE_MODEL("models/player.mdl");
 
 	// hud sounds
-
 	PRECACHE_SOUND("common/wpn_hudoff.wav");
 	PRECACHE_SOUND("common/wpn_hudon.wav");
 	PRECACHE_SOUND("common/wpn_moveselect.wav");
@@ -828,13 +827,19 @@ void ClientPrecache( void )
 	PRECACHE_SOUND("common/wpn_denyselect.wav");
 
 	// geiger sounds
-
 	PRECACHE_SOUND("player/geiger6.wav");
 	PRECACHE_SOUND("player/geiger5.wav");
 	PRECACHE_SOUND("player/geiger4.wav");
 	PRECACHE_SOUND("player/geiger3.wav");
 	PRECACHE_SOUND("player/geiger2.wav");
 	PRECACHE_SOUND("player/geiger1.wav");
+
+	//SOHL 1.9.1
+	// BulletFlyBy sounds 
+	PRECACHE_SOUND ("weapons/whizz1.wav");
+	PRECACHE_SOUND ("weapons/whizz2.wav");
+	PRECACHE_SOUND ("weapons/whizz3.wav");
+	PRECACHE_SOUND ("weapons/whizz4.wav");
 
 	if (giPrecacheGrunt)
 		UTIL_PrecacheOther("monster_human_grunt");

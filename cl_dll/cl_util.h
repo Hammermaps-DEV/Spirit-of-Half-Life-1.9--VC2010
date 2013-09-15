@@ -173,6 +173,7 @@ inline void UnpackRGB(int &r, int &g, int &b, unsigned long ulRGB)\
 }
 
 HL_HSPRITE LoadSprite(const char *pszName);
+vec_t VectorLengthSquared( const vec3_t v ); //SOHL 1.9.1
 float TransformColor ( float color );
 
 const char *UTIL_FileExtension( const char *in );

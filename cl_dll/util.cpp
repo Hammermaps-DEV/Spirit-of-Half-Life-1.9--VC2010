@@ -131,6 +131,12 @@ HL_HSPRITE LoadSprite(const char *pszName)
 	return SPR_Load(sz);
 }
 
+//SOHL 1.9.1
+vec_t VectorLengthSquared( const vec3_t v )
+{
+	return (v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+}
+
 float TransformColor ( float color )
 {
 	float trns_clr;

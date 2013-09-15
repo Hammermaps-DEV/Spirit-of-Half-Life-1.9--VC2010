@@ -94,4 +94,8 @@ int EV_HLDM_CheckTracer( int idx, float *vecSrc, float *end, float *forward, flo
 void EV_HLDM_FireBullets( int idx, float *forward, float *right, float *up, int cShots, float *vecSrc, float *vecDirShooting, float flDistance, int iBulletType, int iTracerFreq, int *tracerCount, float flSpreadX, float flSpreadY );
 void EV_UpdateBeams ( void );
 
+//SOHL 1.9.1
+void EV_HLDM_MuzzleFlash(vec3_t pos, float amount, int red, int green, int blue);
+void EV_HLDM_BulletFlyBySound( int idx, vec3_t start, vec3_t end );
+
 #endif // EV_HLDMH

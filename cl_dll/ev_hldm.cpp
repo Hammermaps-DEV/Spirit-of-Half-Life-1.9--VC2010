@@ -44,30 +44,29 @@ extern "C" char PM_FindTextureType( char *name );
 
 void V_PunchAxis( int axis, float punch );
 void VectorAngles( const float *forward, float *angles );
-vec3_t previousorigin;//egon use this
+vec3_t previousorigin; //egon use this
 
 extern cvar_t *cl_lw;
 
 extern "C"
 {
-
-// HLDM
-void EV_FireNull(event_args_t *args);
-void EV_FireCrowbar(struct event_args_s *args);
-void EV_FireGlock1( struct event_args_s *args  );
-void EV_FireMP5( struct event_args_s *args  );
-void EV_FirePython( struct event_args_s *args  );
-void EV_FireGauss( struct event_args_s *args  );
-void EV_SpinGauss( struct event_args_s *args  );
-void EV_EgonFire( struct event_args_s *args  );
-void EV_EgonStop( struct event_args_s *args  );
-void EV_FireShotGunSingle( struct event_args_s *args  );
-void EV_FireShotGunDouble( struct event_args_s *args  );
-void EV_SnarkFire( struct event_args_s *args  );
-void EV_TrainPitchAdjust( struct event_args_s *args );
-void EV_PlayEmptySound( struct event_args_s *args );
-void EV_Decals( struct event_args_s *args );
-void EV_Explode( struct event_args_s *args );
+	// HLDM
+	void EV_FireNull(event_args_t *args);
+	void EV_FireCrowbar(struct event_args_s *args);
+	void EV_FireGlock1( struct event_args_s *args  );
+	void EV_FireMP5( struct event_args_s *args  );
+	void EV_FirePython( struct event_args_s *args  );
+	void EV_FireGauss( struct event_args_s *args  );
+	void EV_SpinGauss( struct event_args_s *args  );
+	void EV_EgonFire( struct event_args_s *args  );
+	void EV_EgonStop( struct event_args_s *args  );
+	void EV_FireShotGunSingle( struct event_args_s *args  );
+	void EV_FireShotGunDouble( struct event_args_s *args  );
+	void EV_SnarkFire( struct event_args_s *args  );
+	void EV_TrainPitchAdjust( struct event_args_s *args );
+	void EV_PlayEmptySound( struct event_args_s *args );
+	void EV_Decals( struct event_args_s *args );
+	void EV_Explode( struct event_args_s *args );
 }
 
 #define VECTOR_CONE_1DEGREES Vector( 0.00873, 0.00873, 0.00873 )
@@ -113,8 +112,6 @@ float EV_HLDM_PlayTextureSound( int idx, pmtrace_t *ptr, float *vecSrc, float *v
 	entity = gEngfuncs.pEventAPI->EV_IndexFromTrace( ptr );
 
 	// FIXME check if playtexture sounds movevar is set
-	//
-
 	chTextureType = 0;
 
 	// Player
@@ -144,7 +141,6 @@ float EV_HLDM_PlayTextureSound( int idx, pmtrace_t *ptr, float *vecSrc, float *v
 				pTextureName++;
 			}
 			
-			// '}}'
 			strcpy( szbuffer, pTextureName );
 			szbuffer[ CBTEXTURENAMEMAX - 1 ] = 0;
 				
@@ -155,77 +151,76 @@ float EV_HLDM_PlayTextureSound( int idx, pmtrace_t *ptr, float *vecSrc, float *v
 	
 	switch (chTextureType)
 	{
-	default:
-	case CHAR_TEX_CONCRETE: fvol = 0.9;	fvolbar = 0.6;
-		rgsz[0] = "player/pl_step1.wav";
-		rgsz[1] = "player/pl_step2.wav";
-		cnt = 2;
+		default:
+		case CHAR_TEX_CONCRETE: fvol = 0.9;	fvolbar = 0.6;
+			rgsz[0] = "player/pl_step1.wav";
+			rgsz[1] = "player/pl_step2.wav";
+			cnt = 2;
 		break;
-	case CHAR_TEX_METAL: fvol = 0.9; fvolbar = 0.3;
-		rgsz[0] = "player/pl_metal1.wav";
-		rgsz[1] = "player/pl_metal2.wav";
-		cnt = 2;
+		case CHAR_TEX_METAL: fvol = 0.9; fvolbar = 0.3;
+			rgsz[0] = "player/pl_metal1.wav";
+			rgsz[1] = "player/pl_metal2.wav";
+			cnt = 2;
 		break;
-	case CHAR_TEX_DIRT:	fvol = 0.9; fvolbar = 0.1;
-		rgsz[0] = "player/pl_dirt1.wav";
-		rgsz[1] = "player/pl_dirt2.wav";
-		rgsz[2] = "player/pl_dirt3.wav";
-		cnt = 3;
+		case CHAR_TEX_DIRT:	fvol = 0.9; fvolbar = 0.1;
+			rgsz[0] = "player/pl_dirt1.wav";
+			rgsz[1] = "player/pl_dirt2.wav";
+			rgsz[2] = "player/pl_dirt3.wav";
+			cnt = 3;
 		break;
-	case CHAR_TEX_VENT:	fvol = 0.5; fvolbar = 0.3;
-		rgsz[0] = "player/pl_duct1.wav";
-		rgsz[1] = "player/pl_duct1.wav";
-		cnt = 2;
+		case CHAR_TEX_VENT:	fvol = 0.5; fvolbar = 0.3;
+			rgsz[0] = "player/pl_duct1.wav";
+			rgsz[1] = "player/pl_duct1.wav";
+			cnt = 2;
 		break;
-	case CHAR_TEX_GRATE: fvol = 0.9; fvolbar = 0.5;
-		rgsz[0] = "player/pl_grate1.wav";
-		rgsz[1] = "player/pl_grate4.wav";
-		cnt = 2;
+		case CHAR_TEX_GRATE: fvol = 0.9; fvolbar = 0.5;
+			rgsz[0] = "player/pl_grate1.wav";
+			rgsz[1] = "player/pl_grate4.wav";
+			cnt = 2;
 		break;
-	case CHAR_TEX_TILE:	fvol = 0.8; fvolbar = 0.2;
-		rgsz[0] = "player/pl_tile1.wav";
-		rgsz[1] = "player/pl_tile3.wav";
-		rgsz[2] = "player/pl_tile2.wav";
-		rgsz[3] = "player/pl_tile4.wav";
-		cnt = 4;
+		case CHAR_TEX_TILE:	fvol = 0.8; fvolbar = 0.2;
+			rgsz[0] = "player/pl_tile1.wav";
+			rgsz[1] = "player/pl_tile3.wav";
+			rgsz[2] = "player/pl_tile2.wav";
+			rgsz[3] = "player/pl_tile4.wav";
+			cnt = 4;
 		break;
-	case CHAR_TEX_SLOSH: fvol = 0.9; fvolbar = 0.0;
-		rgsz[0] = "player/pl_slosh1.wav";
-		rgsz[1] = "player/pl_slosh3.wav";
-		rgsz[2] = "player/pl_slosh2.wav";
-		rgsz[3] = "player/pl_slosh4.wav";
-		cnt = 4;
+		case CHAR_TEX_SLOSH: fvol = 0.9; fvolbar = 0.0;
+			rgsz[0] = "player/pl_slosh1.wav";
+			rgsz[1] = "player/pl_slosh3.wav";
+			rgsz[2] = "player/pl_slosh2.wav";
+			rgsz[3] = "player/pl_slosh4.wav";
+			cnt = 4;
 		break;
-	// SOHL 1.9.1
-	case CHAR_TEX_SNOW: fvol = 0.9; fvolbar = 0.2;
-		rgsz[0] = "player/pl_snow1.wav";
-		rgsz[1] = "player/pl_snow3.wav";
-		rgsz[2] = "player/pl_snow2.wav";
-		rgsz[3] = "player/pl_snow4.wav";
-		cnt = 4;
+		// SOHL 1.9.1
+		case CHAR_TEX_SNOW: fvol = 0.9; fvolbar = 0.2;
+			rgsz[0] = "player/pl_snow1.wav";
+			rgsz[1] = "player/pl_snow3.wav";
+			rgsz[2] = "player/pl_snow2.wav";
+			rgsz[3] = "player/pl_snow4.wav";
+			cnt = 4;
 		break;
-	case CHAR_TEX_WOOD: fvol = 0.9; fvolbar = 0.2;
-		rgsz[0] = "debris/wood1.wav";
-		rgsz[1] = "debris/wood2.wav";
-		rgsz[2] = "debris/wood3.wav";
-		cnt = 3;
+		case CHAR_TEX_WOOD: fvol = 0.9; fvolbar = 0.2;
+			rgsz[0] = "debris/wood1.wav";
+			rgsz[1] = "debris/wood2.wav";
+			rgsz[2] = "debris/wood3.wav";
+			cnt = 3;
 		break;
-	case CHAR_TEX_GLASS:
-	case CHAR_TEX_COMPUTER:
-		fvol = 0.8; fvolbar = 0.2;
-		rgsz[0] = "debris/glass1.wav";
-		rgsz[1] = "debris/glass2.wav";
-		rgsz[2] = "debris/glass3.wav";
-		cnt = 3;
+		case CHAR_TEX_GLASS:
+		case CHAR_TEX_COMPUTER:
+			fvol = 0.8; fvolbar = 0.2;
+			rgsz[0] = "debris/glass1.wav";
+			rgsz[1] = "debris/glass2.wav";
+			rgsz[2] = "debris/glass3.wav";
+			cnt = 3;
 		break;
-	case CHAR_TEX_FLESH:
-		if (iBulletType == BULLET_PLAYER_CROWBAR)
-			return 0.0; // crowbar already makes this sound
-		fvol = 1.0;	fvolbar = 0.2;
-		rgsz[0] = "weapons/bullet_hit1.wav";
-		rgsz[1] = "weapons/bullet_hit2.wav";
-		fattn = 1.0;
-		cnt = 2;
+		case CHAR_TEX_FLESH:
+			if (iBulletType == BULLET_PLAYER_CROWBAR) return 0.0; // crowbar already makes this sound
+			fvol = 1.0;	fvolbar = 0.2;
+			rgsz[0] = "weapons/bullet_hit1.wav";
+			rgsz[1] = "weapons/bullet_hit2.wav";
+			fattn = 1.0;
+			cnt = 2;
 		break;
 	}
 
@@ -235,7 +230,7 @@ float EV_HLDM_PlayTextureSound( int idx, pmtrace_t *ptr, float *vecSrc, float *v
 }
 
 //======================
-//	    MIRROR UTILS
+//	   MIRROR UTILS
 //======================
 
 vec3_t EV_GetMirrorOrigin(int mirror_index, vec3_t pos)
@@ -245,17 +240,18 @@ vec3_t EV_GetMirrorOrigin(int mirror_index, vec3_t pos)
 
 	switch (gHUD.Mirrors[mirror_index].type)
 	{
-	case 0:
-		result[0] = gHUD.Mirrors[mirror_index].origin[0]*2 - pos[0];
+		case 0:
+			result[0] = gHUD.Mirrors[mirror_index].origin[0]*2 - pos[0];
 		break;
-	case 1:
-		result[1] = gHUD.Mirrors[mirror_index].origin[1]*2 - pos[1];
+		case 1:
+			result[1] = gHUD.Mirrors[mirror_index].origin[1]*2 - pos[1];
 		break;
-	case 2:
-	default:
-		result[2] = gHUD.Mirrors[mirror_index].origin[2]*2 - pos[2];
+		default:
+		case 2:
+			result[2] = gHUD.Mirrors[mirror_index].origin[2]*2 - pos[2];
 		break;
 	}
+
 	return result;
 }
 
@@ -266,17 +262,18 @@ vec3_t EV_GetMirrorAngles (int mirror_index, vec3_t angles )
 
 	switch (gHUD.Mirrors[mirror_index].type)
 	{
-	case 0:
-		result[0] = -result[0]; 
+		case 0:
+			result[0] = -result[0]; 
 		break;
-	case 1:
-		result[1] = -result[1]; 
+		case 1:
+			result[1] = -result[1]; 
 		break;
-	case 2:
-	default:
-		result[2] = -result[2]; 
+		default:
+		case 2:
+			result[2] = -result[2]; 
 		break;
 	}
+
 	return result;
 }
 
@@ -289,11 +286,11 @@ vec3_t EV_MirrorVector( vec3_t angles )
 	{
 		for (int imc=0; imc < gHUD.numMirrors; imc++)
 		{
-			if (!gHUD.Mirrors[imc].enabled)
-				continue;
+			if (!gHUD.Mirrors[imc].enabled) continue;
 			VectorCopy(EV_GetMirrorAngles(imc, angles), result);
 		}
 	}
+
 	return result;
 }
 
@@ -304,27 +301,78 @@ vec3_t EV_MirrorPos( vec3_t endpos )
 	{
 		for (int imc=0; imc < gHUD.numMirrors; imc++)
 		{
-			if (!gHUD.Mirrors[imc].enabled)
-				continue;
-			
-			vec3_t delta;
-			float dist;
-			
+			vec3_t delta; float dist;
+			if (!gHUD.Mirrors[imc].enabled) continue;
 			VectorSubtract(gHUD.Mirrors[imc].origin, endpos, delta);
 			dist = Length(delta);
 
-			if (gHUD.Mirrors[imc].radius < dist)
-				continue;
-		
-			
+			if (gHUD.Mirrors[imc].radius < dist) continue;
 			VectorCopy(EV_GetMirrorOrigin(imc, endpos), mirpos);
 		}
 	}
+
 	return mirpos;
 }
 
 //======================
 //	 END MIRROR UTILS
+//======================
+
+//======================
+//	   MUZZLEFLASH
+//     SOHL 1.9.1
+//======================
+void EV_HLDM_MuzzleFlash(vec3_t pos, float amount, int red, int green, int blue)
+{
+      dlight_t *dl = gEngfuncs.pEfxAPI->CL_AllocDlight(0);
+      dl->origin = pos;
+      dl->color.r = red; // red
+      dl->color.g = green; // green
+      dl->color.b = blue; // blue
+      dl->radius = amount * 100;
+      dl->die = gEngfuncs.GetClientTime() + 0.01;
+}
+
+//======================
+//	 END MUZZLEFLASH
+//======================
+
+//======================
+//	 BulletFlyBySound
+//     SOHL 1.9.1
+//======================
+void EV_HLDM_BulletFlyBySound ( int idx, vec3_t start, vec3_t end )
+{
+	vec3_t	soundPoint; char *zngs[4]; int cnt; int iRand;
+
+	cl_entity_t *pthisplayer = gEngfuncs.GetLocalPlayer();
+	iRand = gEngfuncs.pfnRandomLong(1,10);
+	soundPoint = Vector( 0, 0, 0 );
+
+	if ( !EV_IsLocal(idx) )
+	{
+		if( EV_PointLineIntersect(start, end, pthisplayer->origin, 150, soundPoint ) )
+		{
+			if (iRand < 5)
+			{
+				zngs[0]		= "weapons/whizz1.wav";
+				zngs[1]		= "weapons/whizz2.wav";
+				zngs[2]		= "weapons/whizz3.wav";
+				zngs[3]		= "weapons/whizz4.wav";
+
+				cnt = (sizeof(zngs) / sizeof(int));
+				gEngfuncs.pEventAPI->EV_PlaySound( pthisplayer->index, 
+					soundPoint, 
+					CHAN_STATIC, 
+					zngs[gEngfuncs.pfnRandomLong(0,cnt-1)], 
+					gEngfuncs.pfnRandomFloat(0.92, 1.0), 
+					ATTN_NORM, 0, 98 + gEngfuncs.pfnRandomLong( 0, 3 ) );
+			}
+		}
+	}
+}
+//======================
+// END BulletFlyBySound
 //======================
 
 //======================
@@ -370,12 +418,9 @@ void EV_HLDM_FindHullIntersection( int idx, vec3_t vecSrc, pmtrace_t pTrace, flo
 				vecEnd.y = vecHullEnd.y + minmaxs[j][1];
 				vecEnd.z = vecHullEnd.z + minmaxs[k][2];
                                         
-                                        gEngfuncs.pEventAPI->EV_SetUpPlayerPrediction( false, true );
-                                        // Store off the old count
+                gEngfuncs.pEventAPI->EV_SetUpPlayerPrediction( false, true ); // Store off the old count
 				gEngfuncs.pEventAPI->EV_PushPMStates();
-	
-				// Now add in all of the players.
-				gEngfuncs.pEventAPI->EV_SetSolidPlayers ( idx - 1 );	
+				gEngfuncs.pEventAPI->EV_SetSolidPlayers ( idx - 1 ); // Now add in all of the players.
 
 				gEngfuncs.pEventAPI->EV_SetTraceHull( 2 );
 				gEngfuncs.pEventAPI->EV_PlayerTrace( vecSrc, vecEnd, PM_STUDIO_BOX, -1, &tmpTrace );
@@ -414,6 +459,7 @@ char *EV_HLDM_DamageDecal( physent_t *pe )
 		idx = gEngfuncs.pfnRandomLong( 0, 4 );
 		sprintf( decalname, "{shot%i", idx + 1 );
 	}
+
 	return decalname;
 }
 
@@ -451,11 +497,11 @@ void EV_HLDM_GunshotDecalTrace(pmtrace_t *pTrace, char *decalName )
 	{
 		switch( iRand % 5)
 		{
-		case 0:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric1.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
-		case 1:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric2.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
-		case 2:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric3.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
-		case 3:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric4.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
-		case 4:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric5.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
+			case 0:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric1.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
+			case 1:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric2.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
+			case 2:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric3.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
+			case 3:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric4.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
+			case 4:	gEngfuncs.pEventAPI->EV_PlaySound( -1, pTrace->endpos, 0, "weapons/ric5.wav", 1.0, ATTN_NORM, 0, PITCH_NORM ); break;
 		}
 	}
 
@@ -632,6 +678,9 @@ void EV_HLDM_FireBullets( int idx, float *forward, float *right, float *up, int 
 
 		gEngfuncs.pEventAPI->EV_SetTraceHull( 2 );
 		gEngfuncs.pEventAPI->EV_PlayerTrace( vecSrc, vecEnd, PM_STUDIO_BOX, -1, &tr );
+
+		//SOHL 1.9.1
+		EV_HLDM_BulletFlyBySound( idx, vecSrc, vecEnd );
 
 		tracer = EV_HLDM_CheckTracer( idx, vecSrc, tr.endpos, forward, right, iBulletType, iTracerFreq, tracerCount );
 
@@ -869,6 +918,7 @@ void EV_FireGlock1( event_args_t *args )
 	
 	VectorCopy( forward, vecAiming );
 
+	EV_HLDM_MuzzleFlash( vecSrc, 1.0 + gEngfuncs.pfnRandomFloat( -0.2, 0.2 ), 255, 255, 128 ); //SOHL 1.9.1
 	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, 0, args->fparam1, args->fparam2 );
 }
 //======================
@@ -930,6 +980,8 @@ void EV_FireMP5( event_args_t *args )
 	EV_GetGunPosition( args, vecSrc, origin );
 	VectorCopy( forward, vecAiming );
 
+	EV_HLDM_MuzzleFlash( vecSrc, 1.1 + gEngfuncs.pfnRandomFloat( -0.2, 0.2 ), 255, 255, 128 ); //SOHL 1.9.1
+
 	if ( gEngfuncs.GetMaxClients() > 1 )
 		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 	else 	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
@@ -986,14 +1038,12 @@ void EV_FireShotGunDouble( event_args_t *args )
 	EV_GetGunPosition( args, vecSrc, origin );
 	VectorCopy( forward, vecAiming );
 
+	EV_HLDM_MuzzleFlash( vecSrc, 1.3 + gEngfuncs.pfnRandomFloat( -0.2, 0.2 ), 255, 255, 128 ); //SOHL 1.9.1
+
 	if ( gEngfuncs.GetMaxClients() > 1 )
-	{
 		EV_HLDM_FireBullets( idx, forward, right, up, 8, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.17365, 0.04362 );
-	}
 	else
-	{
 		EV_HLDM_FireBullets( idx, forward, right, up, 12, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
-	}
 }
 
 void EV_FireShotGunSingle( event_args_t *args )
@@ -1038,14 +1088,12 @@ void EV_FireShotGunSingle( event_args_t *args )
 	EV_GetGunPosition( args, vecSrc, origin );
 	VectorCopy( forward, vecAiming );
 
+	EV_HLDM_MuzzleFlash( vecSrc, 1.5 + gEngfuncs.pfnRandomFloat( -0.2, 0.2 ), 255, 255, 128 ); //SOHL 1.9.1
+
 	if ( gEngfuncs.GetMaxClients() > 1 )
-	{
 		EV_HLDM_FireBullets( idx, forward, right, up, 4, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.04362 );
-	}
 	else
-	{
 		EV_HLDM_FireBullets( idx, forward, right, up, 6, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
-	}
 }
 //======================
 //	   SHOTGUN END
@@ -1099,6 +1147,7 @@ void EV_FirePython( event_args_t *args )
 	
 	VectorCopy( forward, vecAiming );
 
+	EV_HLDM_MuzzleFlash( vecSrc, 1.0 + gEngfuncs.pfnRandomFloat( -0.2, 0.2 ), 255, 255, 128 ); //SOHL 1.9.1
 	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_357, 0, 0, args->fparam1, args->fparam2 );
 }
 //======================
@@ -1735,7 +1784,7 @@ void EV_Decals( struct event_args_s *args )
 //======================
 
 //======================
-//           EFX START
+//     EFX START
 //======================
 void EV_Explode( struct event_args_s *args )
 {
@@ -1744,9 +1793,12 @@ void EV_Explode( struct event_args_s *args )
 
 	if(args->bparam1)//water explosion
 		m_iExplodeSprite = gEngfuncs.pEventAPI->EV_FindModelIndex( "sprites/WXplo1.spr" );
-         	else	m_iExplodeSprite = gEngfuncs.pEventAPI->EV_FindModelIndex( "sprites/zerogxplode.spr" ); 
+    else	
+		m_iExplodeSprite = gEngfuncs.pEventAPI->EV_FindModelIndex( "sprites/zerogxplode.spr" ); 
 
 	gEngfuncs.pEfxAPI->R_Explosion( args->origin, m_iExplodeSprite, (args->fparam1 - 50) * 0.06, 15, TE_EXPLFLAG_NODLIGHTS | TE_EXPLFLAG_NOPARTICLES );
+	EV_HLDM_MuzzleFlash( mirpos, 1.1 + gEngfuncs.pfnRandomFloat( -0.2, 0.2 ), 255, 255, 128 ); //SOHL 1.9.1
+
 	if(mirpos != vec3_t(0,0,0))
 		gEngfuncs.pEfxAPI->R_Explosion( mirpos, m_iExplodeSprite, (args->fparam1 - 50) * 0.06, 15, TE_EXPLFLAG_NODLIGHTS | TE_EXPLFLAG_NOSOUND | TE_EXPLFLAG_NOPARTICLES );
 }

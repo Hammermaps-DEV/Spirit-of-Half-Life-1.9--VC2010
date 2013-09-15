@@ -70,4 +70,7 @@ struct cl_entity_s *GetEntity( int idx );
 struct cl_entity_s *GetViewEntity( void );
 void EV_MuzzleFlash( void );
 
+//SOHL 1.9.1
+bool EV_PointLineIntersect ( vec3_t start, vec3_t end, vec3_t point, float rad, vec3_t intersection );
+
 #endif // EVENTSCRIPTSH
