@@ -4255,7 +4255,7 @@ BOOL CTriggerOnSight :: CanSee(CBaseEntity *pLooker, CBaseEntity *pSeen)
 	if (!FBitSet(pev->spawnflags, SF_ONSIGHT_NOLOS))
 	{
 		TraceResult tr;
-		if (SF_ONSIGHT_NOGLASS)
+		if (pev->spawnflags & SF_ONSIGHT_NOGLASS)
 			UTIL_TraceLine( pLooker->EyePosition(), pSeen->pev->origin, ignore_monsters, ignore_glass, pLooker->edict(), &tr );
 		else
 			UTIL_TraceLine( pLooker->EyePosition(), pSeen->pev->origin, ignore_monsters, dont_ignore_glass, pLooker->edict(), &tr );
