@@ -42,6 +42,7 @@ public:
 	void Spawn( void );
 	void Precache( void );
 	int GetItemInfo(ItemInfo *p);
+	int AddToPlayer( CBasePlayer *pPlayer );
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
@@ -105,6 +106,18 @@ int CGlock::GetItemInfo(ItemInfo *p)
 	p->iWeight = GLOCK_WEIGHT;
 
 	return 1;
+}
+
+int CGlock::AddToPlayer( CBasePlayer *pPlayer )
+{
+	if( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
+	{
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+			WRITE_BYTE( m_iId );
+		MESSAGE_END();
+		return TRUE;
+	}
+	return FALSE;
 }
 
 BOOL CGlock::Deploy( )

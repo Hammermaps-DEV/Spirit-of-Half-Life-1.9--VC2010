@@ -32,6 +32,7 @@ public:
 	void Spawn( void );
 	void Precache( void );
 	int GetItemInfo(ItemInfo *p);
+	int AddToPlayer( CBasePlayer *pPlayer );
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
@@ -83,6 +84,18 @@ void CCrowbar::Precache( void )
 	PRECACHE_SOUND("weapons/cbar_miss1.wav");
 
 	m_usCrowbar = PRECACHE_EVENT ( 1, "events/crowbar.sc" );
+}
+
+int CCrowbar::AddToPlayer( CBasePlayer *pPlayer )
+{
+	if( CBasePlayerWeapon::AddToPlayer( pPlayer ) )
+	{
+		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
+			WRITE_BYTE( m_iId );
+		MESSAGE_END();
+		return TRUE;
+	}
+	return FALSE;
 }
 
 int CCrowbar::GetItemInfo(ItemInfo *p)
