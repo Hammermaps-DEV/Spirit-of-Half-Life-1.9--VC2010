@@ -126,6 +126,7 @@ void ClientDisconnect( edict_t *pEntity )
 // since the edict doesn't get deleted, fix it so it doesn't interfere.
 	pEntity->v.takedamage = DAMAGE_NO;// don't attract autoaim
 	pEntity->v.solid = SOLID_NOT;// nonsolid
+	pEntity->v.effects = 0;// clear any effects
 	UTIL_SetEdictOrigin ( pEntity, pEntity->v.origin );
 
 	g_pGameRules->ClientDisconnected( pEntity );
