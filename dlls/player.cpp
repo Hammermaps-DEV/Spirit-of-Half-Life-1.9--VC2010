@@ -2806,9 +2806,10 @@ void CBasePlayer::PostThink()
 	// Track button info so we can detect 'pressed' and 'released' buttons next frame
 	m_afButtonLast = pev->button;
 
-pt_end:	return;
+pt_end:	
+		if( pev->deadflag == DEAD_NO )
+			return;
 }
-
 
 // checks if the spot is clear of players
 BOOL IsSpawnPointValid( CBaseEntity *pPlayer, CBaseEntity *pSpot )

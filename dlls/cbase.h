@@ -341,7 +341,7 @@ public:
 	};
 #endif
 
-	void UpdateOnRemove( void );
+	virtual void UpdateOnRemove( void );
 
 	// common member functions
 	void EXPORT SUB_Remove( void );
