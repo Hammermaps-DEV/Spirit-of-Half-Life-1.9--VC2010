@@ -878,7 +878,7 @@ void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer )
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
 	pev->model = iStringNull;
 	pev->owner = pPlayer->edict();
-	SetNextThink( 0.1 );
+	SetNextThink( 0 );
 	SetTouch( NULL );
 	SetThink(NULL);
 }

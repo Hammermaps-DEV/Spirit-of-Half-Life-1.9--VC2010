@@ -480,6 +480,14 @@ void CPlatTrigger :: Touch( CBaseEntity *pOther )
 	if ( !FClassnameIs (pevToucher, "player") )
 		return;
 
+	CFuncPlat *pPlatform = (CFuncPlat*)(CBaseEntity*)m_pPlatform;
+	if( FNullEnt( pPlatform ) )
+	{
+		// The target platform has been removed, remove myself as well. - Solokiller
+		UTIL_Remove( this );
+		return;
+	}
+
 	// Ignore touches by corpses
 	if (!pOther->IsAlive())
 		return;

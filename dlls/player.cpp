@@ -894,13 +894,13 @@ void CBasePlayer::RemoveAllItems( BOOL removeSuit )
 	for (i = 0; i < MAX_ITEM_TYPES; i++)
 	{
 		m_pActiveItem = m_rgpPlayerItems[i];
+		m_rgpPlayerItems[i] = NULL;
 		while (m_pActiveItem)
 		{
 			pPendingItem = m_pActiveItem->m_pNext;
 			m_pActiveItem->Drop( );
 			m_pActiveItem = pPendingItem;
 		}
-		m_rgpPlayerItems[i] = NULL;
 	}
 	m_pActiveItem = NULL;
 
@@ -3619,7 +3619,6 @@ void CBasePlayer::ImpulseCommands( )
 //=========================================================
 void CBasePlayer::CheatImpulseCommands( int iImpulse )
 {
-#if !defined( HLDEMO_BUILD )
 	if ( g_flWeaponCheat == 0.0 )
 	{
 		return;
@@ -3681,7 +3680,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		GiveNamedItem( "ammo_ARgrenades" );
 		GiveNamedItem( "weapon_handgrenade" );
 		GiveNamedItem( "weapon_tripmine" );
-#ifndef OEM_BUILD
 		GiveNamedItem( "weapon_357" );
 		GiveNamedItem( "ammo_357" );
 		GiveNamedItem( "weapon_crossbow" );
@@ -3695,7 +3693,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		GiveNamedItem( "weapon_snark" );
 		GiveNamedItem( "weapon_hornetgun" );		
 		GiveNamedItem( "item_longjump" );
-#endif
 		gEvilImpulse101 = FALSE;
 		break;
 
@@ -3821,7 +3818,6 @@ void CBasePlayer::CheatImpulseCommands( int iImpulse )
 		}
 		break;
 	}
-#endif	// HLDEMO_BUILD
 }
 
 //
