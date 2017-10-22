@@ -4521,6 +4521,12 @@ void CBasePlayer :: UpdateClientData( void )
 		UpdateStatusBar();
 		m_flNextSBarUpdateTime = gpGlobals->time + 0.2;
 	}
+
+	// Send flashlight status
+ 	MESSAGE_BEGIN( MSG_ONE, gmsgFlashlight, NULL, pev );
+ 		WRITE_BYTE( FlashlightIsOn() ? 1 : 0 );
+ 		WRITE_BYTE( m_iFlashBattery );
+ 	MESSAGE_END();
 }
 
 
