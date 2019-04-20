@@ -16,6 +16,7 @@
 // nodes.cpp - AI node tree stuff.
 //=========================================================
 
+#include <cstdio>
 #include <sys/stat.h>
 #include <sys/types.h>
 
@@ -1576,13 +1577,14 @@ void CTestHull :: ShowBadNode( void )
 	SetNextThink( 0.1 );
 }
 
-extern BOOL gTouchDisabled;
+extern bool gTouchDisabled;
+
 void CTestHull::CallBuildNodeGraph( void )
 {
 	// TOUCH HACK -- Don't allow this entity to call anyone's "touch" function
-	gTouchDisabled = TRUE;
+	gTouchDisabled = true;
 	BuildNodeGraph();
-	gTouchDisabled = FALSE;
+	gTouchDisabled = false;
 	// Undo TOUCH HACK
 }
 

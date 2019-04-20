@@ -334,7 +334,7 @@ void EV_HLDM_MuzzleFlash(vec3_t pos, int radius, int red, int green, int blue)
 //======================
 void EV_HLDM_BulletFlyBySound ( int idx, vec3_t start, vec3_t end )
 {
-	char *zngs[12]; int cnt;
+	char *zngs[12];
 	cl_entity_t *pthisplayer = gEngfuncs.GetLocalPlayer();
 	int iRand = gEngfuncs.pfnRandomLong(1, 10);
 	vec3_t soundPoint = Vector(0, 0, 0);
@@ -358,7 +358,7 @@ void EV_HLDM_BulletFlyBySound ( int idx, vec3_t start, vec3_t end )
 				zngs[10] = "fx/whizz_bullet11.wav";
 				zngs[11] = "fx/whizz_bullet12.wav";
 
-				cnt = (sizeof(zngs) / sizeof(int));
+				int cnt = (sizeof(zngs) / sizeof(int));
 				gEngfuncs.pEventAPI->EV_PlaySound( pthisplayer->index, 
 					soundPoint, 
 					CHAN_STATIC, 
