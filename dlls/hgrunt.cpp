@@ -220,7 +220,7 @@ const char *CHGrunt::pGruntSentences[] =
 	"HG_TAUNT", // say rude things
 };
 
-enum
+typedef enum
 {
 	HGRUNT_SENT_NONE = -1,
 	HGRUNT_SENT_GREN = 0,
@@ -266,7 +266,7 @@ void CHGrunt :: SpeakSentence( void )
 int CHGrunt::IRelationship ( CBaseEntity *pTarget )
 {
 	//LRC- only hate alien grunts if my behaviour hasn't been overridden
-	if (!m_iClass && FClassnameIs( pTarget->pev, "monster_alien_grunt" ) || ( FClassnameIs( pTarget->pev,  "monster_gargantua" ) ) )
+	if ((!m_iClass && FClassnameIs(pTarget->pev, "monster_alien_grunt")) || (FClassnameIs(pTarget->pev, "monster_gargantua")))
 	{
 		return R_NM;
 	}
@@ -415,7 +415,7 @@ BOOL CHGrunt :: FCanCheckAttacks ( void )
 //=========================================================
 BOOL CHGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
-	CBaseMonster *pEnemy;
+	CBaseMonster *pEnemy = 0;
 
 	if ( m_hEnemy != NULL )
 	{

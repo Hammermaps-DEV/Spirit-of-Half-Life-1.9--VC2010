@@ -496,13 +496,12 @@ void CTalkMonster :: StartTask( Task_t *pTask )
 
 void CTalkMonster :: RunTask( Task_t *pTask )
 {
+	edict_t *pPlayer;
+
 	switch( pTask->iTask )
 	{
 	case TASK_TLK_CLIENT_STARE:
 	case TASK_TLK_LOOK_AT_CLIENT:
-
-		edict_t *pPlayer;
-
 		// track head to the client for a while.
 		if ( m_MonsterState == MONSTERSTATE_IDLE		&& 
 			 !IsMoving()								&&
@@ -549,7 +548,7 @@ void CTalkMonster :: RunTask( Task_t *pTask )
 	case TASK_FACE_PLAYER:
 		{
 			// Get edict for one player
-			edict_t *pPlayer = g_engfuncs.pfnPEntityOfEntIndex( 1 );
+			pPlayer = g_engfuncs.pfnPEntityOfEntIndex( 1 );
 
 			if ( pPlayer )
 			{
@@ -656,7 +655,7 @@ CBaseEntity	*CTalkMonster::EnumFriends( CBaseEntity *pPrevious, int listNumber, 
 	Vector vecCheck;
 
 	pszFriend = m_szFriends[ FriendNumber(listNumber) ];
-	while (pFriend = UTIL_FindEntityByClassname( pFriend, pszFriend ))
+	while ((pFriend = UTIL_FindEntityByClassname(pFriend, pszFriend)))
 	{
 		if (pFriend == this || !pFriend->IsAlive())
 			// don't talk to self or dead people
@@ -689,7 +688,7 @@ void CTalkMonster::AlertFriends( void )
 	// for each friend in this bsp...
 	for ( i = 0; i < TLK_CFRIENDS; i++ )
 	{
-		while (pFriend = EnumFriends( pFriend, i, TRUE ))
+		while ((pFriend = EnumFriends(pFriend, i, TRUE)))
 		{
 			CBaseMonster *pMonster = pFriend->MyMonsterPointer();
 			if ( pMonster->IsAlive() )
@@ -711,7 +710,7 @@ void CTalkMonster::ShutUpFriends( void )
 	// for each friend in this bsp...
 	for ( i = 0; i < TLK_CFRIENDS; i++ )
 	{
-		while (pFriend = EnumFriends( pFriend, i, TRUE ))
+		while ((pFriend = EnumFriends(pFriend, i, TRUE)))
 		{
 			CBaseMonster *pMonster = pFriend->MyMonsterPointer();
 			if ( pMonster )
@@ -734,7 +733,7 @@ void CTalkMonster::LimitFollowers( CBaseEntity *pPlayer, int maxFollowers )
 	// for each friend in this bsp...
 	for ( i = 0; i < TLK_CFRIENDS; i++ )
 	{
-		while (pFriend = EnumFriends( pFriend, i, FALSE ))
+		while ((pFriend = EnumFriends(pFriend, i, FALSE)))
 		{
 			CBaseMonster *pMonster = pFriend->MyMonsterPointer();
 			if ( pMonster )
@@ -891,7 +890,7 @@ CBaseEntity *CTalkMonster :: FindNearestFriend(BOOL fPlayer)
 			continue;
 
 		// for each friend in this bsp...
-		while (pFriend = UTIL_FindEntityByClassname( pFriend, pszFriend ))
+		while ((pFriend = UTIL_FindEntityByClassname(pFriend, pszFriend)))
 		{
 			if (pFriend == this || !pFriend->IsAlive())
 				// don't talk to self or dead people
@@ -1179,7 +1178,7 @@ int CTalkMonster :: FIdleSpeak ( void )
 	if ( RANDOM_LONG(0,1) )
 	{
 		//SENTENCEG_PlayRndSz( ENT(pev), szIdleGroup, 1.0, ATTN_IDLE, 0, pitch );
-		CBaseEntity *pFriend = FindNearestFriend(TRUE);
+		pFriend = FindNearestFriend(TRUE);
 
 		if ( pFriend )
 		{

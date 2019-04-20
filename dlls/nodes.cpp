@@ -1277,7 +1277,7 @@ int CGraph :: LinkVisibleNodes ( CLink *pLinkPool, FILE *file, int *piBadNode )
 					fprintf ( file, "  Entity on connection: %s, name: %s  Model: %s", STRING( VARS( pTraceEnt )->classname ), STRING ( VARS( pTraceEnt )->targetname ), STRING ( VARS(tr.pHit)->model ) );
 				}
 				
-				fprintf ( file, "\n", j );
+				fprintf(file, "\n");
 			}
 
 			pLinkPool [ cTotalLinks ].m_iDestNode = j;
@@ -1886,17 +1886,17 @@ void CTestHull :: BuildNodeGraph( void )
 						switch ( hull )
 						{
 						case NODE_SMALL_HULL:	// if this hull can't fit, nothing can, so drop the connection
-							fprintf ( file, "NODE_SMALL_HULL step %f\n", step );
+							fprintf(file, "NODE_SMALL_HULL step %d\n", step);
 							pTempPool[ pSrcNode->m_iFirstLink + j ].m_afLinkInfo &= ~(bits_LINK_SMALL_HULL | bits_LINK_HUMAN_HULL | bits_LINK_LARGE_HULL);
 							fSkipRemainingHulls = TRUE;// don't bother checking larger hulls
 							break;
 						case NODE_HUMAN_HULL:
-							fprintf ( file, "NODE_HUMAN_HULL step %f\n", step );
+							fprintf(file, "NODE_HUMAN_HULL step %d\n", step);
 							pTempPool[ pSrcNode->m_iFirstLink + j ].m_afLinkInfo &= ~(bits_LINK_HUMAN_HULL | bits_LINK_LARGE_HULL);
 							fSkipRemainingHulls = TRUE;// don't bother checking larger hulls
 							break;
 						case NODE_LARGE_HULL:
-							fprintf ( file, "NODE_LARGE_HULL step %f\n", step );
+							fprintf(file, "NODE_LARGE_HULL step %d\n", step);
 							pTempPool[ pSrcNode->m_iFirstLink + j ].m_afLinkInfo &= ~bits_LINK_LARGE_HULL;
 							break;
 						}
@@ -2009,7 +2009,7 @@ void CTestHull :: BuildNodeGraph( void )
 	fprintf ( file, "\n\n-------------------------------------------------------------------------------\n");
 	fprintf ( file, "Total Number of Connections in Pool: %d\n", cPoolLinks );
 	fprintf ( file, "-------------------------------------------------------------------------------\n");
-	fprintf ( file, "Connection Pool: %d bytes\n", sizeof ( CLink ) * cPoolLinks );
+	fprintf(file, "Connection Pool: %zu bytes\n", sizeof(CLink) * cPoolLinks);
 	fprintf ( file, "-------------------------------------------------------------------------------\n");
 
 
@@ -3322,10 +3322,12 @@ void CGraph :: ComputeStaticRoutingTables( void )
 		}		
 		ALERT( at_aiconsole, "Size of Routes = %d\n", nTotalCompressedSize);
 	}
-	if (Routes) delete Routes;
-	if (BestNextNodes) delete BestNextNodes;
-	if (pRoute) delete pRoute;
-	if (pMyPath) delete pMyPath;
+
+	if (Routes) delete[] Routes;
+	if (BestNextNodes) delete[] BestNextNodes;
+	if (pRoute) delete[] pRoute;
+	if (pMyPath) delete[] pMyPath;
+
 	Routes = 0;
 	BestNextNodes = 0;
 	pRoute = 0;
@@ -3458,8 +3460,9 @@ void CGraph :: TestRoutingTables( void )
 
 EnoughSaid:
 
-	if (pMyPath) delete pMyPath;
-	if (pMyPath2) delete pMyPath2;
+	if (pMyPath) delete[] pMyPath;
+	if (pMyPath2) delete[] pMyPath2;
+
 	pMyPath = 0;
 	pMyPath2 = 0;
 }

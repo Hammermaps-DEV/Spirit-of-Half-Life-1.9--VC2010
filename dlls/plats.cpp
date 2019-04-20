@@ -899,10 +899,12 @@ void CFuncTrain :: Blocked( CBaseEntity *pOther )
 	m_flActivateFinished = gpGlobals->time + 0.5;
 
 	if (pev->dmg)
+	{
 		if (m_hActivator)
-			pOther->TakeDamage( pev, m_hActivator->pev, pev->dmg, DMG_CRUSH );
+			pOther->TakeDamage(pev, m_hActivator->pev, pev->dmg, DMG_CRUSH);	//AJH Attribute damage to he who switched me.
 		else
-			pOther->TakeDamage( pev, pev, pev->dmg, DMG_CRUSH );
+			pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
+	}
 }
 
 
@@ -1726,7 +1728,7 @@ void CFuncTrackTrain :: UpdateSound( void )
 	if (!pev->noise)
 		return;
 
-	flpitch = TRAIN_STARTPITCH + (abs(pev->speed) * (TRAIN_MAXPITCH - TRAIN_STARTPITCH) / TRAIN_MAXSPEED);
+	flpitch = TRAIN_STARTPITCH + (fabs(pev->speed) * (TRAIN_MAXPITCH - TRAIN_STARTPITCH) / TRAIN_MAXSPEED);
 
 	if (!m_soundPlaying)
 	{

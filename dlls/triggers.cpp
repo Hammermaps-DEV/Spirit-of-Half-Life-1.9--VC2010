@@ -4693,7 +4693,7 @@ void CTriggerMotion::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 		}
 	}
 
-	Vector vecTemp;
+	Vector vecTemp(0, 0, 0);
 	Vector vecVelAngles;
 	if (m_iszAngles)
 	{

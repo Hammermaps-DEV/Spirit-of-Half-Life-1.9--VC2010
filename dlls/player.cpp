@@ -2216,7 +2216,7 @@ void CBasePlayer::CheckTimeBasedDamage()
 		return;
 
 	// only check for time based damage approx. every 2 seconds
-	if (abs(gpGlobals->time - m_tbdPrev) < 2.0)
+	if (fabs(gpGlobals->time - m_tbdPrev) < 2.0)
 		return;
 
 	m_tbdPrev = gpGlobals->time;
@@ -2436,7 +2436,7 @@ void CBasePlayer::CheckSuitUpdate()
 		// play a sentence off of the end of the queue
 		for (i = 0; i < CSUITPLAYLIST; i++)
 			{
-			if (isentence = m_rgSuitPlayList[isearch])
+			if ((isentence = m_rgSuitPlayList[isearch]))
 				break;
 
 			if (++isearch == CSUITPLAYLIST)

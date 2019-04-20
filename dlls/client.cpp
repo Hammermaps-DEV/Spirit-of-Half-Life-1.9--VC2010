@@ -106,8 +106,10 @@ void ClientDisconnect( edict_t *pEntity )
 	if (g_fGameOver)
 		return;
 
-	char text[256];
-	sprintf( text, "- %s has left the game\n", STRING(pEntity->v.netname) );
+	char text[256] = "";
+	if (pEntity->v.netname)
+		snprintf(text, sizeof(text), "- %s has left the game\n", STRING(pEntity->v.netname));
+
 	MESSAGE_BEGIN( MSG_ALL, gmsgSayText, NULL );
 		WRITE_BYTE( ENTINDEX(pEntity) );
 		WRITE_STRING( text );
@@ -203,6 +205,9 @@ void ClientPutInServer( edict_t *pEntity )
 
 	// Reset interpolation during first frame
 	pPlayer->pev->effects |= EF_NOINTERP;
+
+	pPlayer->pev->iuser1 = 0;
+	pPlayer->pev->iuser2 = 0;
 }
 
 #include "voice_gamemgr.h"
@@ -552,7 +557,7 @@ void ClientUserInfoChanged( edict_t *pEntity, char *infobuffer )
 		g_engfuncs.pfnSetClientKeyValue( ENTINDEX(pEntity), infobuffer, "name", sName );
 
 		char text[256];
-		sprintf( text, "* %s changed name to %s\n", STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue( infobuffer, "name" ) );
+		snprintf(text, sizeof(text), "* %s changed name to %s\n", STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
 		MESSAGE_BEGIN( MSG_ALL, gmsgSayText, NULL );
 			WRITE_BYTE( ENTINDEX(pEntity) );
 			WRITE_STRING( text );

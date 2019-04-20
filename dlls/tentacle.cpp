@@ -730,6 +730,8 @@ void CTentacle::CommandUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 		SetThink(&CTentacle:: DieThink );
 		m_iGoalAnim = TENTACLE_ANIM_Engine_Idle;
 		break;
+	default:
+		break;
 	}
 
 }

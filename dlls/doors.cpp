@@ -997,8 +997,9 @@ void CBaseDoor::Blocked( CBaseEntity *pOther )
 						UTIL_SetAvelocity(pDoor, g_vecZero);
 					}
 					
-					if ( !FBitSet( pDoor->pev->spawnflags, SF_DOOR_SILENT ) )
-						STOP_SOUND(ENT(pDoor->pev), CHAN_STATIC, (char*)STRING(pDoor->pev->noiseMoving) );
+					if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
+						STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving));
+
 					if ( pDoor->m_toggle_state == TS_GOING_DOWN)
 						pDoor->DoorGoUp();
 					else pDoor->DoorGoDown();
@@ -1331,6 +1332,9 @@ void CMomentaryDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 
 	if ( value > 1.0 )
 		value = 1.0;
+
+	if (value < 0.0)
+		value = 0.0;
 
 	if (IsLockedByMaster()) return;
 

@@ -293,6 +293,10 @@ void CLocusBeam::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE us
 		pBeam->PointsInit( vecStartPos, vecStartPos + vecEndPos );
 		break;
 	}
+
+	if (!pBeam)
+		return;
+
 	pBeam->SetColor( pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z );
 	pBeam->SetBrightness( pev->renderamt );
 	pBeam->SetNoise( m_iDistortion );

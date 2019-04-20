@@ -169,7 +169,7 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 
 	char killedwith[32];
 	strcpy( killedwith, "d_" );
-	strncat( killedwith, READ_STRING(), 32 );
+	strncat(killedwith, READ_STRING(), sizeof(killedwith) - strlen(killedwith) - 1); //AJH supposed to be 29 not 32
 
 	if (gViewPort)
 		gViewPort->DeathMsg( killer, victim );
@@ -283,7 +283,7 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 			ConsolePrint( rgDeathNoticeList[i].szVictim );
 		}
 
-		if ( killedwith && *killedwith && (*killedwith > 13 ) && strcmp( killedwith, "d_world" ) && !rgDeathNoticeList[i].iTeamKill )
+		if ( *killedwith && (*killedwith > 13 ) && strcmp( killedwith, "d_world" ) && !rgDeathNoticeList[i].iTeamKill )
 		{
 			ConsolePrint( " with " );
 
@@ -301,7 +301,3 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 
 	return 1;
 }
-
-
-
-

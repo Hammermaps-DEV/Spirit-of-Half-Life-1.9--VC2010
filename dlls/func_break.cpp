@@ -745,7 +745,7 @@ void CBreakable::Die( void )
 	// The more negative pev->health, the louder
 	// the sound should be.
 
-	fvol = RANDOM_FLOAT(0.85, 1.0) + (abs(pev->health) / 100.0);
+	fvol = RANDOM_FLOAT(0.85, 1.0) + (fabs(pev->health) / 100.0);
 
 	if (fvol > 1.0)
 		fvol = 1.0;
@@ -812,6 +812,8 @@ void CBreakable::Die( void )
 
 	case matCeilingTile:
 		EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "debris/bustceiling.wav", fvol, ATTN_NORM, 0, pitch);
+		break;
+	default:
 		break;
 	}
 

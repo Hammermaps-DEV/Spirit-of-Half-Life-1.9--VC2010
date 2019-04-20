@@ -642,8 +642,6 @@ bool ParticleSystem::ParticleIsVisible( particle* part )
 	Vector vecDir = vec.Normalize( );
 	float distance = vec.Length();
 	
-	
-
 	if ( DotProduct ( vecDir, forward ) < 0 )
 		return false;
 

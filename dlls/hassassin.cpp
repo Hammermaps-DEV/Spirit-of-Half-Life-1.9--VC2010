@@ -1006,6 +1006,8 @@ Schedule_t *CHAssassin :: GetSchedule ( void )
 			return GetScheduleOfType ( SCHED_ALERT_STAND );
 		}
 		break;
+	default:
+		break;
 	}
 
 	return CBaseMonster :: GetSchedule();
