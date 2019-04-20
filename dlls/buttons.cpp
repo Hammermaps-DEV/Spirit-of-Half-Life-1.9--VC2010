@@ -1642,7 +1642,7 @@ void CButtonTarget::Spawn( void )
 
 void CButtonTarget::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( !ShouldToggle( useType, (int)pev->frame ) )
+	if ( !ShouldToggle( useType, static_cast<bool>(pev->frame) ) )
 		return;
 	pev->frame = 1-pev->frame;
 	if ( pev->frame )

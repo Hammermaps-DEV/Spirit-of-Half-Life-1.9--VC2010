@@ -20,7 +20,8 @@
 
 */
 //CODIAC - Linux needs this for tolower
-#include <ctype.h>
+#include "ctype.h"
+#include <cstdio>
 
 #include "extdll.h"
 #include "util.h"
@@ -33,17 +34,25 @@
 #include "weapons.h" //LRC, for trigger_hevcharge
 #include "movewith.h" //LRC
 #include "locus.h" //LRC
-//#include "hgrunt.h"
-//#include "islave.h"
 
-#define	SF_TRIGGER_PUSH_START_OFF	2//spawnflag that makes trigger_push spawn turned OFF
-#define SF_TRIGGER_HURT_TARGETONCE	1// Only fire hurt target once
-#define	SF_TRIGGER_HURT_START_OFF	2//spawnflag that makes trigger_hurt spawn turned OFF
-#define	SF_TRIGGER_HURT_NO_CLIENTS	8// clients may not touch this trigger.
-#define SF_TRIGGER_HURT_CLIENTONLYFIRE	16// trigger hurt will only fire its target if it is hurting a client
-#define SF_TRIGGER_HURT_CLIENTONLYTOUCH 32// only clients may touch this trigger.
+/*
+ * Spawnflags
+ */
+typedef enum
+{
+	SF_TRIGGER_HURT_TARGETONCE = 1, // Only fire hurt target once
+	SF_TRIGGER_HURT_START_OFF = 2, //spawnflag that makes trigger_hurt spawn turned OFF
+	SF_TRIGGER_HURT_NO_CLIENTS = 8, //clients may not touch this trigger.
+	SF_TRIGGER_HURT_CLIENTONLYFIRE = 16,// trigger hurt will only fire its target if it is hurting a client
+	SF_TRIGGER_HURT_CLIENTONLYTOUCH = 32,// only clients may touch this trigger.
+} TRIGGER_HURT;
 
-extern DLL_GLOBAL BOOL		g_fGameOver;
+typedef enum
+{
+	SF_TRIGGER_PUSH_START_OFF = 2, //spawnflag that makes trigger_push spawn turned OFF
+} TRIGGER_PUSH;
+
+extern DLL_GLOBAL bool	g_fGameOver;
 
 extern void SetMovedir(entvars_t* pev);
 extern Vector VecBModelOrigin( entvars_t* pevBModel );
@@ -3732,8 +3741,8 @@ int CChangeLevel::InTransitionVolume( CBaseEntity *pEntity, char *pVolumeName )
 		{
 			if ( pVolume->Intersects( pEntity ) )	// It touches one, it's in the volume
 				return 1;
-			else
-				inVolume = 0;	// Found a trigger_transition, but I don't intersect it -- if I don't find another, don't go!
+
+			inVolume = 0;	// Found a trigger_transition, but I don't intersect it -- if I don't find another, don't go!
 		}
 		pVolume = UTIL_FindEntityByTargetname( pVolume, pVolumeName );
 	}
@@ -3875,7 +3884,7 @@ void NextLevel( void )
 		pChange = GetClassPtr( (CChangeLevel *)pEnt->pev );
 	
 	strcpy(st_szNextMap, pChange->m_szMapName);
-	g_fGameOver = TRUE;
+	g_fGameOver = true;
 	
 	pChange->SetNextThink( 0 );
 	if (pChange->m_fNextThink)
@@ -5216,7 +5225,7 @@ void CTriggerChangeCVar::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE
 
 	if (!(pev->netname)) return;
 
-	if (ShouldToggle(useType, pev->spawnflags & SF_CVAR_ACTIVE))
+	if (ShouldToggle(useType, static_cast<bool>(pev->spawnflags & SF_CVAR_ACTIVE)))
 	{
 		if (pev->spawnflags & SF_CVAR_ACTIVE)
 		{
@@ -5360,7 +5369,7 @@ void CTriggerCamera :: KeyValue( KeyValueData *pkvd )
 
 void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( !ShouldToggle( useType, m_state ) )
+	if ( !ShouldToggle( useType, static_cast<bool>(m_state) ) )
 		return;
 
 	// Toggle state

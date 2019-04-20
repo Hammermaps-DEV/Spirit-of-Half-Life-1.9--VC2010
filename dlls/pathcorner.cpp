@@ -182,7 +182,7 @@ void CPathTrack :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE 
 	{
 		on = !FBitSet( pev->spawnflags, SF_PATH_DISABLED );
 
-		if ( ShouldToggle( useType, on ) )
+		if ( ShouldToggle( useType, static_cast<bool>(on) ) )
 		{
 			if ( on )
 				SetBits( pev->spawnflags, SF_PATH_DISABLED );

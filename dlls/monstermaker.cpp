@@ -314,7 +314,7 @@ void CMonsterMaker::CyclicUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, U
 //=========================================================
 void CMonsterMaker :: ToggleUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( !ShouldToggle( useType, m_fActive ) )
+	if ( !ShouldToggle( useType, static_cast<bool>(m_fActive) ) )
 		return;
 
 	if ( m_fActive )

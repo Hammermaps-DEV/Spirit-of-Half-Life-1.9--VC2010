@@ -513,7 +513,7 @@ void CFuncPlat :: PlatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 		// Top is off, bottom is on
 		BOOL on = (m_toggle_state == TS_AT_BOTTOM) ? TRUE : FALSE;
 
-		if ( !ShouldToggle( useType, on ) )
+		if ( !ShouldToggle( useType, static_cast<bool>(on) ) )
 			return;
 
 		if (m_toggle_state == TS_AT_TOP)
@@ -1571,7 +1571,7 @@ void CFuncTrackTrain :: NextThink( float thinkTime, BOOL alwaysThink )
 //		m_iLFlags &= ~LF_ALWAYSTHINK;
 		pev->flags &= ~FL_ALWAYSTHINK;
 
-	SetNextThink( thinkTime, TRUE );
+	SetNextThink( thinkTime, true );
 }
 
 
@@ -1623,7 +1623,7 @@ void CFuncTrackTrain :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 	m_hActivator = pActivator;
 	if ( useType != USE_SET )
 	{
-		if ( !ShouldToggle( useType, (pev->speed != 0) ) )
+		if ( !ShouldToggle( useType, static_cast<bool>(pev->speed != 0) ) )
 			return;
 
 		if( !m_ppath ) return; // on trackchange
@@ -2139,7 +2139,7 @@ void CFuncTrackTrain :: SetTrainDoor( CBaseTrainDoor *pDoor )
 		// this code will be synchronize door and train beetween changelevel
 		UTIL_SetVelocity( m_pDoor, pev->velocity );
 		UTIL_SetAvelocity( m_pDoor, pev->avelocity );
-		m_pDoor->SetNextThink( 0.1, TRUE );
+		m_pDoor->SetNextThink( 0.1, true );
 	}
 }
 
@@ -2667,7 +2667,7 @@ void CFuncTrackChange :: UpdateTrain( Vector &dest )
 	{
 		m_train->m_pDoor->pev->velocity = m_train->pev->velocity;
 		m_train->m_pDoor->pev->avelocity = m_train->pev->avelocity;
-		m_train->m_pDoor->SetNextThink( m_train->m_pDoor->pev->ltime + time, TRUE );
+		m_train->m_pDoor->SetNextThink( m_train->m_pDoor->pev->ltime + time, true );
 
 		if( pev->avelocity == g_vecZero && pev->avelocity == g_vecZero )
 			m_train->m_pDoor->Stop(); // re-assign new pos
@@ -2997,7 +2997,7 @@ void CFuncTrackAuto :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	{
 		if ( pTarget )
 			pTarget = pTarget->GetNext();
-		if ( pTarget && m_train->m_ppath != pTarget && ShouldToggle( useType, m_targetState ) )
+		if ( pTarget && m_train->m_ppath != pTarget && ShouldToggle( useType, static_cast<bool>(m_targetState) ) )
 		{
 			if ( m_targetState == TS_AT_TOP )
 				m_targetState = TS_AT_BOTTOM;
@@ -3180,7 +3180,7 @@ int	CGunTarget::TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, flo
 
 void CGunTarget::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( !ShouldToggle( useType, m_on ) )
+	if ( !ShouldToggle( useType, static_cast<bool>(m_on) ) )
 		return;
 
 	if ( m_on )

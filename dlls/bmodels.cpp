@@ -92,7 +92,7 @@ void CFuncWall :: Spawn( void )
 
 void CFuncWall :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( ShouldToggle( useType, (int)(pev->frame)) )
+	if ( ShouldToggle( useType, static_cast<bool>(pev->frame)) )
 	{
 		pev->frame = 1 - pev->frame;
 		if (m_iStyle >= 32)
@@ -163,7 +163,7 @@ BOOL CFuncWallToggle :: IsOn( void )
 void CFuncWallToggle :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
 //	int status = IsOn();
-	BOOL status = (GetState() == STATE_ON);
+	bool status = static_cast<bool>(GetState() == STATE_ON);
 
 	if ( ShouldToggle( useType, status ) )
 	{

@@ -352,7 +352,7 @@ void CIchthyosaur::BiteTouch( CBaseEntity *pOther )
 
 void CIchthyosaur::CombatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( !ShouldToggle( useType, m_bOnAttack ) )
+	if ( !ShouldToggle( useType, static_cast<bool>(m_bOnAttack) ) )
 		return;
 
 	if (m_bOnAttack)

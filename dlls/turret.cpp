@@ -413,7 +413,7 @@ void CBaseTurret::Initialize(void)
 
 void CBaseTurret::TurretUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if ( !ShouldToggle( useType, m_iOn ) )
+	if ( !ShouldToggle( useType, static_cast<bool>(m_iOn) ) )
 		return;
 
 	if (m_iOn)
