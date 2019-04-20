@@ -56,7 +56,7 @@ public:
 	void StartTask( Task_t *pTask );
 	virtual int	ObjectCaps( void ) { return CTalkMonster :: ObjectCaps() | FCAP_IMPULSE_USE; }
 	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
-	BOOL CheckRangeAttack1 ( float flDot, float flDist );
+	bool CheckRangeAttack1 ( float flDot, float flDist );
 	
 	void DeclineFollowing( void );
 
@@ -323,7 +323,7 @@ void CBarney :: SetYawSpeed ( void )
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBarney :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CBarney :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDist <= 1024 && flDot >= 0.5 )
 	{
@@ -344,7 +344,8 @@ BOOL CBarney :: CheckRangeAttack1 ( float flDot, float flDist )
 		}
 		return m_lastAttackCheck;
 	}
-	return FALSE;
+
+	return false;
 }
 
 

@@ -24,7 +24,6 @@
 #include	"squadmonster.h"
 #include	"weapons.h"
 #include	"soundent.h"
-#include	"hornet.h"
 #include	"scripted.h"
 
 //=========================================================
@@ -90,9 +89,9 @@ public:
 
 	Schedule_t* GetSchedule ( void );
 	Schedule_t* GetScheduleOfType ( int Type );
-	BOOL FCanCheckAttacks ( void );
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist );
-	BOOL CheckRangeAttack1 ( float flDot, float flDist );
+	bool FCanCheckAttacks ( void );
+	bool CheckMeleeAttack1 ( float flDot, float flDist );
+	bool CheckRangeAttack1 ( float flDot, float flDist );
 	void StartTask ( Task_t *pTask );
 	void AlertSound( void );
 	void DeathSound ( void );
@@ -906,29 +905,24 @@ IMPLEMENT_CUSTOM_SCHEDULES( CAGrunt, CSquadMonster );
 // because they can use their smart weapons against unseen
 // enemies. Base class doesn't attack anyone it can't see.
 //=========================================================
-BOOL CAGrunt :: FCanCheckAttacks ( void )
+bool CAGrunt :: FCanCheckAttacks ( void )
 {
 	if ( !HasConditions( bits_COND_ENEMY_TOOFAR ) )
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
+		return true;
+
+	return false;
 }
 
 //=========================================================
 // CheckMeleeAttack1 - alien grunts zap the crap out of 
 // any enemy that gets too close. 
 //=========================================================
-BOOL CAGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CAGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	if ( HasConditions ( bits_COND_SEE_ENEMY ) && flDist <= AGRUNT_MELEE_DIST && flDot >= 0.6 && m_hEnemy != NULL )
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
@@ -938,7 +932,7 @@ BOOL CAGrunt :: CheckMeleeAttack1 ( float flDot, float flDist )
 // tracelines are done, so we may not want to do this every
 // server frame. Definitely not while firing. 
 //=========================================================
-BOOL CAGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CAGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( gpGlobals->time < m_flNextHornetAttackCheck )
 	{
@@ -967,7 +961,7 @@ BOOL CAGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 	
 	m_flNextHornetAttackCheck = gpGlobals->time + 0.2;// don't check for half second if this check wasn't successful
 	m_fCanHornetAttack = FALSE;
-	return m_fCanHornetAttack;
+	return static_cast<bool>(m_fCanHornetAttack);
 }
 
 //=========================================================

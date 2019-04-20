@@ -131,7 +131,7 @@ public:
 	int				FIdleStare( void );
 	int				FIdleHello( void );
 	void			IdleHeadTurn( Vector &vecFriend );
-	int				FOkToSpeak( void );
+	bool			FOkToSpeak( void );
 	void			TrySmellTalk( void );
 	CBaseEntity		*EnumFriends( CBaseEntity *pentPrevious, int listNumber, BOOL bTrace );
 	void			AlertFriends( void );

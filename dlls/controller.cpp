@@ -51,9 +51,9 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 
 	void RunAI( void );
-	BOOL CheckRangeAttack1 ( float flDot, float flDist );	// balls
-	BOOL CheckRangeAttack2 ( float flDot, float flDist );	// head
-	BOOL CheckMeleeAttack1 ( float flDot, float flDist );	// block, throw
+	bool CheckRangeAttack1 ( float flDot, float flDist );	// balls
+	bool CheckRangeAttack2 ( float flDot, float flDist );	// head
+	bool CheckMeleeAttack1 ( float flDot, float flDist );	// block, throw
 	Schedule_t* GetSchedule ( void );
 	Schedule_t* GetScheduleOfType ( int Type );
 	void StartTask ( Task_t *pTask );
@@ -816,37 +816,33 @@ Schedule_t* CController :: GetScheduleOfType ( int Type )
 	return CBaseMonster :: GetScheduleOfType( Type );
 }
 
-
-
-
-
 //=========================================================
 // CheckRangeAttack1  - shoot a bigass energy ball out of their head
 //
 //=========================================================
-BOOL CController :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CController :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDot > 0.5 && flDist > 256 && flDist <= 2048 )
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+
+	return false;
 }
 
-
-BOOL CController :: CheckRangeAttack2 ( float flDot, float flDist )
+bool CController :: CheckRangeAttack2 ( float flDot, float flDist )
 {
 	if ( flDot > 0.5 && flDist > 64 && flDist <= 2048 )
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+
+	return false;
 }
 
-
-BOOL CController :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CController :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
-	return FALSE;
+	return false;
 }
 
 

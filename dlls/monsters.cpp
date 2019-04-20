@@ -48,8 +48,6 @@ extern "C" char PM_FindTextureType( char *name );
 
 extern CGraph WorldGraph;// the world node graph
 
-
-
 // Global Savedata for monster
 // UNDONE: Save schedule data?  Can this be done?  We may
 // lose our enemy pointer or other data (goal ent, target, etc)
@@ -953,50 +951,46 @@ BOOL CBaseMonster :: FBecomeProne ( void )
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBaseMonster :: CheckRangeAttack1 ( float flDot, float flDist )
+bool CBaseMonster :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( flDist > 64 && flDist <= 784 && flDot >= 0.5 )
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack2
 //=========================================================
-BOOL CBaseMonster :: CheckRangeAttack2 ( float flDot, float flDist )
+bool CBaseMonster :: CheckRangeAttack2 ( float flDot, float flDist )
 {
 	if ( flDist > 64 && flDist <= 512 && flDot >= 0.5 )
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
 // CheckMeleeAttack1
 //=========================================================
-BOOL CBaseMonster :: CheckMeleeAttack1 ( float flDot, float flDist )
+bool CBaseMonster :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	// Decent fix to keep folks from kicking/punching hornets and snarks is to check the onground flag(sjb)
 	if ( flDist <= 64 && flDot >= 0.7 && m_hEnemy != NULL && FBitSet ( m_hEnemy->pev->flags, FL_ONGROUND ) )
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
 // CheckMeleeAttack2
 //=========================================================
-BOOL CBaseMonster :: CheckMeleeAttack2 ( float flDot, float flDist )
+bool CBaseMonster :: CheckMeleeAttack2 ( float flDot, float flDist )
 {
 	if ( flDist <= 64 && flDot >= 0.7 )
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
@@ -1048,14 +1042,12 @@ void CBaseMonster :: CheckAttacks ( CBaseEntity *pTarget, float flDist )
 // CanCheckAttacks - prequalifies a monster to do more fine
 // checking of potential attacks. 
 //=========================================================
-BOOL CBaseMonster :: FCanCheckAttacks ( void )
+bool CBaseMonster :: FCanCheckAttacks ( void )
 {
 	if ( HasConditions(bits_COND_SEE_ENEMY) && !HasConditions( bits_COND_ENEMY_TOOFAR ) )
-	{
-		return TRUE;
-	}
+		return true;
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================

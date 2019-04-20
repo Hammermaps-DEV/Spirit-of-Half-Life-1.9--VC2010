@@ -288,9 +288,9 @@ public:
 		pev->absmax = pev->origin + Vector( 95, 95, 190 );
 	}
 
-	BOOL CheckMeleeAttack1( float flDot, float flDist );	// Slash
-	BOOL CheckMeleeAttack2( float flDot, float flDist );	// Lay a crab
-	BOOL CheckRangeAttack1( float flDot, float flDist );	// Mortar launch
+	bool CheckMeleeAttack1( float flDot, float flDist );	// Slash
+	bool CheckMeleeAttack2( float flDot, float flDist );	// Lay a crab
+	bool CheckRangeAttack1( float flDot, float flDist );	// Mortar launch
 
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
@@ -791,26 +791,27 @@ void CBigMomma::NodeReach( void )
 
 
 	// Slash
-BOOL CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
+bool CBigMomma::CheckMeleeAttack1( float flDot, float flDist )
 {
 	if (flDot >= 0.7)
 	{
 		if ( flDist <= BIG_ATTACKDIST )
-			return TRUE;
+			return true;
 	}
-	return FALSE;
+
+	return false;
 }
 
 
 // Lay a crab
-BOOL CBigMomma::CheckMeleeAttack2( float flDot, float flDist )
+bool CBigMomma::CheckMeleeAttack2( float flDot, float flDist )
 {
-	return CanLayCrab();
+	return static_cast<bool>(CanLayCrab());
 }
 
 
 // Mortar launch
-BOOL CBigMomma::CheckRangeAttack1( float flDot, float flDist )
+bool CBigMomma::CheckRangeAttack1( float flDot, float flDist )
 {
 	if ( flDist <= BIG_MORTARDIST && m_mortarTime < gpGlobals->time )
 	{
@@ -822,10 +823,10 @@ BOOL CBigMomma::CheckRangeAttack1( float flDot, float flDist )
 			startPos.z += 180;
 			pev->movedir = VecCheckSplatToss( pev, startPos, pEnemy->BodyTarget( pev->origin ), RANDOM_FLOAT( 150, 500 ) );
 			if ( pev->movedir != g_vecZero )
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+	return false;
 }
 
 //=========================================================
