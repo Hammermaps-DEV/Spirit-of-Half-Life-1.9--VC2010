@@ -16,7 +16,7 @@
 #define CLIENT_H
 
 extern void respawn( entvars_t* pev, bool fCopyCorpse );
-extern bool ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ] );
+extern int ClientConnect( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ] );
 extern void ClientDisconnect( edict_t *pEntity );
 extern void ClientKill( edict_t *pEntity );
 extern void ClientPutInServer( edict_t *pEntity );

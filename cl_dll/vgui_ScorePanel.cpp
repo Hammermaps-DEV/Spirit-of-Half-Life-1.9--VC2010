@@ -390,7 +390,7 @@ void ScorePanel::SortTeams()
 		// Put this team in the sorted list
 		m_iSortedRows[ m_iRows ] = best_team;
 		m_iIsATeam[ m_iRows ] = TEAM_YES;
-		g_TeamInfo[best_team].already_drawn = true;  // set the already_drawn to be TRUE, so this team won't get sorted again
+		g_TeamInfo[best_team].already_drawn = true;  // set the already_drawn to be true, so this team won't get sorted again
 		m_iRows++;
 
 		// Now sort all the players on this team
