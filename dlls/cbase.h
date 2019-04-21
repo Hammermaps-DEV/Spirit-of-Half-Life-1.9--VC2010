@@ -229,13 +229,13 @@ public:
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
 	//LRC - if I MoveWith something, then only cross transitions if the MoveWith entity does too.
-	virtual int	ObjectCaps( void ) { return m_pMoveWith?m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION:FCAP_ACROSS_TRANSITION; }
+	virtual int		ObjectCaps( void ) { return m_pMoveWith?m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION:FCAP_ACROSS_TRANSITION; }
 	virtual void	Activate( void ); //LRC
-	void		InitMoveWith( void ); //LRC - called by Activate() to set up moveWith values
-	void		SetParent( int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
+	void			InitMoveWith( void ); //LRC - called by Activate() to set up moveWith values
+	void			SetParent( int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
           void		SetParent( CBaseEntity *pParent, int m_iAttachment = 0 );//g-cont. dynamiclly link parents
-	void		ResetParent( void );
-	void		ClearPointers( void ); //g-cont. directly clear all movewith pointer before changelevel
+	void			ResetParent( void );
+	virtual void	ClearPointers( void ); //g-cont. directly clear all movewith pointer before changelevel
 	virtual void	PostSpawn( void ) {} //LRC - called by Activate() to handle entity-specific initialisation.
 	// (mostly setting positions, for MoveWith support)
 
