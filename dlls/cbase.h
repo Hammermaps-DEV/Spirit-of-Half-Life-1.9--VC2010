@@ -242,21 +242,6 @@ public:
 	// Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
 	virtual void	SetObjectCollisionBox( void );
 
-	void UTIL_AutoSetSize( void )//automatically set collision box
-	{
-		studiohdr_t *pstudiohdr;
-		pstudiohdr = (studiohdr_t*)GET_MODEL_PTR( ENT(pev) );
-
-		if (pstudiohdr == NULL)
-		{
-			ALERT(at_console,"Unable to fetch model pointer!\n");
-			return;
-		}
-		mstudioseqdesc_t    *pseqdesc;
-		pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex);
-		UTIL_SetSize(pev,pseqdesc[ pev->sequence ].bbmin,pseqdesc[ pev->sequence ].bbmax);
-	}
-
 // Classify - returns the type of group (e.g., "alien monster", or "human military" so that monsters
 // on the same side won't attack each other, even if they have different classnames.
 	virtual int Classify ( void ) { return CLASS_NONE; };
