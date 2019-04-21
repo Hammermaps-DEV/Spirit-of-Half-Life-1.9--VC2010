@@ -3824,7 +3824,7 @@ void CBasePlayer::CheatImpulseCommands(int iImpulse)
 //
 // Add a weapon to the player (Item == Weapon == Selectable Object)
 //
-bool CBasePlayer::AddPlayerItem(CBasePlayerItem *pItem)
+int CBasePlayer::AddPlayerItem(CBasePlayerItem *pItem)
 {
 	CBasePlayerItem *pInsert;
 
@@ -3873,8 +3873,7 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem *pItem)
 
 		return true;
 	}
-
-	if (gEvilImpulse101)
+	else if (gEvilImpulse101)
 	{
 		// FIXME: remove anyway for deathmatch testing
 		pItem->Kill();
@@ -3884,7 +3883,7 @@ bool CBasePlayer::AddPlayerItem(CBasePlayerItem *pItem)
 
 
 
-bool CBasePlayer::RemovePlayerItem(CBasePlayerItem *pItem)
+int CBasePlayer::RemovePlayerItem(CBasePlayerItem *pItem)
 {
 	if (m_pActiveItem == pItem)
 	{
@@ -4392,7 +4391,7 @@ void CBasePlayer::UpdateClientData(void)
 		Rain_needsUpdate = 0;
 	}
 
-	if (FlashlightIsOn() != static_cast<bool>(m_iClientFlashState))
+	if (FlashlightIsOn() != m_iClientFlashState)
 	{
 		MESSAGE_BEGIN(MSG_ONE, gmsgFlashlight, NULL, pev);
 		WRITE_BYTE(FlashlightIsOn());

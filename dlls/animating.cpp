@@ -123,7 +123,7 @@ void CBaseAnimating :: ResetSequenceInfo ( )
 
 //=========================================================
 //=========================================================
-int CBaseAnimating :: GetSequenceFlags( )
+bool CBaseAnimating :: GetSequenceFlags( )
 {
 	void *pmodel = GET_MODEL_PTR( ENT(pev) );
 

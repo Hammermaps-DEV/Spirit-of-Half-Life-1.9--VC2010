@@ -4057,12 +4057,12 @@ void CEnvDLight::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 
 extern int gmsgKeyedDLight;
 
-void CEnvDLight::MakeLight(int iTime)
+void CEnvDLight::MakeLight(bool bActive)
 {
 	MESSAGE_BEGIN(MSG_ALL, gmsgKeyedDLight, NULL);
 	WRITE_BYTE(m_iKey);
-	WRITE_BYTE(iTime);			// visible?
-	if (static_cast<bool>(iTime))
+	WRITE_BYTE(bActive);			// visible?
+	if (bActive)
 	{
 		WRITE_COORD(m_vecPos.x);		// X
 		WRITE_COORD(m_vecPos.y);		// Y

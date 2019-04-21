@@ -302,7 +302,7 @@ extern void			UTIL_TraceModel			(const Vector &vecStart, const Vector &vecEnd, i
 extern Vector		UTIL_GetAimVector		(edict_t* pent, float flSpeed);
 extern int			UTIL_PointContents		(const Vector &vec);
 
-extern bool			UTIL_IsMasterTriggered	(string_t sMaster, CBaseEntity *pActivator);
+extern int			UTIL_IsMasterTriggered	(string_t sMaster, CBaseEntity *pActivator);
 extern void			UTIL_BloodStream( const Vector &origin, const Vector &direction, int color, int amount );
 extern void			UTIL_BloodDrips( const Vector &origin, const Vector &direction, int color, int amount );
 extern Vector		UTIL_RandomBloodVector( void );

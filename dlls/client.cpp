@@ -81,9 +81,9 @@ ClientConnect
 called when a player connects to a server
 ============
 */
-int ClientConnect(edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128])
+bool ClientConnect(edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[128])
 {
-	return static_cast<int>(g_pGameRules->ClientConnected(pEntity, pszName, pszAddress, szRejectReason));
+	return g_pGameRules->ClientConnected(pEntity, pszName, pszAddress, szRejectReason);
 
 	// a client connecting during an intermission can cause problems
 	//	if (intermission_running)

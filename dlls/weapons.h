@@ -350,7 +350,7 @@ public:
 	virtual bool IsUseable( void );
 	bool DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, float fDrawTime = 0.5 );
 	bool DefaultDeploy( string_t iViewModel, string_t iWeaponModel, int iAnim, char *szAnimExt, float fDrawTime = 0.5 );
-	bool DefaultReload( int iClipSize, int iAnim, float fDelay );
+	int DefaultReload( int iClipSize, int iAnim, float fDelay );
 
 	virtual void ItemPostFrame( void );	// called each frame by the player PostThink
 	// called by CBasePlayerWeapons ItemPostFrame()
