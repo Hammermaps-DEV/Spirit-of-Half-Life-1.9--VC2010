@@ -40,13 +40,13 @@ public:
 	int GetItemInfo(ItemInfo *p);
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	bool Deploy( void );
+	BOOL Deploy( void );
 	void Holster( );
 	void Reload( void );
 	void WeaponIdle( void );
 	void UpdateSpot( void );
 	float m_flSoundDelay;
-	bool ShouldWeaponIdle( void ) { return true; };
+	BOOL ShouldWeaponIdle( void ) { return TRUE; };
 	CLaserSpot *m_pSpot;
 private:
 	unsigned short m_usFirePython;
@@ -97,7 +97,7 @@ void CPython::Precache( void )
 	m_iShell = PRECACHE_MODEL ("models/shell.mdl");// brass shellTE_MODEL
 }
 
-bool CPython::Deploy( )
+BOOL CPython::Deploy( )
 {
 	if ( IsMultiplayer() ) m_iBody = 1;//enable laser sight geometry
 	return DefaultDeploy( "models/v_357.mdl", "models/p_357.mdl", PYTHON_DRAW, "python", 0.7 );
@@ -106,7 +106,7 @@ bool CPython::Deploy( )
 
 void CPython::Holster( )
 {
-	m_fInReload = false;// cancel any reload in progress.
+	m_fInReload = FALSE;// cancel any reload in progress.
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.6;
 
 	SendWeaponAnim( PYTHON_HOLSTER );
@@ -287,14 +287,14 @@ class CPythonAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_357ammobox.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo( CBaseEntity *pOther ) 
+	BOOL AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_357BOX_GIVE, "357", _357_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return true;
+			return TRUE;
 		}
-		return false;
+		return FALSE;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_357, CPythonAmmo );

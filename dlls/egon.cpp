@@ -58,7 +58,7 @@ public:
 	void Precache( void );
 	int GetItemInfo(ItemInfo *p);
 
-	bool Deploy( void );
+	BOOL Deploy( void );
 	void Holster( );
 
 	void CreateEffect ( void );
@@ -76,7 +76,7 @@ public:
 
 	void Fire( const Vector &vecOrigSrc, const Vector &vecDir );
 
-	bool HasAmmo( void );
+	BOOL HasAmmo( void );
 	void UseAmmo( int count );
 	
 	int flags (void) { return ENGINE_CANSKIP( m_pPlayer->edict()) ? NULL : FEV_NOTHOST; }; 
@@ -135,11 +135,11 @@ void CEgon::Precache( void )
 }
 
 
-bool CEgon::Deploy( void )
+BOOL CEgon::Deploy( void )
 {
 	m_fireState = FIRE_OFF;
 
-	AnimRestore = true;
+	AnimRestore = TRUE;
 	return DefaultDeploy( "models/v_egon.mdl", "models/p_egon.mdl", EGON_DRAW, "egon", 0.7 );
 }
 
@@ -172,10 +172,10 @@ int CEgon::GetItemInfo(ItemInfo *p)
 #define EGON_PULSE_INTERVAL			0.1
 #define EGON_DISCHARGE_INTERVAL		0.1
 
-bool CEgon::HasAmmo( void )
+BOOL CEgon::HasAmmo( void )
 {
-	if ( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 ) return false;
-	return true;
+	if ( m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 ) return FALSE;
+	return TRUE;
 }
 
 void CEgon::UseAmmo( int count )
@@ -246,7 +246,7 @@ void CEgon::PrimaryAttack( void )
                                         SendWeaponAnim( EGON_FIRECYCLE );
 				m_shootTime = 0;
 				m_fireMode = (EGON_FIREMODE)m_iBody;
-				AnimRestore = true;
+				AnimRestore = TRUE;
 			}
 			if ( !HasAmmo() )
 			{
@@ -446,7 +446,7 @@ void CEgon::CreateEffect( void )
 	m_pNoise->pev->flags |= FL_SKIPLOCALHOST;
 	m_pNoise->pev->owner = m_pPlayer->edict();
 	
-	m_pSprite = CSprite::SpriteCreate( EGON_FLARE_SPRITE, pev->origin, false );
+	m_pSprite = CSprite::SpriteCreate( EGON_FLARE_SPRITE, pev->origin, FALSE );
 	m_pSprite->pev->scale = 1.0;
 	m_pSprite->SetTransparency( kRenderGlow, 255, 255, 255, 255, kRenderFxNoDissipation );
 	m_pSprite->pev->spawnflags |= SF_SPRITE_TEMPORARY;
@@ -593,14 +593,14 @@ class CEgonAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_chainammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo( CBaseEntity *pOther ) 
+	BOOL AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_URANIUMBOX_GIVE, "uranium", URANIUM_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return true;
+			return TRUE;
 		}
-		return false;
+		return FALSE;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_egonclip, CEgonAmmo );

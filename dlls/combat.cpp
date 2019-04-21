@@ -266,7 +266,7 @@ void CGib::SpawnRandomGibs(entvars_t *pevVictim, int cGibs, int notfirst, const 
 
 //LRC - work out gibs from blood colour, instead of from class.
 
-bool CBaseMonster::HasHumanGibs(void)
+BOOL CBaseMonster::HasHumanGibs(void)
 {
 	int myClass = Classify();
 
@@ -274,7 +274,7 @@ bool CBaseMonster::HasHumanGibs(void)
 	if (myClass == CLASS_NONE || myClass == CLASS_MACHINE ||
 		(myClass == CLASS_PLAYER_BIOWEAPON && myClass == CLASS_ALIEN_BIOWEAPON))
 	{
-		return false;
+		return FALSE;
 	}
 	else
 	{
@@ -286,14 +286,14 @@ bool CBaseMonster::HasHumanGibs(void)
 	//		 myClass == CLASS_HUMAN_PASSIVE  ||
 	//		 myClass == CLASS_PLAYER )
 	//
-	//		 return true;
+	//		 return TRUE;
 	//
-	//	return false;
+	//	return FALSE;
 }
 
 
 //LRC - work out gibs from blood colour, instead.
-bool CBaseMonster::HasAlienGibs(void)
+BOOL CBaseMonster::HasAlienGibs(void)
 {
 	int myClass = Classify();
 
@@ -301,7 +301,7 @@ bool CBaseMonster::HasAlienGibs(void)
 	if (myClass == CLASS_NONE || myClass == CLASS_MACHINE ||
 		(myClass == CLASS_PLAYER_BIOWEAPON && myClass == CLASS_ALIEN_BIOWEAPON))
 	{
-		return false;
+		return FALSE;
 	}
 	else
 	{
@@ -317,9 +317,9 @@ bool CBaseMonster::HasAlienGibs(void)
 	//		 myClass == CLASS_ALIEN_PREDATOR  ||
 	//		 myClass == CLASS_ALIEN_PREY )
 	//
-	//		 return true;
+	//		 return TRUE;
 	//
-	//	return false;
+	//	return FALSE;
 }
 
 
@@ -341,7 +341,7 @@ void CBaseMonster::FadeMonster(void)
 void CBaseMonster::GibMonster(void)
 {
 	TraceResult	tr;
-	bool		gibbed = false;
+	BOOL		gibbed = FALSE;
 	int			iszCustomGibs;
 
 	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "common/bodysplat.wav", 1, ATTN_NORM);
@@ -353,7 +353,7 @@ void CBaseMonster::GibMonster(void)
 			CGib::SpawnHeadGib(pev, STRING(iszCustomGibs));
 			CGib::SpawnRandomGibs(pev, 4, 1, STRING(iszCustomGibs));
 		}
-		gibbed = true;
+		gibbed = TRUE;
 	}
 	// only humans throw skulls !!!UNDONE - eventually monsters will have their own sets of gibs
 	else if (HasHumanGibs())
@@ -363,7 +363,7 @@ void CBaseMonster::GibMonster(void)
 			CGib::SpawnHeadGib(pev);
 			CGib::SpawnRandomGibs(pev, 4, 1);	// throw some human gibs.
 		}
-		gibbed = true;
+		gibbed = TRUE;
 	}
 	else if (HasAlienGibs())
 	{
@@ -371,7 +371,7 @@ void CBaseMonster::GibMonster(void)
 		{
 			CGib::SpawnRandomGibs(pev, 4, 0);	// Throw alien gibs
 		}
-		gibbed = true;
+		gibbed = TRUE;
 	}
 
 	if (!IsPlayer())
@@ -396,7 +396,7 @@ void CBaseMonster::GibMonster(void)
 Activity CBaseMonster::GetDeathActivity(void)
 {
 	Activity	deathActivity;
-	bool		fTriedDirection;
+	BOOL		fTriedDirection;
 	float		flDot;
 	TraceResult	tr;
 	Vector		vecSrc;
@@ -409,7 +409,7 @@ Activity CBaseMonster::GetDeathActivity(void)
 
 	vecSrc = Center();
 
-	fTriedDirection = false;
+	fTriedDirection = FALSE;
 	deathActivity = ACT_DIESIMPLE;// in case we can't find any special deaths to do.
 
 	UTIL_MakeVectors(pev->angles);
@@ -428,7 +428,7 @@ Activity CBaseMonster::GetDeathActivity(void)
 
 	case HITGROUP_GENERIC:
 		// try to pick a death based on attack direction
-		fTriedDirection = true;
+		fTriedDirection = TRUE;
 
 		if (flDot > 0.3)
 		{
@@ -442,7 +442,7 @@ Activity CBaseMonster::GetDeathActivity(void)
 
 	default:
 		// try to pick a death based on attack direction
-		fTriedDirection = true;
+		fTriedDirection = TRUE;
 
 		if (flDot > 0.3)
 		{
@@ -517,10 +517,10 @@ Activity CBaseMonster::GetDeathActivity(void)
 Activity CBaseMonster::GetSmallFlinchActivity(void)
 {
 	Activity	flinchActivity;
-	bool		fTriedDirection;
+	BOOL		fTriedDirection;
 	float		flDot;
 
-	fTriedDirection = false;
+	fTriedDirection = FALSE;
 	UTIL_MakeVectors(pev->angles);
 	flDot = DotProduct(gpGlobals->v_forward, g_vecAttackDir * -1);
 
@@ -580,28 +580,28 @@ void CBaseMonster::BecomeDead(void)
 }
 
 
-bool CBaseMonster::ShouldGibMonster(int iGib)
+BOOL CBaseMonster::ShouldGibMonster(int iGib)
 {
 	if ((iGib == GIB_NORMAL && pev->health < GIB_HEALTH_VALUE) || (iGib == GIB_ALWAYS))
-		return true;
+		return TRUE;
 
-	return false;
+	return FALSE;
 }
 
 
 void CBaseMonster::CallGibMonster(void)
 {
-	bool fade = false;
+	BOOL fade = FALSE;
 
 	if (HasHumanGibs())
 	{
 		if (CVAR_GET_FLOAT("violence_hgibs") == 0)
-			fade = true;
+			fade = TRUE;
 	}
 	else if (HasAlienGibs())
 	{
 		if (CVAR_GET_FLOAT("violence_agibs") == 0)
-			fade = true;
+			fade = TRUE;
 	}
 
 	pev->takedamage = DAMAGE_NO;
@@ -639,7 +639,7 @@ Killed
 void CBaseMonster::Killed(entvars_t *pevAttacker, int iGib)
 {
 	unsigned int	cCount = 0;
-	bool			fDone = false;
+	BOOL			fDone = FALSE;
 
 	if (HasMemory(bits_MEMORY_KILLED))
 	{
@@ -1255,7 +1255,7 @@ CBaseEntity* CBaseMonster::CheckTraceHullAttack(float flDist, int iDamage, int i
 // the caller's forward view cone. The dot product is performed
 // in 2d, making the view cone infinitely tall. 
 //=========================================================
-bool CBaseMonster::FInViewCone(CBaseEntity *pEntity)
+BOOL CBaseMonster::FInViewCone(CBaseEntity *pEntity)
 {
 	Vector2D	vec2LOS;
 	float	flDot;
@@ -1269,11 +1269,11 @@ bool CBaseMonster::FInViewCone(CBaseEntity *pEntity)
 
 	if (flDot > m_flFieldOfView)
 	{
-		return true;
+		return TRUE;
 	}
 	else
 	{
-		return false;
+		return FALSE;
 	}
 }
 
@@ -1282,7 +1282,7 @@ bool CBaseMonster::FInViewCone(CBaseEntity *pEntity)
 // the caller's forward view cone. The dot product is performed
 // in 2d, making the view cone infinitely tall. 
 //=========================================================
-bool CBaseMonster::FInViewCone(Vector *pOrigin)
+BOOL CBaseMonster::FInViewCone(Vector *pOrigin)
 {
 	Vector2D	vec2LOS;
 	float		flDot;
@@ -1296,11 +1296,11 @@ bool CBaseMonster::FInViewCone(Vector *pOrigin)
 
 	if (flDot > m_flFieldOfView)
 	{
-		return true;
+		return TRUE;
 	}
 	else
 	{
-		return false;
+		return FALSE;
 	}
 }
 
@@ -1308,19 +1308,19 @@ bool CBaseMonster::FInViewCone(Vector *pOrigin)
 // FVisible - returns true if a line can be traced from
 // the caller's eyes to the target
 //=========================================================
-bool CBaseEntity::FVisible(CBaseEntity *pEntity)
+BOOL CBaseEntity::FVisible(CBaseEntity *pEntity)
 {
 	TraceResult tr;
 	Vector		vecLookerOrigin;
 	Vector		vecTargetOrigin;
 
 	if (FBitSet(pEntity->pev->flags, FL_NOTARGET))
-		return false;
+		return FALSE;
 
 	// don't look through water
 	if ((pev->waterlevel != 3 && pEntity->pev->waterlevel == 3)
 		|| (pev->waterlevel == 3 && pEntity->pev->waterlevel == 0))
-		return false;
+		return FALSE;
 
 	vecLookerOrigin = pev->origin + pev->view_ofs;//look through the caller's 'eyes'
 	vecTargetOrigin = pEntity->EyePosition();
@@ -1330,12 +1330,12 @@ bool CBaseEntity::FVisible(CBaseEntity *pEntity)
 	if (tr.flFraction != 1.0 && tr.pHit != ENT(pEntity->pev)) //LRC - added so that monsters can "see" some bsp objects
 	{
 		//		ALERT(at_console, "can't see \"%s\"\n", STRING(pEntity->pev->classname));
-		return false;// Line of sight is not established
+		return FALSE;// Line of sight is not established
 	}
 	else
 	{
 		//		ALERT(at_console, "Seen ok\n");
-		return true;// line of sight is valid.
+		return TRUE;// line of sight is valid.
 	}
 }
 
@@ -1343,7 +1343,7 @@ bool CBaseEntity::FVisible(CBaseEntity *pEntity)
 // FVisible - returns true if a line can be traced from
 // the caller's eyes to the target vector
 //=========================================================
-bool CBaseEntity::FVisible(const Vector &vecOrigin)
+BOOL CBaseEntity::FVisible(const Vector &vecOrigin)
 {
 	TraceResult tr;
 	Vector		vecLookerOrigin;
@@ -1354,11 +1354,11 @@ bool CBaseEntity::FVisible(const Vector &vecOrigin)
 
 	if (tr.flFraction != 1.0)
 	{
-		return false;// Line of sight is not established
+		return FALSE;// Line of sight is not established
 	}
 	else
 	{
-		return true;// line of sight is valid.
+		return TRUE;// line of sight is valid.
 	}
 }
 

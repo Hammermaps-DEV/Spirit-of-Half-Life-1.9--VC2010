@@ -236,14 +236,14 @@ public:
 	void FireSniperBolt( void );
 	void PrimaryAttack( void );
 	void SecondaryAttack( void ) { m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1E6; };//just stub
-	bool Deploy( );
+	BOOL Deploy( );
 	void Holster( );
-	bool ShouldWeaponIdle( void ) { return true; };
+	BOOL ShouldWeaponIdle( void ) { return TRUE; };
 	void Reload( void );
 	void WeaponIdle( void );
 	void ZoomUpdate( void );
 	void ZoomReset( void );
-	bool b_setup;
+	BOOL b_setup;
 };
 LINK_ENTITY_TO_CLASS( weapon_crossbow, CCrossbow );
 
@@ -288,7 +288,7 @@ int CCrossbow::GetItemInfo(ItemInfo *p)
 }
 
 
-bool CCrossbow::Deploy( )
+BOOL CCrossbow::Deploy( )
 {
 	if (m_iClip)
 		return DefaultDeploy( "models/v_crossbow.mdl", "models/p_crossbow.mdl", CROSSBOW_DRAW1, "bow" );
@@ -297,7 +297,7 @@ bool CCrossbow::Deploy( )
 
 void CCrossbow::Holster( )
 {
-	m_fInReload = false;// cancel any reload in progress.
+	m_fInReload = FALSE;// cancel any reload in progress.
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	ZoomReset();
 
@@ -445,7 +445,7 @@ void CCrossbow::FireBolt()
 	pBolt->pev->avelocity.z = 10;
 
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
-		m_pPlayer->SetSuitUpdate("!HEV_AMO0", false, 0);
+		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.75;
 
@@ -543,14 +543,14 @@ class CCrossbowAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_crossbow_clip.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo( CBaseEntity *pOther ) 
+	BOOL AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_CROSSBOWCLIP_GIVE, "bolts", BOLT_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return true;
+			return TRUE;
 		}
-		return false;
+		return FALSE;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_crossbow, CCrossbowAmmo );

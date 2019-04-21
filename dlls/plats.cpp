@@ -110,7 +110,7 @@ public:
 	void Precache( void );
 
 	// This is done to fix spawn flag collisions between this class and a derived class
-	virtual bool IsTogglePlat( void ) { return (pev->spawnflags & SF_PLAT_TOGGLE) ? true : false; }
+	virtual BOOL IsTogglePlat( void ) { return (pev->spawnflags & SF_PLAT_TOGGLE) ? TRUE : FALSE; }
 
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
@@ -135,52 +135,52 @@ void CBasePlatTrain :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "lip"))
 	{
 		m_flLip = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "height"))
 	{
 		m_flHeight = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "width"))
 	{
 		m_flWidth = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "rotation"))
 	{
 		m_vecFinalAngle.x = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "movesnd"))
 	{
 		m_bMoveSnd = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "stopsnd"))
 	{
 		m_bStopSnd = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "custommovesnd"))
 	{
 		pev->noise = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "customstopsnd"))
 	{
 		pev->noise1 = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "volume"))
 	{
 		m_volume = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );
@@ -511,7 +511,7 @@ void CFuncPlat :: PlatUse( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TY
 	if ( IsTogglePlat() )
 	{
 		// Top is off, bottom is on
-		bool on = (m_toggle_state == TS_AT_BOTTOM) ? true : false;
+		BOOL on = (m_toggle_state == TS_AT_BOTTOM) ? TRUE : FALSE;
 
 		if ( !ShouldToggle( useType, static_cast<bool>(on) ) )
 			return;
@@ -680,7 +680,7 @@ void CFuncPlatRot::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "axes"))
 	{
 		UTIL_StringToVector((float*)(pev->movedir), pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CFuncPlat::KeyValue( pkvd );
@@ -843,7 +843,7 @@ public:
 
 	entvars_t	*m_pevCurrentTarget;
 	int			m_sounds;
-//LRC - now part of CBaseEntity:	bool		m_activated;
+//LRC - now part of CBaseEntity:	BOOL		m_activated;
 	STATE		m_iState;
 	float		m_fStoredThink;
 	Vector		m_vecAvelocity;
@@ -869,7 +869,7 @@ void CFuncTrain :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBasePlatTrain::KeyValue( pkvd );
@@ -1450,7 +1450,7 @@ void CFuncTrackTrain :: Spawn( void )
 	m_controlMaxs.z += 72;
 // start trains on the next frame, to make sure their targets have had
 // a chance to spawn/activate
-	NextThink( 0.1, false );
+	NextThink( 0.1, FALSE );
 	SetThink(&CFuncTrackTrain :: Find );
 	Precache();
 }
@@ -1514,55 +1514,55 @@ void CFuncTrackTrain :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "wheels"))
 	{
 		m_length = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "height"))
 	{
 		m_height = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "startspeed"))
 	{
 		m_startSpeed = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "custommovesound"))
 	{
 		pev->noise = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "custombrakesound"))
 	{
 		pev->noise1 = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "customstartsound"))
 	{
 		pev->noise2 = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "volume"))
 	{
 		m_flVolume = (float) (atoi(pkvd->szValue));
 		m_flVolume *= 0.1;
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "bank"))
 	{
 		m_flBank = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
 }
 
 
-void CFuncTrackTrain :: NextThink( float thinkTime, bool alwaysThink )
+void CFuncTrackTrain :: NextThink( float thinkTime, BOOL alwaysThink )
 {
 	if ( alwaysThink )
 //		m_iLFlags |= LF_ALWAYSTHINK;
@@ -1767,7 +1767,7 @@ void CFuncTrackTrain :: UpdateSound( void )
 
 void CFuncTrackTrain::OverrideReset( void )
 {
-	NextThink( 0.1, false );
+	NextThink( 0.1, FALSE );
 	SetThink(&CFuncTrackTrain:: NearestPath );
 	m_pDoor = NULL;
 }
@@ -2026,7 +2026,7 @@ void CFuncTrackTrain :: DesiredAction( void ) // Next( void )
 //			ALERT(at_debug, "TRAIN: same pnext\n");
 //		}
 		SetThink(&CFuncTrackTrain :: PostponeNext );
-		NextThink( time, true );
+		NextThink( time, TRUE );
 	}
 	else	// end of path, stop
 	{
@@ -2058,7 +2058,7 @@ void CFuncTrackTrain :: DesiredAction( void ) // Next( void )
 			UTIL_SetVelocity( this, vecTemp * (m_oldSpeed / distance) ); //LRC
 			//pev->velocity = pev->velocity * (m_oldSpeed / distance);
 			SetThink(&CFuncTrackTrain :: DeadEnd );
-			NextThink( time, false );
+			NextThink( time, FALSE );
 		}
 		else
 		{
@@ -2088,7 +2088,7 @@ void CFuncTrackTrain::DeadEnd( void )
 		{
 			do
 			{
-				pNext = pTrack->ValidPath( pTrack->GetPrevious(), true );
+				pNext = pTrack->ValidPath( pTrack->GetPrevious(), TRUE );
 				if ( pNext )
 					pTrack = pNext;
 			} while ( pNext );
@@ -2097,7 +2097,7 @@ void CFuncTrackTrain::DeadEnd( void )
 		{
 			do
 			{
-				pNext = pTrack->ValidPath( pTrack->GetNext(), true );
+				pNext = pTrack->ValidPath( pTrack->GetNext(), TRUE );
 				if ( pNext )
 					pTrack = pNext;
 			} while ( pNext );
@@ -2143,12 +2143,12 @@ void CFuncTrackTrain :: SetTrainDoor( CBaseTrainDoor *pDoor )
 	}
 }
 
-bool CFuncTrackTrain :: OnControls( entvars_t *pevTest )
+BOOL CFuncTrackTrain :: OnControls( entvars_t *pevTest )
 {
 	Vector offset = pevTest->origin - pev->origin;
 
 	if ( pev->spawnflags & SF_TRACKTRAIN_NOCONTROL )
-		return false;
+		return FALSE;
 
 	// Transform offset into local coordinates
 	UTIL_MakeVectors( pev->angles );
@@ -2159,9 +2159,9 @@ bool CFuncTrackTrain :: OnControls( entvars_t *pevTest )
 
 	if ( local.x >= m_controlMins.x && local.y >= m_controlMins.y && local.z >= m_controlMins.z &&
 		 local.x <= m_controlMaxs.x && local.y <= m_controlMaxs.y && local.z <= m_controlMaxs.z )
-		 return true;
+		 return TRUE;
 
-	return false;
+	return FALSE;
 }
 
 
@@ -2203,8 +2203,8 @@ void CFuncTrackTrain :: Find( void )
 	UTIL_AssignOrigin ( this, nextPos ); //LRC
 //	ALERT(at_console, "Train Find; origin %f %f %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
     //UTIL_SetOrigin( this, nextPos );
-	NextThink( 0.1, false );
-//	NextThink( 8, false ); //LRC - What was this for?!
+	NextThink( 0.1, FALSE );
+//	NextThink( 8, FALSE ); //LRC - What was this for?!
 //	SetThink( Next );
 	SetThink(&CFuncTrackTrain :: PostponeNext );
 	pev->speed = m_startSpeed;
@@ -2265,7 +2265,7 @@ void CFuncTrackTrain :: NearestPath( void )
 
 	if ( pev->speed != 0 )
 	{
-		NextThink( 0.1, false );
+		NextThink( 0.1, FALSE );
 		SetThink(&CFuncTrackTrain :: PostponeNext );
 	}
 }
@@ -2455,7 +2455,7 @@ public:
 	virtual void	HitTop( void );
 	void			Touch( CBaseEntity *pOther );
 	virtual void	UpdateAutoTargets( int toggleState );
-	virtual	bool	IsTogglePlat( void ) { return true; }
+	virtual	BOOL	IsTogglePlat( void ) { return TRUE; }
 
 	void			DisableUse( void ) { m_use = 0; }
 	void			EnableUse( void ) { m_use = 1; }
@@ -2551,17 +2551,17 @@ void CFuncTrackChange :: KeyValue( KeyValueData *pkvd )
 	if ( FStrEq(pkvd->szKeyName, "train") )
 	{
 		m_trainName = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "toptrack") )
 	{
 		m_trackTopName = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "bottomtrack") )
 	{
 		m_trackBottomName = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 	{
@@ -2661,7 +2661,7 @@ void CFuncTrackChange :: UpdateTrain( Vector &dest )
 
 	m_train->pev->velocity = vel;
 	m_train->pev->avelocity = pev->avelocity;
-	m_train->NextThink( m_train->pev->ltime + time, false );
+	m_train->NextThink( m_train->pev->ltime + time, FALSE );
 
 	if( m_train->m_pDoor )
 	{
@@ -3042,7 +3042,7 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 private:
-	bool			m_on;
+	BOOL			m_on;
 };
 
 
@@ -3071,7 +3071,7 @@ void CGunTarget::Spawn( void )
 	pev->takedamage = DAMAGE_NO;
 	pev->flags |= FL_MONSTER;
 
-	m_on = false;
+	m_on = FALSE;
 	pev->max_health = pev->health;
 
 	if ( pev->spawnflags & FGUNTARGET_START_ON )
@@ -3239,27 +3239,27 @@ void CTrainSequence :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iDirection"))
 	{
 		m_iDirection = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iPostDirection"))
 	{
 		m_iPostDirection = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszEntity"))
 	{
 		m_iszEntity = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszDestination"))
 	{
 		m_iszDestination = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszTerminate"))
 	{
 		m_iszTerminate = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );

@@ -49,7 +49,7 @@ IMPLEMENT_SAVERESTORE( CSquadMonster, CBaseMonster );
 // OccupySlot - if any slots of the passed slots are 
 // available, the monster will be assigned to one.
 //=========================================================
-bool CSquadMonster :: OccupySlot( int iDesiredSlots )
+BOOL CSquadMonster :: OccupySlot( int iDesiredSlots )
 {
 	int i;
 	int iMask;
@@ -57,7 +57,7 @@ bool CSquadMonster :: OccupySlot( int iDesiredSlots )
 
 	if ( !InSquad() )
 	{
-		return true;
+		return TRUE;
 	}
 
 	if ( SquadEnemySplit() )
@@ -66,7 +66,7 @@ bool CSquadMonster :: OccupySlot( int iDesiredSlots )
 		// so that a squad member doesn't get stranded unable to engage his enemy because
 		// all of the attack slots are taken by squad members fighting other enemies.
 		m_iMySlot = bits_SLOT_SQUAD_SPLIT;
-		return true;
+		return TRUE;
 	}
 
 	CSquadMonster *pSquadLeader = MySquadLeader();
@@ -74,7 +74,7 @@ bool CSquadMonster :: OccupySlot( int iDesiredSlots )
 	if ( !( iDesiredSlots ^ pSquadLeader->m_afSquadSlots ) )
 	{
 		// none of the desired slots are available. 
-		return false;
+		return FALSE;
 	}
 
 	iSquadSlots = pSquadLeader->m_afSquadSlots;
@@ -90,12 +90,12 @@ bool CSquadMonster :: OccupySlot( int iDesiredSlots )
 				pSquadLeader->m_afSquadSlots |= iMask;
 				m_iMySlot = iMask;
 //				ALERT ( at_aiconsole, "Took slot %d - %d\n", i, m_hSquadLeader->m_afSquadSlots );
-				return true;
+				return TRUE;
 			}
 		}
 	}
 
-	return false;
+	return FALSE;
 }
 
 //=========================================================
@@ -186,7 +186,7 @@ void CSquadMonster :: SquadRemove( CSquadMonster *pRemove )
 // SquadAdd(), add pAdd to my squad
 //
 //=========================================================
-bool CSquadMonster :: SquadAdd( CSquadMonster *pAdd )
+BOOL CSquadMonster :: SquadAdd( CSquadMonster *pAdd )
 {
 	ASSERT( pAdd!=NULL );
 	ASSERT( !pAdd->InSquad() );
@@ -198,10 +198,10 @@ bool CSquadMonster :: SquadAdd( CSquadMonster *pAdd )
 		{
 			m_hSquadMember[i] = pAdd;
 			pAdd->m_hSquadLeader = this;
-			return true;
+			return TRUE;
 		}
 	}
-	return false;
+	return FALSE;
 	// should complain here
 }
 
@@ -444,9 +444,9 @@ void CSquadMonster :: StartMonster( void )
 	}
 }
 
-bool CSquadMonster :: NoFriendlyFire( void )
+BOOL CSquadMonster :: NoFriendlyFire( void )
 {
-	return NoFriendlyFire( false ); //default: don't like the player
+	return NoFriendlyFire( FALSE ); //default: don't like the player
 }
 
 //=========================================================
@@ -457,11 +457,11 @@ bool CSquadMonster :: NoFriendlyFire( void )
 //
 // Can now, also, check whether the player is in the box. LRC
 //=========================================================
-bool CSquadMonster :: NoFriendlyFire( bool playerAlly )
+BOOL CSquadMonster :: NoFriendlyFire( BOOL playerAlly )
 {
 	if ( !playerAlly && !InSquad() )
 	{
-		return true;
+		return TRUE;
 	}
 
 	CPlane	backPlane;
@@ -481,7 +481,7 @@ bool CSquadMonster :: NoFriendlyFire( bool playerAlly )
 	else
 	{
 		// if there's no enemy, pretend there's a friendly in the way, so the grunt won't shoot.
-		return false;
+		return FALSE;
 	}
 
 	//UTIL_MakeVectors ( pev->angles );
@@ -512,7 +512,7 @@ bool CSquadMonster :: NoFriendlyFire( bool playerAlly )
 				 rightPlane.PointInFront ( pMember->pev->origin) )
 			{
 				// this guy is in the check volume! Don't shoot!
-				return false;
+				return FALSE;
 			}
 		}
 	}
@@ -526,11 +526,11 @@ bool CSquadMonster :: NoFriendlyFire( bool playerAlly )
 			rightPlane.PointInFront ( pentPlayer->v.origin ) )
 		{
 			// the player is in the check volume! Don't shoot!
-			return false;
+			return FALSE;
 		}
 	}
 
-	return true;
+	return TRUE;
 }
 
 //=========================================================
@@ -563,30 +563,30 @@ MONSTERSTATE CSquadMonster :: GetIdealState ( void )
 // cover location is a good one to move to. (currently based
 // on proximity to others in the squad)
 //=========================================================
-bool CSquadMonster :: FValidateCover ( const Vector &vecCoverLocation )
+BOOL CSquadMonster :: FValidateCover ( const Vector &vecCoverLocation )
 {
 	if ( !InSquad() )
 	{
-		return true;
+		return TRUE;
 	}
 
 	if (SquadMemberInRange( vecCoverLocation, 128 ))
 	{
 		// another squad member is too close to this piece of cover.
-		return false;
+		return FALSE;
 	}
 
-	return true;
+	return TRUE;
 }
 
 //=========================================================
-// SquadEnemySplit- returns true if not all squad members
+// SquadEnemySplit- returns TRUE if not all squad members
 // are fighting the same enemy. 
 //=========================================================
-bool CSquadMonster :: SquadEnemySplit ( void )
+BOOL CSquadMonster :: SquadEnemySplit ( void )
 {
 	if (!InSquad())
-		return false;
+		return FALSE;
 
 	CSquadMonster	*pSquadLeader = MySquadLeader();
 	CBaseEntity		*pEnemy	= pSquadLeader->m_hEnemy;
@@ -596,10 +596,10 @@ bool CSquadMonster :: SquadEnemySplit ( void )
 		CSquadMonster *pMember = pSquadLeader->MySquadMember(i);
 		if (pMember != NULL && pMember->m_hEnemy != NULL && pMember->m_hEnemy != pEnemy)
 		{
-			return true;
+			return TRUE;
 		}
 	}
-	return false;
+	return FALSE;
 }
 
 //=========================================================
@@ -607,10 +607,10 @@ bool CSquadMonster :: SquadEnemySplit ( void )
 // cover location is a good one to move to. (currently based
 // on proximity to others in the squad)
 //=========================================================
-bool CSquadMonster :: SquadMemberInRange ( const Vector &vecLocation, float flDist )
+BOOL CSquadMonster :: SquadMemberInRange ( const Vector &vecLocation, float flDist )
 {
 	if (!InSquad())
-		return false;
+		return FALSE;
 
 	CSquadMonster *pSquadLeader = MySquadLeader();
 
@@ -618,9 +618,9 @@ bool CSquadMonster :: SquadMemberInRange ( const Vector &vecLocation, float flDi
 	{
 		CSquadMonster *pSquadMember = pSquadLeader->MySquadMember(i);
 		if (pSquadMember && (vecLocation - pSquadMember->pev->origin ).Length2D() <= flDist)
-			return true;
+			return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 

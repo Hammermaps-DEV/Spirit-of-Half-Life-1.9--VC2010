@@ -109,7 +109,7 @@ void CFrictionModifier :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "modifier"))
 	{
 		m_frictionFraction = atof(pkvd->szValue) / 100.0;
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
@@ -156,17 +156,17 @@ void CTrainSetSpeed :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "time"))
 	{
 		m_flTime = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	if (FStrEq(pkvd->szKeyName, "mode"))
 	{
 		m_iMode = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "train"))
 	{
 		pev->netname = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
@@ -287,7 +287,7 @@ void CAutoTrigger::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "globalstate"))
 	{
 		m_globalstate = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "triggerstate"))
 	{
@@ -304,7 +304,7 @@ void CAutoTrigger::KeyValue( KeyValueData *pkvd )
 			triggerType = USE_ON;
 			break;
 		}
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseDelay::KeyValue( pkvd );
@@ -378,12 +378,12 @@ void CTriggerRelay::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "master"))
 	{
 		m_sMaster = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszAltTarget"))
 	{
 		m_iszAltTarget = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "triggerstate"))
 	{
@@ -409,7 +409,7 @@ void CTriggerRelay::KeyValue( KeyValueData *pkvd )
 			m_triggerType = USE_ON;
 			break;
 		}
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseDelay::KeyValue( pkvd );
@@ -585,7 +585,7 @@ public:
 	void EXPORT ManagerReport( void );
 #endif
 
-	bool		HasTarget( string_t targetname );
+	BOOL		HasTarget( string_t targetname );
 
 	int ObjectCaps( void ) { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
@@ -613,13 +613,13 @@ public:
 	EHANDLE m_hActivator;
 private:
 	USE_TYPE	m_triggerType; //LRC
-	inline bool IsClone( void ) { return (pev->spawnflags & SF_MULTIMAN_CLONE) ? true : false; }
-	inline bool ShouldClone( void )
+	inline BOOL IsClone( void ) { return (pev->spawnflags & SF_MULTIMAN_CLONE) ? TRUE : FALSE; }
+	inline BOOL ShouldClone( void )
 	{
 		if ( IsClone() )
-			return false;
+			return FALSE;
 
-		return (pev->spawnflags & SF_MULTIMAN_THREAD) ? true : false;
+		return (pev->spawnflags & SF_MULTIMAN_THREAD) ? TRUE : FALSE;
 	}
 
 	CMultiManager *Clone( void );
@@ -661,32 +661,32 @@ void CMultiManager :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "maxwait"))
 	{
 		m_flMaxWait = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "master")) //LRC
 	{
 		m_sMaster = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszThreadName")) //LRC
 	{
 		m_iszThreadName = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszLocusThread")) //LRC
 	{
 		m_iszLocusThread = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "mode")) //LRC
 	{
 		m_iMode = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "triggerstate")) //LRC
 	{
@@ -699,7 +699,7 @@ void CMultiManager :: KeyValue( KeyValueData *pkvd )
 			default: m_triggerType = USE_TOGGLE; break; //compatible.
 		}
 		pev->spawnflags |= SF_MULTIMAN_TRIGCHOSEN;
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else // add this field to the target list
 	{
@@ -712,7 +712,7 @@ void CMultiManager :: KeyValue( KeyValueData *pkvd )
 			m_iTargetName [ m_cTargets ] = ALLOC_STRING( tmp );
 			m_flTargetDelay [ m_cTargets ] = atof (pkvd->szValue);
 			m_cTargets++;
-			pkvd->fHandled = true;
+			pkvd->fHandled = TRUE;
 		}
 		else //LRC - keep a count of how many targets, for the error message
 		{
@@ -783,13 +783,13 @@ void CMultiManager :: Spawn( void )
 }
 
 
-bool CMultiManager::HasTarget( string_t targetname )
+BOOL CMultiManager::HasTarget( string_t targetname )
 {
 	for ( int i = 0; i < m_cTargets; i++ )
 		if ( FStrEq(STRING(targetname), STRING(m_iTargetName[i])) )
-			return true;
+			return TRUE;
 
-	return false;
+	return FALSE;
 }
 
 void CMultiManager :: UseThink ( void )
@@ -1170,7 +1170,7 @@ public:
 	int		m_iTargetName	[ MAX_MULTI_TARGETS ];// list of indexes into global string array
 //	CBaseEntity*	m_pTargetEnt	[ MAX_MULTI_TARGETS ];
 
-	bool	EvalLogic ( CBaseEntity *pEntity );
+	BOOL	EvalLogic ( CBaseEntity *pEntity );
 };
 
 LINK_ENTITY_TO_CLASS( multi_watcher, CStateWatcher );
@@ -1192,7 +1192,7 @@ void CStateWatcher :: KeyValue( KeyValueData *pkvd )
     if (FStrEq(pkvd->szKeyName, "m_fLogic"))
 	{
 		m_fLogic = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
     else if (FStrEq(pkvd->szKeyName, "m_iszWatch"))
 	{
@@ -1200,7 +1200,7 @@ void CStateWatcher :: KeyValue( KeyValueData *pkvd )
 		{
 			m_iTargetName [ m_cTargets ] = ALLOC_STRING(pkvd->szValue);
 			m_cTargets++;
-			pkvd->fHandled = true;
+			pkvd->fHandled = TRUE;
 		}
 		else
 		{
@@ -1215,7 +1215,7 @@ void CStateWatcher :: KeyValue( KeyValueData *pkvd )
 			UTIL_StripToken( pkvd->szKeyName, tmp );
 			m_iTargetName [ m_cTargets ] = ALLOC_STRING( tmp );
 			m_cTargets++;
-			pkvd->fHandled = true;
+			pkvd->fHandled = TRUE;
 		}
 		else
 		{
@@ -1292,11 +1292,11 @@ void CStateWatcher :: Think ( void )
 	}
 }
 
-bool CStateWatcher :: EvalLogic ( CBaseEntity *pActivator )
+BOOL CStateWatcher :: EvalLogic ( CBaseEntity *pActivator )
 {
 	int i;
-	bool b;
-	bool xorgot = false;
+	BOOL b;
+	BOOL xorgot = FALSE;
 
 	CBaseEntity* pEntity;
 
@@ -1326,14 +1326,14 @@ bool CStateWatcher :: EvalLogic ( CBaseEntity *pActivator )
 			}
 //		}
 
-		b = false;
+		b = FALSE;
 		switch (pEntity->GetState())
 		{
-		case STATE_ON:		 if (!(pev->spawnflags & SF_SWATCHER_NOTON))	b = true; break;
-		case STATE_OFF:		 if (pev->spawnflags & SF_SWATCHER_OFF)			b = true; break;
-		case STATE_TURN_ON:	 if (pev->spawnflags & SF_SWATCHER_TURN_ON)		b = true; break;
-		case STATE_TURN_OFF: if (pev->spawnflags & SF_SWATCHER_TURN_ON)		b = true; break;
-		case STATE_IN_USE:	 if (pev->spawnflags & SF_SWATCHER_IN_USE)		b = true; break;
+		case STATE_ON:		 if (!(pev->spawnflags & SF_SWATCHER_NOTON))	b = TRUE; break;
+		case STATE_OFF:		 if (pev->spawnflags & SF_SWATCHER_OFF)			b = TRUE; break;
+		case STATE_TURN_ON:	 if (pev->spawnflags & SF_SWATCHER_TURN_ON)		b = TRUE; break;
+		case STATE_TURN_OFF: if (pev->spawnflags & SF_SWATCHER_TURN_ON)		b = TRUE; break;
+		case STATE_IN_USE:	 if (pev->spawnflags & SF_SWATCHER_IN_USE)		b = TRUE; break;
 		}
 		// handle the states for this logic mode
 		if (b)
@@ -1341,20 +1341,20 @@ bool CStateWatcher :: EvalLogic ( CBaseEntity *pActivator )
 			switch (m_fLogic)
 			{
 			case SWATCHER_LOGIC_OR:
-//				ALERT(at_console,"b is true, OR returns true\n");
-				return true;
+//				ALERT(at_console,"b is TRUE, OR returns true\n");
+				return TRUE;
 			case SWATCHER_LOGIC_NOR:
-//				ALERT(at_console,"b is true, NOR returns false\n");
-				return false;
+//				ALERT(at_console,"b is TRUE, NOR returns false\n");
+				return FALSE;
 			case SWATCHER_LOGIC_XOR:
-//				ALERT(at_console,"b is true, XOR\n");
-				if (xorgot) return false;
-				xorgot = true;
+//				ALERT(at_console,"b is TRUE, XOR\n");
+				if (xorgot) return FALSE;
+				xorgot = TRUE;
 				break;
 			case SWATCHER_LOGIC_XNOR:
-//				ALERT(at_console,"b is true, XNOR\n");
-				if (xorgot) return true;
-				xorgot = true;
+//				ALERT(at_console,"b is TRUE, XNOR\n");
+				if (xorgot) return TRUE;
+				xorgot = TRUE;
 				break;
 			}
 		}
@@ -1363,11 +1363,11 @@ bool CStateWatcher :: EvalLogic ( CBaseEntity *pActivator )
 			switch (m_fLogic)
 			{
 			case SWATCHER_LOGIC_AND:
-//				ALERT(at_console,"b is false, AND returns false\n");
-				return false;
+//				ALERT(at_console,"b is FALSE, AND returns false\n");
+				return FALSE;
 			case SWATCHER_LOGIC_NAND:
-//				ALERT(at_console,"b is false, NAND returns true\n");
-				return true;
+//				ALERT(at_console,"b is FALSE, NAND returns true\n");
+				return TRUE;
 			}
 		}
 	}
@@ -1377,7 +1377,7 @@ bool CStateWatcher :: EvalLogic ( CBaseEntity *pActivator )
 	case SWATCHER_LOGIC_AND:
 	case SWATCHER_LOGIC_NOR:
 //		ALERT(at_console,"final, AND/NOR returns true\n");
-		return true;
+		return TRUE;
 	case SWATCHER_LOGIC_XOR:
 //		ALERT(at_console,"final, XOR\n");
 		return xorgot;
@@ -1386,7 +1386,7 @@ bool CStateWatcher :: EvalLogic ( CBaseEntity *pActivator )
 		return !xorgot;
 	default: // NAND, OR
 //		ALERT(at_console,"final, NAND/OR returns false\n");
-		return false;
+		return FALSE;
 	}
 }
 
@@ -1570,7 +1570,7 @@ class CRenderFxManager : public CPointEntity
 {
 public:
 	void Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	void Affect( CBaseEntity *pEntity, bool bIsLocus, CBaseEntity *pActivator );
+	void Affect( CBaseEntity *pEntity, BOOL bIsLocus, CBaseEntity *pActivator );
 
 	void KeyValue( KeyValueData *pkvd );
 };
@@ -1582,7 +1582,7 @@ void CRenderFxManager :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_fScale"))
 	{
 		pev->scale = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CPointEntity::KeyValue( pkvd );
@@ -1593,11 +1593,11 @@ void CRenderFxManager :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 	if (!FStringNull(pev->target))
 	{
 		CBaseEntity* pTarget = UTIL_FindEntityByTargetname( NULL, STRING(pev->target), pActivator);
-		bool first = true;
+		BOOL first = TRUE;
 		while ( pTarget != NULL )
 		{
 			Affect( pTarget, first, pActivator );
-			first = false;
+			first = FALSE;
 			pTarget = UTIL_FindEntityByTargetname( pTarget, STRING(pev->target), pActivator );
 		}
 	}
@@ -1609,7 +1609,7 @@ void CRenderFxManager :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 	}
 }
 
-void CRenderFxManager::Affect( CBaseEntity *pTarget, bool bIsFirst, CBaseEntity *pActivator )
+void CRenderFxManager::Affect( CBaseEntity *pTarget, BOOL bIsFirst, CBaseEntity *pActivator )
 {
 	entvars_t *pevTarget = pTarget->pev;
 
@@ -1770,82 +1770,82 @@ void CEnvCustomize :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iVisible"))
 	{
 		m_iVisible = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iSolid"))
 	{
 		m_iSolid = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszModel"))
 	{
 		m_iszModel = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_voicePitch"))
 	{
 		m_voicePitch = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iPrisoner"))
 	{
 		m_iPrisoner = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iMonsterClip"))
 	{
 		m_iMonsterClip = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iClass"))
 	{
 		m_iClass = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iPlayerReact"))
 	{
 		m_iPlayerReact = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_flRadius"))
 	{
 		m_flRadius = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iProvoked"))
 	{
 		m_iProvoked = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_bloodColor") || FStrEq(pkvd->szKeyName, "m_iBloodColor"))
 	{
 		m_iBloodColor = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fFramerate"))
 	{
 		m_fFramerate = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fController0"))
 	{
 		m_fController0 = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fController1"))
 	{
 		m_fController1 = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fController2"))
 	{
 		m_fController2 = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_fController3"))
 	{
 		m_fController3 = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
@@ -1887,19 +1887,19 @@ void CEnvCustomize :: Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	}
 	else
 	{
-		bool fail = true;
+		BOOL fail = TRUE;
 		CBaseEntity *pTarget = UTIL_FindEntityByTargetname(NULL, STRING(pev->target), pActivator);
 		while (pTarget)
 		{
 			Affect(pTarget, useType);
-			fail = false;
+			fail = FALSE;
 			pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pev->target), pActivator);
 		}
 		pTarget = UTIL_FindEntityByClassname(NULL, STRING(pev->target));
 		while (pTarget)
 		{
 			Affect(pTarget, useType);
-			fail = false;
+			fail = FALSE;
 			pTarget = UTIL_FindEntityByClassname(pTarget, STRING(pev->target));
 		}
 		if (fail && pev->spawnflags & SF_CUSTOM_DEBUG)
@@ -2256,14 +2256,14 @@ public:
 	// subclasses where they belonged.
 	void InitTrigger( void );
 	void EXPORT ToggleUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	bool CanTouch( entvars_t *pevToucher );
+	BOOL CanTouch( entvars_t *pevToucher );
 
 	virtual int	ObjectCaps( void ) { return CBaseToggle :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 };
 
 LINK_ENTITY_TO_CLASS( trigger, CBaseTrigger );
 
-bool CBaseTrigger :: CanTouch( entvars_t *pevToucher )
+BOOL CBaseTrigger :: CanTouch( entvars_t *pevToucher )
 {
 	if ( !pev->netname )
 	{
@@ -2282,9 +2282,9 @@ bool CBaseTrigger :: CanTouch( entvars_t *pevToucher )
 		// If netname is set, it's an entity-specific trigger; we ignore the spawnflags.
 		if (!FClassnameIs(pevToucher, STRING(pev->netname)) &&
 			(!pevToucher->targetname || !FStrEq(STRING(pevToucher->targetname), STRING(pev->netname))))
-			return false;
+			return FALSE;
 	}
-	return true;
+	return TRUE;
 }
 
 //
@@ -2344,12 +2344,12 @@ void CTriggerHurt :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "damage"))
 	{
 		pev->dmg = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "damagetype"))
 	{
 		m_bitsDamageInflict |= atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "cangib"))
 	{
@@ -2360,7 +2360,7 @@ void CTriggerHurt :: KeyValue( KeyValueData *pkvd )
 		case 2:
 			m_bitsDamageInflict |= DMG_NEVERGIB;
 		}
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );
@@ -2675,7 +2675,7 @@ void CTriggerHevCharge :: AnnounceThink ( )
 	sprintf( szcharge,"!HEV_%1dP", pct );
 	//ALERT(at_debug, "Announce %s\n", szcharge);
 			
-	((CBasePlayer*)pPlayer)->SetSuitUpdate(szcharge, false, SUIT_REPEAT_OK);
+	((CBasePlayer*)pPlayer)->SetSuitUpdate(szcharge, FALSE, SUIT_REPEAT_OK);
 }
 
 
@@ -2753,7 +2753,7 @@ public:
 	void Think( void );
 	void DesiredAction( void );
 	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	bool m_bPlaying;
+	BOOL m_bPlaying;
 	EHANDLE m_hActivator;
 	virtual int Save( CSave &save );
 	virtual int Restore( CRestore &restore );
@@ -2776,7 +2776,7 @@ void CTargetFMODAudio :: Spawn( void )
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NONE;
 
-	m_bPlaying = false; // start out not playing
+	m_bPlaying = FALSE; // start out not playing
 }
 
 void CTargetFMODAudio::Activate( void )
@@ -2821,7 +2821,7 @@ void CTargetFMODAudio::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	if ( !m_bPlaying )
 	{
 		// if we're not playing, start playing!
-		m_bPlaying = true;
+		m_bPlaying = TRUE;
 	}
 	else
 	{
@@ -2830,7 +2830,7 @@ void CTargetFMODAudio::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 			WRITE_STRING( STRING( pev->message ));
 			WRITE_BYTE( 0 );
 		MESSAGE_END();
-          	m_bPlaying = false;
+          	m_bPlaying = FALSE;
 		return;
 	}
 
@@ -2950,7 +2950,7 @@ void CTargetCDAudio :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "radius"))
 	{
 		pev->scale = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CPointEntity::KeyValue( pkvd );
@@ -3142,13 +3142,13 @@ class CInOutRegister : public CPointEntity
 {
 public:
 	// returns true if found in the list
-	bool IsRegistered ( CBaseEntity *pValue );
+	BOOL IsRegistered ( CBaseEntity *pValue );
 	// remove all invalid entries from the list, trigger their targets as appropriate
 	// returns the new list
 	CInOutRegister *Prune( void );
 	// adds a new entry to the list
 	CInOutRegister *Add( CBaseEntity *pValue );
-	bool IsEmpty( void ) { return m_pNext?false:true; };
+	BOOL IsEmpty( void ) { return m_pNext?FALSE:TRUE; };
 
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
@@ -3193,14 +3193,14 @@ TYPEDESCRIPTION	CInOutRegister::m_SaveData[] =
 IMPLEMENT_SAVERESTORE(CInOutRegister,CPointEntity);
 LINK_ENTITY_TO_CLASS( inout_register, CInOutRegister );
 
-bool CInOutRegister::IsRegistered ( CBaseEntity *pValue )
+BOOL CInOutRegister::IsRegistered ( CBaseEntity *pValue )
 {
 	if (m_hValue == pValue)
-		return true;
+		return TRUE;
 	else if (m_pNext)
 		return m_pNext->IsRegistered( pValue );
 	else
-		return false;
+		return FALSE;
 }
 
 CInOutRegister *CInOutRegister::Add( CBaseEntity *pValue )
@@ -3291,12 +3291,12 @@ void CTriggerInOut::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iszAltTarget"))
 	{
 		m_iszAltTarget = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszBothTarget"))
 	{
 		m_iszBothTarget = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseTrigger::KeyValue( pkvd );
@@ -3372,7 +3372,7 @@ void CTriggerCounter :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "count"))
 	{
 		m_cTriggersLeft = (int) atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CTriggerMultiple::KeyValue( pkvd );
@@ -3397,7 +3397,7 @@ void CTriggerCounter::CounterUse( CBaseEntity *pActivator, CBaseEntity *pCaller,
 	if (m_cTriggersLeft < 0)
 		return;
 	
-	bool fTellActivator =
+	BOOL fTellActivator =
 		(FClassnameIs(m_hActivator->pev, "player") &&
 		!FBitSet(pev->spawnflags, SPAWNFLAG_NOMESSAGE));
 	if (m_cTriggersLeft != 0)
@@ -3534,24 +3534,24 @@ void CChangeLevel :: KeyValue( KeyValueData *pkvd )
 		for (int i = 0; m_szMapName[i]; i++) { m_szMapName[i] = tolower(m_szMapName[i]); }
 //		ALERT(at_console, "changed to %s\n", m_szMapName);
 
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "landmark"))
 	{
 		if (strlen(pkvd->szValue) >= cchMapNameMost)
 			ALERT( at_error, "Landmark name '%s' too long (32 chars)\n", pkvd->szValue );
 		strcpy(m_szLandmarkName, pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "changetarget"))
 	{
 		m_changeTarget = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "changedelay"))
 	{
 		m_changeTargetDelay = atof( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseTrigger::KeyValue( pkvd );
@@ -3974,12 +3974,12 @@ void CTriggerPush :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iszPushSpeed"))
 	{
 		m_iszPushSpeed = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszPushVel"))
 	{
 		m_iszPushVel = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseTrigger::KeyValue( pkvd );
@@ -4112,8 +4112,8 @@ class CTriggerOnSight : public CBaseDelay
 public:
 	void Spawn( void );
 	void Think( void );
-	bool VisionCheck( void );
-	bool CanSee(CBaseEntity *pLooker, CBaseEntity *pSeen);
+	BOOL VisionCheck( void );
+	BOOL CanSee(CBaseEntity *pLooker, CBaseEntity *pSeen);
 	virtual int	ObjectCaps( void ) { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
 	STATE GetState();
@@ -4176,14 +4176,14 @@ void CTriggerOnSight :: Think( void )
 	}
 }
 
-bool CTriggerOnSight :: VisionCheck( void )
+BOOL CTriggerOnSight :: VisionCheck( void )
 {													// and GetState check (stops dead monsters seeing)
 	CBaseEntity *pLooker;
 	if (pev->netname)
 	{
 		pLooker = UTIL_FindEntityByTargetname(NULL, STRING(pev->netname));
 		if (!pLooker)
-			return false; // if we can't find the eye entity, give up
+			return FALSE; // if we can't find the eye entity, give up
 	}
 	else
 	{
@@ -4191,7 +4191,7 @@ bool CTriggerOnSight :: VisionCheck( void )
 		if (!pLooker)
 		{
 			ALERT(at_error, "trigger_onsight can't find player!?\n");
-			return false;
+			return FALSE;
 		}
 	}
 
@@ -4208,29 +4208,29 @@ bool CTriggerOnSight :: VisionCheck( void )
 		while (pSeen != NULL)
 		{
 			if (CanSee(pLooker, pSeen))
-				return true;
+				return TRUE;
 			pSeen = UTIL_FindEntityByClassname(pSeen, STRING(pev->message));
 		}
-		return false;
+		return FALSE;
 	}
 	else
 	{
 		while (pSeen != NULL)
 		{
 			if (CanSee(pLooker, pSeen))
-				return true;
+				return TRUE;
 			pSeen = UTIL_FindEntityByTargetname(pSeen, STRING(pev->message));
 		}
-		return false;
+		return FALSE;
 	}
 }
 
 // by the criteria we're using, can the Looker see the Seen entity?
-bool CTriggerOnSight :: CanSee(CBaseEntity *pLooker, CBaseEntity *pSeen)
+BOOL CTriggerOnSight :: CanSee(CBaseEntity *pLooker, CBaseEntity *pSeen)
 {
 	// out of range?
 	if (pev->frags && (pLooker->pev->origin - pSeen->pev->origin).Length() > pev->frags)
-		return false;
+		return FALSE;
 
 	// check FOV if appropriate
 	if (pev->max_health < 360)
@@ -4252,12 +4252,12 @@ bool CTriggerOnSight :: CanSee(CBaseEntity *pLooker, CBaseEntity *pSeen)
 			if (pMonst)
 				flComp = pMonst->m_flFieldOfView;
 			else
-				return false; // not a monster, can't use M-M-M-MonsterVision
+				return FALSE; // not a monster, can't use M-M-M-MonsterVision
 		}
 
 		// outside field of view
 		if (flDot <= flComp)
-			return false;
+			return FALSE;
 	}
 
 	// check LOS if appropriate
@@ -4269,10 +4269,10 @@ bool CTriggerOnSight :: CanSee(CBaseEntity *pLooker, CBaseEntity *pSeen)
 		else
 			UTIL_TraceLine( pLooker->EyePosition(), pSeen->pev->origin, ignore_monsters, dont_ignore_glass, pLooker->edict(), &tr );
 		if (tr.flFraction < 1.0 && tr.pHit != pSeen->edict())
-			return false;
+			return FALSE;
 	}
 
-	return true;
+	return TRUE;
 }
 
 //======================================
@@ -4334,7 +4334,7 @@ void CTriggerTeleport :: TeleportTouch( CBaseEntity *pOther )
 //				ALERT(at_console, "v_angle = %f %f %f\n", pOther->pev->v_angle.x, pOther->pev->v_angle.y, pOther->pev->v_angle.z);
 				pOther->pev->angles.x = pOther->pev->v_angle.x;
 //				pOther->pev->v_angles.y += ydiff;
-				pOther->pev->fixangle = true;
+				pOther->pev->fixangle = TRUE;
 			}
 
 			// set new velocity
@@ -4379,12 +4379,12 @@ void CTriggerTeleport :: TeleportTouch( CBaseEntity *pOther )
 		if ( pOther->IsPlayer() )
 		{
 			pOther->pev->v_angle = pTarget->pev->angles; //LRC
-			pOther->pev->fixangle = true;
+			pOther->pev->fixangle = TRUE;
 		}
 	}
 
 	pevToucher->flags &= ~FL_ONGROUND;
-	pevToucher->fixangle = true;
+	pevToucher->fixangle = TRUE;
 
 	FireTargets(STRING(pev->noise), pOther, this, USE_TOGGLE, 0);
 }
@@ -4494,7 +4494,7 @@ void CTriggerEndSection :: KeyValue( KeyValueData *pkvd )
 //		m_iszSectionName = ALLOC_STRING( pkvd->szValue );
 		// Store this in message so we don't have to write save/restore for this ent
 		pev->message = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseTrigger::KeyValue( pkvd );
@@ -4560,7 +4560,7 @@ void CTriggerSetPatrol::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iszPath"))
 	{
 		m_iszPath = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseDelay::KeyValue( pkvd );
@@ -4630,42 +4630,42 @@ void CTriggerMotion::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iszPosition"))
 	{
 		m_iszPosition = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iPosMode"))
 	{
 		m_iPosMode = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszAngles"))
 	{
 		m_iszAngles = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iAngMode"))
 	{
 		m_iAngMode = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszVelocity"))
 	{
 		m_iszVelocity = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iVelMode"))
 	{
 		m_iVelMode = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszAVelocity"))
 	{
 		m_iszAVelocity = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iAVelMode"))
 	{
 		m_iAVelMode = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CPointEntity::KeyValue( pkvd );
@@ -4988,22 +4988,22 @@ void CMotionManager::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iszPosition"))
 	{
 		m_iszPosition = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iPosMode"))
 	{
 		m_iPosMode = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszFacing"))
 	{
 		m_iszFacing = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iFaceMode"))
 	{
 		m_iFaceMode = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CPointEntity::KeyValue( pkvd );
@@ -5084,7 +5084,7 @@ void CTriggerChangeTarget::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iszNewTarget"))
 	{
 		m_iszNewTarget = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseDelay::KeyValue( pkvd );
@@ -5149,7 +5149,7 @@ void CTriggerChangeValue::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iszNewValue"))
 	{
 		m_iszNewValue = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseDelay::KeyValue( pkvd );
@@ -5164,7 +5164,7 @@ void CTriggerChangeValue::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 		KeyValueData mypkvd;
 		mypkvd.szKeyName = (char*)STRING(pev->netname);
 		mypkvd.szValue = (char*)STRING(m_iszNewValue);
-		mypkvd.fHandled = false;
+		mypkvd.fHandled = FALSE;
 		pTarget->KeyValue(&mypkvd);
 		//Error if not handled?
 	}
@@ -5339,27 +5339,27 @@ void CTriggerCamera :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "wait"))
 	{
 		m_flWait = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "moveto"))
 	{
 		m_sPath = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "acceleration"))
 	{
 		m_acceleration = atof( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "deceleration"))
 	{
 		m_deceleration = atof( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszViewEntity"))
 	{
 		m_iszViewEntity = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseDelay::KeyValue( pkvd );
@@ -5414,7 +5414,7 @@ void CTriggerCamera::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 
 	if (FBitSet (pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL ) )
 	{
-		((CBasePlayer *)pActivator)->EnableControl(false);
+		((CBasePlayer *)pActivator)->EnableControl(FALSE);
 	}
 
 	if ( m_sPath )
@@ -5500,7 +5500,7 @@ void CTriggerCamera::FollowTarget( )
 			((CBasePlayer *)((CBaseEntity *)m_hPlayer))->viewEntity = 0;
 			((CBasePlayer *)((CBaseEntity *)m_hPlayer))->viewFlags = 0;
 			((CBasePlayer *)((CBaseEntity *)m_hPlayer))->viewNeedsUpdate = 1;
-			((CBasePlayer *)((CBaseEntity *)m_hPlayer))->EnableControl(true);
+			((CBasePlayer *)((CBaseEntity *)m_hPlayer))->EnableControl(TRUE);
 		}
 		SUB_UseTargets( this, USE_TOGGLE, 0 );
 		pev->avelocity = Vector( 0, 0, 0 );

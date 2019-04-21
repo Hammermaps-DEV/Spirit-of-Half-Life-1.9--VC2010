@@ -38,26 +38,23 @@
 class CRoach : public CBaseMonster
 {
 public:
-	void Spawn( void ) override;
-	void Precache( void ) override;
-	void SetYawSpeed( void ) override;
+	void Spawn( void );
+	void Precache( void );
+	void SetYawSpeed( void );
 	void EXPORT MonsterThink ( void );
-	void Move ( float flInterval ) override;
+	void Move ( float flInterval );
 	void PickNewDest ( int iCondition );
-	void EXPORT Touch ( CBaseEntity *pOther ) override;
-	void Killed( entvars_t *pevAttacker, int iGib ) override;
+	void EXPORT Touch ( CBaseEntity *pOther );
+	void Killed( entvars_t *pevAttacker, int iGib );
 
 	float	m_flLastLightLevel;
 	float	m_flNextSmellTime;
-	int		Classify ( void ) override;
-	void	Look ( int iDistance ) override;
-	int		ISoundMask ( void ) override;
-	int		IgnoreConditions(void) override;
-	bool	FShouldEat(void);
-
+	int		Classify ( void );
+	void	Look ( int iDistance );
+	int		ISoundMask ( void );
 	
 	// UNDONE: These don't necessarily need to be save/restored, but if we add more data, it may
-	bool	m_fLightHacked;
+	BOOL	m_fLightHacked;
 	int		m_iMode;
 	// -----------------------------
 };
@@ -145,7 +142,7 @@ void CRoach :: Spawn()
 
 	pev->view_ofs		= Vector ( 0, 0, 1 );// position of the eyes relative to monster's origin.
 	pev->takedamage		= DAMAGE_YES;
-	m_fLightHacked		= false;
+	m_fLightHacked		= FALSE;
 	m_flLastLightLevel	= -1;
 	m_iMode				= ROACH_IDLE;
 	m_flNextSmellTime	= gpGlobals->time;
@@ -211,7 +208,7 @@ void CRoach :: MonsterThink( void  )
 		// if light value hasn't been collection for the first time yet, 
 		// suspend the creature for a second so the world finishes spawning, then we'll collect the light level.
 		SetNextThink( 1 );
-		m_fLightHacked = true;
+		m_fLightHacked = TRUE;
 		return;
 	}
 	else if ( m_flLastLightLevel < 0 )
@@ -300,33 +297,6 @@ void CRoach :: MonsterThink( void  )
 	{
 		Move( flInterval );
 	}
-}
-
-//=========================================================
-// FShouldEat - returns true if a monster is hungry.
-//=========================================================
-bool CRoach::FShouldEat(void)
-{
-	if (m_flHungryTime > gpGlobals->time)
-		return false;
-
-	return true;
-}
-
-//=========================================================
-// Ignore conditions
-//=========================================================
-int CRoach::IgnoreConditions(void)
-{
-	int iIgnoreConditions = 0;
-
-	if (!FShouldEat())
-	{
-		// not hungry? Ignore food smell.
-		iIgnoreConditions |= bits_COND_SMELL_FOOD;
-	}
-
-	return iIgnoreConditions;
 }
 
 //=========================================================
@@ -431,7 +401,7 @@ void CRoach :: Move ( float flInterval )
 	if ( RANDOM_LONG(0,149) == 1 && m_iMode != ROACH_SCARED_BY_LIGHT && m_iMode != ROACH_SMELL_FOOD )
 	{
 		// random skitter while moving as long as not on a b-line to get out of light or going to food
-		PickNewDest( false );
+		PickNewDest( FALSE );
 	}
 }
 
@@ -478,10 +448,10 @@ void CRoach :: Look ( int iDistance )
 				// we see monsters other than the Enemy.
 				switch ( IRelationship ( pSightEnt ) )
 				{
-				case	RELATIONSHIP_FEAR:		
+				case	R_FR:		
 					iSighted |= bits_COND_SEE_FEAR;	
 					break;
-				case	RELATIONSHIP_NO:
+				case	R_NO:
 					break;
 				default:
 					ALERT ( at_debug, "%s can't assess %s\n", STRING(pev->classname), STRING(pSightEnt->pev->classname ) );

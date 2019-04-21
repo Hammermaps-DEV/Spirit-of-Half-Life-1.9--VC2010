@@ -245,9 +245,9 @@ int CHudSound::VidInit( void )
 {
 	if( fmod_dll )
 	{
-		if( CheckFormat( false ) == TRACK )
+		if( CheckFormat( FALSE ) == TRACK )
 			qfmod_freesong( fmod_data );
-		else if( CheckFormat( false ) == STREAM )
+		else if( CheckFormat( FALSE ) == STREAM )
 			qfmod_freestream( fmod_data );
 
 		songname[0] = barename[0] = '\0';
@@ -376,9 +376,9 @@ int CHudSound::Draw( float flTime )
 
 	if( vol != m_flVolume )
 	{
-		if( CheckFormat( false ) == TRACK )
+		if( CheckFormat( FALSE ) == TRACK )
 			qfmod_setmodvolume( fmod_data, (int)(vol * 256.f ));
-		else if( CheckFormat( false ) == STREAM )
+		else if( CheckFormat( FALSE ) == STREAM )
 			qfmod_setvolume( FSOUND_ALL, (int)(vol * 256.f ));
 		m_flVolume = vol;
 	}

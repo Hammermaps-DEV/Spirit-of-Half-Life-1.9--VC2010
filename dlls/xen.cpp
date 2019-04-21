@@ -102,7 +102,7 @@ void CXenPLight :: Spawn( void )
 	SetNextThink( 0.1 );
 	pev->frame = RANDOM_FLOAT(0,255);
 
-	m_pGlow = CSprite::SpriteCreate( XEN_PLANT_GLOW_SPRITE, pev->origin + Vector(0,0,(pev->mins.z+pev->maxs.z)*0.5), false);
+	m_pGlow = CSprite::SpriteCreate( XEN_PLANT_GLOW_SPRITE, pev->origin + Vector(0,0,(pev->mins.z+pev->maxs.z)*0.5), FALSE );
 	m_pGlow->SetTransparency( kRenderGlow, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, pev->renderamt, pev->renderfx );
 	m_pGlow->SetAttachment( edict(), 1 );
 }
@@ -363,7 +363,7 @@ void CXenTree :: HandleAnimEvent( MonsterEvent_t *pEvent )
 		case TREE_AE_ATTACK:
 		{
 			CBaseEntity *pList[8];
-			bool sound = false;
+			BOOL sound = FALSE;
 			int count = UTIL_EntitiesInBox( pList, 8, m_pTrigger->pev->absmin, m_pTrigger->pev->absmax, FL_MONSTER|FL_CLIENT );
 			Vector forward;
 
@@ -375,7 +375,7 @@ void CXenTree :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				{
 					if ( pList[i]->pev->owner != edict() )
 					{
-						sound = true;
+						sound = TRUE;
 						pList[i]->TakeDamage( pev, pev, 25, DMG_CRUSH | DMG_SLASH );
 						pList[i]->pev->punchangle.x = 15;
 						pList[i]->pev->velocity = pList[i]->pev->velocity + forward * 100;

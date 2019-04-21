@@ -118,11 +118,11 @@ public:
 	void EXPORT NearestPath( void );
 	void EXPORT DeadEnd( void );
 
-	void		NextThink( float thinkTime, bool alwaysThink );
+	void		NextThink( float thinkTime, BOOL alwaysThink );
 
 	void SetTrack( CPathTrack *track ) { m_ppath = track->Nearest(pev->origin); }
 	void SetControls( entvars_t *pevControls );
-	bool OnControls( entvars_t *pev );
+	BOOL OnControls( entvars_t *pev );
 
 	void StopSound ( void );
 	void UpdateSound ( void );

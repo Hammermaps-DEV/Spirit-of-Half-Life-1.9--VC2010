@@ -72,7 +72,7 @@ void CBreakable::KeyValue( KeyValueData* pkvd )
 		else
 			m_Explosion = expRandom;
 
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "material"))
 	{
@@ -85,50 +85,50 @@ void CBreakable::KeyValue( KeyValueData* pkvd )
 		else
 			m_Material = (Materials)i;
 
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "deadmodel"))
 	{
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "shards"))
 	{
 //			m_iShards = atof(pkvd->szValue);
-			pkvd->fHandled = true;
+			pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "gibmodel") )
 	{
 		m_iszGibModel = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "spawnobject") )
 	{
 		int object = atoi( pkvd->szValue );
 		if ( object > 0 && object < HL_ARRAYSIZE(pSpawnObjects) )
 			m_iszSpawnObject = MAKE_STRING( pSpawnObjects[object] );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "explodemagnitude") )
 	{
 		ExplosionSetMagnitude( atoi( pkvd->szValue ) );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "lip") )
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	else if (FStrEq(pkvd->szKeyName, "respawn") ) //LRC
 	{
 		m_iRespawnTime = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "whenhit") ) //LRC
 	{
 		m_iszWhenHit = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iClass") )
 	{
 		m_iClass = atoi( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseDelay::KeyValue( pkvd );
@@ -936,13 +936,13 @@ void CBreakable::Die( void )
 
 	if ( Explodable() )
 	{
-		ExplosionCreate( Center(), pev->angles, edict(), ExplosionMagnitude(), true );
+		ExplosionCreate( Center(), pev->angles, edict(), ExplosionMagnitude(), TRUE );
 	}
 }
 
 
 
-bool CBreakable :: IsBreakable( void )
+BOOL CBreakable :: IsBreakable( void )
 {
 	return m_Material != matUnbreakableGlass;
 }
@@ -1051,7 +1051,7 @@ void CPushable :: KeyValue( KeyValueData *pkvd )
 	if ( FStrEq(pkvd->szKeyName, "size") )
 	{
 		int bbox = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 
 		switch( bbox )
 		{
@@ -1077,7 +1077,7 @@ void CPushable :: KeyValue( KeyValueData *pkvd )
 	else if ( FStrEq(pkvd->szKeyName, "buoyancy") )
 	{
 		pev->skin = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBreakable::KeyValue( pkvd );

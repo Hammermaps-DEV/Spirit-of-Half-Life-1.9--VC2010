@@ -29,15 +29,17 @@
 extern CGraph WorldGraph;
 
 //=========================================================
-// FHaveSchedule - Returns true if monster's m_pSchedule
+// FHaveSchedule - Returns TRUE if monster's m_pSchedule
 // is anything other than NULL.
 //=========================================================
-bool CBaseMonster :: FHaveSchedule( void )
+BOOL CBaseMonster :: FHaveSchedule( void )
 {
-	if ( m_pSchedule == nullptr )
-		return false;
+	if ( m_pSchedule == NULL )
+	{
+		return FALSE;
+	}
 
-	return true;
+	return TRUE;
 }
 
 //=========================================================
@@ -52,16 +54,16 @@ void CBaseMonster :: ClearSchedule( void )
 }
 
 //=========================================================
-// FScheduleDone - Returns true if the caller is on the
+// FScheduleDone - Returns TRUE if the caller is on the
 // last task in the schedule
 //=========================================================
-bool CBaseMonster :: FScheduleDone ( void )
+BOOL CBaseMonster :: FScheduleDone ( void )
 {
 	ASSERT( m_pSchedule != NULL );
 	
 	if ( m_iScheduleIndex == m_pSchedule->cTasks )
 	{
-		return true;
+		return TRUE;
 	}
 
 	return FALSE;
@@ -127,16 +129,16 @@ int CBaseMonster :: IScheduleFlags ( void )
 }
 
 //=========================================================
-// FScheduleValid - returns true as long as the current
+// FScheduleValid - returns TRUE as long as the current
 // schedule is still the proper schedule to be executing,
 // taking into account all conditions
 //=========================================================
-bool CBaseMonster :: FScheduleValid ( void )
+BOOL CBaseMonster :: FScheduleValid ( void )
 {
-	if ( m_pSchedule == nullptr )
+	if ( m_pSchedule == NULL )
 	{
 		// schedule is empty, and therefore not valid.
-		return false;
+		return FALSE;
 	}
 
 	if ( HasConditions( m_pSchedule->iInterruptMask | bits_COND_SCHEDULE_DONE | bits_COND_TASK_FAILED ) )
@@ -152,10 +154,10 @@ bool CBaseMonster :: FScheduleValid ( void )
 #endif // DEBUG
 
 		// some condition has interrupted the schedule, or the schedule is done
-		return false;
+		return FALSE;
 	}
 	
-	return true;
+	return TRUE;
 }
 
 //=========================================================
@@ -166,11 +168,12 @@ bool CBaseMonster :: FScheduleValid ( void )
 void CBaseMonster :: MaintainSchedule ( void )
 {
 	Schedule_t	*pNewSchedule;
+	int			i;
 
 	// UNDONE: Tune/fix this 10... This is just here so infinite loops are impossible
-	for ( int i = 0; i < 10; i++ )
+	for ( i = 0; i < 10; i++ )
 	{
-		if ( m_pSchedule != nullptr && TaskIsComplete() )
+		if ( m_pSchedule != NULL && TaskIsComplete() )
 		{
 			NextScheduledTask();
 		}
@@ -370,11 +373,13 @@ void CBaseMonster :: RunTask ( Task_t *pTask )
 		}
 	case TASK_MOVE_TO_TARGET_RANGE:
 		{
+			float distance;
+
 			if ( m_hTargetEnt == NULL )
 				TaskFail();
 			else
 			{
-				float distance = (m_vecMoveGoal - pev->origin).Length2D();
+				distance = ( m_vecMoveGoal - pev->origin ).Length2D();
 				// Re-evaluate when you think your finished, or the target has moved too far
 				if ( (distance < pTask->flData) || (m_vecMoveGoal - m_hTargetEnt->pev->origin).Length() > pTask->flData * 0.5 )
 				{
@@ -513,7 +518,8 @@ void CBaseMonster :: RunTask ( Task_t *pTask )
 //=========================================================
 void CBaseMonster :: SetTurnActivity ( void )
 {
-	float flYD = FlYawDiff();
+	float flYD;
+	flYD = FlYawDiff();
 
 	if ( flYD <= -45 && LookupActivity ( ACT_TURN_RIGHT ) != ACTIVITY_NOT_AVAILABLE )
 	{// big right turn
@@ -536,14 +542,18 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 	{
 	case TASK_TURN_RIGHT:
 		{
-			float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+			float flCurrentYaw;
+			
+			flCurrentYaw = UTIL_AngleMod( pev->angles.y );
 			pev->ideal_yaw = UTIL_AngleMod( flCurrentYaw - pTask->flData );
 			SetTurnActivity();
 			break;
 		}
 	case TASK_TURN_LEFT:
 		{
-			float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+			float flCurrentYaw;
+			
+			flCurrentYaw = UTIL_AngleMod( pev->angles.y );
 			pev->ideal_yaw = UTIL_AngleMod( flCurrentYaw + pTask->flData );
 			SetTurnActivity();
 			break;
@@ -619,7 +629,9 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 		}
 	case TASK_SET_SCHEDULE:
 		{
-			Schedule_t* pNewSchedule = GetScheduleOfType((int)pTask->flData);
+			Schedule_t *pNewSchedule;
+
+			pNewSchedule = GetScheduleOfType( (int)pTask->flData );
 			
 			if ( pNewSchedule )
 			{
@@ -742,7 +754,9 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 		break;
 	case TASK_FIND_COVER_FROM_BEST_SOUND:
 		{
-			CSound* pBestSound = PBestSound();
+			CSound *pBestSound;
+
+			pBestSound = PBestSound();
 
 			ASSERT( pBestSound != NULL );
 			/*
@@ -862,7 +876,8 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 				{
 					if ( m_pGoalEnt != NULL )
 					{
-						Vector vecDest = m_pGoalEnt->pev->origin;
+						Vector vecDest;
+						vecDest = m_pGoalEnt->pev->origin;
 
 						if ( !MoveToLocation( newActivity, 2, vecDest ) )
 						{
@@ -930,7 +945,7 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 		}
 	case TASK_SET_ACTIVITY:
 		{
-			m_IdealActivity = static_cast<Activity>((int)pTask->flData);
+			m_IdealActivity = (Activity)(int)pTask->flData;
 			TaskComplete();
 			break;
 		}
@@ -1070,7 +1085,9 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 		}
 	case TASK_GET_PATH_TO_BESTSOUND:
 		{
-			CSound* pSound = PBestSound();
+			CSound *pSound;
+
+			pSound = PBestSound();
 
 			if ( pSound && MoveToLocation( m_movementActivity, 2, pSound->m_vecOrigin ) )
 			{
@@ -1086,7 +1103,9 @@ void CBaseMonster :: StartTask ( Task_t *pTask )
 		}
 case TASK_GET_PATH_TO_BESTSCENT:
 		{
-			CSound* pScent = PBestScent();
+			CSound *pScent;
+
+			pScent = PBestScent();
 
 			if ( pScent && MoveToLocation( m_movementActivity, 2, pScent->m_vecOrigin ) )
 			{
@@ -1134,11 +1153,14 @@ case TASK_GET_PATH_TO_BESTSCENT:
 		}
 	case TASK_STRAFE_PATH:
 		{
+			Vector2D	vec2DirToPoint; 
+			Vector2D	vec2RightSide;
+
 			// to start strafing, we have to first figure out if the target is on the left side or right side
 			UTIL_MakeVectors ( pev->angles );
 
-			Vector2D vec2DirToPoint = (m_Route[0].vecLocation - pev->origin).Make2D().Normalize();
-			Vector2D vec2RightSide = gpGlobals->v_right.Make2D().Normalize();
+			vec2DirToPoint = ( m_Route[ 0 ].vecLocation - pev->origin ).Make2D().Normalize();
+			vec2RightSide = gpGlobals->v_right.Make2D().Normalize();
 
 			if ( DotProduct ( vec2DirToPoint, vec2RightSide ) > 0 )
 			{
@@ -1269,7 +1291,7 @@ case TASK_GET_PATH_TO_BESTSCENT:
 			}
 			else
 			{
-				m_pCine->StartSequence( (CBaseMonster *)this, m_pCine->m_iszPlay, true );
+				m_pCine->StartSequence( (CBaseMonster *)this, m_pCine->m_iszPlay, TRUE );
 				if ( m_fSequenceFinished )
 					ClearSchedule();
 				pev->framerate = 1.0;
@@ -1375,10 +1397,12 @@ Task_t	*CBaseMonster :: GetTask ( void )
 	if ( m_iScheduleIndex < 0 || m_iScheduleIndex >= m_pSchedule->cTasks )
 	{
 		// m_iScheduleIndex is not within valid range for the monster's current schedule.
-		return nullptr;
+		return NULL;
 	}
-
-	return &m_pSchedule->pTasklist[ m_iScheduleIndex ];
+	else
+	{
+		return &m_pSchedule->pTasklist[ m_iScheduleIndex ];
+	}
 }
 
 //=========================================================
@@ -1407,15 +1431,16 @@ Schedule_t *CBaseMonster :: GetSchedule ( void )
 			{
 				return GetScheduleOfType( SCHED_ALERT_FACE );
 			}
-
-			if ( FRouteClear() )
+			else if ( FRouteClear() )
 			{
 				// no valid route!
 				return GetScheduleOfType( SCHED_IDLE_STAND );
 			}
-
-			// valid route. Get moving
-			return GetScheduleOfType( SCHED_IDLE_WALK );
+			else
+			{
+				// valid route. Get moving
+				return GetScheduleOfType( SCHED_IDLE_WALK );
+			}
 			break;
 		}
 	case MONSTERSTATE_ALERT:
@@ -1452,7 +1477,7 @@ Schedule_t *CBaseMonster :: GetSchedule ( void )
 			if ( HasConditions( bits_COND_ENEMY_DEAD ) )
 			{
 				// clear the current (dead) enemy and try to find another.
-				m_hEnemy = nullptr;
+				m_hEnemy = NULL;
 
 				if ( GetEnemy() )
 				{
@@ -1513,14 +1538,15 @@ Schedule_t *CBaseMonster :: GetSchedule ( void )
 					// if we can see enemy but can't use either attack type, we must need to get closer to enemy
 					return GetScheduleOfType( SCHED_CHASE_ENEMY );
 				}
-				
-				if ( !FacingIdeal() )
+				else if ( !FacingIdeal() )
 				{
 					//turn
 					return GetScheduleOfType( SCHED_COMBAT_FACE );
 				}
-
-				ALERT ( at_aiconsole, "No suitable combat schedule!\n" );
+				else
+				{
+					ALERT ( at_aiconsole, "No suitable combat schedule!\n" );
+				}
 			}
 			break;
 		}

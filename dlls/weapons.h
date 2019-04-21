@@ -67,7 +67,7 @@ public:
 	virtual int	BloodColor( void ) { return DONT_BLEED; }
 	virtual void Killed( entvars_t *pevAttacker, int iGib );
 
-	bool m_fRegisteredSound;// whether or not this grenade has issued its DANGER sound to the world sound list yet.
+	BOOL m_fRegisteredSound;// whether or not this grenade has issued its DANGER sound to the world sound list yet.
 };
 
 
@@ -248,8 +248,8 @@ public:
 	
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	virtual int AddToPlayer( CBasePlayer *pPlayer );	// return true if the item you want the item added to the player inventory
-	virtual int AddDuplicate( CBasePlayerItem *pItem ) { return false; }	// return true if you want your duplicate removed from world
+	virtual int AddToPlayer( CBasePlayer *pPlayer );	// return TRUE if the item you want the item added to the player inventory
+	virtual int AddDuplicate( CBasePlayerItem *pItem ) { return FALSE; }	// return TRUE if you want your duplicate removed from world
 	void EXPORT DestroyItem( void );
 	void EXPORT DefaultTouch( CBaseEntity *pOther );	// default weapon touch
 	void EXPORT FallThink ( void );// when an item is first spawned, this think is run to determine when the object has hit the ground.
@@ -259,11 +259,11 @@ public:
 	void FallInit( void );
 	void CheckRespawn( void );
 	virtual int GetItemInfo(ItemInfo *p) { return 0; };	// returns 0 if struct not filled out
-	virtual bool CanDeploy( void ) { return true; };
-	virtual bool Deploy( )								// returns is deploy was successful
-		 { return true; };
+	virtual BOOL CanDeploy( void ) { return TRUE; };
+	virtual BOOL Deploy( )								// returns is deploy was successful
+		 { return TRUE; };
 
-	virtual bool CanHolster( void ) { return true; };// can this weapon be put away right now?
+	virtual BOOL CanHolster( void ) { return TRUE; };// can this weapon be put away right now?
 	virtual void Holster( );
 	virtual void UpdateItemInfo( void ) { return; };
 
@@ -328,28 +328,28 @@ public:
 	virtual int AddToPlayer( CBasePlayer *pPlayer );
 	virtual int AddDuplicate( CBasePlayerItem *pItem );
 
-	virtual int ExtractAmmo( CBasePlayerWeapon *pWeapon ); //{ return true; };			// Return true if you can add ammo to yourself when picked up
-	virtual int ExtractClipAmmo( CBasePlayerWeapon *pWeapon );// { return true; };			// Return true if you can add ammo to yourself when picked up
+	virtual int ExtractAmmo( CBasePlayerWeapon *pWeapon ); //{ return TRUE; };			// Return TRUE if you can add ammo to yourself when picked up
+	virtual int ExtractClipAmmo( CBasePlayerWeapon *pWeapon );// { return TRUE; };			// Return TRUE if you can add ammo to yourself when picked up
 
-	virtual int AddWeapon( void ) { ExtractAmmo( this ); return true; };	// Return true if you want to add yourself to the player
+	virtual int AddWeapon( void ) { ExtractAmmo( this ); return TRUE; };	// Return TRUE if you want to add yourself to the player
 
 	// generic "shared" ammo handlers
-	bool AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry );
-	bool AddSecondaryAmmo( int iCount, char *szName, int iMaxCarry );
+	BOOL AddPrimaryAmmo( int iCount, char *szName, int iMaxClip, int iMaxCarry );
+	BOOL AddSecondaryAmmo( int iCount, char *szName, int iMaxCarry );
 
 	virtual void UpdateItemInfo( void ) {};	// updates HUD state
 
 	int m_fFireOnEmpty;		// True when the gun is empty and the player is still holding down the
 							// attack key(s)
-	bool PlayEmptySound( int iSoundType = 0 );//universal empty sound
+	BOOL PlayEmptySound( int iSoundType = 0 );//universal empty sound
 	virtual void ResetEmptySound( void );
 
 	virtual void SendWeaponAnim( int iAnim );
 
-	virtual bool CanDeploy( void );
-	virtual bool IsUseable( void );
-	bool DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, float fDrawTime = 0.5 );
-	bool DefaultDeploy( string_t iViewModel, string_t iWeaponModel, int iAnim, char *szAnimExt, float fDrawTime = 0.5 );
+	virtual BOOL CanDeploy( void );
+	virtual BOOL IsUseable( void );
+	BOOL DefaultDeploy( char *szViewModel, char *szWeaponModel, int iAnim, char *szAnimExt, float fDrawTime = 0.5 );
+	BOOL DefaultDeploy( string_t iViewModel, string_t iWeaponModel, int iAnim, char *szAnimExt, float fDrawTime = 0.5 );
 	int DefaultReload( int iClipSize, int iAnim, float fDelay );
 
 	virtual void ItemPostFrame( void );	// called each frame by the player PostThink
@@ -360,12 +360,12 @@ public:
 	virtual void WeaponIdle( void ) { return; }					// called when no buttons pressed
 	virtual int UpdateClientData( CBasePlayer *pPlayer );		// sends hud info to client dll, if things have changed
 	virtual void RetireWeapon( void );
-	virtual bool ShouldWeaponIdle( void ) {return false; };
+	virtual BOOL ShouldWeaponIdle( void ) {return FALSE; };
 	virtual void Holster( void );
 	virtual void RestoreBody ( void );
 	
 	//LRC - used by weaponstrip
-	void DrainClip(CBasePlayer* pPlayer, bool keep, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iUranium, int iSatchel, int iSnark, int iTrip, int iGren );
+	void DrainClip(CBasePlayer* pPlayer, BOOL keep, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iUranium, int iSatchel, int iSnark, int iTrip, int iGren );
 	
 	int	PrimaryAmmoIndex(); 
 	int	SecondaryAmmoIndex(); 
@@ -395,9 +395,9 @@ public:
 	int		m_iLastSkin;
 	int		m_iBody;
 	int		m_iLastBody;
-	bool		b_Restored;//restore body and skin after save/load
-	bool		AnimRestore;//restore sound and animation after save/load
-	bool		m_iPlayEmptySound;
+	BOOL		b_Restored;//restore body and skin after save/load
+	BOOL		AnimRestore;//restore sound and animation after save/load
+	BOOL		m_iPlayEmptySound;
 };
 
 
@@ -406,7 +406,7 @@ class CBasePlayerAmmo : public CBasePlayerItem
 public:
 	virtual void Spawn( void );
 	void EXPORT DefaultTouch( CBaseEntity *pOther ); // default weapon touch
-	virtual bool AddAmmo( CBaseEntity *pOther ) { return true; };
+	virtual BOOL AddAmmo( CBaseEntity *pOther ) { return TRUE; };
 
 	CBaseEntity* Respawn( void );
 	void EXPORT Materialize( void );
@@ -488,7 +488,7 @@ class CWeaponBox : public CBaseEntity
 	void Spawn( void );
 	void Touch( CBaseEntity *pOther );
 	void KeyValue( KeyValueData *pkvd );
-	bool IsEmpty( void );
+	BOOL IsEmpty( void );
 	int  GiveAmmo( int iCount, char *szName, int iMax, int *pIndex = NULL );
 	void SetObjectCollisionBox( void );
 
@@ -498,9 +498,9 @@ public:
 	int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	bool HasWeapon( CBasePlayerItem *pCheckItem );
-	bool PackWeapon( CBasePlayerItem *pWeapon );
-	bool PackAmmo( int iszName, int iCount );
+	BOOL HasWeapon( CBasePlayerItem *pCheckItem );
+	BOOL PackWeapon( CBasePlayerItem *pWeapon );
+	BOOL PackAmmo( int iszName, int iCount );
 	
 	CBasePlayerItem	*m_rgpPlayerItems[MAX_ITEM_TYPES];// one slot for each 
 

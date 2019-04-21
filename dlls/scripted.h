@@ -73,28 +73,28 @@ public:
 	CBaseMonster* FindEntity( const char* sName, CBaseEntity *pActivator );
 	virtual void PossessEntity( void );
 
-	inline bool IsAction( void ) { return FClassnameIs(pev,"scripted_action"); }; //LRC
+	inline BOOL IsAction( void ) { return FClassnameIs(pev,"scripted_action"); }; //LRC
 
 	//LRC: Should the monster do a precise attack for this scripted_action?
 	// (Do a precise attack if we'll be turning to face the target, but we haven't just walked to the target.)
-	bool PreciseAttack( void )
+	BOOL PreciseAttack( void )
 	{
-	//	if (m_fTurnType != 1) { ALERT(at_console,"preciseattack fails check 1\n"); return false; }
-	//	if (m_fMoveTo == 0) { ALERT(at_console,"preciseattack fails check 2\n"); return false; }
-	//	if (m_fMoveTo != 5 && m_iszAttack == 0) { ALERT(at_console,"preciseattack fails check 3\n"); return false; }
+	//	if (m_fTurnType != 1) { ALERT(at_console,"preciseattack fails check 1\n"); return FALSE; }
+	//	if (m_fMoveTo == 0) { ALERT(at_console,"preciseattack fails check 2\n"); return FALSE; }
+	//	if (m_fMoveTo != 5 && m_iszAttack == 0) { ALERT(at_console,"preciseattack fails check 3\n"); return FALSE; }
 	//	ALERT(at_console,"preciseattack passes!\n");
-	//	return true;
+	//	return TRUE;
 		return m_fTurnType == 1 && ( m_fMoveTo == 5 || (m_fMoveTo != 0 && !FStrEq(STRING(m_iszAttack), STRING(m_iszMoveTarget)) ));
 
 	};
 
 	void ReleaseEntity( CBaseMonster *pEntity );
 	void CancelScript( void );
-	virtual bool StartSequence( CBaseMonster *pTarget, int iszSeq, bool completeOnEmpty );
+	virtual BOOL StartSequence( CBaseMonster *pTarget, int iszSeq, BOOL completeOnEmpty );
 	void SequenceDone ( CBaseMonster *pMonster );
 	virtual void FixScriptMonsterSchedule( CBaseMonster *pMonster );
-	bool	CanInterrupt( void );
-	void	AllowInterrupt( bool fAllow );
+	BOOL	CanInterrupt( void );
+	void	AllowInterrupt( BOOL fAllow );
 	int		IgnoreConditions( void );
 
 	int	m_iszIdle;		// string index for idle animation
@@ -121,7 +121,7 @@ public:
 	int	m_saved_solid;
 	int m_saved_effects;
 //	Vector m_vecOrigOrigin;
-	bool m_interruptable;
+	BOOL m_interruptable;
 };
 
 //LRC - removed CCineAI, obsolete

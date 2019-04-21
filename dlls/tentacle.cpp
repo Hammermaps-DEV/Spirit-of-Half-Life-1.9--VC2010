@@ -70,7 +70,7 @@ public:
 	void Killed( entvars_t *pevAttacker, int iGib );
 
 	MONSTERSTATE GetIdealState ( void ) { return MONSTERSTATE_IDLE; };
-	int CanPlaySequence(bool fDisregardState ) { return true; };
+	int CanPlaySequence( BOOL fDisregardState ) { return TRUE; };
 
 	int Classify( void );
 
@@ -277,8 +277,8 @@ void CTentacle :: Spawn( )
 	m_flInitialYaw = pev->angles.y;
 	pev->ideal_yaw = m_flInitialYaw;
 
-	g_fFlySound = false;
-	g_fSquirmSound = false;
+	g_fFlySound = FALSE;
+	g_fSquirmSound = FALSE;
 
 	m_iHitDmg = 20;
 
@@ -332,12 +332,12 @@ void CTentacle::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "sweeparc"))
 	{
 		m_flMaxYaw = atof(pkvd->szValue) / 2.0;
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "sound"))
 	{
 		m_iTapSound = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 
 	}
 	else
@@ -932,13 +932,13 @@ void CTentacle :: Start( void )
 	if ( !g_fFlySound )
 	{
 		EMIT_SOUND (ENT(pev), CHAN_BODY, "ambience/flies.wav", 1, ATTN_NORM );
-		g_fFlySound = true;
+		g_fFlySound = TRUE;
 //		pev->nextthink = gpGlobals-> time + 0.1;
 	}
 	else if ( !g_fSquirmSound )
 	{
 		EMIT_SOUND (ENT(pev), CHAN_BODY, "ambience/squirm2.wav", 1, ATTN_NORM );
-		g_fSquirmSound = true;
+		g_fSquirmSound = TRUE;
 	}
 	
 	SetNextThink( 0.1 );

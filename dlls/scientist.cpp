@@ -83,9 +83,9 @@ public:
 	void DeclineFollowing( void );
 
 	float	CoverRadius( void ) { return 1200; }		// Need more room for cover because scientists want to get far away!
-	bool	DisregardEnemy( CBaseEntity *pEnemy ) { return !pEnemy->IsAlive() || (gpGlobals->time - m_fearTime) > 15; }
+	BOOL	DisregardEnemy( CBaseEntity *pEnemy ) { return !pEnemy->IsAlive() || (gpGlobals->time - m_fearTime) > 15; }
 
-	bool	CanHeal( void );
+	BOOL	CanHeal( void );
 	void	Heal( void );
 	void	Scream( void );
 
@@ -781,7 +781,7 @@ int CScientist :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, f
 	if ( pevInflictor && pevInflictor->flags & FL_CLIENT )
 	{
 		Remember( bits_MEMORY_PROVOKED );
-		StopFollowing( true );
+		StopFollowing( TRUE );
 	}
 
 	// make sure friends talk about it if player hurts scientist...
@@ -968,18 +968,18 @@ Schedule_t *CScientist :: GetSchedule ( void )
 			if ( !m_hTargetEnt->IsAlive() )
 			{
 				// UNDONE: Comment about the recently dead player here?
-				StopFollowing( false );
+				StopFollowing( FALSE );
 				break;
 			}
 
-			int relationship = RELATIONSHIP_NO;
+			int relationship = R_NO;
 
 			// Nothing scary, just me and the player
 			if ( pEnemy != NULL )
 				relationship = IRelationship( pEnemy );
 
-			// UNDONE: Model fear properly, fix RELATIONSHIP_FEAR and add multiple levels of fear
-			if ( relationship != RELATIONSHIP_DISLIKE && relationship != RELATIONSHIP_HATE )
+			// UNDONE: Model fear properly, fix R_FR and add multiple levels of fear
+			if ( relationship != R_DL && relationship != R_HT )
 			{
 				// If I'm already close enough to my target
 				if ( TargetDistance() <= 128 )
@@ -1032,20 +1032,20 @@ MONSTERSTATE CScientist :: GetIdealState ( void )
 			if ( IsFollowing() )
 			{
 				int relationship = IRelationship( m_hEnemy );
-				if (relationship != RELATIONSHIP_FEAR || (relationship != RELATIONSHIP_HATE && !HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE)))
+				if (relationship != R_FR || (relationship != R_HT && !HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE)))
 				{
 					// Don't go to combat if you're following the player
 					m_IdealMonsterState = MONSTERSTATE_ALERT;
 					return m_IdealMonsterState;
 				}
-				StopFollowing( true );
+				StopFollowing( TRUE );
 			}
 		}
 		else if ( HasConditions( bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE ) )
 		{
 			// Stop following if you take damage
 			if ( IsFollowing() )
-				StopFollowing( true );
+				StopFollowing( TRUE );
 		}
 		break;
 
@@ -1086,12 +1086,12 @@ MONSTERSTATE CScientist :: GetIdealState ( void )
 }
 
 
-bool CScientist::CanHeal( void )
+BOOL CScientist::CanHeal( void )
 { 
 	if ( (m_healTime > gpGlobals->time) || (m_hTargetEnt == NULL) || (m_hTargetEnt->pev->health > (m_hTargetEnt->pev->max_health * 0.5)) )
-		return false;
+		return FALSE;
 
-	return true;
+	return TRUE;
 }
 
 void CScientist::Heal( void )
@@ -1137,7 +1137,7 @@ void CDeadScientist::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseMonster::KeyValue( pkvd );
@@ -1314,7 +1314,7 @@ void CSittingScientist :: SittingThink( void )
 	// try to greet player
 	if (FIdleHello())
 	{
-		pent = FindNearestFriend(true);
+		pent = FindNearestFriend(TRUE);
 		if (pent)
 		{
 			float yaw = VecToYaw(pent->pev->origin - pev->origin) - pev->angles.y;
@@ -1351,9 +1351,9 @@ void CSittingScientist :: SittingThink( void )
 			// turn towards player or nearest friend and speak
 
 			if (!FBitSet(m_bitsSaid, bit_saidHelloPlayer))
-				pent = FindNearestFriend(true);
+				pent = FindNearestFriend(TRUE);
 			else
-				pent = FindNearestFriend(false);
+				pent = FindNearestFriend(FALSE);
 
 			if (!FIdleSpeak() || !pent)
 			{	
@@ -1420,7 +1420,7 @@ int CSittingScientist :: FIdleSpeak ( void )
 	int pitch;
 	
 	if (!FOkToSpeak())
-		return false;
+		return FALSE;
 
 	// set global min delay for next conversation
 	CTalkMonster::g_talkWaitTime = gpGlobals->time + RANDOM_FLOAT(4.8, 5.2);
@@ -1430,7 +1430,7 @@ int CSittingScientist :: FIdleSpeak ( void )
 	// if there is a friend nearby to speak to, play sentence, set friend's response time, return
 
 	// try to talk to any standing or sitting scientists nearby
-	CBaseEntity *pentFriend = FindNearestFriend(false);
+	CBaseEntity *pentFriend = FindNearestFriend(FALSE);
 
 	if (pentFriend && RANDOM_LONG(0,1))
 	{
@@ -1441,7 +1441,7 @@ int CSittingScientist :: FIdleSpeak ( void )
 		SENTENCEG_PlayRndSz( ENT(pev), m_szGrp[TLK_PQUESTION], 1.0, ATTN_IDLE, 0, pitch );
 		// set global min delay for next conversation
 		CTalkMonster::g_talkWaitTime = gpGlobals->time + RANDOM_FLOAT(4.8, 5.2);
-		return true;
+		return TRUE;
 	}
 
 	// otherwise, play an idle statement
@@ -1450,10 +1450,10 @@ int CSittingScientist :: FIdleSpeak ( void )
 		SENTENCEG_PlayRndSz( ENT(pev), m_szGrp[TLK_PIDLE], 1.0, ATTN_IDLE, 0, pitch );
 		// set global min delay for next conversation
 		CTalkMonster::g_talkWaitTime = gpGlobals->time + RANDOM_FLOAT(4.8, 5.2);
-		return true;
+		return TRUE;
 	}
 
 	// never spoke
 	CTalkMonster::g_talkWaitTime = 0;
-	return false;
+	return FALSE;
 }

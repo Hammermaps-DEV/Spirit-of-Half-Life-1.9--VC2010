@@ -100,7 +100,7 @@ class CTalkMonster : public CBaseMonster
 {
 public:
 	void			TalkInit( void );				
-	CBaseEntity		*FindNearestFriend(bool fPlayer);
+	CBaseEntity		*FindNearestFriend(BOOL fPlayer);
 	float			TargetDistance( void );
 	void			StopTalking( void ) { SentenceStop(); }
 	
@@ -110,9 +110,9 @@ public:
 	void			Touch(	CBaseEntity *pOther );
 	void			Killed( entvars_t *pevAttacker, int iGib );
 	int				IRelationship ( CBaseEntity *pTarget );
-	virtual int		CanPlaySentence( bool fDisregardState );
+	virtual int		CanPlaySentence( BOOL fDisregardState );
 	virtual void	PlaySentence( const char *pszSentence, float duration, float volume, float attenuation );
-	void			PlayScriptedSentence( const char *pszSentence, float duration, float volume, float attenuation, bool bConcurrent, CBaseEntity *pListener );
+	void			PlayScriptedSentence( const char *pszSentence, float duration, float volume, float attenuation, BOOL bConcurrent, CBaseEntity *pListener );
 	void			KeyValue( KeyValueData *pkvd );
 
 	// AI functions
@@ -133,15 +133,15 @@ public:
 	void			IdleHeadTurn( Vector &vecFriend );
 	bool			FOkToSpeak( void );
 	void			TrySmellTalk( void );
-	CBaseEntity		*EnumFriends( CBaseEntity *pentPrevious, int listNumber, bool bTrace );
+	CBaseEntity		*EnumFriends( CBaseEntity *pentPrevious, int listNumber, BOOL bTrace );
 	void			AlertFriends( void );
 	void			ShutUpFriends( void );
-	bool			IsTalking( void );
+	BOOL			IsTalking( void );
 	void			Talk( float flDuration );	
 	// For following
-	bool			CanFollow( void );
-	bool			IsFollowing( void ) { return m_hTargetEnt != NULL && m_hTargetEnt->IsPlayer(); }
-	void			StopFollowing( bool clearSchedule );
+	BOOL			CanFollow( void );
+	BOOL			IsFollowing( void ) { return m_hTargetEnt != NULL && m_hTargetEnt->IsPlayer(); }
+	void			StopFollowing( BOOL clearSchedule );
 	void			StartFollowing( CBaseEntity *pLeader );
 	virtual void	DeclineFollowing( void ) {}
 	void			LimitFollowers( CBaseEntity *pPlayer, int maxFollowers );

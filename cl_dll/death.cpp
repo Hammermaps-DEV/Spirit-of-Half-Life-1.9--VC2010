@@ -143,7 +143,7 @@ int CHudDeathNotice :: Draw( float flTime )
 			x += (gHUD.GetSpriteRect(id).right - gHUD.GetSpriteRect(id).left);
 
 			// Draw victims name (if it was a player that was killed)
-			if (rgDeathNoticeList[i].iNonPlayerKill == false)
+			if (rgDeathNoticeList[i].iNonPlayerKill == FALSE)
 			{
 				if ( rgDeathNoticeList[i].VictimColor )
 					gEngfuncs.pfnDrawSetTextColor( rgDeathNoticeList[i].VictimColor[0], rgDeathNoticeList[i].VictimColor[1], rgDeathNoticeList[i].VictimColor[2] );
@@ -225,7 +225,7 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 	// Is it a non-player object kill?
 	if ( ((char)victim) == -1 )
 	{
-		rgDeathNoticeList[i].iNonPlayerKill = true;
+		rgDeathNoticeList[i].iNonPlayerKill = TRUE;
 
 		// Store the object's name in the Victim slot (skip the d_ bit)
 		strcpy( rgDeathNoticeList[i].szVictim, killedwith+2 );
@@ -233,10 +233,10 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 	else
 	{
 		if ( killer == victim || killer == 0 )
-			rgDeathNoticeList[i].iSuicide = true;
+			rgDeathNoticeList[i].iSuicide = TRUE;
 
 		if ( !strcmp( killedwith, "d_teammate" ) )
-			rgDeathNoticeList[i].iTeamKill = true;
+			rgDeathNoticeList[i].iTeamKill = TRUE;
 	}
 
 	// Find the sprite in the list

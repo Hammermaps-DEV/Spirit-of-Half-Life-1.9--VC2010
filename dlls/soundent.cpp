@@ -49,29 +49,29 @@ void CSound :: Reset ( void )
 }
 
 //=========================================================
-// FIsSound - returns true if the sound is an Audible sound
+// FIsSound - returns TRUE if the sound is an Audible sound
 //=========================================================
-bool CSound :: FIsSound ( void )
+BOOL CSound :: FIsSound ( void )
 {
 	if ( m_iType & ( bits_SOUND_COMBAT | bits_SOUND_WORLD | bits_SOUND_PLAYER | bits_SOUND_DANGER ) )
 	{
-		return true;
+		return TRUE;
 	}
 
-	return false;
+	return FALSE;
 }
 
 //=========================================================
-// FIsScent - returns true if the sound is actually a scent
+// FIsScent - returns TRUE if the sound is actually a scent
 //=========================================================
-bool CSound :: FIsScent ( void )
+BOOL CSound :: FIsScent ( void )
 {
 	if ( m_iType & ( bits_SOUND_CARCASS | bits_SOUND_MEAT | bits_SOUND_GARBAGE ) )
 	{
-		return true;
+		return TRUE;
 	}
 
-	return false;
+	return FALSE;
 }
 
 //=========================================================
@@ -259,11 +259,11 @@ void CSoundEnt :: Initialize ( void )
 
 	if ( CVAR_GET_FLOAT("displaysoundlist") == 1 )
 	{
-		m_fShowReport = true;
+		m_fShowReport = TRUE;
 	}
 	else
 	{
-		m_fShowReport = false;
+		m_fShowReport = FALSE;
 	}
 }
 

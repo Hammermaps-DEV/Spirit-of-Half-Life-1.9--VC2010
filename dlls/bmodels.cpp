@@ -122,7 +122,7 @@ public:
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 	void	TurnOff( void );
 	void	TurnOn( void );
-	bool	IsOn( void );
+	BOOL	IsOn( void );
 	virtual STATE GetState( void ) { return (pev->solid == SOLID_NOT)?STATE_OFF:STATE_ON; };
 };
 
@@ -152,11 +152,11 @@ void CFuncWallToggle :: TurnOn( void )
 }
 
 
-bool CFuncWallToggle :: IsOn( void )
+BOOL CFuncWallToggle :: IsOn( void )
 {
 	if ( pev->solid == SOLID_NOT )
-		return false;
-	return true;
+		return FALSE;
+	return TRUE;
 }
 
 
@@ -256,7 +256,7 @@ void CFuncIllusionary :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "skin"))//skin is used for content type
 	{
 		pev->skin = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );
@@ -423,7 +423,7 @@ void CFuncRotating :: KeyValue( KeyValueData* pkvd)
 	if (FStrEq(pkvd->szKeyName, "fanfriction"))
 	{
 		m_flFanFriction = atof(pkvd->szValue)/100;
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "Volume"))
 	{
@@ -433,7 +433,7 @@ void CFuncRotating :: KeyValue( KeyValueData* pkvd)
 			m_flVolume = 1.0;
 		if (m_flVolume < 0.0)
 			m_flVolume = 0.0;
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "spawnorigin"))
 	{
@@ -445,12 +445,12 @@ void CFuncRotating :: KeyValue( KeyValueData* pkvd)
 	else if (FStrEq(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "axes"))
 	{
 		UTIL_StringToVector( (float *)(pev->movedir), pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else 
 		CBaseEntity::KeyValue( pkvd );
@@ -725,7 +725,7 @@ void CFuncRotating :: SpinUp( void )
 	} 
 	else
 	{
-		RampPitchVol(true);
+		RampPitchVol(TRUE);
 	}
 }
 
@@ -757,7 +757,7 @@ void CFuncRotating :: SpinDown( void )
 	} 
 	else
 	{
-		RampPitchVol(false);
+		RampPitchVol(FALSE);
 	}
 }
 
@@ -914,17 +914,17 @@ void CPendulum :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "distance"))
 	{
 		m_distance = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "axes"))
 	{
 		UTIL_StringToVector( (float*)(pev->movedir), pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "damp"))
 	{
 		m_damp = atof(pkvd->szValue) * 0.001;
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else 
 		CBaseEntity::KeyValue( pkvd );

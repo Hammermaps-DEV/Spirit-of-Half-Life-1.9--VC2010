@@ -37,7 +37,7 @@ int g_teamplay = 0;
 
 //=========================================================
 //=========================================================
-bool CGameRules::CanHaveAmmo( CBasePlayer *pPlayer, const char *pszAmmoName, int iMaxCarry )
+BOOL CGameRules::CanHaveAmmo( CBasePlayer *pPlayer, const char *pszAmmoName, int iMaxCarry )
 {
 	int iAmmoIndex;
 
@@ -50,12 +50,12 @@ bool CGameRules::CanHaveAmmo( CBasePlayer *pPlayer, const char *pszAmmoName, int
 			if ( pPlayer->AmmoInventory( iAmmoIndex ) < iMaxCarry )
 			{
 				// player has room for more of this type of ammo
-				return true;
+				return TRUE;
 			}
 		}
 	}
 
-	return false;
+	return FALSE;
 }
 
 //=========================================================
@@ -69,7 +69,7 @@ edict_t *CGameRules :: GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 	pPlayer->pev->velocity = g_vecZero;
 	pPlayer->pev->angles = VARS(pentSpawnSpot)->angles;
 	pPlayer->pev->punchangle = g_vecZero;
-	pPlayer->pev->fixangle = true;
+	pPlayer->pev->fixangle = TRUE;
 	
 	//LRC
 	if (pentSpawnSpot->v.spawnflags & 1) // the START WITH SUIT flag
@@ -82,11 +82,11 @@ edict_t *CGameRules :: GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 
 //=========================================================
 //=========================================================
-bool CGameRules::CanHavePlayerItem( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
+BOOL CGameRules::CanHavePlayerItem( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
 {
 	// only living players can have items
 	if ( pPlayer->pev->deadflag != DEAD_NO )
-		return false;
+		return FALSE;
 
 	if ( pWeapon->pszAmmo1() )
 	{
@@ -96,7 +96,7 @@ bool CGameRules::CanHavePlayerItem( CBasePlayer *pPlayer, CBasePlayerItem *pWeap
 			// have the gun if we aren't already carrying one of this type
 			if ( pPlayer->HasPlayerItem( pWeapon ) )
 			{
-				return false;
+				return FALSE;
 			}
 		}
 	}
@@ -105,12 +105,12 @@ bool CGameRules::CanHavePlayerItem( CBasePlayer *pPlayer, CBasePlayerItem *pWeap
 		// weapon doesn't use ammo, don't take another if you already have it.
 		if ( pPlayer->HasPlayerItem( pWeapon ) )
 		{
-			return false;
+			return FALSE;
 		}
 	}
 
 	// note: will fall through to here if GetItemInfo doesn't fill the struct!
-	return true;
+	return TRUE;
 }
 
 //=========================================================

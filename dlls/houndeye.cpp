@@ -94,8 +94,8 @@ public:
 	void SetActivity ( Activity NewActivity );
 	void WriteBeamColor ( void );
 	bool CheckRangeAttack1 ( float flDot, float flDist );
-	bool FValidateHintType ( short sHint );
-	bool FCanActiveIdle ( void );
+	BOOL FValidateHintType ( short sHint );
+	BOOL FCanActiveIdle ( void );
 	Schedule_t *GetScheduleOfType ( int Type );
 	Schedule_t *CHoundeye :: GetSchedule( void );
 
@@ -106,8 +106,8 @@ public:
 	static TYPEDESCRIPTION m_SaveData[];
 
 	int m_iSpriteTexture;
-	bool m_fAsleep;// some houndeyes sleep in idle mode if this is set, the houndeye is lying down
-	bool m_fDontBlink;// don't try to open/close eye if this bit is set!
+	BOOL m_fAsleep;// some houndeyes sleep in idle mode if this is set, the houndeye is lying down
+	BOOL m_fDontBlink;// don't try to open/close eye if this bit is set!
 	Vector	m_vecPackCenter; // the center of the pack. The leader maintains this by averaging the origins of all pack members.
 };
 LINK_ENTITY_TO_CLASS( monster_houndeye, CHoundeye );
@@ -134,8 +134,10 @@ int	CHoundeye :: Classify ( void )
 //=========================================================
 //  FValidateHintType 
 //=========================================================
-bool CHoundeye :: FValidateHintType ( short sHint )
+BOOL CHoundeye :: FValidateHintType ( short sHint )
 {
+	int i;
+
 	static short sHoundHints[] =
 	{
 		HINT_WORLD_MACHINERY,
@@ -144,23 +146,23 @@ bool CHoundeye :: FValidateHintType ( short sHint )
 		HINT_WORLD_ALIEN_BLOOD,
 	};
 
-	for ( int i = 0 ; i < HL_ARRAYSIZE ( sHoundHints ) ; i++ )
+	for ( i = 0 ; i < HL_ARRAYSIZE ( sHoundHints ) ; i++ )
 	{
 		if ( sHoundHints[ i ] == sHint )
 		{
-			return true;
+			return TRUE;
 		}
 	}
 
 	ALERT ( at_aiconsole, "Couldn't validate hint type" );
-	return false;
+	return FALSE;
 }
 
 
 //=========================================================
 // FCanActiveIdle
 //=========================================================
-bool CHoundeye :: FCanActiveIdle ( void )
+BOOL CHoundeye :: FCanActiveIdle ( void )
 {
 	if ( InSquad() )
 	{
@@ -170,17 +172,17 @@ bool CHoundeye :: FCanActiveIdle ( void )
 		{
 			CSquadMonster *pMember = pSquadLeader->MySquadMember(i);
 			 
-			if ( pMember != nullptr && pMember != this && pMember->m_iHintNode != NO_NODE )
+			if ( pMember != NULL && pMember != this && pMember->m_iHintNode != NO_NODE )
 			{
 				// someone else in the group is active idling right now!
-				return false;
+				return FALSE;
 			}
 		}
 
-		return true;
+		return TRUE;
 	}
 
-	return true;
+	return TRUE;
 }
 
 
@@ -342,8 +344,8 @@ void CHoundeye :: Spawn()
 	pev->yaw_speed		= 5;//!!! should we put this in the monster's changeanim function since turn rates may vary with state/anim?
 	m_flFieldOfView		= 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
-	m_fAsleep			= false; // everyone spawns awake
-	m_fDontBlink		= false;
+	m_fAsleep			= FALSE; // everyone spawns awake
+	m_fDontBlink		= FALSE;
 	m_afCapability		|= bits_CAP_SQUAD;
 
 	MonsterInit();
@@ -682,26 +684,26 @@ void CHoundeye :: StartTask ( Task_t *pTask )
 	{
 	case TASK_HOUND_FALL_ASLEEP:
 		{
-			m_fAsleep = true; // signal that hound is lying down (must stand again before doing anything else!)
+			m_fAsleep = TRUE; // signal that hound is lying down (must stand again before doing anything else!)
 			m_iTaskStatus = TASKSTATUS_COMPLETE;
 			break;
 		}
 	case TASK_HOUND_WAKE_UP:
 		{
-			m_fAsleep = false; // signal that hound is standing again
+			m_fAsleep = FALSE; // signal that hound is standing again
 			m_iTaskStatus = TASKSTATUS_COMPLETE;
 			break;
 		}
 	case TASK_HOUND_OPEN_EYE:
 		{
-			m_fDontBlink = false; // turn blinking back on and that code will automatically open the eye
+			m_fDontBlink = FALSE; // turn blinking back on and that code will automatically open the eye
 			m_iTaskStatus = TASKSTATUS_COMPLETE;
 			break;
 		}
 	case TASK_HOUND_CLOSE_EYE:
 		{
 			pev->skin = 0;
-			m_fDontBlink = true; // tell blink code to leave the eye alone.
+			m_fDontBlink = TRUE; // tell blink code to leave the eye alone.
 			break;
 		}
 	case TASK_HOUND_THREAT_DISPLAY:

@@ -72,27 +72,27 @@ void CInfoBM::KeyValue( KeyValueData* pkvd )
 	if (FStrEq(pkvd->szKeyName, "radius"))
 	{
 		pev->scale = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "reachdelay"))
 	{
 		pev->speed = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "reachtarget"))
 	{
 		pev->message = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "reachsequence"))
 	{
 		pev->netname = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "presequence"))
 	{
 		m_preSequence = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CPointEntity::KeyValue( pkvd );
@@ -192,7 +192,7 @@ public:
 
 	void NodeStart( int iszNextNode );
 	void NodeReach( void );
-	bool ShouldGoToNode( void );
+	BOOL ShouldGoToNode( void );
 
 	void SetYawSpeed( void );
 	int  Classify ( void );
@@ -259,7 +259,7 @@ public:
 
 	void DeathNotice( entvars_t *pevChild );
 
-	bool CanLayCrab( void ) 
+	BOOL CanLayCrab( void ) 
 	{ 
 		if ( m_crabTime < gpGlobals->time && m_crabCount < BIG_MAXCHILDREN )
 		{
@@ -272,12 +272,12 @@ public:
 			for ( int i = 0; i < count; i++ )
 			{
 				if ( pList[i] != this )	// Don't hurt yourself!
-					return false;
+					return FALSE;
 			}
-			return true;
+			return TRUE;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	void LaunchMortar( void );
@@ -396,7 +396,7 @@ void CBigMomma :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "volume"))
 	{
 		m_volume = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 #endif
@@ -925,14 +925,14 @@ Schedule_t *CBigMomma::GetScheduleOfType( int Type )
 }
 
 
-bool CBigMomma::ShouldGoToNode( void )
+BOOL CBigMomma::ShouldGoToNode( void )
 {
 	if ( HasMemory( bits_MEMORY_ADVANCE_NODE ) )
 	{
 		if ( m_nodeTime < gpGlobals->time )
-			return true;
+			return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 // Overridden to make BigMomma jump on command; the model doesn't support it otherwise.

@@ -31,7 +31,7 @@ int CFlyingMonster :: CheckLocalMove ( const Vector &vecStart, const Vector &vec
 	if (FBitSet(pev->flags, FL_SWIM) && (UTIL_PointContents(vecEnd) != CONTENTS_WATER))
 	{
 		// ALERT(at_aiconsole, "can't swim out of water\n");
-		return false;
+		return FALSE;
 	}
 
 	TraceResult tr;
@@ -58,7 +58,7 @@ int CFlyingMonster :: CheckLocalMove ( const Vector &vecStart, const Vector &vec
 }
 
 
-bool CFlyingMonster :: FTriangulate ( const Vector &vecStart , const Vector &vecEnd, float flDist, CBaseEntity *pTargetEnt, Vector *pApex )
+BOOL CFlyingMonster :: FTriangulate ( const Vector &vecStart , const Vector &vecEnd, float flDist, CBaseEntity *pTargetEnt, Vector *pApex )
 {
 	return CBaseMonster::FTriangulate( vecStart, vecEnd, flDist, pTargetEnt, pApex );
 }
@@ -145,16 +145,16 @@ void CFlyingMonster :: Move( float flInterval )
 }
 
 
-bool CFlyingMonster:: ShouldAdvanceRoute( float flWaypointDist )
+BOOL CFlyingMonster:: ShouldAdvanceRoute( float flWaypointDist )
 {
 	// Get true 3D distance to the goal so we actually reach the correct height
 	if ( m_Route[ m_iRouteIndex ].iType & bits_MF_IS_GOAL )
 		flWaypointDist = ( m_Route[ m_iRouteIndex ].vecLocation - pev->origin ).Length();
 
 	if ( flWaypointDist <= 64 + (m_flGroundSpeed * gpGlobals->frametime) )
-		return true;
+		return TRUE;
 
-	return false;
+	return FALSE;
 }
 
 
@@ -218,7 +218,7 @@ float CFlyingMonster::CeilingZ( const Vector &position )
 	return maxUp.z;
 }
 
-bool CFlyingMonster::ProbeZ( const Vector &position, const Vector &probe, float *pFraction)
+BOOL CFlyingMonster::ProbeZ( const Vector &position, const Vector &probe, float *pFraction)
 {
 	int conPosition = UTIL_PointContents(position);
 	if ( (((pev->flags) & FL_SWIM) == FL_SWIM) ^ (conPosition == CONTENTS_WATER))
@@ -227,7 +227,7 @@ bool CFlyingMonster::ProbeZ( const Vector &position, const Vector &probe, float 
 		// or FLYING  & WATER
 		//
 		*pFraction = 0.0;
-		return true; // We hit a water boundary because we are where we don't belong.
+		return TRUE; // We hit a water boundary because we are where we don't belong.
 	}
 	int conProbe = UTIL_PointContents(probe);
 	if (conProbe == conPosition)
@@ -236,7 +236,7 @@ bool CFlyingMonster::ProbeZ( const Vector &position, const Vector &probe, float 
 		// outside the water (for birds).
 		//
 		*pFraction = 1.0;
-		return false;
+		return FALSE;
 	}
 
 	Vector ProbeUnit = (probe-position).Normalize();
@@ -261,7 +261,7 @@ bool CFlyingMonster::ProbeZ( const Vector &position, const Vector &probe, float 
 	}
 	*pFraction = minProbeLength/ProbeLength;
 
-	return true;
+	return TRUE;
 }
 
 float CFlyingMonster::FloorZ( const Vector &position )

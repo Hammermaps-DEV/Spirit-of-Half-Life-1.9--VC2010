@@ -181,7 +181,7 @@ int CHudStatusBar :: Draw( float fTime )
 			m_pflNameColors[i] = g_ColorYellow;
 			ParseStatusString( i );
 		}
-		m_bReparseString = false;
+		m_bReparseString = FALSE;
 	}
 
 	int Y_START = ScreenHeight - YRES(32 + 4);
@@ -240,7 +240,7 @@ int CHudStatusBar :: MsgFunc_StatusText( const char *pszName, int iSize, void *p
 	else
 		m_iFlags |= HUD_ACTIVE;  // we have status text, so turn on the status bar
 
-	m_bReparseString = true;
+	m_bReparseString = TRUE;
 
 	return 1;
 }
@@ -259,7 +259,7 @@ int CHudStatusBar :: MsgFunc_StatusValue( const char *pszName, int iSize, void *
 
 	m_iStatusValues[index] = READ_SHORT();
 
-	m_bReparseString = true;
+	m_bReparseString = TRUE;
 	
 	return 1;
 }

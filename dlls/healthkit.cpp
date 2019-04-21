@@ -28,7 +28,7 @@ class CHealthKit : public CItem
 {
 	void Spawn( void );
 	void Precache( void );
-	bool MyTouch( CBasePlayer *pPlayer );
+	BOOL MyTouch( CBasePlayer *pPlayer );
 
 /*
 	virtual int		Save( CSave &save ); 
@@ -66,11 +66,11 @@ void CHealthKit::Precache( void )
 	PRECACHE_SOUND("items/smallmedkit1.wav");
 }
 
-bool CHealthKit::MyTouch( CBasePlayer *pPlayer )
+BOOL CHealthKit::MyTouch( CBasePlayer *pPlayer )
 {
 	if ( pPlayer->pev->deadflag != DEAD_NO )
 	{
-		return false;
+		return FALSE;
 	}
 
 	if ( pPlayer->TakeHealth( gSkillData.healthkitCapacity, DMG_GENERIC ) )
@@ -90,10 +90,10 @@ bool CHealthKit::MyTouch( CBasePlayer *pPlayer )
 			UTIL_Remove(this);	
 		}
 
-		return true;
+		return TRUE;
 	}
 
-	return false;
+	return FALSE;
 }
 
 
@@ -146,12 +146,12 @@ void CWallHealth::KeyValue( KeyValueData *pkvd )
 				FStrEq(pkvd->szKeyName, "value2") ||
 				FStrEq(pkvd->szKeyName, "value3"))
 	{
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "dmdelay"))
 	{
 		m_iReactivate = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );

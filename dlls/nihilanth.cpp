@@ -58,8 +58,8 @@ public:
 
 	void Flight( void );
 
-	bool AbsorbSphere( void );
-	bool EmitSphere( void );
+	BOOL AbsorbSphere( void );
+	BOOL EmitSphere( void );
 	void TargetSphere( USE_TYPE useType, float value );
 	CBaseEntity *RandomTargetname( const char *szName );
 	void ShootBalls( void );
@@ -184,7 +184,7 @@ public:
 	void ZapInit( CBaseEntity *pEnemy );
 
 	void EXPORT HoverThink( void );
-	bool CircleTarget( Vector vecTarget );
+	BOOL CircleTarget( Vector vecTarget );
 	void EXPORT DissipateThink( void );
 
 	void EXPORT ZapThink( void );
@@ -687,7 +687,7 @@ void CNihilanth :: NextActivity( )
 	{
 		if (m_pBall == NULL)
 		{
-			m_pBall = CSprite::SpriteCreate( "sprites/tele1.spr", pev->origin, true );
+			m_pBall = CSprite::SpriteCreate( "sprites/tele1.spr", pev->origin, TRUE );
 			if (m_pBall)
 			{
 				m_pBall->SetTransparency( kRenderTransAdd, 255, 255, 255, 255, kRenderFxNoDissipation );
@@ -852,7 +852,7 @@ void CNihilanth :: HuntThink( void )
 	if (pev->health <= 0)
 	{
 		SetThink(&CNihilanth :: DyingThink );
-		m_fSequenceFinished = true;
+		m_fSequenceFinished = TRUE;
 		return;
 	}
 
@@ -974,7 +974,7 @@ void CNihilanth :: Flight( void )
 }
 
 
-bool CNihilanth :: AbsorbSphere( void )
+BOOL CNihilanth :: AbsorbSphere( void )
 {
 	for (int i = 0; i < N_SPHERES; i++)
 	{
@@ -984,14 +984,14 @@ bool CNihilanth :: AbsorbSphere( void )
 			pSphere->AbsorbInit( );
 			m_hSphere[i] = NULL;
 			m_iActiveSpheres--;
-			return true;
+			return TRUE;
 		}
 	}
-	return false;
+	return FALSE;
 }
 
 
-bool CNihilanth :: EmitSphere( void )
+BOOL CNihilanth :: EmitSphere( void )
 {
 	m_iActiveSpheres = 0;
 	int empty = 0;
@@ -1009,7 +1009,7 @@ bool CNihilanth :: EmitSphere( void )
 	}
 
 	if (m_iActiveSpheres >= N_SPHERES)
-		return false;
+		return FALSE;
 
 	Vector vecSrc = m_hRecharger->pev->origin;
 	CNihilanthHVR *pEntity = (CNihilanthHVR *)Create( "nihilanth_energy_ball", vecSrc, pev->angles, edict() );
@@ -1017,7 +1017,7 @@ bool CNihilanth :: EmitSphere( void )
 	pEntity->CircleInit( this );
 
 	m_hSphere[empty] = pEntity;
-	return true;
+	return TRUE;
 }
 
 
@@ -1717,9 +1717,9 @@ void CNihilanthHVR :: DissipateThink( void  )
 }
 
 
-bool CNihilanthHVR :: CircleTarget( Vector vecTarget )
+BOOL CNihilanthHVR :: CircleTarget( Vector vecTarget )
 {
-	bool fClose = false;
+	BOOL fClose = FALSE;
 
 	Vector vecDest = vecTarget;
 	Vector vecEst = pev->origin + pev->velocity * 0.5;
@@ -1749,7 +1749,7 @@ bool CNihilanthHVR :: CircleTarget( Vector vecTarget )
 
 	if (d1 < 32)
 	{
-		fClose = true;
+		fClose = TRUE;
 	}
 
 	m_vecIdeal = m_vecIdeal + Vector( RANDOM_FLOAT( -2, 2 ), RANDOM_FLOAT( -2, 2 ), RANDOM_FLOAT( -2, 2 ));

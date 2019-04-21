@@ -69,7 +69,7 @@ LINK_ENTITY_TO_CLASS( env_global, CEnvGlobal );
 
 void CEnvGlobal::KeyValue( KeyValueData *pkvd )
 {
-	pkvd->fHandled = true;
+	pkvd->fHandled = TRUE;
 
 	if ( FStrEq(pkvd->szKeyName, "globalstate") )		// State name
 		m_globalstate = ALLOC_STRING( pkvd->szValue );
@@ -158,7 +158,7 @@ public:
 	void	KeyValue( KeyValueData *pkvd );
 	void	Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
-	bool	IsLockedByMaster( void ) { return !UTIL_IsMasterTriggered(m_sMaster, NULL); };
+	BOOL	IsLockedByMaster( void ) { return !UTIL_IsMasterTriggered(m_sMaster, NULL); };
 
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
@@ -195,7 +195,7 @@ LINK_ENTITY_TO_CLASS( env_state, CEnvState );
 
 void CEnvState::KeyValue( KeyValueData *pkvd )
 {
-	pkvd->fHandled = true;
+	pkvd->fHandled = TRUE;
 
 	if ( FStrEq(pkvd->szKeyName, "turnontime") )
 		m_fTurnOnTime = atof( pkvd->szValue );
@@ -364,11 +364,11 @@ void CMultiSource::KeyValue( KeyValueData *pkvd )
 				FStrEq(pkvd->szKeyName, "value1") ||
 				FStrEq(pkvd->szKeyName, "value2") ||
 				FStrEq(pkvd->szKeyName, "value3"))
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	else if ( FStrEq(pkvd->szKeyName, "globalstate") )
 	{
 		m_globalstate = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else 
 		CPointEntity::KeyValue( pkvd );
@@ -639,32 +639,32 @@ void CBaseButton::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "changetarget"))
 	{
 		m_strChangeTarget = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}	
 	else if (FStrEq(pkvd->szKeyName, "locked_sound"))
 	{
 		m_bLockedSound = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "locked_sentence"))
 	{
 		m_bLockedSentence = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "unlocked_sound"))
 	{
 		m_bUnlockedSound = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "unlocked_sentence"))
 	{
 		m_bUnlockedSentence = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else 
 		CBaseToggle::KeyValue( pkvd );
@@ -782,8 +782,8 @@ void CBaseButton::Spawn( )
 	if ( ((m_vecPosition2 - m_vecPosition1).Length() < 1) || (pev->spawnflags & SF_BUTTON_DONTMOVE) )
 		m_vecPosition2 = m_vecPosition1;
 
-	m_fStayPushed = (m_flWait == -1 ? true : false);
-	m_fRotating = false;
+	m_fStayPushed = (m_flWait == -1 ? TRUE : FALSE);
+	m_fRotating = FALSE;
 
 	// if the button is flagged for USE button activation only, take away it's touch function and add a use function
 
@@ -962,7 +962,7 @@ void CBaseButton:: ButtonTouch( CBaseEntity *pOther )
 	if (!UTIL_IsMasterTriggered(m_sMaster, pOther))
 	{
 		// play button locked sound
-		PlayLockSounds(pev, &m_ls, true, true);
+		PlayLockSounds(pev, &m_ls, TRUE, TRUE);
 		return;
 	}
 
@@ -989,13 +989,13 @@ void CBaseButton::ButtonActivate( )
 	if (!UTIL_IsMasterTriggered(m_sMaster, m_hActivator))
 	{
 		// button is locked, play locked sound
-		PlayLockSounds(pev, &m_ls, true, true);
+		PlayLockSounds(pev, &m_ls, TRUE, TRUE);
 		return;
 	}
 	else
 	{
 		// button is unlocked, play unlocked sound
-		PlayLockSounds(pev, &m_ls, false, true);
+		PlayLockSounds(pev, &m_ls, FALSE, TRUE);
 	}
 
 	ASSERT(m_toggle_state == TS_AT_BOTTOM);
@@ -1168,7 +1168,7 @@ void CRotButton::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "axes"))
 	{
 		UTIL_StringToVector( (float*)(pev->movedir), pkvd->szValue );
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseButton::KeyValue( pkvd );
@@ -1217,8 +1217,8 @@ void CRotButton::Spawn( void )
 	m_vecAngle2	= pev->angles + pev->movedir * m_flMoveDistance;
 	ASSERTSZ(m_vecAngle1 != m_vecAngle2, "rotating button start/end positions are equal");
 
-	m_fStayPushed = (m_flWait == -1 ? true : false);
-	m_fRotating = true;
+	m_fStayPushed = (m_flWait == -1 ? TRUE : FALSE);
+	m_fRotating = TRUE;
 
 	// if the button is flagged for USE button activation only, take away it's touch function and add a use function
 	if ( !FBitSet ( pev->spawnflags, SF_BUTTON_TOUCH_ONLY ) )
@@ -1338,17 +1338,17 @@ void CMomentaryRotButton::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "returnspeed"))
 	{
 		m_returnSpeed = atof(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "sounds"))
 	{
 		m_sounds = atoi(pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "axes"))
 	{
 		UTIL_StringToVector((float*)(pev->movedir), pkvd->szValue);
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );
@@ -1400,11 +1400,11 @@ void CMomentaryRotButton::UpdateAllButtons( float value, int start )
 
 void CMomentaryRotButton::UpdateSelf( float value )
 {
-	bool fplaysound = false;
+	BOOL fplaysound = FALSE;
 
 	if ( !m_lastUsed )
 	{
-		fplaysound = true;
+		fplaysound = TRUE;
 		m_direction = -m_direction;
 	}
 	m_lastUsed = 1;
@@ -1578,7 +1578,7 @@ void CEnvSpark::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "MaxDelay"))
 	{
 		m_flDelay = atof(pkvd->szValue);
-		pkvd->fHandled = true;	
+		pkvd->fHandled = TRUE;	
 	}
 	else if (	FStrEq(pkvd->szKeyName, "style") ||
 				FStrEq(pkvd->szKeyName, "height") ||
@@ -1586,7 +1586,7 @@ void CEnvSpark::KeyValue( KeyValueData *pkvd )
 				FStrEq(pkvd->szKeyName, "value1") ||
 				FStrEq(pkvd->szKeyName, "value2") ||
 				FStrEq(pkvd->szKeyName, "value3"))
-		pkvd->fHandled = true;
+		pkvd->fHandled = TRUE;
 	else
 		CBaseEntity::KeyValue( pkvd );
 }

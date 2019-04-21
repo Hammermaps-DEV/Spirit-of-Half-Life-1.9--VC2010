@@ -101,7 +101,7 @@ public:
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	int IRelationship( CBaseEntity *pTarget );
 	void StopTalking ( void );
-	bool ShouldSpeak( void );
+	BOOL ShouldSpeak( void );
 	virtual void Killed( entvars_t *pevAttacker, int iGib );
 
 	
@@ -119,7 +119,7 @@ public:
 	static const char *pIdleSounds[];
 	static const char *pAlertSounds[];
 
-	bool	m_fCanHornetAttack;
+	BOOL	m_fCanHornetAttack;
 	float	m_flNextHornetAttackCheck;
 
 	float m_flNextPainTime;
@@ -203,7 +203,7 @@ int CAGrunt::IRelationship ( CBaseEntity *pTarget )
 {
 	if ( FClassnameIs( pTarget->pev, "monster_human_grunt" ) )
 	{
-		return RELATIONSHIP_NEMESIS;
+		return R_NM;
 	}
 
 	return CSquadMonster :: IRelationship( pTarget );
@@ -280,12 +280,12 @@ void CAGrunt::StopTalking( void )
 //=========================================================
 // ShouldSpeak - Should this agrunt be talking?
 //=========================================================
-bool CAGrunt::ShouldSpeak( void )
+BOOL CAGrunt::ShouldSpeak( void )
 {
 	if ( m_flNextSpeakTime > gpGlobals->time )
 	{
 		// my time to talk is still in the future.
-		return false;
+		return FALSE;
 	}
 
 	if ( pev->spawnflags & SF_MONSTER_GAG )
@@ -297,11 +297,11 @@ bool CAGrunt::ShouldSpeak( void )
 			// into the future a bit, so we don't talk immediately after 
 			// going into combat
 			m_flNextSpeakTime = gpGlobals->time + 3;
-			return false;
+			return FALSE;
 		}
 	}
 
-	return true;
+	return TRUE;
 }
 
 //=========================================================
@@ -954,13 +954,13 @@ bool CAGrunt :: CheckRangeAttack1 ( float flDot, float flDist )
 		if ( tr.flFraction == 1.0 || tr.pHit == m_hEnemy->edict() )
 		{
 			m_flNextHornetAttackCheck = gpGlobals->time + RANDOM_FLOAT( 2, 5 );
-			m_fCanHornetAttack = true;
+			m_fCanHornetAttack = TRUE;
 			return m_fCanHornetAttack;
 		}
 	}
 	
 	m_flNextHornetAttackCheck = gpGlobals->time + 0.2;// don't check for half second if this check wasn't successful
-	m_fCanHornetAttack = false;
+	m_fCanHornetAttack = FALSE;
 	return static_cast<bool>(m_fCanHornetAttack);
 }
 
@@ -999,9 +999,9 @@ void CAGrunt :: StartTask ( Task_t *pTask )
 		{
 			Vector		vecCenter;
 			TraceResult	tr;
-			bool		fSkip;
+			BOOL		fSkip;
 
-			fSkip = false;
+			fSkip = FALSE;
 			vecCenter = Center();
 
 			UTIL_VecToAngles( m_vecEnemyLKP - pev->origin );
@@ -1010,7 +1010,7 @@ void CAGrunt :: StartTask ( Task_t *pTask )
 			if ( tr.flFraction == 1.0 )
 			{
 				MakeIdealYaw ( pev->origin + gpGlobals->v_right * 128 );
-				fSkip = true;
+				fSkip = TRUE;
 				TaskComplete();
 			}
 			
@@ -1020,7 +1020,7 @@ void CAGrunt :: StartTask ( Task_t *pTask )
 				if ( tr.flFraction == 1.0 )
 				{
 					MakeIdealYaw ( pev->origin - gpGlobals->v_right * 128 );
-					fSkip = true;
+					fSkip = TRUE;
 					TaskComplete();
 				}
 			}
@@ -1031,7 +1031,7 @@ void CAGrunt :: StartTask ( Task_t *pTask )
 				if ( tr.flFraction == 1.0 )
 				{
 					MakeIdealYaw ( pev->origin + gpGlobals->v_right * 256 );
-					fSkip = true;
+					fSkip = TRUE;
 					TaskComplete();
 				}
 			}
@@ -1042,7 +1042,7 @@ void CAGrunt :: StartTask ( Task_t *pTask )
 				if ( tr.flFraction == 1.0 )
 				{
 					MakeIdealYaw ( pev->origin - gpGlobals->v_right * 256 );
-					fSkip = true;
+					fSkip = TRUE;
 					TaskComplete();
 				}
 			}

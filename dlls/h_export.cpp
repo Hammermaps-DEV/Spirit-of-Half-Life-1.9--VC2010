@@ -33,7 +33,7 @@ globalvars_t  *gpGlobals;
 #ifdef _WIN32
 
 // Required DLL entry point
-bool WINAPI DllMain(
+BOOL WINAPI DllMain(
    HINSTANCE hinstDLL,
    DWORD fdwReason,
    LPVOID lpvReserved)
@@ -44,7 +44,7 @@ bool WINAPI DllMain(
 	else if (fdwReason == DLL_PROCESS_DETACH)
     {
     }
-	return true;
+	return TRUE;
 }
 
 void DLLEXPORT GiveFnptrsToDll(	enginefuncs_t* pengfuncsFromEngine, globalvars_t *pGlobals )

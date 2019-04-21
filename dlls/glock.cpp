@@ -46,7 +46,7 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	bool Deploy( void );
+	BOOL Deploy( void );
 	void Holster( );
 	void Reload( void );
 	void WeaponIdle( void );
@@ -115,12 +115,12 @@ int CGlock::AddToPlayer( CBasePlayer *pPlayer )
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
-bool CGlock::Deploy( )
+BOOL CGlock::Deploy( )
 {
 	return DefaultDeploy( "models/v_9mmhandgun.mdl", "models/p_9mmhandgun.mdl", GLOCK_DRAW, "onehanded", 0.8 );
 }
@@ -257,14 +257,14 @@ class CGlockAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_9mmclip.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	bool AddAmmo( CBaseEntity *pOther ) 
+	BOOL AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_GLOCKCLIP_GIVE, "9mm", _9MM_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return true;
+			return TRUE;
 		}
-		return false;
+		return FALSE;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_glockclip, CGlockAmmo );

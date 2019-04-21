@@ -65,7 +65,7 @@ public:
 	int  CheckLocalMove ( const Vector &vecStart, const Vector &vecEnd, CBaseEntity *pTarget, float *pflDist );
 	void MoveExecute( CBaseEntity *pTargetEnt, const Vector &vecDir, float flInterval );
 	void SetActivity ( Activity NewActivity );
-	bool ShouldAdvanceRoute( float flWaypointDist );
+	BOOL ShouldAdvanceRoute( float flWaypointDist );
 	int LookupFloat( );
 
 	float m_flNextFlinch;
@@ -700,7 +700,7 @@ void CController :: RunTask ( Task_t *pTask )
 			m_iBallTime[0] = m_flShootEnd;
 			m_iBall[1] = 64;
 			m_iBallTime[1] = m_flShootEnd;
-			m_fInCombat = false;
+			m_fInCombat = FALSE;
 		}
 	}
 
@@ -715,7 +715,7 @@ void CController :: RunTask ( Task_t *pTask )
 
 		if (m_fSequenceFinished)
 		{
-			m_fInCombat = false;
+			m_fInCombat = FALSE;
 		}
 
 		CSquadMonster :: RunTask ( pTask );
@@ -727,14 +727,14 @@ void CController :: RunTask ( Task_t *pTask )
 				pev->sequence = LookupActivity( ACT_RANGE_ATTACK1 );
 				pev->frame = 0;
 				ResetSequenceInfo( );
-				m_fInCombat = true;
+				m_fInCombat = TRUE;
 			}
 			else if (HasConditions ( bits_COND_CAN_RANGE_ATTACK2 ))
 			{
 				pev->sequence = LookupActivity( ACT_RANGE_ATTACK2 );
 				pev->frame = 0;
 				ResetSequenceInfo( );
-				m_fInCombat = true;
+				m_fInCombat = TRUE;
 			}
 			else
 			{
@@ -878,7 +878,7 @@ void CController :: RunAI( void )
 	{
 		if (m_pBall[i] == NULL)
 		{
-			m_pBall[i] = CSprite::SpriteCreate( "sprites/xspark4.spr", pev->origin, true );
+			m_pBall[i] = CSprite::SpriteCreate( "sprites/xspark4.spr", pev->origin, TRUE );
 			m_pBall[i]->SetTransparency( kRenderGlow, 255, 255, 255, 255, kRenderFxNoDissipation );
 			m_pBall[i]->SetAttachment( edict(), (i + 3) );
 			m_pBall[i]->SetScale( 1.0 );
@@ -1105,14 +1105,14 @@ void CController :: Move ( float flInterval )
 
 
 
-bool CController:: ShouldAdvanceRoute( float flWaypointDist )
+BOOL CController:: ShouldAdvanceRoute( float flWaypointDist )
 {
 	if ( flWaypointDist <= 32  )
 	{
-		return true;
+		return TRUE;
 	}
 
-	return false;
+	return FALSE;
 }
 
 

@@ -211,11 +211,11 @@ float UTIL_WeaponTimeBase( void )
 	return gpGlobals->time;
 }
 
-bool IsMultiplayer ( void )
+BOOL IsMultiplayer ( void )
 {
 	if( g_pGameRules->IsMultiplayer() ) 
-		return true;
-	return false;
+		return TRUE;
+	return FALSE;
 }
 
 static unsigned int glSeed = 0; 
@@ -507,7 +507,7 @@ edict_t *DBG_EntOfVars( const entvars_t *pev )
 #ifdef	DEBUG
 	void
 DBG_AssertFunction(
-	bool		fExpr,
+	BOOL		fExpr,
 	const char*	szExpr,
 	const char*	szFile,
 	int			szLine,
@@ -524,7 +524,7 @@ DBG_AssertFunction(
 	}
 #endif	// DEBUG
 
-bool UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
+BOOL UTIL_GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
 {
 	return g_pGameRules->GetNextBestWeapon( pPlayer, pCurrentWeapon );
 }
@@ -1406,19 +1406,19 @@ void UTIL_ShowMessageAll( const char *pString )
 // Overloaded to add IGNORE_GLASS
 void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, IGNORE_GLASS ignoreGlass, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? true : false) | (ignoreGlass?0x100:0), pentIgnore, ptr );
+	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? TRUE : FALSE) | (ignoreGlass?0x100:0), pentIgnore, ptr );
 }
 
 
 void UTIL_TraceLine( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? true : false), pentIgnore, ptr );
+	TRACE_LINE( vecStart, vecEnd, (igmon == ignore_monsters ? TRUE : FALSE), pentIgnore, ptr );
 }
 
 
 void UTIL_TraceHull( const Vector &vecStart, const Vector &vecEnd, IGNORE_MONSTERS igmon, int hullNumber, edict_t *pentIgnore, TraceResult *ptr )
 {
-	TRACE_HULL( vecStart, vecEnd, (igmon == ignore_monsters ? true : false), hullNumber, pentIgnore, ptr );
+	TRACE_HULL( vecStart, vecEnd, (igmon == ignore_monsters ? TRUE : FALSE), hullNumber, pentIgnore, ptr );
 }
 
 void UTIL_TraceModel( const Vector &vecStart, const Vector &vecEnd, int hullNumber, edict_t *pentModel, TraceResult *ptr )
@@ -1562,7 +1562,7 @@ Vector UTIL_GetAimVector( edict_t *pent, float flSpeed )
 	return tmp;
 }
 
-bool UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
+BOOL UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
 {
 	int i, j, found = false;
 	const char *szMaster;
@@ -1602,7 +1602,7 @@ bool UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
 					if (!found) // no ) found
 					{
 						ALERT(at_error, "Missing ')' in master \"%s\"\n", szMaster);
-						return false;
+						return FALSE;
 					}
 					break;
 				}
@@ -1610,7 +1610,7 @@ bool UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
 			if (!found) // no ( found
 			{
 				ALERT(at_debug, "Master \"%s\" not found!\n",szMaster);
-				return true;
+				return TRUE;
 			}
 
 			strncpy(szBuf, szMaster, i);
@@ -1628,25 +1628,25 @@ bool UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
 	}
 
 	// if the entity has no master (or the master is missing), just say yes.
-	return true;
+	return TRUE;
 }
 
-bool UTIL_ShouldShowBlood( int color )
+BOOL UTIL_ShouldShowBlood( int color )
 {
 	if ( color != DONT_BLEED )
 	{
 		if ( color == BLOOD_COLOR_RED )
 		{
 			if ( CVAR_GET_FLOAT("violence_hblood") != 0 )
-				return true;
+				return TRUE;
 		}
 		else
 		{
 			if ( CVAR_GET_FLOAT("violence_ablood") != 0 )
-				return true;
+				return TRUE;
 		}
 	}
-	return false;
+	return FALSE;
 }
 
 int UTIL_PointContents(	const Vector &vec )
@@ -1799,7 +1799,7 @@ Tell connected clients to display it, or use the default spray can decal
 if the custom can't be loaded.
 ==============
 */
-void UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumber, bool bIsCustom )
+void UTIL_PlayerDecalTrace( TraceResult *pTrace, int playernum, int decalNumber, BOOL bIsCustom )
 {
 	int index;
 	
@@ -1873,24 +1873,24 @@ void UTIL_Ricochet( const Vector &position, float scale )
 }
 
 
-bool UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 )
+BOOL UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 )
 {
 	// Everyone matches unless it's teamplay
 	if ( !g_pGameRules->IsTeamplay() )
-		return true;
+		return TRUE;
 
 	// Both on a team?
 	if ( *pTeamName1 != 0 && *pTeamName2 != 0 )
 	{
 		if ( !stricmp( pTeamName1, pTeamName2 ) )	// Same Team?
-			return true;
+			return TRUE;
 	}
 
-	return false;
+	return FALSE;
 }
 
 //LRC - moved here from barney.cpp
-bool UTIL_IsFacing( entvars_t *pevTest, const Vector &reference )
+BOOL UTIL_IsFacing( entvars_t *pevTest, const Vector &reference )
 {
 	Vector vecDir = (reference - pevTest->origin);
 	vecDir.z = 0;
@@ -1902,9 +1902,9 @@ bool UTIL_IsFacing( entvars_t *pevTest, const Vector &reference )
 	// He's facing me, he meant it
 	if ( DotProduct( forward, vecDir ) > 0.96 )	// +/- 15 degrees or so
 	{
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 void UTIL_StringToVector( float *pVector, const char *pString )
@@ -2138,11 +2138,11 @@ void UTIL_Remove( CBaseEntity *pEntity )
 }
 
 
-bool UTIL_IsValidEntity( edict_t *pent )
+BOOL UTIL_IsValidEntity( edict_t *pent )
 {
 	if ( !pent || pent->free || (pent->v.flags & FL_KILLME) )
-		return false;
-	return true;
+		return FALSE;
+	return TRUE;
 }
 
 void UTIL_PrecacheOther( const char *szClassname )
@@ -2413,10 +2413,10 @@ unsigned short CSaveRestoreBuffer :: TokenHash( const char *pszToken )
 	for ( int i=0; i<m_pdata->tokenCount; i++ )
 	{
 #if _DEBUG
-		static qboolean beentheredonethat = false;
+		static qboolean beentheredonethat = FALSE;
 		if ( i > 50 && !beentheredonethat )
 		{
-			beentheredonethat = true;
+			beentheredonethat = TRUE;
 			ALERT( at_error, "CSaveRestoreBuffer :: TokenHash() is getting too full!" );
 		}
 #endif
@@ -2616,7 +2616,7 @@ void EntvarsKeyvalue( entvars_t *pev, KeyValueData *pkvd )
 				ALERT( at_error, "Bad field in entity!!\n" );
 				break;
 			}
-			pkvd->fHandled = true;
+			pkvd->fHandled = TRUE;
 			return;
 		}
 	}
@@ -3171,7 +3171,7 @@ int HaveCamerasInPVS( edict_t* edict )
 				if (pent == view)
 				{
 				//	ALERT(at_console, "CamerasInPVS found camera named %s\n", STRING(pPlayer->viewEntity));
-					return true;
+					return TRUE;
 				}				
 				pent = pent->v.chain;
 			}

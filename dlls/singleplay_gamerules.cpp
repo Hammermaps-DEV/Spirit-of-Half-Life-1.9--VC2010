@@ -45,56 +45,56 @@ void CHalfLifeRules::Think ( void )
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules::IsMultiplayer( void )
+BOOL CHalfLifeRules::IsMultiplayer( void )
 {
-	return false;
+	return FALSE;
 }
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules::IsDeathmatch ( void )
+BOOL CHalfLifeRules::IsDeathmatch ( void )
 {
-	return false;
+	return FALSE;
 }
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules::IsCoOp( void )
+BOOL CHalfLifeRules::IsCoOp( void )
 {
-	return false;
+	return FALSE;
 }
 
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
+BOOL CHalfLifeRules::FShouldSwitchWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pWeapon )
 {
 	if ( !pPlayer->m_pActiveItem )
 	{
 		// player doesn't have an active item!
-		return true;
+		return TRUE;
 	}
 
 	if ( !pPlayer->m_pActiveItem->CanHolster() )
 	{
-		return false;
+		return FALSE;
 	}
 
-	return true;
+	return TRUE;
 }
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
+BOOL CHalfLifeRules :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerItem *pCurrentWeapon )
 {
-	return false;
+	return FALSE;
 }
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules :: ClientConnected( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ] )
+BOOL CHalfLifeRules :: ClientConnected( edict_t *pEntity, const char *pszName, const char *pszAddress, char szRejectReason[ 128 ] )
 {
-	return true;
+	return TRUE;
 }
 
 void CHalfLifeRules :: InitHUD( CBasePlayer *pl )
@@ -136,7 +136,7 @@ void CHalfLifeRules :: PlayerSpawn( CBasePlayer *pPlayer )
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules :: AllowAutoTargetCrosshair( void )
+BOOL CHalfLifeRules :: AllowAutoTargetCrosshair( void )
 {
 	return ( g_iSkillLevel == SKILL_EASY );
 }
@@ -150,9 +150,9 @@ void CHalfLifeRules :: PlayerThink( CBasePlayer *pPlayer )
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules :: FPlayerCanRespawn( CBasePlayer *pPlayer )
+BOOL CHalfLifeRules :: FPlayerCanRespawn( CBasePlayer *pPlayer )
 {
-	return true;
+	return TRUE;
 }
 
 //=========================================================
@@ -232,9 +232,9 @@ int CHalfLifeRules :: WeaponShouldRespawn( CBasePlayerItem *pWeapon )
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules::CanHaveItem( CBasePlayer *pPlayer, CItem *pItem )
+BOOL CHalfLifeRules::CanHaveItem( CBasePlayer *pPlayer, CItem *pItem )
 {
-	return true;
+	return TRUE;
 }
 
 //=========================================================
@@ -270,9 +270,9 @@ Vector CHalfLifeRules::VecItemRespawnSpot( CItem *pItem )
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules::IsAllowedToSpawn( CBaseEntity *pEntity )
+BOOL CHalfLifeRules::IsAllowedToSpawn( CBaseEntity *pEntity )
 {
-	return true;
+	return TRUE;
 }
 
 //=========================================================
@@ -333,7 +333,7 @@ int CHalfLifeRules::PlayerRelationship( CBaseEntity *pPlayer, CBaseEntity *pTarg
 
 //=========================================================
 //=========================================================
-bool CHalfLifeRules :: FAllowMonsters( void )
+BOOL CHalfLifeRules :: FAllowMonsters( void )
 {
-	return true;
+	return TRUE;
 }

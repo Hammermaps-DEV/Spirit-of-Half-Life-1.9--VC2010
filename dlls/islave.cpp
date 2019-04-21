@@ -155,7 +155,7 @@ int CISlave::IRelationship( CBaseEntity *pTarget )
 {
 	if ( (pTarget->IsPlayer()) )
 		if ( (pev->spawnflags & SF_MONSTER_WAIT_UNTIL_PROVOKED ) && ! (m_afMemory & bits_MEMORY_PROVOKED ))
-			return RELATIONSHIP_NO;
+			return R_NO;
 	return CBaseMonster::IRelationship( pTarget );
 }
 
@@ -591,7 +591,7 @@ void CISlave :: Precache()
 int CISlave :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType)
 {
 	// don't slash one of your own
-	if ((bitsDamageType & DMG_SLASH) && pevAttacker && IRelationship( Instance(pevAttacker) ) < RELATIONSHIP_DISLIKE)
+	if ((bitsDamageType & DMG_SLASH) && pevAttacker && IRelationship( Instance(pevAttacker) ) < R_DL)
 		return 0;
 
 	//LRC - if my player reaction has been overridden, leave this alone

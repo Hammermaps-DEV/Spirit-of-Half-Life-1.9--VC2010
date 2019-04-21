@@ -75,7 +75,7 @@ public:
 	int GetItemInfo(ItemInfo *p);
 
 	void PrimaryAttack( void );
-	bool Deploy( void );
+	BOOL Deploy( void );
 	void Holster( );
 	void WeaponIdle( void );
 	int m_fJustThrown;
@@ -425,7 +425,7 @@ int CSqueak::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-bool CSqueak::Deploy( )
+BOOL CSqueak::Deploy( )
 {
 	float flRndSound = RANDOM_FLOAT ( 0 , 1 );
 	if ( flRndSound <= 0.5 )

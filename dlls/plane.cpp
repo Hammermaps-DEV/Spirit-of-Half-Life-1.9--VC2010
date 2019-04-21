@@ -31,7 +31,7 @@ void CPlane :: InitializePlane ( const Vector &vecNormal, const Vector &vecPoint
 {
 	m_vecNormal = vecNormal;
 	m_flDist = DotProduct ( m_vecNormal, vecPoint );
-	m_fInitialized = true;
+	m_fInitialized = TRUE;
 }
 
 
@@ -39,7 +39,7 @@ void CPlane :: InitializePlane ( const Vector &vecNormal, const Vector &vecPoint
 // PointInFront - determines whether the given vector is 
 // in front of the plane. 
 //=========================================================
-bool CPlane :: PointInFront ( const Vector &vecPoint )
+BOOL CPlane :: PointInFront ( const Vector &vecPoint )
 {
 	float flFace;
 
@@ -52,7 +52,7 @@ bool CPlane :: PointInFront ( const Vector &vecPoint )
 
 	if ( flFace >= 0 )
 	{
-		return true;
+		return TRUE;
 	}
 
 	return FALSE;
