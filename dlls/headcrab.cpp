@@ -88,8 +88,8 @@ public:
 	void PrescheduleThink( void );
 	int  Classify ( void );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
-	bool CheckRangeAttack1 ( float flDot, float flDist );
-	bool CheckRangeAttack2 ( float flDot, float flDist );
+	BOOL CheckRangeAttack1 ( float flDot, float flDist );
+	BOOL CheckRangeAttack2 ( float flDot, float flDist );
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
 
 	virtual float GetDamageAmount( void ) { return gSkillData.headcrabDmgBite; }
@@ -406,28 +406,28 @@ void CHeadCrab :: StartTask ( Task_t *pTask )
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-bool CHeadCrab :: CheckRangeAttack1 ( float flDot, float flDist )
+BOOL CHeadCrab :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist <= 256 && flDot >= 0.65 )
 	{
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 //=========================================================
 // CheckRangeAttack2
 //=========================================================
-bool CHeadCrab :: CheckRangeAttack2 ( float flDot, float flDist )
+BOOL CHeadCrab :: CheckRangeAttack2 ( float flDot, float flDist )
 {
-	return false;
+	return FALSE;
 	// BUGBUG: Why is this code here?  There is no ACT_RANGE_ATTACK2 animation.  I've disabled it for now.
 #if 0
 	if ( FBitSet( pev->flags, FL_ONGROUND ) && flDist > 64 && flDist <= 256 && flDot >= 0.5 )
 	{
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 #endif
 }
 
@@ -495,7 +495,7 @@ public:
 	void Precache( void );
 	void SetYawSpeed ( void );
 	float GetDamageAmount( void ) { return gSkillData.headcrabDmgBite * 0.3; }
-	bool CheckRangeAttack1 ( float flDot, float flDist ) override;
+	BOOL CheckRangeAttack1 ( float flDot, float flDist );
 	Schedule_t* GetScheduleOfType ( int Type );
 	virtual int GetVoicePitch( void ) { return PITCH_NORM + RANDOM_LONG(40,50); }
 	virtual float GetSoundVolue( void ) { return 0.8; }
@@ -525,25 +525,28 @@ void CBabyCrab :: Precache( void )
 	CHeadCrab::Precache();
 }
 
+
 void CBabyCrab :: SetYawSpeed ( void )
 {
 	pev->yaw_speed = 120;
 }
 
-bool CBabyCrab :: CheckRangeAttack1( float flDot, float flDist )
+
+BOOL CBabyCrab :: CheckRangeAttack1( float flDot, float flDist )
 {
 	if ( pev->flags & FL_ONGROUND )
 	{
 		if ( pev->groundentity && (pev->groundentity->v.flags & (FL_CLIENT|FL_MONSTER)) )
-			return true;
+			return TRUE;
 
 		// A little less accurate, but jump from closer
 		if ( flDist <= 180 && flDot >= 0.55 )
-			return true;
+			return TRUE;
 	}
 
-	return false;
+	return FALSE;
 }
+
 
 Schedule_t* CBabyCrab :: GetScheduleOfType ( int Type )
 {
@@ -559,7 +562,6 @@ Schedule_t* CBabyCrab :: GetScheduleOfType ( int Type )
 			return slHCRangeAttack1Fast;
 		}
 		break;
-		default: ;
 	}
 
 	return CHeadCrab::GetScheduleOfType( Type );

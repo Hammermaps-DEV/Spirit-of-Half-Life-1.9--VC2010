@@ -49,8 +49,8 @@ public:
 	int  Classify ( void );
 	int  IRelationship( CBaseEntity *pTarget );
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
-	bool CheckRangeAttack1 ( float flDot, float flDist );
-	bool CheckRangeAttack2 ( float flDot, float flDist );
+	BOOL CheckRangeAttack1 ( float flDot, float flDist );
+	BOOL CheckRangeAttack2 ( float flDot, float flDist );
 	void CallForHelp( char *szClassname, float flDist, EHANDLE hEnemy, Vector &vecLocation );
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	int TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
@@ -452,11 +452,11 @@ void CISlave :: HandleAnimEvent( MonsterEvent_t *pEvent )
 //=========================================================
 // CheckRangeAttack1 - normal beam attack 
 //=========================================================
-bool CISlave :: CheckRangeAttack1 ( float flDot, float flDist )
+BOOL CISlave :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if (m_flNextAttack > gpGlobals->time)
 	{
-		return false;
+		return FALSE;
 	}
 
 	return CSquadMonster::CheckRangeAttack1( flDot, flDist );
@@ -465,13 +465,13 @@ bool CISlave :: CheckRangeAttack1 ( float flDot, float flDist )
 //=========================================================
 // CheckRangeAttack2 - check bravery and try to resurect dead comrades
 //=========================================================
-bool CISlave :: CheckRangeAttack2 ( float flDot, float flDist )
+BOOL CISlave :: CheckRangeAttack2 ( float flDot, float flDist )
 {
-	return false;
+	return FALSE;
 
 	if (m_flNextAttack > gpGlobals->time)
 	{
-		return false;
+		return FALSE;
 	}
 
 	m_hDead = NULL;
@@ -502,9 +502,9 @@ bool CISlave :: CheckRangeAttack2 ( float flDot, float flDist )
 		}
 	}
 	if (m_hDead != NULL)
-		return true;
-
-	return false;
+		return TRUE;
+	else
+		return FALSE;
 }
 
 

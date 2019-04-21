@@ -17,37 +17,36 @@
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
+#include	"monsters.h"
+#include	"squadmonster.h"
 
-enum
-{
-	AFLOCK_MAX_RECRUIT_RADIUS	= 1024,
-	AFLOCK_FLY_SPEED			= 125,
-	AFLOCK_TURN_RATE			= 75,
-	AFLOCK_ACCELERATE			= 10,
-	AFLOCK_CHECK_DIST			= 192,
-	AFLOCK_TOO_CLOSE			= 100,
-	AFLOCK_TOO_FAR				= 256,
-};
+#define		AFLOCK_MAX_RECRUIT_RADIUS	1024
+#define		AFLOCK_FLY_SPEED			125
+#define		AFLOCK_TURN_RATE			75
+#define		AFLOCK_ACCELERATE			10
+#define		AFLOCK_CHECK_DIST			192
+#define		AFLOCK_TOO_CLOSE			100
+#define		AFLOCK_TOO_FAR				256
 
 //=========================================================
 //=========================================================
 class CFlockingFlyerFlock : public CBaseMonster
 {
 public:
-	void Spawn( void ) override;
-	void Precache( void ) override;
-	void KeyValue( KeyValueData *pkvd ) override;
+	void Spawn( void );
+	void Precache( void );
+	void KeyValue( KeyValueData *pkvd );
 	void SpawnFlock( void );
 
-	virtual int Save( CSave &save );
-	virtual int	Restore( CRestore &restore );
+	virtual int		Save( CSave &save );
+	virtual int		Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Sounds are shared by the flock
 	static  void PrecacheFlockSounds( void );
 
-	int		m_cFlockSize = 0;
-	float	m_flFlockRadius = 0;
+	int		m_cFlockSize;
+	float	m_flFlockRadius;
 };
 
 TYPEDESCRIPTION	CFlockingFlyerFlock::m_SaveData[] = 

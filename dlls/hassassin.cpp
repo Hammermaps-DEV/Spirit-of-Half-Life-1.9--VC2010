@@ -72,10 +72,10 @@ public:
 	void HandleAnimEvent( MonsterEvent_t *pEvent );
 	Schedule_t* GetSchedule ( void );
 	Schedule_t* GetScheduleOfType ( int Type );
-	bool CheckMeleeAttack1 ( float flDot, float flDist );	// jump
-	// bool CheckMeleeAttack2 ( float flDot, float flDist );
-	bool CheckRangeAttack1 ( float flDot, float flDist );	// shoot
-	bool CheckRangeAttack2 ( float flDot, float flDist );	// throw grenade
+	BOOL CheckMeleeAttack1 ( float flDot, float flDist );	// jump
+	// BOOL CheckMeleeAttack2 ( float flDot, float flDist );
+	BOOL CheckRangeAttack1 ( float flDot, float flDist );	// shoot
+	BOOL CheckRangeAttack2 ( float flDot, float flDist );	// throw grenade
 	void StartTask ( Task_t *pTask );
 	void RunAI( void );
 	void RunTask ( Task_t *pTask );
@@ -95,7 +95,7 @@ public:
 
 	float m_flNextGrenadeCheck;
 	Vector	m_vecTossVelocity;
-	bool	m_fThrowGrenade;
+	BOOL	m_fThrowGrenade;
 
 	int		m_iTargetRanderamt;
 
@@ -273,7 +273,7 @@ void CHAssassin :: HandleAnimEvent( MonsterEvent_t *pEvent )
 				CGrenade::ShootTimed( pev, vecGunPosition, m_vecTossVelocity, 2.0 );
 
 			m_flNextGrenadeCheck = gpGlobals->time + 6;// wait six seconds before even looking again to see if a grenade can be thrown.
-			m_fThrowGrenade = false;
+			m_fThrowGrenade = FALSE;
 			// !!!LATER - when in a group, only try to throw grenade if ordered.
 		}
 		break;
@@ -675,7 +675,7 @@ IMPLEMENT_CUSTOM_SCHEDULES( CHAssassin, CBaseMonster );
 //=========================================================
 // CheckMeleeAttack1 - jump like crazy if the enemy gets too close. 
 //=========================================================
-bool CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
+BOOL CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 {
 	if ( m_flNextJump < gpGlobals->time && (flDist <= 128 || HasMemory( bits_MEMORY_BADJUMP )) && m_hEnemy != NULL )
 	{
@@ -687,7 +687,7 @@ bool CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 
 		if ( tr.fStartSolid || tr.flFraction < 1.0)
 		{
-			return false;
+			return FALSE;
 		}
 
 		float flGravity = g_psv_gravity->value;
@@ -696,16 +696,16 @@ bool CHAssassin :: CheckMeleeAttack1 ( float flDot, float flDist )
 		float speed = flGravity * time / 160;
 		m_vecJumpVelocity = (vecDest - pev->origin) * speed;
 
-		return true;
+		return TRUE;
 	}
-	return false;
+	return FALSE;
 }
 
 //=========================================================
 // CheckRangeAttack1  - drop a cap in their ass
 //
 //=========================================================
-bool CHAssassin :: CheckRangeAttack1 ( float flDot, float flDist )
+BOOL CHAssassin :: CheckRangeAttack1 ( float flDot, float flDist )
 {
 	if ( !HasConditions( bits_COND_ENEMY_OCCLUDED ) && flDist > 64 && flDist <= 2048 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */ )
 	{
@@ -718,27 +718,27 @@ bool CHAssassin :: CheckRangeAttack1 ( float flDot, float flDist )
 
 		if ( tr.flFraction == 1 || tr.pHit == m_hEnemy->edict() )
 		{
-			return true;
+			return TRUE;
 		}
 	}
-	return false;
+	return FALSE;
 }
 
 //=========================================================
 // CheckRangeAttack2 - toss grenade is enemy gets in the way and is too close. 
 //=========================================================
-bool CHAssassin :: CheckRangeAttack2 ( float flDot, float flDist )
+BOOL CHAssassin :: CheckRangeAttack2 ( float flDot, float flDist )
 {
-	m_fThrowGrenade = false;
+	m_fThrowGrenade = FALSE;
 	if ( !FBitSet ( m_hEnemy->pev->flags, FL_ONGROUND ) )
 	{
 		// don't throw grenades at anything that isn't on the ground!
-		return false;
+		return FALSE;
 	}
 
 	// don't get grenade happy unless the player starts to piss you off
 	if ( m_iFrustration <= 2)
-		return false;
+		return FALSE;
 
 	if ( m_flNextGrenadeCheck < gpGlobals->time && !HasConditions( bits_COND_ENEMY_OCCLUDED ) && flDist <= 512 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */ )
 	{
@@ -749,13 +749,13 @@ bool CHAssassin :: CheckRangeAttack2 ( float flDot, float flDist )
 			m_vecTossVelocity = vecToss;
 
 			// throw a hand grenade
-			m_fThrowGrenade = true;
+			m_fThrowGrenade = TRUE;
 
-			return true;
+			return TRUE;
 		}
 	}
 
-	return false;
+	return FALSE;
 }
 
 
