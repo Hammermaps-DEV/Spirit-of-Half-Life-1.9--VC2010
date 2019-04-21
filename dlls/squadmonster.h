@@ -61,7 +61,7 @@ public:
 	EHANDLE	m_hSquadMember[MAX_SQUAD_MEMBERS-1];	// valid only for leader
 	int		m_afSquadSlots;
 	float	m_flLastEnemySightTime; // last time anyone in the squad saw the enemy
-	BOOL	m_fEnemyEluded;
+	bool	m_fEnemyEluded;
 
 	// squad member info
 	int		m_iMySlot;// this is the behaviour slot that the monster currently holds in the squad. 
@@ -71,9 +71,9 @@ public:
 	void VacateSlot( void );
 	void ScheduleChange( void );
 	void Killed( entvars_t *pevAttacker, int iGib );
-	BOOL OccupySlot( int iDesiredSlot );
-	BOOL NoFriendlyFire( void );
-	BOOL NoFriendlyFire( BOOL playerAlly );
+	bool OccupySlot( int iDesiredSlot );
+	bool NoFriendlyFire( void );
+	bool NoFriendlyFire( bool playerAlly );
 
 	// squad functions still left in base class
 	CSquadMonster *MySquadLeader( ) 
@@ -97,14 +97,14 @@ public:
 	int	SquadCount( void );
 	void SquadRemove( CSquadMonster *pRemove );
 	void SquadUnlink( void );
-	BOOL SquadAdd( CSquadMonster *pAdd );
+	bool SquadAdd( CSquadMonster *pAdd );
 	void SquadDisband( void );
 	void SquadAddConditions ( int iConditions );
 	void SquadMakeEnemy ( CBaseEntity *pEnemy );
 	void SquadPasteEnemyInfo ( void );
 	void SquadCopyEnemyInfo ( void );
-	BOOL SquadEnemySplit ( void );
-	BOOL SquadMemberInRange( const Vector &vecLocation, float flDist );
+	bool SquadEnemySplit ( void );
+	bool SquadMemberInRange( const Vector &vecLocation, float flDist );
 
 	virtual CSquadMonster *MySquadMonsterPointer( void ) { return this; }
 
@@ -113,7 +113,7 @@ public:
 	int	Save( CSave &save ); 
 	int Restore( CRestore &restore );
 
-	BOOL FValidateCover ( const Vector &vecCoverLocation );
+	bool FValidateCover ( const Vector &vecCoverLocation );
 
 	MONSTERSTATE GetIdealState ( void );
 	Schedule_t	*GetScheduleOfType ( int iType );

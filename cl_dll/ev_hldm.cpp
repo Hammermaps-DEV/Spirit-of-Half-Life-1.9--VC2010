@@ -808,7 +808,7 @@ void EV_FireCrowbar(event_args_t *args)
 
 		// play thwack, smack, or dong sound
 		float flVol = 1.0;
-		int fHitWorld = TRUE;
+		int fHitWorld = true;
   		pHit = gEngfuncs.pEventAPI->EV_GetPhysent( tr.ent );
   		
 		if (pHit)
@@ -822,8 +822,8 @@ void EV_FireCrowbar(event_args_t *args)
 					case 2: gEngfuncs.pEventAPI->EV_PlaySound( idx, origin, CHAN_WEAPON, "weapons/cbar_hitbod3.wav", 1, ATTN_NORM, 0, PITCH_NORM); break;
 				}
 
-				fHitWorld = FALSE;
-				args->bparam1 = FALSE; //hit monster
+				fHitWorld = false;
+				args->bparam1 = false; //hit monster
 			}
 		}
 

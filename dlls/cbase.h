@@ -182,7 +182,7 @@ public:
 	int		m_iStyle; // LRC - almost anything can have a lightstyle these days...
 
 	Vector		m_vecSpawnOffset; // LRC- To fix things which (for example) MoveWith a door which Starts Open.
-	BOOL		m_activated; // LRC- moved here from func_train. Signifies that an entity has already been
+	bool		m_activated; // LRC- moved here from func_train. Signifies that an entity has already been
 										// activated. (and hence doesn't need reactivating.)
 
 	//LRC - decent mechanisms for setting think times!
@@ -202,7 +202,7 @@ public:
 	virtual float	CalcRatio( CBaseEntity *pLocus )	{ return 0; }
 
 	//LRC - aliases
-	virtual BOOL IsAlias( void ) { return FALSE; }
+	virtual bool IsAlias( void ) { return false; }
 
 	// initialization functions
 	virtual void	Spawn( void ) { return; }
@@ -213,19 +213,19 @@ public:
 		if (FStrEq(pkvd->szKeyName, "movewith"))
 		{
 			m_MoveWith = ALLOC_STRING(pkvd->szValue);
-			pkvd->fHandled = TRUE;
+			pkvd->fHandled = true;
 		}
 		else if (FStrEq(pkvd->szKeyName, "skill"))
 		{
 			m_iLFlags = atoi(pkvd->szValue);
-			pkvd->fHandled = TRUE;
+			pkvd->fHandled = true;
 		}
 		else if (FStrEq(pkvd->szKeyName, "style"))
 		{
 			m_iStyle = atoi(pkvd->szValue);
-			pkvd->fHandled = TRUE;
+			pkvd->fHandled = true;
 		}
-		else pkvd->fHandled = FALSE;
+		else pkvd->fHandled = false;
 	}
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
@@ -248,7 +248,7 @@ public:
 		studiohdr_t *pstudiohdr;
 		pstudiohdr = (studiohdr_t*)GET_MODEL_PTR( ENT(pev) );
 
-		if (pstudiohdr == NULL)
+		if (pstudiohdr == nullptr)
 		{
 			ALERT(at_console,"Unable to fetch model pointer!\n");
 			return;
@@ -281,14 +281,14 @@ public:
 	virtual int		BloodColor( void ) { return DONT_BLEED; }
 	virtual void	TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
 //LRC- superceded by GetState ( pActivator ).
-//	virtual BOOL    IsTriggered( CBaseEntity *pActivator ) {return TRUE;}
-	virtual CBaseMonster *MyMonsterPointer( void ) { return NULL;}
-	virtual CSquadMonster *MySquadMonsterPointer( void ) { return NULL;}
+//	virtual bool    IsTriggered( CBaseEntity *pActivator ) {return true;}
+	virtual CBaseMonster *MyMonsterPointer( void ) { return nullptr;}
+	virtual CSquadMonster *MySquadMonsterPointer( void ) { return nullptr;}
 	virtual	int		GetToggleState( void ) { return TS_AT_TOP; }
-	virtual void	AddPoints( int score, BOOL bAllowNegativeScore ) {}
-	virtual void	AddPointsToTeam( int score, BOOL bAllowNegativeScore ) {}
-	virtual BOOL	AddPlayerItem( CBasePlayerItem *pItem ) { return 0; }
-	virtual BOOL	RemovePlayerItem( CBasePlayerItem *pItem ) { return 0; }
+	virtual void	AddPoints( int score, bool bAllowNegativeScore ) {}
+	virtual void	AddPointsToTeam( int score, bool bAllowNegativeScore ) {}
+	virtual bool	AddPlayerItem( CBasePlayerItem *pItem ) { return 0; }
+	virtual bool	RemovePlayerItem( CBasePlayerItem *pItem ) { return 0; }
 	virtual int 	GiveAmmo( int iAmount, char *szName, int iMax ) { return -1; };
 	virtual float	GetDelay( void ) { return 0; }
 	virtual int		IsMoving( void ) { return pev->velocity != g_vecZero; }
@@ -298,15 +298,15 @@ public:
 	virtual void	SetToggleState( int state ) {}
 	virtual void    StartSneaking( void ) {}
 	virtual void    StopSneaking( void ) {}
-	virtual BOOL	OnControls( entvars_t *pev ) { return FALSE; }
-	virtual BOOL    IsSneaking( void ) { return FALSE; }
-	virtual BOOL	IsAlive( void ) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
-	virtual BOOL	IsBSPModel( void ) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
-	virtual BOOL	ReflectGauss( void ) { return ( IsBSPModel() && !pev->takedamage ); }
-	virtual BOOL	HasTarget( string_t targetname ) { return FStrEq(STRING(targetname), STRING(pev->targetname) ); }
+	virtual bool	OnControls( entvars_t *pev ) { return false; }
+	virtual bool    IsSneaking( void ) { return false; }
+	virtual bool	IsAlive( void ) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
+	virtual bool	IsBSPModel( void ) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
+	virtual bool	ReflectGauss( void ) { return ( IsBSPModel() && !pev->takedamage ); }
+	virtual bool	HasTarget( string_t targetname ) { return FStrEq(STRING(targetname), STRING(pev->targetname) ); }
 	virtual bool    IsInWorld( void );
-	virtual	BOOL	IsPlayer( void ) { return FALSE; }
-	virtual BOOL	IsNetClient( void ) { return FALSE; }
+	virtual	bool	IsPlayer( void ) { return false; }
+	virtual bool	IsNetClient( void ) { return false; }
 	virtual const char *TeamID( void ) { return ""; }
 
 
@@ -353,17 +353,17 @@ public:
 	{ this->Use( this, this, USE_TOGGLE, 0 );	}
 	bool		ShouldToggle( USE_TYPE useType, bool currentState );
 	bool		ShouldToggle( USE_TYPE useType ); //LRC this version uses GetState()
-	void		FireBullets( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL  );
-	Vector		FireBulletsPlayer( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0 );
+	void		FireBullets( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = nullptr  );
+	Vector		FireBulletsPlayer( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = nullptr, int shared_rand = 0 );
 
-	virtual CBaseEntity *Respawn( void ) { return NULL; }
+	virtual CBaseEntity *Respawn( void ) { return nullptr; }
 
 	void SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, float value );
 	// Do the bounding boxes of these two intersect?
 	bool	Intersects( CBaseEntity *pOther ) const;
 	void	MakeDormant( void );
 	int		IsDormant( void );
-	BOOL    IsLockedByMaster( void ) { return FALSE; }
+	bool    IsLockedByMaster( void ) { return false; }
 
 	static CBaseEntity *Instance( edict_t *pent )
 	{
@@ -381,14 +381,14 @@ public:
 		CBaseEntity *pEntity = Instance( pevMonster );
 		if ( pEntity )
 			return pEntity->MyMonsterPointer();
-		return NULL;
+		return nullptr;
 	}
 	CBaseMonster *GetMonsterPointer( edict_t *pentMonster )
 	{
 		CBaseEntity *pEntity = Instance( pentMonster );
 		if ( pEntity )
 			return pEntity->MyMonsterPointer();
-		return NULL;
+		return nullptr;
 	}
 
 
@@ -435,9 +435,9 @@ public:
 
 
 	//
-	static CBaseEntity *Create( char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner = NULL );
+	static CBaseEntity *Create( char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner = nullptr );
 
-	virtual BOOL FBecomeProne( void ) {return FALSE;};
+	virtual bool FBecomeProne( void ) {return false;};
 	edict_t *edict() { return ENT( pev ); };
 	EOFFSET eoffset( ) { return OFFSET( pev ); };
 	int	  entindex( ) { return ENTINDEX( edict() ); };
@@ -449,8 +449,8 @@ public:
 
 	virtual int Illumination( ) { return GETENTITYILLUM( ENT( pev ) ); };
 
-	virtual	BOOL FVisible ( CBaseEntity *pEntity );
-	virtual	BOOL FVisible ( const Vector &vecOrigin );
+	virtual	bool FVisible ( CBaseEntity *pEntity );
+	virtual	bool FVisible ( const Vector &vecOrigin );
 
 	//We use this variables to store each ammo count.
 	int ammo_9mm;
@@ -472,7 +472,7 @@ public:
 };
 
 //LRC- moved here from player.cpp. I'd put it in util.h with its friends, but it needs CBaseEntity to be declared.
-inline BOOL FNullEnt( CBaseEntity *ent )	{ return ent == NULL || FNullEnt( ent->edict() ); }
+inline bool FNullEnt( CBaseEntity *ent )	{ return ent == nullptr || FNullEnt( ent->edict() ); }
 
 // Ugly technique to override base member functions
 // Normally it's illegal to cast a pointer to a member function of a derived class to a pointer to a
@@ -609,8 +609,8 @@ public:
 	float				m_flFrameRate;		// computed FPS for current sequence
 	float				m_flGroundSpeed;	// computed linear movement rate for current sequence
 	float				m_flLastEventCheck;	// last time the event list was checked
-	BOOL				m_fSequenceFinished;// flag set when StudioAdvanceFrame moves across a frame boundry
-	BOOL				m_fSequenceLoops;	// true if the sequence loops
+	bool				m_fSequenceFinished;// flag set when StudioAdvanceFrame moves across a frame boundry
+	bool				m_fSequenceLoops;	// true if the sequence loops
 };
 
 
@@ -671,7 +671,7 @@ public:
 	void EXPORT AngularMoveNow( void ); //LRC- think function that lets us guarantee an AngularMove gets done as a think.
 	void EXPORT AngularMoveDone( void );
 	void EXPORT AngularMoveDoneNow( void );
-	BOOL IsLockedByMaster( void );
+	bool IsLockedByMaster( void );
 
 	static float		AxisValue( int flags, const Vector &angles );
 	static void			AxisDir( entvars_t *pev );
@@ -834,8 +834,8 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 	virtual int	ObjectCaps( void );
 
-	BOOL	m_fStayPushed;	// button stays pushed in until touched again?
-	BOOL	m_fRotating;		// a rotating button?  default is a sliding button.
+	bool	m_fStayPushed;	// button stays pushed in until touched again?
+	bool	m_fRotating;		// a rotating button?  default is a sliding button.
 
 	string_t m_strChangeTarget;	// if this field is not null, this is an index into the engine string array.
 							// when this button is touched, it's target entity's TARGET field will be set
@@ -865,13 +865,13 @@ template <class T> T * GetClassPtr( T *a )
 	entvars_t *pev = (entvars_t *)a;
 
 	// allocate entity if necessary
-	if (pev == NULL)
+	if (pev == nullptr)
 		pev = VARS(CREATE_ENTITY());
 
 	// get the private data
 	a = (T *)GET_PRIVATE(ENT(pev));
 
-	if (a == NULL)
+	if (a == nullptr)
 	{
 		// allocate private data
 		a = new(pev) T;
@@ -921,8 +921,8 @@ extern bool g_startSuit;
 class CBaseAlias : public CPointEntity
 {
 public:
-	BOOL IsAlias( void ) { return TRUE; };
-	virtual CBaseEntity *FollowAlias( CBaseEntity *pFrom ) { return NULL; };
+	bool IsAlias( void ) { return true; };
+	virtual CBaseEntity *FollowAlias( CBaseEntity *pFrom ) { return nullptr; };
 	virtual void ChangeValue( int iszValue ) { ALERT(at_error, "%s entities cannot change value!", STRING(pev->classname)); }
 	virtual void ChangeValue( CBaseEntity *pValue ) { ChangeValue(pValue->pev->targetname); }
 	virtual void FlushChanges( void ) {};

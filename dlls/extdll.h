@@ -41,11 +41,8 @@
 #define NOIME
 #include "windows.h"
 #else // _WIN32
-#define FALSE 0
-#define TRUE (!FALSE)
 typedef unsigned long ULONG;
 typedef unsigned char BYTE;
-typedef int BOOL;
 #define MAX_PATH PATH_MAX
 #include <limits.h>
 #include <stdarg.h>

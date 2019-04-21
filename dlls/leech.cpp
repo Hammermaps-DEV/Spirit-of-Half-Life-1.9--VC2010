@@ -123,7 +123,7 @@ public:
 private:
 	// UNDONE: Remove unused boid vars, do group behavior
 	float	m_flTurning;// is this boid turning?
-	BOOL	m_fPathBlocked;// TRUE if there is an obstacle ahead
+	bool	m_fPathBlocked;// true if there is an obstacle ahead
 	float	m_flAccelerate;
 	float	m_obstacle;
 	float	m_top;
@@ -206,7 +206,7 @@ void CLeech::Spawn( void )
 	pev->view_ofs = g_vecZero;
 
 	m_flTurning = 0;
-	m_fPathBlocked = FALSE;
+	m_fPathBlocked = false;
 	SetActivity( ACT_SWIM );
 	SetState( MONSTERSTATE_IDLE );
 	m_stateTime = gpGlobals->time + RANDOM_FLOAT( 1, 5 );
@@ -273,7 +273,7 @@ void CLeech::SwitchLeechState( void )
 int CLeech::IRelationship( CBaseEntity *pTarget )
 {
 	if ( pTarget->IsPlayer() )
-		return R_DL;
+		return RELATIONSHIP_DISLIKE;
 	return CBaseMonster::IRelationship( pTarget );
 }
 
@@ -670,7 +670,7 @@ void CLeech::SwimThink( void )
 			m_flTurning = 0;
 		}
 
-		m_fPathBlocked = FALSE;
+		m_fPathBlocked = false;
 		pev->speed = UTIL_Approach( targetSpeed, pev->speed, LEECH_SWIM_ACCEL * LEECH_FRAMETIME );
 		pev->velocity = gpGlobals->v_forward * pev->speed;
 
@@ -679,7 +679,7 @@ void CLeech::SwimThink( void )
 	{
 		m_obstacle = 1.0 / m_obstacle;
 		// IF we get this far in the function, the leader's path is blocked!
-		m_fPathBlocked = TRUE;
+		m_fPathBlocked = true;
 
 		if ( m_flTurning == 0 )// something in the way and leech is not already turning to avoid
 		{

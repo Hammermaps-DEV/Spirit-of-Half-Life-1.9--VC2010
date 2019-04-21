@@ -14,7 +14,7 @@
 //===========================================================================
 // OLD OPTIONS.QC
 //===========================================================================
-#define DEFAULT_AUTOZOOM		 FALSE
+#define DEFAULT_AUTOZOOM		 false
 #define WEINER_SNIPER                           // autoaiming for sniper rifle
 #define FLAME_MAXWORLDNUM        20             // maximum number of flames in the world. DO NOT PUT BELOW 20.
 
@@ -33,11 +33,11 @@
 								// increasing it _decreases_ the amount of help the losing team gets
 								// Minimum setting is 1, which would really help the losing team
 
-#define DISPLAY_CLASS_HELP			TRUE            // Change this to #OFF if you don't want the class help to 
+#define DISPLAY_CLASS_HELP			true            // Change this to #OFF if you don't want the class help to 
 													// appear whenever a player connects
-#define NEVER_TEAMFRAGS				FALSE			// teamfrags options always off 
-#define ALWAYS_TEAMFRAGS			FALSE			// teamfrags options always on 
-#define CHECK_SPEEDS				TRUE            // makes sure players aren't moving too fast
+#define NEVER_TEAMFRAGS				false			// teamfrags options always off 
+#define ALWAYS_TEAMFRAGS			false			// teamfrags options always on 
+#define CHECK_SPEEDS				true            // makes sure players aren't moving too fast
 #define SNIPER_RIFLE_RELOAD_TIME    1.5				// seconds
 
 #define MAPBRIEFING_MAXTEXTLENGTH	512
@@ -1186,9 +1186,9 @@ extern float teamadvantage[5];	// only used if the teamplay equalisation bits ar
 extern int   teamallies[5];		// Keeps track of which teams are allied
 extern string_t	team_names[5];
 
-extern BOOL  CTF_Map;
-extern BOOL  birthday;
-extern BOOL  christmas;
+extern bool  CTF_Map;
+extern bool  birthday;
+extern bool  christmas;
 
 extern float num_world_flames;
 

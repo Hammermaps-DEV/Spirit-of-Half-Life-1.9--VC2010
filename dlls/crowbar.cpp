@@ -37,12 +37,12 @@ public:
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
 	int Swing( int fFirst );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( );
 	void WeaponIdle( void );
-	BOOL ShouldWeaponIdle( void ) { return TRUE; };
+	bool ShouldWeaponIdle( void ) { return true; };
 	int m_iSwing;
-	BOOL bHit;
+	bool bHit;
 private:
 	unsigned int m_usCrowbar;
 };
@@ -93,9 +93,9 @@ int CCrowbar::AddToPlayer( CBasePlayer *pPlayer )
 		MESSAGE_BEGIN( MSG_ONE, gmsgWeapPickup, NULL, pPlayer->pev );
 			WRITE_BYTE( m_iId );
 		MESSAGE_END();
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 int CCrowbar::GetItemInfo(ItemInfo *p)
@@ -115,7 +115,7 @@ int CCrowbar::GetItemInfo(ItemInfo *p)
 
 
 
-BOOL CCrowbar::Deploy( )
+bool CCrowbar::Deploy( )
 {
 	return DefaultDeploy( "models/v_crowbar.mdl", "models/p_crowbar.mdl", CROWBAR_DRAW, "crowbar" );
 }
@@ -174,20 +174,20 @@ void FindHullIntersection( const Vector &vecSrc, TraceResult &tr, float *mins, f
 
 void CCrowbar::PrimaryAttack()
 {
-	if (!Swing(TRUE)) Swing (FALSE);
+	if (!Swing(true)) Swing (false);
 	m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.2;
 }
 
 void CCrowbar::SecondaryAttack()
 {
-	if (!Swing(TRUE)) Swing (FALSE);
+	if (!Swing(true)) Swing (false);
 	m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.2;
 }
 
 int CCrowbar::Swing( int fFirst )
 {
-	int fDidHit = FALSE;
-	bHit = FALSE;
+	int fDidHit = false;
+	bHit = false;
 	TraceResult tr;
 
 	if ( m_flTimeUpdate > UTIL_WeaponTimeBase() ) return fDidHit;
@@ -221,7 +221,7 @@ int CCrowbar::Swing( int fFirst )
 		m_pPlayer->SetAnimation( PLAYER_ATTACK1 );
 		
 		// hit
-		fDidHit = TRUE;
+		fDidHit = true;
 		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
 
 		ClearMultiDamage( );
@@ -232,18 +232,18 @@ int CCrowbar::Swing( int fFirst )
 
 		// play thwack, smack, or dong sound
 		float flVol = 1.0;
-		int fHitWorld = TRUE;
+		int fHitWorld = true;
 
 		if (pEntity)
 		{
 			if ( pEntity->Classify() != CLASS_NONE && pEntity->Classify() != CLASS_MACHINE )
 			{
-				bHit = TRUE;//play hitbody sound on client
+				bHit = true;//play hitbody sound on client
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
 				if ( !pEntity->IsAlive() )
 					m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 				else flVol = 0.1;
-				fHitWorld = FALSE;
+				fHitWorld = false;
 			}
 		}
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;

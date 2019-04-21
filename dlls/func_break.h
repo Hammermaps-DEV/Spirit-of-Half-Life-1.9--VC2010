@@ -42,8 +42,8 @@ public:
 	// To spark when hit
 	void TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
 
-	BOOL IsBreakable( void );
-	BOOL SparkWhenHit( void );
+	bool IsBreakable( void );
+	bool SparkWhenHit( void );
 
 	STATE GetState( void );
 
@@ -54,7 +54,7 @@ public:
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
 
-	inline BOOL		Explodable( void ) { return ExplosionMagnitude() > 0; }
+	inline bool		Explodable( void ) { return ExplosionMagnitude() > 0; }
 	inline int		ExplosionMagnitude( void ) { return pev->impulse; }
 	inline void		ExplosionSetMagnitude( int magnitude ) { pev->impulse = magnitude; }
 

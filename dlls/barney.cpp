@@ -78,10 +78,10 @@ public:
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int		m_iBaseBody; //LRC - for barneys with different bodies
-	BOOL	m_fGunDrawn;
+	bool	m_fGunDrawn;
 	float	m_painTime;
 	float	m_checkAttackTime;
-	BOOL	m_lastAttackCheck;
+	bool	m_lastAttackCheck;
 
 	// UNDONE: What is this for?  It isn't used?
 	float	m_flPlayerDamage;// how much pain has the player inflicted on me?
@@ -337,9 +337,9 @@ bool CBarney :: CheckRangeAttack1 ( float flDot, float flDist )
 			UTIL_TraceLine( shootOrigin, shootTarget, dont_ignore_monsters, ENT(pev), &tr );
 			m_checkAttackTime = gpGlobals->time + 1;
 			if ( tr.flFraction == 1.0 || (tr.pHit != NULL && CBaseEntity::Instance(tr.pHit) == pEnemy) )
-				m_lastAttackCheck = TRUE;
+				m_lastAttackCheck = true;
 			else
-				m_lastAttackCheck = FALSE;
+				m_lastAttackCheck = false;
 			m_checkAttackTime = gpGlobals->time + 1.5;
 		}
 		return m_lastAttackCheck;
@@ -411,13 +411,13 @@ void CBarney :: HandleAnimEvent( MonsterEvent_t *pEvent )
 	case BARNEY_AE_DRAW:
 		// barney's bodygroup switches here so he can pull gun from holster
 		pev->body = m_iBaseBody + BARNEY_BODY_GUNDRAWN;
-		m_fGunDrawn = TRUE;
+		m_fGunDrawn = true;
 		break;
 
 	case BARNEY_AE_HOLSTER:
 		// change bodygroup to replace gun in holster
 		pev->body = m_iBaseBody + BARNEY_BODY_GUNHOLSTERED;
-		m_fGunDrawn = FALSE;
+		m_fGunDrawn = false;
 		break;
 
 	default:
@@ -449,7 +449,7 @@ void CBarney :: Spawn()
 
 	m_iBaseBody = pev->body; //LRC
 	pev->body			= m_iBaseBody + BARNEY_BODY_GUNHOLSTERED; // gun in holster
-	m_fGunDrawn			= FALSE;
+	m_fGunDrawn			= false;
 
 	m_afCapability		= bits_CAP_HEAR | bits_CAP_TURN_HEAD | bits_CAP_DOORS_GROUP;
 
@@ -534,7 +534,7 @@ void CBarney :: TalkInit()
 }
 
 
-static BOOL IsFacing( entvars_t *pevTest, const Vector &reference )
+static bool IsFacing( entvars_t *pevTest, const Vector &reference )
 {
 	Vector vecDir = (reference - pevTest->origin);
 	vecDir.z = 0;
@@ -546,9 +546,9 @@ static BOOL IsFacing( entvars_t *pevTest, const Vector &reference )
 	// He's facing me, he meant it
 	if ( DotProduct( forward, vecDir ) > 0.96 )	// +/- 15 degrees or so
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 
@@ -587,7 +587,7 @@ int CBarney :: TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 				}
 
 				Remember( bits_MEMORY_PROVOKED );
-				StopFollowing( TRUE );
+				StopFollowing( true );
 			}
 			else
 			{
@@ -829,7 +829,7 @@ Schedule_t *CBarney :: GetSchedule ( void )
 			if ( !m_hTargetEnt->IsAlive() )
 			{
 				// UNDONE: Comment about the recently dead player here?
-				StopFollowing( FALSE );
+				StopFollowing( false );
 				break;
 			}
 			else
@@ -902,7 +902,7 @@ void CDeadBarney::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "pose"))
 	{
 		m_iPose = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else 
 		CBaseMonster::KeyValue( pkvd );

@@ -7,8 +7,8 @@
 
 CWorld *g_pWorld = NULL; //LRC
 
-BOOL g_doingDesired = FALSE; //LRC - marks whether the Desired functions are currently
-BOOL NeedUpdate( CBaseEntity *pEnt ); //synchronization may be lost (e.g. after changelevel) merge it.									// being processed.
+bool g_doingDesired = false; //LRC - marks whether the Desired functions are currently
+bool NeedUpdate( CBaseEntity *pEnt ); //synchronization may be lost (e.g. after changelevel) merge it.									// being processed.
 
 void UTIL_AddToAssistList( CBaseEntity *pEnt )
 {
@@ -282,7 +282,7 @@ void CheckDesiredList( void )
 	int loopbreaker = 1024; //max edicts
 
 	if (g_doingDesired) ALERT(at_debug, "CheckDesiredList: doingDesired is already set!?\n");
-	g_doingDesired = TRUE;
+	g_doingDesired = true;
 
 	if (!g_pWorld)
 	{
@@ -308,12 +308,12 @@ void CheckDesiredList( void )
 		}
 	}
 
-	g_doingDesired = FALSE;
+	g_doingDesired = false;
 }
 
 
 
-void UTIL_MarkForAssist( CBaseEntity *pEnt, BOOL correctSpeed )
+void UTIL_MarkForAssist( CBaseEntity *pEnt, bool correctSpeed )
 {
 	pEnt->m_iLFlags |= LF_DOASSIST;
 
@@ -370,11 +370,11 @@ void UTIL_DesiredThink ( CBaseEntity *pEnt )
 // LRC- change the origin to the given position, and bring any movewiths along too.
 void UTIL_AssignOrigin( CBaseEntity *pEntity, const Vector vecOrigin )
 {
-	UTIL_AssignOrigin( pEntity, vecOrigin, TRUE);
+	UTIL_AssignOrigin( pEntity, vecOrigin, true);
 }
 
 // LRC- bInitiator is true if this is being called directly, rather than because pEntity is moving with something else.
-void UTIL_AssignOrigin( CBaseEntity *pEntity, const Vector vecOrigin, BOOL bInitiator)
+void UTIL_AssignOrigin( CBaseEntity *pEntity, const Vector vecOrigin, bool bInitiator)
 {
 	Vector vecDiff = vecOrigin - pEntity->pev->origin;
 
@@ -393,12 +393,12 @@ void UTIL_AssignOrigin( CBaseEntity *pEntity, const Vector vecOrigin, BOOL bInit
 		{
 			if (pChild->pev->movetype != MOVETYPE_PUSH || pChild->pev->velocity == pEntity->pev->velocity) // if the child isn't moving under its own power
 			{
-				UTIL_AssignOrigin( pChild, vecOrigin + pChild->m_vecOffsetOrigin, FALSE );
+				UTIL_AssignOrigin( pChild, vecOrigin + pChild->m_vecOffsetOrigin, false );
 			}
 			else
 			{
 				vecTemp = vecDiff + pChild->pev->origin;
-				UTIL_AssignOrigin( pChild, vecTemp, FALSE );
+				UTIL_AssignOrigin( pChild, vecTemp, false );
 			}
 			pChild = pChild->m_pSiblingMoveWith;
 		}
@@ -407,10 +407,10 @@ void UTIL_AssignOrigin( CBaseEntity *pEntity, const Vector vecOrigin, BOOL bInit
 
 void UTIL_AssignAngles( CBaseEntity *pEntity, const Vector vecAngles )
 {
-	UTIL_AssignAngles( pEntity, vecAngles, TRUE );
+	UTIL_AssignAngles( pEntity, vecAngles, true );
 }
 
-void UTIL_AssignAngles( CBaseEntity *pEntity, const Vector vecAngles, BOOL bInitiator)
+void UTIL_AssignAngles( CBaseEntity *pEntity, const Vector vecAngles, bool bInitiator)
 {
 	Vector vecDiff = vecAngles - pEntity->pev->angles;
 	if (vecDiff.Length() > 0.01 && CVAR_GET_FLOAT("sohl_mwdebug"))
@@ -431,12 +431,12 @@ void UTIL_AssignAngles( CBaseEntity *pEntity, const Vector vecAngles, BOOL bInit
 		{
 			if (pChild->pev->avelocity == pEntity->pev->avelocity) // if the child isn't turning under its own power
 			{
-				UTIL_AssignAngles( pChild, vecAngles + pChild->m_vecOffsetAngles, FALSE );
+				UTIL_AssignAngles( pChild, vecAngles + pChild->m_vecOffsetAngles, false );
 			}
 			else
 			{
 				vecTemp = vecDiff + pChild->pev->angles;
-				UTIL_AssignAngles( pChild, vecTemp, FALSE );
+				UTIL_AssignAngles( pChild, vecTemp, false );
 			}
 			//ALERT(at_console,"  child origin becomes (%f %f %f)\n",pChild->pev->origin.x,pChild->pev->origin.y,pChild->pev->origin.z);
 			//ALERT(at_console,"ent %p has sibling %p\n",pChild,pChild->m_pSiblingMoveWith);
@@ -670,15 +670,15 @@ void UTIL_MergePos ( CBaseEntity *pEnt, int loopbreaker )
           }
 }
 
-BOOL NeedUpdate( CBaseEntity *pEnt )
+bool NeedUpdate( CBaseEntity *pEnt )
 {
 	if( pEnt->m_pChildMoveWith && pEnt->m_pChildMoveWith->m_vecOffsetOrigin == g_vecZero)//potentially loser
 	{
 		if(pEnt->pev->origin != pEnt->m_pChildMoveWith->pev->origin)
 		{
 			ALERT( at_console, "Warning %s lose synch with child\n", STRING(pEnt->pev->classname));
-			return TRUE;
+			return true;
 		}
 	}
-	return FALSE;
+	return false;
 }

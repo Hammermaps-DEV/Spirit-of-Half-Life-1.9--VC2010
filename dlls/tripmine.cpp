@@ -75,7 +75,7 @@ public:
 	void Precache( void );
 	int GetItemInfo(ItemInfo *p);
 	void PrimaryAttack( void );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( );
 	void WeaponIdle( void );
 };
@@ -279,7 +279,7 @@ void CTripmineGrenade :: MakeBeam( void )
 
 void CTripmineGrenade :: BeamBreakThink( void  )
 {
-	BOOL bBlowup = 0;
+	bool bBlowup = 0;
 
 	TraceResult tr;
 
@@ -332,7 +332,7 @@ int CTripmineGrenade :: TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttac
 		SetThink(&CTripmineGrenade :: SUB_Remove );
 		SetNextThink( 0.1 );
 		KillBeam();
-		return FALSE;
+		return false;
 	}
 	return CGrenade::TakeDamage( pevInflictor, pevAttacker, flDamage, bitsDamageType );
 }
@@ -398,7 +398,7 @@ int CTripmine::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CTripmine::Deploy( )
+bool CTripmine::Deploy( )
 {
 	m_iBody = 0;//show tripmine
 	return DefaultDeploy( "models/v_tripmine.mdl", "models/p_tripmine.mdl", TRIPMINE_DRAW, "trip" );

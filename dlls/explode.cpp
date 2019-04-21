@@ -113,7 +113,7 @@ void CEnvExplosion::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "iMagnitude"))
 	{
 		m_iMagnitude = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
@@ -250,7 +250,7 @@ void CEnvExplosion::Smoke( void )
 
 
 // HACKHACK -- create one of these and fake a keyvalue to get the right explosion setup
-void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, BOOL doDamage )
+void ExplosionCreate( const Vector &center, const Vector &angles, edict_t *pOwner, int magnitude, bool doDamage )
 {
 	KeyValueData	kvd;
 	char			buf[128];

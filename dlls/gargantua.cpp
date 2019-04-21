@@ -154,7 +154,7 @@ void CStomp::Think( void )
 		pev->origin = pev->origin + pev->movedir * pev->speed * STOMP_INTERVAL;
 		for ( int i = 0; i < 2; i++ )
 		{
-			CSprite *pSprite = CSprite::SpriteCreate( GARG_STOMP_SPRITE_NAME, pev->origin, TRUE );
+			CSprite *pSprite = CSprite::SpriteCreate( GARG_STOMP_SPRITE_NAME, pev->origin, true );
 			if ( pSprite )
 			{
 				UTIL_TraceLine( pev->origin, pev->origin - Vector(0,0,500), ignore_monsters, edict(), &tr );
@@ -236,7 +236,7 @@ public:
 	void FlameUpdate( void );
 	void FlameControls( float angleX, float angleY );
 	void FlameDestroy( void );
-	inline BOOL FlameIsOn( void ) { return m_pFlame[0] != NULL; }
+	inline bool FlameIsOn( void ) { return m_pFlame[0] != NULL; }
 
 	void FlameDamage( Vector vecStart, Vector vecEnd, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType );
 
@@ -556,7 +556,7 @@ void CGargantua :: FlameUpdate( void )
 	static float	offset[2] = { 60, -60 };
 	TraceResult		trace;
 	Vector			vecStart, angleGun;
-	BOOL			streaks = FALSE;
+	bool			streaks = false;
 
 	for ( i = 0; i < 2; i++ )
 	{
@@ -579,7 +579,7 @@ void CGargantua :: FlameUpdate( void )
 			if ( trace.flFraction != 1.0 && gpGlobals->time > m_streakTime )
 			{
 				StreakSplash( trace.vecEndPos, trace.vecPlaneNormal, 6, 20, 50, 400 );
-				streaks = TRUE;
+				streaks = true;
 
           			CBaseEntity *pHit = CBaseEntity::Instance( trace.pHit );
 				PLAYBACK_EVENT_FULL( FEV_RELIABLE|FEV_GLOBAL, edict(), m_usDecals, 0.0, (float *)&trace.vecEndPos, (float *)&g_vecZero, 0.0, 0.0, pHit->entindex(), 5, 0, 0 );
@@ -772,7 +772,7 @@ void CGargantua :: Spawn()
 
 	MonsterInit();
 
-	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME, pev->origin, FALSE );
+	m_pEyeGlow = CSprite::SpriteCreate( GARG_EYE_SPRITE_NAME, pev->origin, false );
 	m_pEyeGlow->SetTransparency( kRenderGlow, 255, 255, 255, 0, kRenderFxNoDissipation );
 	m_pEyeGlow->SetAttachment( edict(), 1 );
 	EyeOff();
@@ -1241,7 +1241,7 @@ void CGargantua::RunTask( Task_t *pTask )
 		}
 		else
 		{
-			BOOL cancel = FALSE;
+			bool cancel = false;
 
 			Vector angles = g_vecZero;
 
@@ -1260,10 +1260,10 @@ void CGargantua::RunTask( Task_t *pTask )
 				angles.x = -angles.x;
 				angles.y -= pev->angles.y;
 				if ( dir.Length() > 400 )
-					cancel = TRUE;
+					cancel = true;
 			}
 			if ( fabs(angles.y) > 60 )
-				cancel = TRUE;
+				cancel = true;
 			
 			if ( cancel )
 			{

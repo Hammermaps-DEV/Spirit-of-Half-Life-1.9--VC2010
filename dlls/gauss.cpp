@@ -47,7 +47,7 @@ public:
 	void Precache( void );
 	int GetItemInfo(ItemInfo *p);
 
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( );
 
 	void PrimaryAttack( void );
@@ -111,9 +111,9 @@ int CGauss::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CGauss::Deploy( )
+bool CGauss::Deploy( )
 {
-	AnimRestore = TRUE;
+	AnimRestore = true;
 	m_flShockTime = 0;
 	return DefaultDeploy( "models/v_gauss.mdl", "models/p_gauss.mdl", GAUSS_DRAW, "gauss", 0.6 );
 }
@@ -134,7 +134,7 @@ void CGauss::PrimaryAttack()
 	if ( m_pPlayer->pev->waterlevel != 3 && m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] > 2)
 	{
 		m_pPlayer->m_iWeaponVolume = PRIMARY_FIRE_VOLUME;
-		pev->frags = TRUE;//set primary fire
+		pev->frags = true;//set primary fire
 
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] -= 2;
 
@@ -231,7 +231,7 @@ void CGauss::SecondaryAttack()
 	{
 		if(m_fInAttack == 1) SendWeaponAnim( GAUSS_SPINUP );
 		if(m_fInAttack >= 2) SendWeaponAnim( GAUSS_SPIN );
-		AnimRestore = TRUE;
+		AnimRestore = true;
 	}
 
 	if ( m_flChargeTime < UTIL_WeaponTimeBase() - 10 )
@@ -507,12 +507,12 @@ class CGaussAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_gaussammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) 
+	bool AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_URANIUMBOX_GIVE, "uranium", URANIUM_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
+			return true;
 		}
 		return FALSE;
 	}

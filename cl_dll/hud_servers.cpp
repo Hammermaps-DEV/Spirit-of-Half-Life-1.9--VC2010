@@ -790,7 +790,7 @@ int CHudServers::LoadMasterAddresses( int maxservers, int *count, netadr_t *padr
 		if ( !stricmp( m_szToken, "Master" ) )
 		{
 			nDefaultPort = PORT_MASTER;
-			bIgnore = FALSE;
+			bIgnore = false;
 		}
 
 		// Now parse all addresses between { }

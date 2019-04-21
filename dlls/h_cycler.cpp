@@ -44,7 +44,7 @@ public:
 	void Use ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
 
 	// Don't treat as a live target
-	virtual BOOL IsAlive( void ) { return FALSE; }
+	virtual bool IsAlive( void ) { return false; }
 
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
@@ -162,7 +162,7 @@ void CCycler :: Think( void )
 		// hack to avoid reloading model every frame
 		pev->animtime = gpGlobals->time;
 		pev->framerate = 1.0;
-		m_fSequenceFinished = FALSE;
+		m_fSequenceFinished = false;
 		m_flLastEventCheck = gpGlobals->time;
 		pev->frame = 0;
 		if (!m_animate)
@@ -310,7 +310,7 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( void );
 	void KeyValue( KeyValueData *pkvd );
 
@@ -394,22 +394,22 @@ void CWeaponCycler::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "deploy"))
 	{
 		pev->impulse = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "holster"))
 	{
 		pev->button = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "primary"))
 	{
 		pev->sequence = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "secondary"))
 	{
 		pev->team = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else CBasePlayerWeapon::KeyValue( pkvd );
 }
@@ -431,7 +431,7 @@ int CWeaponCycler::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CWeaponCycler::Deploy( )
+bool CWeaponCycler::Deploy( )
 {
 	return DefaultDeploy( m_iViewModel, m_iPlayerModel, pev->impulse, "onehanded", 0.5 );
 }

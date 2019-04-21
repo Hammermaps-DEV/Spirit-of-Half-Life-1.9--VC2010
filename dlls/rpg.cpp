@@ -40,7 +40,7 @@ public:
 	void Reload( void );
 	int GetItemInfo(ItemInfo *p);
 
-	BOOL Deploy( void );
+	bool Deploy( void );
 	void Holster( );
 	void UpdateScreen ( void );
 	void ShutdownScreen ( void );
@@ -48,8 +48,8 @@ public:
 	void SecondaryAttack( void );
 	void WeaponIdle( void );
 	void UpdateSpot( void );
-	int AddDuplicate( CBasePlayerItem *pOriginal ) { return FALSE; };//don't give second launcher!
-	BOOL ShouldWeaponIdle( void ) { return TRUE; };
+	int AddDuplicate( CBasePlayerItem *pOriginal ) { return false; };//don't give second launcher!
+	bool ShouldWeaponIdle( void ) { return true; };
 
 	CLaserSpot *m_pSpot;
 	CLaserSpot *m_pMirSpot;
@@ -73,7 +73,7 @@ public:
 	int m_iTrail;
 	float m_flIgniteTime;
 	CRpg *m_pLauncher;// pointer back to the launcher that fired me. 
-	BOOL b_setup;
+	bool b_setup;
 };
 
 LINK_ENTITY_TO_CLASS( weapon_rpg, CRpg );
@@ -207,7 +207,7 @@ void CRpgRocket :: CreateTrail( void  )
 			WRITE_BYTE( 200 );   // r, g, b
 			WRITE_BYTE( 200 );	// brightness
 		MESSAGE_END();  // move PHS/PVS data sending into here (SEND_ALL, SEND_PVS, SEND_PHS)
-		b_setup = TRUE;
+		b_setup = true;
 	}
 }
 
@@ -302,7 +302,7 @@ void CRpg::Spawn( )
 	m_iId = WEAPON_RPG;
 
 	SET_MODEL(ENT(pev), "models/w_rpg.mdl");
-	m_iOverloadLevel = TRUE;//turn on LTD
+	m_iOverloadLevel = true;//turn on LTD
 
 	if ( IsMultiplayer() )m_iDefaultAmmo = RPG_DEFAULT_GIVE * 2;
 	else	m_iDefaultAmmo = RPG_DEFAULT_GIVE;
@@ -344,7 +344,7 @@ int CRpg::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CRpg::Deploy( )
+bool CRpg::Deploy( )
 {
 	return DefaultDeploy( "models/v_rpg.mdl", "models/p_rpg.mdl", RPG_DRAW, "rpg" );
 }
@@ -352,7 +352,7 @@ BOOL CRpg::Deploy( )
 void CRpg::Holster( )
 {
 	ShutdownScreen();//set skin to 0 manually
-	m_fInReload = FALSE;// cancel any reload in progress.
+	m_fInReload = false;// cancel any reload in progress.
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 	SendWeaponAnim( RPG_HOLSTER );
 }
@@ -531,7 +531,7 @@ class CRpgAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_rpgammo.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) 
+	bool AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		int iGive;
 
@@ -547,9 +547,9 @@ class CRpgAmmo : public CBasePlayerAmmo
 		if (pOther->GiveAmmo( iGive, "rockets", ROCKET_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_rpgclip, CRpgAmmo );

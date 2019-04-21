@@ -19,11 +19,6 @@
 #include "cvardef.h"
 #include <windows.h>
 
-#ifndef TRUE
-#define TRUE 1
-#define FALSE 0
-#endif
-
 extern int pause;
 
 typedef HMODULE dllhandle_t;

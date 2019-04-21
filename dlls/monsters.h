@@ -12,16 +12,14 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
+#pragma once
 #ifndef MONSTERS_H
 #include "skill.h"
 #define MONSTERS_H
 
 /*
-
-===== monsters.h ========================================================
-
+===== monsters.h =======================================================
   Header file for monster-related utility code
-
 */
 
 // CHECKLOCALMOVE result types 
@@ -38,7 +36,6 @@
 #define HITGROUP_RIGHTARM	5
 #define HITGROUP_LEFTLEG	6
 #define HITGROUP_RIGHTLEG	7
-
 
 // Monster Spawnflags
 #define	SF_MONSTER_WAIT_TILL_SEEN		1// spawnflag that makes monsters wait until player can see them before attacking.
@@ -62,12 +59,9 @@
 #define SF_MONSTER_TURRET_STARTINACTIVE	64
 #define SF_MONSTER_WAIT_UNTIL_PROVOKED	64 // don't attack the player unless provoked
 
-
-
 // MoveToOrigin stuff
 #define		MOVE_START_TURN_DIST	64 // when this far away from moveGoal, start turning to face next goal
 #define		MOVE_STUCK_DIST			32 // if a monster can't step this far, it is stuck.
-
 
 // MoveToOrigin stuff
 #define		MOVE_NORMAL				0// normal move in the direction monster is facing
@@ -78,24 +72,27 @@ extern void UTIL_MoveToOrigin( edict_t* pent, const Vector &vecGoal, float flDis
 
 Vector VecCheckToss ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flGravityAdj = 1.0 );
 Vector VecCheckThrow ( entvars_t *pev, const Vector &vecSpot1, Vector vecSpot2, float flSpeed, float flGravityAdj = 1.0 );
+
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 extern DLL_GLOBAL CONSTANT float g_flMeleeRange;
 extern DLL_GLOBAL CONSTANT float g_flMediumRange;
 extern DLL_GLOBAL CONSTANT float g_flLongRange;
+
 extern void EjectBrass (const Vector &vecOrigin, const Vector &vecVelocity, float rotation, int model, int soundtype );
 extern void ExplodeModel( const Vector &vecOrigin, float speed, int model, int count );
 
-BOOL FBoxVisible ( entvars_t *pevLooker, entvars_t *pevTarget );
-BOOL FBoxVisible ( entvars_t *pevLooker, entvars_t *pevTarget, Vector &vecTargetOrigin, float flSize = 0.0 );
+bool FBoxVisible ( entvars_t *pevLooker, entvars_t *pevTarget, Vector &vecTargetOrigin, float flSize = 0.0 );
 
 // monster to monster relationship types
-#define R_AL	-2 // (ALLY) pals. Good alternative to R_NO when applicable.
-#define R_FR	-1// (FEAR)will run
-#define	R_NO	0// (NO RELATIONSHIP) disregard
-#define R_DL	1// (DISLIKE) will attack
-#define R_HT	2// (HATE)will attack this character instead of any visible DISLIKEd characters
-#define R_NM	3// (NEMESIS)  A monster Will ALWAYS attack its nemsis, no matter what
-
+typedef enum
+{
+	RELATIONSHIP_ALLY	 = -2, // (ALLY) pals. Good alternative to RELATIONSHIP_NO when applicable.
+	RELATIONSHIP_FEAR	 = -1, // (FEAR)will run
+	RELATIONSHIP_NO		 =  0, // (NO RELATIONSHIP) disregard
+	RELATIONSHIP_DISLIKE =  1, // (DISLIKE) will attack
+	RELATIONSHIP_HATE	 =  2, // (HATE)will attack this character instead of any visible DISLIKEd characters
+	RELATIONSHIP_NEMESIS =  3, // (NEMESIS)  A monster Will ALWAYS attack its nemsis, no matter what
+} RELATIONSHIP;
 
 // these bits represent the monster's memory
 #define MEMORY_CLEAR					0
@@ -154,7 +151,7 @@ public:
 	void EXPORT WaitTillLand( void );
 	void		LimitVelocity( void );
 
-	virtual int	ObjectCaps( void ) { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
+	int	ObjectCaps( void ) override { return (CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION) | FCAP_DONT_SAVE; }
 	static	void SpawnHeadGib( entvars_t *pevVictim );
 	static	void SpawnHeadGib( entvars_t *pevVictim, const char *szGibModel );
 	static	void SpawnRandomGibs( entvars_t *pevVictim, int cGibs, int human );
@@ -166,7 +163,6 @@ public:
 	int		m_material;
 	float	m_lifeTime;
 };
-
 
 #define CUSTOM_SCHEDULES\
 		virtual Schedule_t *ScheduleFromName( const char *pName );\
@@ -183,7 +179,5 @@ public:
 				return baseClass::ScheduleFromName(pName);\
 			return pSchedule;\
 		}
-
-
 
 #endif	//MONSTERS_H

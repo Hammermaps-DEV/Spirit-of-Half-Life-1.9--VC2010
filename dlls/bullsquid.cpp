@@ -212,7 +212,7 @@ public:
 	bool CheckMeleeAttack2 ( float flDot, float flDist );
 	bool CheckRangeAttack1 ( float flDot, float flDist );
 	void RunAI( void );
-	BOOL FValidateHintType ( short sHint );
+	bool FValidateHintType ( short sHint );
 	Schedule_t *GetSchedule( void );
 	Schedule_t *GetScheduleOfType ( int Type );
 	int TakeDamage( entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType );
@@ -226,7 +226,7 @@ public:
 	CUSTOM_SCHEDULES;
 	static TYPEDESCRIPTION m_SaveData[];
 
-	BOOL m_fCanThreatDisplay;// this is so the squid only does the "I see a headcrab!" dance one time. 
+	bool m_fCanThreatDisplay;// this is so the squid only does the "I see a headcrab!" dance one time. 
 
 	float m_flLastHurtTime;// we keep track of this, because if something hurts a squid, it will forget about its love of headcrabs for a while.
 	float m_flNextSpitTime;// last time the bullsquid used the spit attack.
@@ -281,7 +281,7 @@ int CBullsquid::IRelationship ( CBaseEntity *pTarget )
 	{
 		// if squid has been hurt in the last 5 seconds, and is getting relationship for a headcrab, 
 		// tell squid to disregard crab. 
-		return R_NO;
+		return RELATIONSHIP_NO;
 	}
 
 	return CBaseMonster :: IRelationship ( pTarget );
@@ -394,25 +394,23 @@ bool CBullsquid :: CheckMeleeAttack2 ( float flDot, float flDist )
 //=========================================================
 //  FValidateHintType 
 //=========================================================
-BOOL CBullsquid :: FValidateHintType ( short sHint )
+bool CBullsquid :: FValidateHintType ( short sHint )
 {
-	int i;
-
 	static short sSquidHints[] =
 	{
 		HINT_WORLD_HUMAN_BLOOD,
 	};
 
-	for ( i = 0 ; i < HL_ARRAYSIZE ( sSquidHints ) ; i++ )
+	for ( int i = 0 ; i < HL_ARRAYSIZE ( sSquidHints ) ; i++ )
 	{
 		if ( sSquidHints[ i ] == sHint )
 		{
-			return TRUE;
+			return true;
 		}
 	}
 
 	ALERT ( at_aiconsole, "Couldn't validate hint type" );
-	return FALSE;
+	return false;
 }
 
 //=========================================================
@@ -704,7 +702,7 @@ void CBullsquid :: Spawn()
 	m_flFieldOfView		= 0.2;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState		= MONSTERSTATE_NONE;
 
-	m_fCanThreatDisplay	= TRUE;
+	m_fCanThreatDisplay	= true;
 	m_flNextSpitTime = gpGlobals->time;
 
 	MonsterInit();
@@ -1095,10 +1093,10 @@ Schedule_t *CBullsquid :: GetSchedule( void )
 
 			if ( HasConditions(bits_COND_NEW_ENEMY) )
 			{
-				if ( m_fCanThreatDisplay && IRelationship( m_hEnemy ) == R_HT )
+				if ( m_fCanThreatDisplay && IRelationship( m_hEnemy ) == RELATIONSHIP_HATE )
 				{
 					// this means squid sees a headcrab!
-					m_fCanThreatDisplay = FALSE;// only do the headcrab dance once per lifetime.
+					m_fCanThreatDisplay = false;// only do the headcrab dance once per lifetime.
 					return GetScheduleOfType ( SCHED_SQUID_SEECRAB );
 				}
 				else

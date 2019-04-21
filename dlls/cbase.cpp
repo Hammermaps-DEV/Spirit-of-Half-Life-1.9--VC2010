@@ -520,7 +520,7 @@ void CBaseEntity::Activate( void )
 	}
 
 	if (m_activated) return;
-	m_activated = TRUE;
+	m_activated = true;
 	InitMoveWith();
 	PostSpawn();
 }

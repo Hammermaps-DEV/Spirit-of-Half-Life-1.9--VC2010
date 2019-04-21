@@ -80,12 +80,12 @@ public:
 	BYTE	m_bUnlockedSound;	
 	BYTE	m_bUnlockedSentence;
 
-	BOOL	m_iOnOffMode;
-	BOOL	m_iImmediateMode;
+	bool	m_iOnOffMode;
+	bool	m_iImmediateMode;
 
-	BOOL	m_iDirectUse;
+	bool	m_iDirectUse;
 
-	float   	m_fAcceleration;  
+	float   m_fAcceleration;  
 	float	m_fDeceleration;
 	float	m_flBlockedTime;
 };
@@ -160,7 +160,7 @@ void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton)
 			int iprev = pls->iLockedSentence;
 			
 			pls->iLockedSentence = SENTENCEG_PlaySequentialSz(ENT(pev), STRING(pls->sLockedSentence), 
-					  0.85, ATTN_NORM, 0, 100, pls->iLockedSentence, FALSE);
+					  0.85, ATTN_NORM, 0, 100, pls->iLockedSentence, false);
 			pls->iUnlockedSentence = 0;
 
 			// make sure we don't keep calling last sentence in list
@@ -196,7 +196,7 @@ void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton)
 			int iprev = pls->iUnlockedSentence;
 			
 			pls->iUnlockedSentence = SENTENCEG_PlaySequentialSz(ENT(pev), STRING(pls->sUnlockedSentence), 
-					  0.85, ATTN_NORM, 0, 100, pls->iUnlockedSentence, FALSE);
+					  0.85, ATTN_NORM, 0, 100, pls->iUnlockedSentence, false);
 			pls->iLockedSentence = 0;
 
 			// make sure we don't keep calling last sentence in list
@@ -216,62 +216,62 @@ void CBaseDoor::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "skin"))//skin is used for content type
 	{
 		pev->skin = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "movesnd"))
 	{
 		m_bMoveSnd = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "stopsnd"))
 	{
 		m_bStopSnd = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "healthvalue"))
 	{
 		m_bHealthValue = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "locked_sound"))
 	{
 		m_bLockedSound = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "locked_sentence"))
 	{
 		m_bLockedSentence = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "unlocked_sound"))
 	{
 		m_bUnlockedSound = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "unlocked_sentence"))
 	{
 		m_bUnlockedSentence = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "immediatemode"))
 	{
 		m_iImmediateMode = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "onoffmode"))
 	{
 		m_iOnOffMode = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "directuse"))
 	{
 		m_iDirectUse = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "WaveHeight"))
 	{
 		pev->scale = atof(pkvd->szValue) * (1.0/8.0);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );
@@ -621,7 +621,7 @@ void CBaseDoor::DoorTouch( CBaseEntity *pOther )
 	// play 'locked' sound
 
 	if (m_sMaster && !UTIL_IsMasterTriggered(m_sMaster, pOther))
-		PlayLockSounds(pev, &m_ls, TRUE, FALSE);
+		PlayLockSounds(pev, &m_ls, true, false);
 	
 	// If door is somebody's target, then touching does nothing.
 	// You have to activate the owner (e.g. button).
@@ -629,7 +629,7 @@ void CBaseDoor::DoorTouch( CBaseEntity *pOther )
 	if (!FStringNull(pev->targetname) && !FBitSet(pev->spawnflags,SF_DOOR_FORCETOUCHABLE))
 	{
 		// play locked sound
-		PlayLockSounds(pev, &m_ls, TRUE, FALSE);
+		PlayLockSounds(pev, &m_ls, true, false);
 		return; 
 	}
 	
@@ -656,7 +656,7 @@ void CBaseDoor::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 		{
 			if (m_toggle_state == TS_AT_BOTTOM)
 			{
-		 		PlayLockSounds(pev, &m_ls, FALSE, FALSE);
+		 		PlayLockSounds(pev, &m_ls, false, false);
 		 		DoorGoUp();
 			}
 			return;
@@ -708,7 +708,7 @@ int CBaseDoor::DoorActivate( )
 		}
 
 		// play door unlock sounds
-		PlayLockSounds(pev, &m_ls, FALSE, FALSE);
+		PlayLockSounds(pev, &m_ls, false, false);
 		
 		DoorGoUp();
 	}
@@ -1116,7 +1116,7 @@ void CRotDoor::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "axes"))
 	{
 		UTIL_StringToVector( (float*)(pev->movedir), pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseDoor::KeyValue( pkvd );
@@ -1309,17 +1309,17 @@ void CMomentaryDoor::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "movesnd"))
 	{
 		m_bMoveSnd = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "stopsnd"))
 	{
 		m_bStopSnd = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "healthvalue"))
 	{
 //		m_bHealthValue = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );
@@ -1406,18 +1406,18 @@ void CBaseTrainDoor::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "movesnd"))
 	{
 		m_bMoveSnd = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "stopsnd"))
 	{
 		m_bStopSnd = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "train"))
 	{
 		// g-cont. just a replace movewith name
 		pev->netname = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseToggle::KeyValue( pkvd );
@@ -1705,7 +1705,7 @@ void CBaseTrainDoor::ActivateTrain( void )
 		break;
 	}
 
-	pev->impulse = FALSE;
+	pev->impulse = false;
 	SetThink( &CBaseTrainDoor :: FindTrain );
 }
 
@@ -1807,7 +1807,7 @@ void CBaseTrainDoor::DoorHitTop( void )
 			break;
 		}
 		
-		pev->impulse = FALSE;
+		pev->impulse = false;
 	}	
 	
 	SUB_UseTargets( m_hActivator, USE_TOGGLE, 0 );

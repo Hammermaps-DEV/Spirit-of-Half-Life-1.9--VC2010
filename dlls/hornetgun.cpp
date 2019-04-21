@@ -48,8 +48,8 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( void );
-	BOOL IsUseable( void ){ return TRUE; };
+	bool Deploy( void );
+	bool IsUseable( void ){ return true; };
 	void Holster( );
 	void Reload( void );
 	void WeaponIdle( void );
@@ -98,7 +98,7 @@ int CHgun::GetItemInfo(ItemInfo *p)
 }
 
 
-BOOL CHgun::Deploy( )
+bool CHgun::Deploy( )
 {
 	return DefaultDeploy( "models/v_hgun.mdl", "models/p_hgun.mdl", HGUN_UP, "hive", 0.9 );
 }

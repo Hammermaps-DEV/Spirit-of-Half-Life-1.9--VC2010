@@ -86,7 +86,7 @@ typedef struct
 class CRestore : public CSaveRestoreBuffer
 {
 public:
-	CRestore( SAVERESTOREDATA *pdata ) : CSaveRestoreBuffer( pdata ) { m_global = 0; m_precache = TRUE; }
+	CRestore( SAVERESTOREDATA *pdata ) : CSaveRestoreBuffer( pdata ) { m_global = 0; m_precache = true; }
 
 	int		ReadEntVars( const char *pname, entvars_t *pev );		// entvars_t
 	int		ReadFields( const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
@@ -97,7 +97,7 @@ public:
 	char	*ReadNamedString( const char *pName );
 	int		Empty( void ) { return (m_pdata == NULL) || ((m_pdata->pCurrentData-m_pdata->pBaseData)>=m_pdata->bufferSize); }
 	inline	void SetGlobalMode( int global ) { m_global = global; }
-	void	PrecacheMode( BOOL mode ) { m_precache = mode; }
+	void	PrecacheMode(bool mode ) { m_precache = mode; }
 
 private:
 	char	*BufferPointer( void );
@@ -109,7 +109,7 @@ private:
 	void	BufferReadHeader( HEADER *pheader );
 
 	int		m_global;		// Restoring a global entity?
-	BOOL	m_precache;
+	bool	m_precache;
 };
 
 #define MAX_ENTITYARRAY 64

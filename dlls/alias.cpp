@@ -78,21 +78,21 @@ void CInfoAlias :: KeyValue( KeyValueData *pkvd ) //AJH
 	if (FStrEq(pkvd->szKeyName, "mode"))
 	{
 		m_iMode = atoi( pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "targetname"))
 	{
 		pev->targetname = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "target"))
 	{
 		pev->target = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}else if (FStrEq(pkvd->szKeyName, "netname"))
 	{
 		pev->netname = ALLOC_STRING( pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else // add this field to the target list
 	{
@@ -113,7 +113,7 @@ void CInfoAlias :: KeyValue( KeyValueData *pkvd ) //AJH
 			}else{
 				ALERT(at_debug,"ERROR: INFO_ALIAS target \"%s\" has an illegal value \"%i\".\nIt must be within the range 1-%i.\n",ALLOC_STRING(tmp),iValue,MAX_ALIAS_TARGETS);
 			}
-			pkvd->fHandled = TRUE;
+			pkvd->fHandled = true;
 		}
 		//We can't actually have this or we will get array out of bounds exceptions when +using the alias at MAX_ALIAS_TARGETS
 		/*else // keep a count of how many targets, for the error message
@@ -243,7 +243,7 @@ void CInfoGroup :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "defaultmember"))
 	{
 		m_iszDefaultMember = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	// this assumes that additional fields are targetnames and their values are delay values.
 	else if ( m_cMembers < MAX_MULTI_TARGETS )
@@ -253,7 +253,7 @@ void CInfoGroup :: KeyValue( KeyValueData *pkvd )
 		m_iszMemberName [ m_cMembers ] = ALLOC_STRING( tmp );
 		m_iszMemberValue [ m_cMembers ] = ALLOC_STRING (pkvd->szValue);
 		m_cMembers++;
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 	{
@@ -334,7 +334,7 @@ void CMultiAlias :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iMode"))
 	{
 		m_iMode = atoi( pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	// this assumes that additional fields are targetnames and their values are probability values.
 	else if ( m_cTargets < MAX_MULTI_TARGETS )
@@ -348,7 +348,7 @@ void CMultiAlias :: KeyValue( KeyValueData *pkvd )
 		m_iTotalValue += m_iValues [ m_cTargets ];
 		m_cTargets++;
 
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 	{

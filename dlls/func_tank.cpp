@@ -60,9 +60,9 @@ public:
 	virtual int	Save( CSave &save );
 	virtual int	Restore( CRestore &restore );
 	static TYPEDESCRIPTION m_SaveData[];
-	BOOL CFuncTankControls :: OnControls( entvars_t *pevTest );
+	bool CFuncTankControls :: OnControls( entvars_t *pevTest );
 
-	BOOL m_active; // am I being used to control tanks right now?
+	bool m_active; // am I being used to control tanks right now?
 	Vector		m_vecControllerUsePos; // where was the player standing when he used me?
 										// for a 'movewith' controls entity, this is relative to the movewith ent.
 	CBasePlayer* m_pController;
@@ -160,11 +160,11 @@ public:
 	// Bmodels don't go across transitions
 	virtual int	ObjectCaps( void ) { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	inline bool IsActive( void ) { return static_cast<bool>(pev->spawnflags & SF_TANK_ACTIVE)?TRUE:FALSE; }
+	inline bool IsActive( void ) { return static_cast<bool>(pev->spawnflags & SF_TANK_ACTIVE)?true:false; }
 	inline void TankActivate( void ) { pev->spawnflags |= SF_TANK_ACTIVE; SetNextThink(0.1); m_fireLast = 0; }
 	inline void TankDeactivate( void ) { pev->spawnflags &= ~SF_TANK_ACTIVE; m_fireLast = 0; StopRotSound(); }
-	inline BOOL CanFire( void ) { return (gpGlobals->time - m_lastSightTime) < m_persist; }
-	BOOL		InRange( float range );
+	inline bool CanFire( void ) { return (gpGlobals->time - m_lastSightTime) < m_persist; }
+	bool		InRange( float range );
 
 	// Acquire a target.  pPlayer is a player in the PVS
 	edict_t		*FindTarget( edict_t *pPlayer );
@@ -184,8 +184,8 @@ public:
 	virtual int	Restore( CRestore &restore );
 	static	TYPEDESCRIPTION m_SaveData[];
 
-//	BOOL OnControls( entvars_t *pevTest );
-	BOOL StartControl( CBasePlayer* pController, CFuncTankControls* pControls );
+//	bool OnControls( entvars_t *pevTest );
+	bool StartControl( CBasePlayer* pController, CFuncTankControls* pControls );
 	void StopControl( CFuncTankControls* pControls );
 //	void ControllerPostFrame( void );
 
@@ -366,122 +366,122 @@ void CFuncTank :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "yawrate"))
 	{
 		m_yawRate = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "yawrange"))
 	{
 		m_yawRange = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "yawtolerance"))
 	{
 		m_yawTolerance = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "pitchrange"))
 	{
 		m_pitchRange = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "pitchrate"))
 	{
 		m_pitchRate = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "pitchtolerance"))
 	{
 		m_pitchTolerance = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "firerate"))
 	{
 		m_fireRate = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "barrel"))
 	{
 		m_barrelPos.x = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "barrely"))
 	{
 		m_barrelPos.y = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "barrelz"))
 	{
 		m_barrelPos.z = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "spritescale"))
 	{
 		m_spriteScale = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "spritesmoke"))
 	{
 		m_iszSpriteSmoke = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "spriteflash"))
 	{
 		m_iszSpriteFlash = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "rotatesound"))
 	{
 		pev->noise = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "persistence"))
 	{
 		m_persist = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "bullet"))
 	{
 		m_bulletType = (TANKBULLET)atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "bullet_damage" )) 
 	{
 		m_iBulletDamage = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "firespread"))
 	{
 		m_spread = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "minRange"))
 	{
 		m_minRange = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "maxRange"))
 	{
 		m_maxRange = atof(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "master"))
 	{
 		m_iszMaster = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "firemaster"))
 	{
 		m_iszFireMaster = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iClass"))
 	{
 		m_iTankClass = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszLocusFire"))
 	{
 		m_iszLocusFire = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
@@ -490,27 +490,27 @@ void CFuncTank :: KeyValue( KeyValueData *pkvd )
 //==================================================================================
 // TANK CONTROLLING
 /*LRC- TankControls checks this instead
-BOOL CFuncTank :: OnControls( entvars_t *pevTest )
+bool CFuncTank :: OnControls( entvars_t *pevTest )
 {
 	if ( !(pev->spawnflags & SF_TANK_CANCONTROL) )
-		return FALSE;
+		return false;
 
 	Vector offset = pevTest->origin - pev->origin;
 
 	if ( (m_vecControllerUsePos - pevTest->origin).Length() < 30 )
-		return TRUE;
+		return true;
 
-	return FALSE;
+	return false;
 } */
 
-BOOL CFuncTank :: StartControl( CBasePlayer* pController, CFuncTankControls *pControls )
+bool CFuncTank :: StartControl( CBasePlayer* pController, CFuncTankControls *pControls )
 {
 //	ALERT(at_console, "StartControl\n");
 	// we're already being controlled or playing a sequence
 	if ( m_pControls != NULL || m_pSequence != NULL )
 	{
 //		ALERT(at_debug,"StartControl failed, already in use\n");
-		return FALSE;
+		return false;
 	}
 
 	// Team only or disabled?
@@ -519,7 +519,7 @@ BOOL CFuncTank :: StartControl( CBasePlayer* pController, CFuncTankControls *pCo
 		if ( !UTIL_IsMasterTriggered( m_iszMaster, pController ) )
 		{
 //			ALERT(at_debug,"StartControl failed, locked\n");
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -533,7 +533,7 @@ BOOL CFuncTank :: StartControl( CBasePlayer* pController, CFuncTankControls *pCo
 
 	SetNextThink(0.1);
 //	ALERT(at_debug,"StartControl succeeded\n");
-	return TRUE;
+	return true;
 }
 
 void CFuncTank :: StopControl( CFuncTankControls* pControls)
@@ -685,7 +685,7 @@ CBaseEntity *CFuncTank:: BestVisibleEnemy ( void )
 
 	iNearest = 8192;// so first visible entity will become the closest.
 	pReturn = NULL;
-	iBestRelationship = R_DL;
+	iBestRelationship = RELATIONSHIP_DISLIKE;
 
 	CBaseEntity *pList[100];
 
@@ -736,14 +736,14 @@ CBaseEntity *CFuncTank:: BestVisibleEnemy ( void )
 int	CFuncTank::IRelationship( CBaseEntity* pTarget )
 {
 	int iOtherClass = pTarget->Classify();
-	if (iOtherClass == CLASS_NONE) return R_NO;
+	if (iOtherClass == CLASS_NONE) return RELATIONSHIP_NO;
 
 	if (!m_iTankClass)
 	{
 		if (iOtherClass == CLASS_PLAYER)
-			return R_HT;
+			return RELATIONSHIP_HATE;
 		else
-			return R_NO;
+			return RELATIONSHIP_NO;
 	}
 	else if (m_iTankClass == CLASS_PLAYER_ALLY)
 	{
@@ -755,9 +755,9 @@ int	CFuncTank::IRelationship( CBaseEntity* pTarget )
 		case CLASS_ALIEN_MONSTER:
 		case CLASS_ALIEN_PREDATOR:
 		case CLASS_ALIEN_PREY:
-			return R_HT;
+			return RELATIONSHIP_HATE;
 		default:
-			return R_NO;
+			return RELATIONSHIP_NO;
 		}
 	}
 	else if (m_iTankClass == CLASS_HUMAN_MILITARY)
@@ -770,11 +770,11 @@ int	CFuncTank::IRelationship( CBaseEntity* pTarget )
 		case CLASS_ALIEN_MONSTER:
 		case CLASS_ALIEN_PREDATOR:
 		case CLASS_ALIEN_PREY:
-			return R_HT;
+			return RELATIONSHIP_HATE;
 		case CLASS_HUMAN_PASSIVE:
-			return R_DL;
+			return RELATIONSHIP_DISLIKE;
 		default:
-			return R_NO;
+			return RELATIONSHIP_NO;
 		}
 	}
 	else if (m_iTankClass == CLASS_ALIEN_MILITARY)
@@ -784,26 +784,26 @@ int	CFuncTank::IRelationship( CBaseEntity* pTarget )
 		case CLASS_PLAYER:
 		case CLASS_PLAYER_ALLY:
 		case CLASS_HUMAN_MILITARY:
-			return R_HT;
+			return RELATIONSHIP_HATE;
 		case CLASS_HUMAN_PASSIVE:
-			return R_DL;
+			return RELATIONSHIP_DISLIKE;
 		default:
-			return R_NO;
+			return RELATIONSHIP_NO;
 		}
 	}
 	else
-		return R_NO;
+		return RELATIONSHIP_NO;
 }
 
 
-BOOL CFuncTank :: InRange( float range )
+bool CFuncTank :: InRange( float range )
 {
 	if ( range < m_minRange )
-		return FALSE;
+		return false;
 	if ( m_maxRange > 0 && range > m_maxRange )
-		return FALSE;
+		return false;
 
-	return TRUE;
+	return true;
 }
 
 //LRC
@@ -839,7 +839,7 @@ void CFuncTank::TrackTarget( void )
 {
 	TraceResult tr;
 //	edict_t *pPlayer;
-	BOOL updateTime = FALSE, lineOfSight;
+	bool updateTime = false, lineOfSight;
 	Vector angles, direction, targetPosition, barrelEnd;
 	Vector v_right, v_up;
 	CBaseEntity *pTarget;
@@ -982,18 +982,18 @@ void CFuncTank::TrackTarget( void )
 		
 		if ( tr.flFraction == 1.0 || tr.pHit == ENT(pTarget->pev) )
 		{
-			lineOfSight = TRUE;
+			lineOfSight = true;
 
 			if ( InRange( range ) && pTarget->IsAlive() )
 			{
-				updateTime = TRUE; // I think I saw him, pa!
+				updateTime = true; // I think I saw him, pa!
 				m_sightOrigin = UpdateTargetPosition( pTarget );
 			}
 		}
 		else
 		{
 			// No line of sight, don't track
-			lineOfSight = FALSE;
+			lineOfSight = false;
 		}
 
 		// Track sight origin
@@ -1036,12 +1036,12 @@ void CFuncTank::TrackTarget( void )
 		if ( angles.y > currentYawCenter + m_yawRange )
 		{
 			angles.y = currentYawCenter + m_yawRange;
-			updateTime = FALSE;	// If player is outside fire arc, we didn't really see him
+			updateTime = false;	// If player is outside fire arc, we didn't really see him
 		}
 		else if ( angles.y < (currentYawCenter - m_yawRange) )
 		{
 			angles.y = (currentYawCenter - m_yawRange);
-			updateTime = FALSE; // If player is outside fire arc, we didn't really see him
+			updateTime = false; // If player is outside fire arc, we didn't really see him
 		}
 	}
 	// we can always 'see' the whole vertical arc, so it's just the yaw we needed to check.
@@ -1129,7 +1129,7 @@ void CFuncTank::TrackTarget( void )
 	// firing with automatic guns:
 	else if ( CanFire() && ( (fabs(distX) < m_pitchTolerance && fabs(distY) < m_yawTolerance) || (pev->spawnflags & SF_TANK_LINEOFSIGHT) ) )
 	{
-		BOOL fire = FALSE;
+		bool fire = false;
 		Vector forward;
 		UTIL_MakeVectorsPrivate( pev->angles, forward, NULL, NULL );
 
@@ -1138,10 +1138,10 @@ void CFuncTank::TrackTarget( void )
 			float length = direction.Length();
 			UTIL_TraceLine( barrelEnd, barrelEnd + forward * length, dont_ignore_monsters, edict(), &tr );
 			if ( tr.pHit == ENT(pTarget->pev) )
-				fire = TRUE;
+				fire = true;
 		}
 		else
-			fire = TRUE;
+			fire = true;
 
 		if ( fire )
 		{
@@ -1200,7 +1200,7 @@ void CFuncTank::Fire( const Vector &barrelEnd, const Vector &forward, entvars_t 
 	{
 		if ( m_iszSpriteSmoke )
 		{
-			CSprite *pSprite = CSprite::SpriteCreate( STRING(m_iszSpriteSmoke), barrelEnd, TRUE );
+			CSprite *pSprite = CSprite::SpriteCreate( STRING(m_iszSpriteSmoke), barrelEnd, true );
 			pSprite->AnimateAndDie( RANDOM_FLOAT( 15.0, 20.0 ) );
 			pSprite->SetTransparency( kRenderTransAlpha, pev->rendercolor.x, pev->rendercolor.y, pev->rendercolor.z, 255, kRenderFxNone );
 			pSprite->pev->velocity.z = RANDOM_FLOAT(40, 80);
@@ -1208,7 +1208,7 @@ void CFuncTank::Fire( const Vector &barrelEnd, const Vector &forward, entvars_t 
 		}
 		if ( m_iszSpriteFlash )
 		{
-			CSprite *pSprite = CSprite::SpriteCreate( STRING(m_iszSpriteFlash), barrelEnd, TRUE );
+			CSprite *pSprite = CSprite::SpriteCreate( STRING(m_iszSpriteFlash), barrelEnd, true );
 			pSprite->AnimateAndDie( 60 );
 			pSprite->SetTransparency( kRenderTransAdd, 255, 255, 255, 255, kRenderFxNoDissipation );
 			pSprite->SetScale( m_spriteScale );
@@ -1361,7 +1361,7 @@ void CFuncTankLaser::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "laserentity"))
 	{
 		pev->message = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CFuncTank::KeyValue( pkvd );
@@ -1494,7 +1494,7 @@ void CFuncTankMortar::KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "iMagnitude"))
 	{
 		pev->impulse = atoi( pkvd->szValue );
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CFuncTank::KeyValue( pkvd );
@@ -1517,7 +1517,7 @@ void CFuncTankMortar::Fire( const Vector &barrelEnd, const Vector &forward, entv
 
 			TankTrace( barrelEnd, forward, gTankSpread[m_spread], tr );
 
-			ExplosionCreate( tr.vecEndPos, pev->angles, edict(), pev->impulse, TRUE );
+			ExplosionCreate( tr.vecEndPos, pev->angles, edict(), pev->impulse, true );
 
 			CFuncTank::Fire( barrelEnd, forward, pev );
 		}
@@ -1552,7 +1552,7 @@ void CFuncTankControls :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "crosshair"))
 	{
 		m_iCrosshair = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );
@@ -1567,36 +1567,36 @@ int	CFuncTankControls :: ObjectCaps( void )
 }
 
 //LRC- copied here from FuncTank.
-BOOL CFuncTankControls :: OnControls( entvars_t *pevTest )
+bool CFuncTankControls :: OnControls( entvars_t *pevTest )
 {
 //	if ( !(pev->spawnflags & SF_TANK_CANCONTROL) )
-//		return FALSE;
+//		return false;
 
 	Vector offset = pevTest->origin - pev->origin;
 
 	if (pev->frags == -1)
 	{
-//		ALERT(at_console, "TANK OnControls: TRUE(full tolerance)\n");
-		return TRUE;
+//		ALERT(at_console, "TANK OnControls: true(full tolerance)\n");
+		return true;
 	}
 
 	if (m_pMoveWith)
 	{
 		if ( ((m_vecControllerUsePos + m_pMoveWith->pev->origin) - pevTest->origin).Length() <= pev->frags )
 		{
-//			ALERT(at_console, "TANK OnControls: TRUE(movewith)\n");
-			return TRUE;
+//			ALERT(at_console, "TANK OnControls: true(movewith)\n");
+			return true;
 		}
 	}
 	else if ( (m_vecControllerUsePos - pevTest->origin).Length() <= pev->frags )
 	{
-//		ALERT(at_console, "TANK OnControls: TRUE\n");
-		return TRUE;
+//		ALERT(at_console, "TANK OnControls: true\n");
+		return true;
 	}
 
-//	ALERT(at_console, "TANK OnControls: FALSE\n");
+//	ALERT(at_console, "TANK OnControls: false\n");
 
-	return FALSE;
+	return false;
 }
 
 void CFuncTankControls :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
@@ -1614,7 +1614,7 @@ void CFuncTankControls :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 			return;
 		// if I've already got a controller, or the player's already using
 		// another controls, then forget it.
-		if (m_active != FALSE || ((CBasePlayer*)pActivator)->m_pTank != NULL)
+		if (m_active != false || ((CBasePlayer*)pActivator)->m_pTank != NULL)
 			return;
 
 		//LRC- Now uses FindEntityByTargetname, so that aliases work.
@@ -1626,7 +1626,7 @@ void CFuncTankControls :: Use( CBaseEntity *pActivator, CBaseEntity *pCaller, US
 				{
 					//ALERT(at_console,"started controlling tank %s\n",STRING(tryTank->pev->targetname));
 					// here's a tank we can control. Phew.
-					m_active = TRUE;
+					m_active = true;
 				}
 			}
 		}
@@ -1779,42 +1779,42 @@ void CTankSequence :: KeyValue( KeyValueData *pkvd )
 	if (FStrEq(pkvd->szKeyName, "m_iUntil"))
 	{
 		m_iUntil = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iTurn"))
 	{
 		m_iTurn = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iShoot"))
 	{
 		m_iShoot = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iActive"))
 	{
 		m_iActive = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iControllable"))
 	{
 		m_iControllable = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iLaserSpot"))
 	{
 		m_iLaserSpot = atoi(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszEntity"))
 	{
 		m_iszEntity = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else if (FStrEq(pkvd->szKeyName, "m_iszEnemy"))
 	{
 		m_iszEnemy = ALLOC_STRING(pkvd->szValue);
-		pkvd->fHandled = TRUE;
+		pkvd->fHandled = true;
 	}
 	else
 		CBaseEntity::KeyValue( pkvd );

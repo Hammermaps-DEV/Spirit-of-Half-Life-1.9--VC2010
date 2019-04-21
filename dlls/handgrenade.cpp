@@ -42,8 +42,8 @@ public:
 	int GetItemInfo(ItemInfo *p);
 
 	void PrimaryAttack( void );
-	BOOL Deploy( void );
-	BOOL CanHolster( void );
+	bool Deploy( void );
+	bool CanHolster( void );
 	void Holster( );
 	void WeaponIdle( void );
 };
@@ -88,13 +88,13 @@ int CHandGrenade::GetItemInfo(ItemInfo *p)
 }
 
 
-BOOL CHandGrenade::Deploy( )
+bool CHandGrenade::Deploy( )
 {
 	m_iChargeLevel = 0;
 	return DefaultDeploy( "models/v_grenade.mdl", "models/p_grenade.mdl", HANDGRENADE_DRAW, "crowbar", 0.6 );
 }
 
-BOOL CHandGrenade::CanHolster( void )
+bool CHandGrenade::CanHolster( void )
 {
 	// can only holster hand grenades when not primed!
 	return ( m_flStartThrow == 0 );

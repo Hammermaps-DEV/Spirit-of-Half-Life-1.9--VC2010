@@ -46,7 +46,7 @@ public:
 
 	void PrimaryAttack( void );
 	void SecondaryAttack( void );
-	BOOL Deploy( );
+	bool Deploy( );
 	void Holster( );
 	void Reload( void );
 	void WeaponIdle( void );
@@ -102,7 +102,7 @@ int CShotgun::GetItemInfo(ItemInfo *p)
 	return 1;
 }
 
-BOOL CShotgun::Deploy( )
+bool CShotgun::Deploy( )
 {
 	return DefaultDeploy( "models/v_shotgun.mdl", "models/p_shotgun.mdl", SHOTGUN_DRAW, "shotgun" );
 }
@@ -152,7 +152,7 @@ void CShotgun::PrimaryAttack()
 
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
-		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
+		m_pPlayer->SetSuitUpdate("!HEV_AMO0", false, 0);
 
 	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.0;
 	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
@@ -210,7 +210,7 @@ void CShotgun::SecondaryAttack( void )
 
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		// HEV suit - indicate out of ammo condition
-		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
+		m_pPlayer->SetSuitUpdate("!HEV_AMO0", false, 0);
 
 
 	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.5;
@@ -311,14 +311,14 @@ class CShotgunAmmo : public CBasePlayerAmmo
 		PRECACHE_MODEL ("models/w_shotbox.mdl");
 		PRECACHE_SOUND("items/9mmclip1.wav");
 	}
-	BOOL AddAmmo( CBaseEntity *pOther ) 
+	bool AddAmmo( CBaseEntity *pOther ) 
 	{ 
 		if (pOther->GiveAmmo( AMMO_BUCKSHOTBOX_GIVE, "buckshot", BUCKSHOT_MAX_CARRY ) != -1)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
-			return TRUE;
+			return true;
 		}
-		return FALSE;
+		return false;
 	}
 };
 LINK_ENTITY_TO_CLASS( ammo_buckshot, CShotgunAmmo );

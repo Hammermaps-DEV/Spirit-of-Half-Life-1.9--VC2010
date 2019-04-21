@@ -149,7 +149,7 @@ int CHornet::IRelationship ( CBaseEntity *pTarget )
 {
 	if ( pTarget->pev->modelindex == pev->modelindex )
 	{
-		return R_NO;
+		return RELATIONSHIP_NO;
 	}
 
 	return CBaseMonster :: IRelationship( pTarget );
@@ -379,7 +379,7 @@ void CHornet :: TrackTouch ( CBaseEntity *pOther )
 		return;
 	}
 
-	if ( IRelationship( pOther ) <= R_NO )
+	if ( IRelationship( pOther ) <= RELATIONSHIP_NO )
 	{
 		// hit something we don't want to hurt, so turn around.
 

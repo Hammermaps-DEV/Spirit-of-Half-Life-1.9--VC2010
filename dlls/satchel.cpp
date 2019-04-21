@@ -50,9 +50,9 @@ public:
 	void SecondaryAttack( void );
 	int AddDuplicate( CBasePlayerItem *pOriginal );
 	int CSatchel::AddToPlayer( CBasePlayer *pPlayer );
-	BOOL CanDeploy( void );
-	BOOL Deploy( void );
-	BOOL IsUseable( void );
+	bool CanDeploy( void );
+	bool Deploy( void );
+	bool IsUseable( void );
 	
 	void Holster( );
 	void WeaponIdle( void );
@@ -188,7 +188,7 @@ int CSatchel::AddDuplicate( CBasePlayerItem *pOriginal )
 	if ( IsMultiplayer() )
 	{
 		pSatchel = (CSatchel *)pOriginal;
-		if ( pSatchel->m_chargeReady != 0 )return FALSE;
+		if ( pSatchel->m_chargeReady != 0 )return false;
 	}
 	return CBasePlayerWeapon::AddDuplicate ( pOriginal );
 }
@@ -209,7 +209,7 @@ int CSatchel::AddToPlayer( CBasePlayer *pPlayer )
 	m_chargeReady = 0;// this satchel charge weapon now forgets that any satchels are deployed by it.
 
 	if ( bResult ) return AddWeapon( );
-	return FALSE;
+	return false;
 }
 
 void CSatchel::Spawn( )
@@ -253,21 +253,21 @@ int CSatchel::GetItemInfo(ItemInfo *p)
 
 //=========================================================
 //=========================================================
-BOOL CSatchel::IsUseable( void )
+bool CSatchel::IsUseable( void )
 {
-	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) return TRUE;
-	if ( m_chargeReady != 0 ) return TRUE;
-	return FALSE;
+	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) return true;
+	if ( m_chargeReady != 0 ) return true;
+	return false;
 }
 
-BOOL CSatchel::CanDeploy( void )
+bool CSatchel::CanDeploy( void )
 {
-	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) return TRUE;
-	if ( m_chargeReady != 0 ) return TRUE;
-	return FALSE;
+	if ( m_pPlayer->m_rgAmmo[ PrimaryAmmoIndex() ] > 0 ) return true;
+	if ( m_chargeReady != 0 ) return true;
+	return false;
 }
 
-BOOL CSatchel::Deploy( )
+bool CSatchel::Deploy( )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
 	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT( 10, 15 );
@@ -275,7 +275,7 @@ BOOL CSatchel::Deploy( )
 	if ( m_chargeReady )
 		return DefaultDeploy( "models/v_satchel_radio.mdl", "models/p_satchel_radio.mdl", SATCHEL_RADIO_DRAW, "hive", 0.6 );
 	else	return DefaultDeploy( "models/v_satchel.mdl", "models/p_satchel.mdl", SATCHEL_DRAW, "trip", 1.5 );
-	return TRUE;
+	return true;
 }
 
 
