@@ -160,7 +160,7 @@ public:
 	// Bmodels don't go across transitions
 	virtual int	ObjectCaps( void ) { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 
-	inline bool IsActive( void ) { return static_cast<bool>(pev->spawnflags & SF_TANK_ACTIVE)?TRUE:FALSE; }
+	inline BOOL IsActive( void ) { return (pev->spawnflags & SF_TANK_ACTIVE)?TRUE:FALSE; }
 	inline void TankActivate( void ) { pev->spawnflags |= SF_TANK_ACTIVE; SetNextThink(0.1); m_fireLast = 0; }
 	inline void TankDeactivate( void ) { pev->spawnflags &= ~SF_TANK_ACTIVE; m_fireLast = 0; StopRotSound(); }
 	inline BOOL CanFire( void ) { return (gpGlobals->time - m_lastSightTime) < m_persist; }
@@ -858,7 +858,7 @@ void CFuncTank::TrackTarget( void )
 	if (m_pSequence)
 	{
 		UpdateSpot();
-		SetNextThink(0.05, false);
+		SetNextThink(0.05, FALSE);
 
 		if (m_pSequence->m_iTurn == TSEQ_TURN_ENEMY)
 		{
@@ -889,7 +889,7 @@ void CFuncTank::TrackTarget( void )
 //		ALERT( at_console, "TANK has controller\n");
 		UpdateSpot();
 		pController = m_pControls->m_pController;
-		SetNextThink(0.05, false);
+		SetNextThink(0.05, FALSE);
 
 		// LRC- changed here to allow "match target" as well as "match angles" mode.
 		if (pev->spawnflags & SF_TANK_MATCHTARGET)

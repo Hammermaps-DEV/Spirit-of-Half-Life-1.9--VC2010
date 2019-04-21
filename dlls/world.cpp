@@ -450,7 +450,7 @@ void RestoreGlobalState( SAVERESTOREDATA *pSaveData )
 void ResetGlobalState( void )
 {
 	gGlobalState.ClearStates();
-	m_gInitHUD = true;	// Init the HUD on a new game / load game
+	gInitHUD = TRUE;	// Init the HUD on a new game / load game
 }
 
 
@@ -469,14 +469,14 @@ LINK_ENTITY_TO_CLASS( worldspawn, CWorld );
 #define SF_WORLD_FORCETEAM	0x0004		// Force teams
 //#define SF_WORLD_STARTSUIT	0x0008		// LRC- Start this level with an HEV suit!
 
-extern DLL_GLOBAL bool	g_fGameOver;
+extern DLL_GLOBAL BOOL		g_fGameOver;
 float g_flWeaponCheat; 
 
-bool g_startSuit; //LRC
+BOOL g_startSuit; //LRC
 
 void CWorld :: Spawn( void )
 {
-	g_fGameOver = false;
+	g_fGameOver = FALSE;
 	Precache( );
 }
 
@@ -735,7 +735,7 @@ void CWorld :: KeyValue( KeyValueData *pkvd )
 //LRC- let map designers start the player with his suit already on
 	else if ( FStrEq(pkvd->szKeyName, "startsuit") )
 	{
-		g_startSuit = static_cast<bool>(atoi(pkvd->szValue));
+		g_startSuit = atoi(pkvd->szValue);
 		pkvd->fHandled = TRUE;
 	}
 	else if ( FStrEq(pkvd->szKeyName, "allowmonsters") )

@@ -433,7 +433,7 @@ void CLightDynamic :: Precache( void )
 
 void CLightDynamic::Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
 {
-	if (ShouldToggle(useType, static_cast<bool>(pev->health)))
+	if (ShouldToggle(useType, pev->health))
 	{
 		if (pev->health)
 			pev->health = 0;

@@ -68,8 +68,8 @@ CBaseEntity
 #define EXPORT	/* */
 #endif
 
-extern "C" EXPORT bool GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion );
-extern "C" EXPORT bool GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion );
+extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion );
+extern "C" EXPORT int GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion );
 
 extern int DispatchSpawn( edict_t *pent );
 extern void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd );
@@ -186,10 +186,10 @@ public:
 
 	//LRC - decent mechanisms for setting think times!
 	// this should have been done a long time ago, but MoveWith finally forced me.
-	virtual void		SetNextThink( float delay ) { SetNextThink(delay, false); }
-	virtual void		SetNextThink( float delay, bool correctSpeed );
-	virtual void		AbsoluteNextThink( float time ) { AbsoluteNextThink(time, false); }
-	virtual void		AbsoluteNextThink( float time, bool correctSpeed );
+	virtual void		SetNextThink( float delay ) { SetNextThink(delay, FALSE); }
+	virtual void		SetNextThink( float delay, BOOL correctSpeed );
+	virtual void		AbsoluteNextThink( float time ) { AbsoluteNextThink(time, FALSE); }
+	virtual void		AbsoluteNextThink( float time, BOOL correctSpeed );
 	void			SetEternalThink( );
 
 	void	DontThink( void );
@@ -274,8 +274,8 @@ public:
 
 	virtual void	TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	virtual int		TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
-	virtual bool	TakeHealth( float flHealth, int bitsDamageType );
-	virtual bool	TakeArmor( float flArmor );
+	virtual int		TakeHealth( float flHealth, int bitsDamageType );
+	virtual int		TakeArmor( float flArmor );
 	virtual void	Killed( entvars_t *pevAttacker, int iGib );
 	virtual int		BloodColor( void ) { return DONT_BLEED; }
 	virtual void	TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
@@ -303,7 +303,7 @@ public:
 	virtual BOOL	IsBSPModel( void ) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
 	virtual BOOL	ReflectGauss( void ) { return ( IsBSPModel() && !pev->takedamage ); }
 	virtual BOOL	HasTarget( string_t targetname ) { return FStrEq(STRING(targetname), STRING(pev->targetname) ); }
-	virtual bool    IsInWorld( void );
+	virtual BOOL    IsInWorld( void );
 	virtual	BOOL	IsPlayer( void ) { return FALSE; }
 	virtual BOOL	IsNetClient( void ) { return FALSE; }
 	virtual const char *TeamID( void ) { return ""; }
@@ -350,8 +350,8 @@ public:
 	void EXPORT SUB_FadeOut ( void );
 	void EXPORT SUB_CallUseToggle( void ) // a think function used at spawn time. Don't apply the moveWith fix to it.
 	{ this->Use( this, this, USE_TOGGLE, 0 );	}
-	bool		ShouldToggle( USE_TYPE useType, bool currentState );
-	bool		ShouldToggle( USE_TYPE useType ); //LRC this version uses GetState()
+	int			ShouldToggle( USE_TYPE useType, BOOL currentState );
+	int			ShouldToggle( USE_TYPE useType ); //LRC this version uses GetState()
 	void		FireBullets( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL  );
 	Vector		FireBulletsPlayer( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0 );
 
@@ -359,7 +359,7 @@ public:
 
 	void SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, float value );
 	// Do the bounding boxes of these two intersect?
-	bool	Intersects( CBaseEntity *pOther ) const;
+	int		Intersects( CBaseEntity *pOther );
 	void	MakeDormant( void );
 	int		IsDormant( void );
 	BOOL    IsLockedByMaster( void ) { return FALSE; }
@@ -914,7 +914,7 @@ typedef struct _SelAmmo
 } SelAmmo;
 
 //LRC- much as I hate to add new globals, I can't see how to read data from the World entity.
-extern bool g_startSuit;
+extern BOOL g_startSuit;
 
 //LRC- moved here from alias.cpp so that util functions can use these defs.
 class CBaseAlias : public CPointEntity
