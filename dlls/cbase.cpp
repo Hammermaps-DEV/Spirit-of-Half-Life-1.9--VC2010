@@ -216,8 +216,7 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 
 // HACKHACK -- this is a hack to keep the node graph entity from "touching" things (like triggers)
 // while it builds the graph
-bool gTouchDisabled = false;
-
+BOOL gTouchDisabled = FALSE;
 void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 {
 	if ( gTouchDisabled )
