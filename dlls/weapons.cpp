@@ -878,7 +878,7 @@ void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer )
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
 	pev->model = iStringNull;
 	pev->owner = pPlayer->edict();
-	SetNextThink( 0 );
+	DontThink();
 	SetTouch( NULL );
 	SetThink(NULL);
 }
@@ -1076,11 +1076,11 @@ BOOL CBasePlayerWeapon :: CanDeploy( void )
 
 	if ( pszAmmo1() )
 	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] != 0);
+		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0);
 	}
 	if ( pszAmmo2() )
 	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] != 0);
+		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] > 0);
 	}
 	if (m_iClip > 0)
 	{
