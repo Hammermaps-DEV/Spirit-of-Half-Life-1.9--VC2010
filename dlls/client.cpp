@@ -234,9 +234,10 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	const char *cpSay = "say";
 	const char *cpSayTeam = "say_team";
 	const char *pcmd = CMD_ARGV(0);
+	const int cmdc = CMD_ARGC();
 
 	// We can get a raw string now, without the "say " prepended
-	if (CMD_ARGC() == 0)
+	if (cmdc == 0)
 		return;
 
 	entvars_t *pev = &pEntity->v;
@@ -248,9 +249,9 @@ void Host_Say(edict_t *pEntity, int teamonly)
 
 	if (!_stricmp(pcmd, cpSay) || !_stricmp(pcmd, cpSayTeam))
 	{
-		if (CMD_ARGC() >= 2)
+		if (cmdc > 1)
 		{
-			p = (char *)CMD_ARGS();
+			sprintf(szTemp, "%s", (char *)CMD_ARGS());
 		}
 		else
 		{
@@ -260,7 +261,7 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	}
 	else  // Raw text, need to prepend argv[0]
 	{
-		if (CMD_ARGC() >= 2)
+		if (cmdc > 1)
 		{
 			sprintf(szTemp, "%s %s", (char *)pcmd, (char *)CMD_ARGS());
 		}
@@ -276,14 +277,17 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	if (*p == '"')
 	{
 		p++;
-		p[strlen(p) - 1] = 0;
+		int len = (int)strlen(p);
+		if (p[len - 1] == '"')
+			p[len - 1] = 0;
 	}
 
 	// make sure the text has content
 	char *pc;
 	for (pc = p; pc != NULL && *pc != 0; pc++)
 	{
-		if (isprint(*pc) && !isspace(*pc))
+		if ((byte)(*pc) >= (byte)0x80 ||	// UTF-8 symbol
+			isprint(*pc) && !isspace(*pc))
 		{
 			pc = NULL;	// we've found an alphanumeric character,  so text is valid
 			break;
@@ -301,6 +305,17 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	j = sizeof(text) - 2 - strlen(text);  // -2 for /n and null terminator
 	if ((int)strlen(p) > j)
 		p[j] = 0;
+
+	// remove empty space at the end
+	for (pc = p + (int)strlen(p) - 1; pc != p; pc--)
+	{
+		if ((byte)(*pc) >= (byte)0x80 ||	// UTF-8 symbol
+			!isspace(*pc))
+		{
+			break;
+		}
+		*pc = 0;
+	}
 
 	strcat(text, p);
 	strcat(text, "\n");
