@@ -1134,9 +1134,11 @@ void CBasePlayer::Killed( entvars_t *pevAttacker, int iGib )
 	//this will cause problems
 	//UTIL_ScreenFade( this, Vector(128,0,0), 6, 15, 255, FFADE_OUT | FFADE_MODULATE | FFADE_STAYOUT );
 
+	// Make dead player not solid so it will not lag other players passing over it
+	pev->solid = SOLID_NOT;
+
 	if ( ( pev->health < -40 && iGib != GIB_NEVER ) || iGib == GIB_ALWAYS )
 	{
-		pev->solid	= SOLID_NOT;
 		GibMonster();	// This clears pev->model
 		pev->effects |= EF_NODRAW;
 		return;
