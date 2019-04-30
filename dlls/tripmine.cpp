@@ -123,7 +123,7 @@ void CTripmineGrenade :: Spawn( void )
 
 	SET_MODEL(ENT(pev), "models/w_tripmine.mdl");
 	
-	UTIL_AutoSetSize();
+	AutoSetSize();
 	UTIL_SetOrigin( this, pev->origin );
 
 	if (pev->spawnflags & 1)
