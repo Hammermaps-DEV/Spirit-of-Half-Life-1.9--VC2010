@@ -4996,11 +4996,11 @@ BOOL CBasePlayer::HasNamedPlayerItem( const char *pszItemName )
 //=========================================================
 //
 //=========================================================
-BOOL CBasePlayer :: SwitchWeapon( CBasePlayerItem *pWeapon )
+bool CBasePlayer :: SwitchWeapon( CBasePlayerItem *pWeapon )
 {
 	if ( !pWeapon->CanDeploy() )
 	{
-		return FALSE;
+		return false;
 	}
 
 	ResetAutoaim( );
@@ -5018,7 +5018,7 @@ BOOL CBasePlayer :: SwitchWeapon( CBasePlayerItem *pWeapon )
 		m_pActiveItem->UpdateItemInfo( );
 	}
 
-	return TRUE;
+	return true;
 }
 
 //=========================================================
