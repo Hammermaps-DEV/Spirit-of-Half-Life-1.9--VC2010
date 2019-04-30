@@ -1569,7 +1569,7 @@ void CBasePlayer::StartDeathCam( void )
 	CBaseEntity *pSpot, *pNewSpot;
 	int iRand;
 
-	if ( pev->view_ofs == g_vecZero )
+	if (m_afPhysicsFlags & PFLAG_OBSERVER)
 	{
 		// don't accept subsequent attempts to StartDeathCam()
 		return;
@@ -1617,8 +1617,9 @@ void CBasePlayer::StartObserver( Vector vecPosition, Vector vecViewAngle )
 	pev->fixangle = TRUE;
 	pev->solid = SOLID_NOT;
 	pev->takedamage = DAMAGE_NO;
-	pev->movetype = MOVETYPE_NONE;
-	pev->modelindex = 0;
+	pev->movetype = MOVETYPE_NOCLIP;	// HACK HACK: Player fall down with MOVETYPE_NONE
+	pev->health = 1;					// Let player stay vertically, not lie on a side
+	pev->effects = EF_NODRAW;			// Hide model. This is used instead of pev->modelindex = 0
 	UTIL_SetOrigin( this, vecPosition );
 }
 
