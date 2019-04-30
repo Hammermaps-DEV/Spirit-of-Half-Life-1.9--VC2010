@@ -1035,14 +1035,14 @@ CBaseEntity *UTIL_FindEntityGeneric( const char *szWhatever, Vector &vecSrc, flo
 // Index is 1 based
 CBaseEntity	*UTIL_PlayerByIndex( int playerIndex )
 {
-	CBaseEntity *pPlayer = NULL;
+	CBasePlayer *pPlayer = NULL;
 
 	if ( playerIndex > 0 && playerIndex <= gpGlobals->maxClients )
 	{
 		edict_t *pPlayerEdict = INDEXENT( playerIndex );
 		if ( pPlayerEdict && !pPlayerEdict->free )
 		{
-			pPlayer = CBaseEntity::Instance( pPlayerEdict );
+			pPlayer = (CBasePlayer *)CBaseEntity::Instance( pPlayerEdict );
 		}
 	}
 	
