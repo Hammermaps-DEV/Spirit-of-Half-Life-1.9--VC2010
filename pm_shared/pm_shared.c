@@ -147,7 +147,10 @@ typedef struct hull_s
 #define CONTENTS_FLYFIELD_GRAVITY	-18
 #define CONTENTS_FOG			-19
 
-static vec3_t rgv3tStuckTable[54];
+#define MAX_STUCKTABLE_ENTRIES	52
+
+static vec3_t rgv3tStuckTable[MAX_STUCKTABLE_ENTRIES];
+static int g_iBigMovesOffsetInStuckTable;
 static int rgStuckLast[MAX_CLIENTS][2];
 
 // Texture names
@@ -1719,13 +1722,13 @@ Grab a test offset for the player based on a passed in index
 */
 int PM_GetRandomStuckOffsets(int nIndex, int server, vec3_t offset)
 {
- // Last time we did a full
+	// Last time we did a full
 	int idx;
 	idx = rgStuckLast[nIndex][server]++;
 
-	VectorCopy(rgv3tStuckTable[idx % 54], offset);
+	VectorCopy(rgv3tStuckTable[idx % MAX_STUCKTABLE_ENTRIES], offset);
 
-	return (idx % 54);
+	return (idx % MAX_STUCKTABLE_ENTRIES);
 }
 
 void PM_ResetStuckOffsets(int nIndex, int server)
@@ -3284,38 +3287,38 @@ void PM_PlayerMove ( qboolean server )
 	}
 }
 
-void PM_CreateStuckTable( void )
+void PM_CreateStuckTable(void)
 {
 	float x, y, z;
-	int idx;
 	int i;
 	float zi[3];
 
-	memset(rgv3tStuckTable, 0, 54 * sizeof(vec3_t));
+	memset(rgv3tStuckTable, 0, MAX_STUCKTABLE_ENTRIES * sizeof(vec3_t));
 
-	idx = 0;
 	// Little Moves.
-	x = y = 0;
+
+	int idx = 0;
 	// Z moves
-	for (z = -0.125 ; z <= 0.125 ; z += 0.125)
+	x = y = 0;
+	for (z = -0.125; z <= 0.125; z += 0.250)
 	{
 		rgv3tStuckTable[idx][0] = x;
 		rgv3tStuckTable[idx][1] = y;
 		rgv3tStuckTable[idx][2] = z;
 		idx++;
 	}
-	x = z = 0;
 	// Y moves
-	for (y = -0.125 ; y <= 0.125 ; y += 0.125)
+	x = z = 0;
+	for (y = -0.125; y <= 0.125; y += 0.250)
 	{
 		rgv3tStuckTable[idx][0] = x;
 		rgv3tStuckTable[idx][1] = y;
 		rgv3tStuckTable[idx][2] = z;
 		idx++;
 	}
-	y = z = 0;
 	// X moves
-	for (x = -0.125 ; x <= 0.125 ; x += 0.125)
+	y = z = 0;
+	for (x = -0.125; x <= 0.125; x += 0.250)
 	{
 		rgv3tStuckTable[idx][0] = x;
 		rgv3tStuckTable[idx][1] = y;
@@ -3323,13 +3326,19 @@ void PM_CreateStuckTable( void )
 		idx++;
 	}
 
+	// idx == 6
 	// Remaining multi axis nudges.
-	for ( x = - 0.125; x <= 0.125; x += 0.250 )
+	for (x = -0.125; x <= 0.125; x += 0.125)
 	{
-		for ( y = - 0.125; y <= 0.125; y += 0.250 )
+		for (y = -0.125; y <= 0.125; y += 0.125)
 		{
-			for ( z = - 0.125; z <= 0.125; z += 0.250 )
+			for (z = -0.125; z <= 0.125; z += 0.125)
 			{
+				if ((x == 0 && y == 0 && z == 0) ||
+					(x == 0 && y == 0) ||
+					(x == 0 && z == 0) ||
+					(y == 0 && z == 0))
+					continue;
 				rgv3tStuckTable[idx][0] = x;
 				rgv3tStuckTable[idx][1] = y;
 				rgv3tStuckTable[idx][2] = z;
@@ -3339,50 +3348,60 @@ void PM_CreateStuckTable( void )
 	}
 
 	// Big Moves.
-	x = y = 0;
-	zi[0] = 0.0f;
-	zi[1] = 1.0f;
-	zi[2] = 6.0f;
+	g_iBigMovesOffsetInStuckTable = idx;
+	zi[0] = 0.0;
+	zi[1] = 1.0;
+	zi[2] = 6.0;
 
+	// idx == 26
+	// Y moves
+	x = y = 0;
+	for (i = 1; i < 3; i++)
+	{
+		z = zi[i];
+		rgv3tStuckTable[idx][0] = x;
+		rgv3tStuckTable[idx][1] = y;
+		rgv3tStuckTable[idx][2] = z;
+		idx++;
+	}
+
+	// idx == 28
+	// Y moves
+	x = z = 0;
+	for (y = -2.0; y <= 2.0; y += 4.0)
+	{
+		rgv3tStuckTable[idx][0] = x;
+		rgv3tStuckTable[idx][1] = y;
+		rgv3tStuckTable[idx][2] = z;
+		idx++;
+	}
+
+	// idx == 30
+	// X moves
+	y = z = 0;
+	for (x = -2.0; x <= 2.0; x += 4.0)
+	{
+		rgv3tStuckTable[idx][0] = x;
+		rgv3tStuckTable[idx][1] = y;
+		rgv3tStuckTable[idx][2] = z;
+		idx++;
+	}
+
+	// idx == 32
+	// Remaining multi axis nudges.
 	for (i = 0; i < 3; i++)
 	{
-		// Z moves
 		z = zi[i];
-		rgv3tStuckTable[idx][0] = x;
-		rgv3tStuckTable[idx][1] = y;
-		rgv3tStuckTable[idx][2] = z;
-		idx++;
-	}
 
-	x = z = 0;
-
-	// Y moves
-	for (y = -2.0f ; y <= 2.0f ; y += 2.0)
-	{
-		rgv3tStuckTable[idx][0] = x;
-		rgv3tStuckTable[idx][1] = y;
-		rgv3tStuckTable[idx][2] = z;
-		idx++;
-	}
-	y = z = 0;
-	// X moves
-	for (x = -2.0f ; x <= 2.0f ; x += 2.0f)
-	{
-		rgv3tStuckTable[idx][0] = x;
-		rgv3tStuckTable[idx][1] = y;
-		rgv3tStuckTable[idx][2] = z;
-		idx++;
-	}
-
-	// Remaining multi axis nudges.
-	for (i = 0 ; i < 3; i++)
-	{
-		z = zi[i];
-		
-		for (x = -2.0f ; x <= 2.0f ; x += 2.0f)
+		for (x = -2.0; x <= 2.0; x += 2.0)
 		{
-			for (y = -2.0f ; y <= 2.0f ; y += 2.0)
+			for (y = -2.0; y <= 2.0; y += 2.0)
 			{
+				if ((x == 0 && y == 0 && z == 0) ||
+					(x == 0 && y == 0) ||
+					(x == 0 && z == 0) ||
+					(y == 0 && z == 0))
+					continue;
 				rgv3tStuckTable[idx][0] = x;
 				rgv3tStuckTable[idx][1] = y;
 				rgv3tStuckTable[idx][2] = z;
@@ -3390,9 +3409,10 @@ void PM_CreateStuckTable( void )
 			}
 		}
 	}
+
+	// idx == 52
+	assert(idx == MAX_STUCKTABLE_ENTRIES);
 }
-
-
 
 /*
 This modume implements the shared player physics code between any particular game and 
