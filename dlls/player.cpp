@@ -3022,6 +3022,9 @@ void CBasePlayer::Spawn( void )
 	Precache();
 	m_HackedGunPos		= Vector( 0, 32, 0 );
 
+	// Reset view entity
+	SET_VIEW(edict(), edict());
+
 	if ( m_iPlayerSound == SOUNDLIST_EMPTY )
 	{
 		ALERT ( at_debug, "Couldn't alloc player sound slot!\n" );
