@@ -3906,7 +3906,8 @@ int CBasePlayer::RemovePlayerItem( CBasePlayerItem *pItem )
 		pev->viewmodel = 0;
 		pev->weaponmodel = 0;
 	}
-	else if ( m_pLastItem == pItem )
+
+	if ( m_pLastItem == pItem )
 		m_pLastItem = NULL;
 
 	CBasePlayerItem *pPrev = m_rgpPlayerItems[pItem->iItemSlot()];
@@ -4160,8 +4161,6 @@ void CBasePlayer :: UpdateClientData( void )
 			}
 			pFind = FIND_ENTITY_BY_CLASSNAME( pFind, "env_mirror" );
 		}
-
-		FireTargets( "game_playerspawn", this, this, USE_TOGGLE, 0 );
 
 		InitStatusBar();
 	}
