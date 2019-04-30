@@ -916,6 +916,9 @@ void CBasePlayer::RemoveAllItems( BOOL removeSuit )
 		m_rgAmmo[i] = 0;
 
 	UpdateClientData();
+
+	DeactivateSatchels(this);
+
 	// send Selected Weapon Message to our client
 	MESSAGE_BEGIN( MSG_ONE, gmsgCurWeapon, NULL, pev );
 		WRITE_BYTE(0);
