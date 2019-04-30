@@ -181,7 +181,7 @@ public:
 	int		m_iStyle; // LRC - almost anything can have a lightstyle these days...
 
 	Vector		m_vecSpawnOffset; // LRC- To fix things which (for example) MoveWith a door which Starts Open.
-	BOOL		m_activated; // LRC- moved here from func_train. Signifies that an entity has already been
+	bool		m_activated; // LRC- moved here from func_train. Signifies that an entity has already been
 										// activated. (and hence doesn't need reactivating.)
 
 	//LRC - decent mechanisms for setting think times!

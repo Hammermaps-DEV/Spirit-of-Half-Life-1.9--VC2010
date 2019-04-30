@@ -843,7 +843,6 @@ public:
 
 	entvars_t	*m_pevCurrentTarget;
 	int			m_sounds;
-//LRC - now part of CBaseEntity:	BOOL		m_activated;
 	STATE		m_iState;
 	float		m_fStoredThink;
 	Vector		m_vecAvelocity;
@@ -854,7 +853,6 @@ TYPEDESCRIPTION	CFuncTrain::m_SaveData[] =
 {
 	DEFINE_FIELD( CFuncTrain, m_sounds, FIELD_INTEGER ),
 	DEFINE_FIELD( CFuncTrain, m_pevCurrentTarget, FIELD_EVARS ),
-//LRC - now part of CBaseEntity:	DEFINE_FIELD( CFuncTrain, m_activated, FIELD_BOOLEAN ),
 	DEFINE_FIELD( CFuncTrain, m_iState, FIELD_INTEGER ),
 	DEFINE_FIELD( CFuncTrain, m_fStoredThink, FIELD_TIME ),
 	DEFINE_FIELD( CFuncTrain, m_pSequence, FIELD_CLASSPTR ), //LRC

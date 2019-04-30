@@ -41,6 +41,8 @@ Vector VecBModelOrigin( entvars_t* pevBModel );
 
 CGraph	WorldGraph;
 
+extern bool gTouchDisabled;
+
 LINK_ENTITY_TO_CLASS( info_node, CNodeEnt );
 LINK_ENTITY_TO_CLASS( info_node_air, CNodeEnt );
 #ifdef __linux__
@@ -1576,13 +1578,12 @@ void CTestHull :: ShowBadNode( void )
 	SetNextThink( 0.1 );
 }
 
-extern BOOL gTouchDisabled;
 void CTestHull::CallBuildNodeGraph( void )
 {
 	// TOUCH HACK -- Don't allow this entity to call anyone's "touch" function
-	gTouchDisabled = TRUE;
+	gTouchDisabled = true;
 	BuildNodeGraph();
-	gTouchDisabled = FALSE;
+	gTouchDisabled = false;
 	// Undo TOUCH HACK
 }
 

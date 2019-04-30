@@ -34,6 +34,8 @@ extern Vector VecBModelOrigin( entvars_t* pevBModel );
 extern DLL_GLOBAL Vector		g_vecAttackDir;
 extern DLL_GLOBAL int			g_iSkillLevel;
 
+bool gTouchDisabled = false;
+
 static DLL_FUNCTIONS gFunctionTable = 
 {
 	GameDLLInit,				//pfnGameInit
@@ -155,12 +157,16 @@ int DispatchSpawn( edict_t *pent )
 			pEntity->pev->colormap = ENTINDEX(pent);
 			if ( g_pGameRules && !g_pGameRules->IsAllowedToSpawn( pEntity ) )
 				return -1;	// return that this entity should be deleted
+
 			if ( pEntity->pev->flags & FL_KILLME )
 				return -1;
+
 			if ( g_iSkillLevel == SKILL_EASY && pEntity->m_iLFlags & LF_NOTEASY )
 				return -1; //LRC
+
 			if (g_iSkillLevel == SKILL_MEDIUM && pEntity->m_iLFlags & LF_NOTMEDIUM )
 				return -1; //LRC
+
 			if (g_iSkillLevel == SKILL_HARD && pEntity->m_iLFlags & LF_NOTHARD )
 				return -1; //LRC
 		}
@@ -213,10 +219,8 @@ void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd )
 	pEntity->KeyValue( pkvd );
 }
 
-
 // HACKHACK -- this is a hack to keep the node graph entity from "touching" things (like triggers)
 // while it builds the graph
-BOOL gTouchDisabled = FALSE;
 void DispatchTouch( edict_t *pentTouched, edict_t *pentOther )
 {
 	if ( gTouchDisabled )
@@ -530,8 +534,11 @@ void CBaseEntity::Activate( void )
 		UTIL_AddToAliasList((CBaseAlias*)this);
 	}
 
-	if (m_activated) return;
-	m_activated = TRUE;
+	if (m_activated) 
+		return;
+
+	m_activated = true;
+
 	InitMoveWith();
 	PostSpawn();
 }
