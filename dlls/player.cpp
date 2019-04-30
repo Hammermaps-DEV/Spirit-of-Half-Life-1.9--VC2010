@@ -4042,7 +4042,7 @@ int CBasePlayer::GetAmmoIndex(const char *psz)
 		if ( !CBasePlayerItem::AmmoInfoArray[i].pszName )
 			continue;
 
-		if (stricmp( psz, CBasePlayerItem::AmmoInfoArray[i].pszName ) == 0)
+		if (_stricmp( psz, CBasePlayerItem::AmmoInfoArray[i].pszName ) == 0)
 			return i;
 	}
 

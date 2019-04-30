@@ -331,7 +331,7 @@ void AddAmmoNameToAmmoRegistry( const char *szAmmoname )
 		if ( !CBasePlayerItem::AmmoInfoArray[i].pszName)
 			continue;
 
-		if ( stricmp( CBasePlayerItem::AmmoInfoArray[i].pszName, szAmmoname ) == 0 )
+		if ( _stricmp( CBasePlayerItem::AmmoInfoArray[i].pszName, szAmmoname ) == 0 )
 			return; // ammo already in registry, just quite
 	}
 
@@ -1640,7 +1640,7 @@ int CWeaponBox::GiveAmmo( int iCount, char *szName, int iMax, int *pIndex/* = NU
 
 	for (i = 1; i < MAX_AMMO_SLOTS && !FStringNull( m_rgiszAmmo[i] ); i++)
 	{
-		if (stricmp( szName, STRING( m_rgiszAmmo[i])) == 0)
+		if (_stricmp( szName, STRING( m_rgiszAmmo[i])) == 0)
 		{
 			if (pIndex)
 				*pIndex = i;
