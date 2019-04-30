@@ -47,8 +47,7 @@ int gEvilImpulse101;
 BOOL g_markFrameBounds = 0; //LRC
 extern DLL_GLOBAL int		g_iSkillLevel, gDisplayTitle;
 
-
-BOOL gInitHUD = TRUE;
+bool gInitHUD = true;
 
 extern void CopyToBodyQue(entvars_t* pev);
 extern void respawn(entvars_t *pev, BOOL fCopyCorpse);
@@ -4098,7 +4097,7 @@ void CBasePlayer::UpdateClientData(void)
 	if (m_fInitHUD)
 	{
 		m_fInitHUD = FALSE;
-		gInitHUD = FALSE;
+		gInitHUD = false;
 
 		MESSAGE_BEGIN(MSG_ONE, gmsgResetHUD, NULL, pev);
 		WRITE_BYTE(0);

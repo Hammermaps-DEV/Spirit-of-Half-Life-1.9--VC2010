@@ -899,7 +899,7 @@ typedef struct _SelAmmo
 } SelAmmo;
 
 //LRC- much as I hate to add new globals, I can't see how to read data from the World entity.
-extern BOOL g_startSuit;
+extern bool g_startSuit;
 
 //LRC- moved here from alias.cpp so that util functions can use these defs.
 class CBaseAlias : public CPointEntity

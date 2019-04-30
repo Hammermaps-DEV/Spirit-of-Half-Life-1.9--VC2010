@@ -74,7 +74,7 @@ edict_t *CGameRules :: GetPlayerSpawnSpot( CBasePlayer *pPlayer )
 	//LRC
 	if (pentSpawnSpot->v.spawnflags & 1) // the START WITH SUIT flag
 	{
-		g_startSuit = TRUE;
+		g_startSuit = true;
 	}
 	
 	return pentSpawnSpot;

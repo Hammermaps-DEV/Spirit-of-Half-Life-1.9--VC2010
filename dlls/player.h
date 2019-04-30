@@ -347,6 +347,6 @@ extern int	gmsgSetBody;
 extern int	gmsgSetSkin;
 extern int	gmsgSetMirror;
 extern int	gmsgFsound;
-extern BOOL gInitHUD;
+extern bool gInitHUD;
 
 #endif // PLAYER_H

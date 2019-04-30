@@ -132,10 +132,7 @@ void CGib::SpawnHeadGib(entvars_t *pevVictim, const char* szGibModel)
 
 		if (RANDOM_LONG(0, 100) <= 5 && pentPlayer)
 		{
-			// 5% chance head will be thrown at player's face.
-			entvars_t	*pevPlayer;
-
-			pevPlayer = VARS(pentPlayer);
+			entvars_t* pevPlayer = VARS(pentPlayer);
 			pGib->pev->velocity = ((pevPlayer->origin + pevPlayer->view_ofs) - pGib->pev->origin).Normalize() * 300;
 			pGib->pev->velocity.z += 100;
 		}
@@ -225,7 +222,7 @@ void CGib::SpawnRandomGibs(entvars_t *pevVictim, int cGibs, int notfirst, const 
 			pGib->pev->avelocity.y = RANDOM_FLOAT(100, 300);
 
 			// copy owner's blood color
-			pGib->m_bloodColor = (CBaseEntity::Instance(pevVictim))->BloodColor();
+			pGib->m_bloodColor = (Instance(pevVictim))->BloodColor();
 
 			if (pevVictim->health > -50)
 			{
@@ -260,19 +257,8 @@ BOOL CBaseMonster::HasHumanGibs(void)
 	{
 		return FALSE;
 	}
-	else
-	{
-		return (this->m_bloodColor == BLOOD_COLOR_RED);
-	}
 
-	//	if ( myClass == CLASS_HUMAN_MILITARY ||
-	//		 myClass == CLASS_PLAYER_ALLY	||
-	//		 myClass == CLASS_HUMAN_PASSIVE  ||
-	//		 myClass == CLASS_PLAYER )
-	//
-	//		 return TRUE;
-	//
-	//	return FALSE;
+	return (this->m_bloodColor == BLOOD_COLOR_RED);
 }
 
 
@@ -287,10 +273,8 @@ BOOL CBaseMonster::HasAlienGibs(void)
 	{
 		return FALSE;
 	}
-	else
-	{
-		return (this->m_bloodColor == BLOOD_COLOR_GREEN);
-	}
+
+	return (this->m_bloodColor == BLOOD_COLOR_GREEN);
 }
 
 void CBaseMonster::FadeMonster(void)
@@ -365,11 +349,7 @@ void CBaseMonster::GibMonster(void)
 //=========================================================
 Activity CBaseMonster::GetDeathActivity(void)
 {
-	Activity	deathActivity;
-	bool		fTriedDirection;
-	float		flDot;
 	TraceResult	tr;
-	Vector		vecSrc;
 
 	if (pev->deadflag != DEAD_NO)
 	{
@@ -377,13 +357,13 @@ Activity CBaseMonster::GetDeathActivity(void)
 		return m_IdealActivity;
 	}
 
-	vecSrc = Center();
+	Vector vecSrc = Center();
 
-	fTriedDirection = false;
-	deathActivity = ACT_DIESIMPLE;// in case we can't find any special deaths to do.
+	bool fTriedDirection = false;
+	Activity deathActivity = ACT_DIESIMPLE;// in case we can't find any special deaths to do.
 
 	UTIL_MakeVectors(pev->angles);
-	flDot = DotProduct(gpGlobals->v_forward, g_vecAttackDir * -1);
+	float flDot = DotProduct(gpGlobals->v_forward, g_vecAttackDir * -1);
 
 	switch (m_LastHitGroup)
 	{
@@ -719,7 +699,6 @@ void CGib::WaitTillLand(void)
 //
 void CGib::BounceGibTouch(CBaseEntity *pOther)
 {
-	Vector	vecSpot;
 	TraceResult	tr;
 
 	//if ( RANDOM_LONG(0,1) )
@@ -737,7 +716,7 @@ void CGib::BounceGibTouch(CBaseEntity *pOther)
 	{
 		if (m_cBloodDecals > 0 && m_bloodColor != DONT_BLEED)
 		{
-			vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
+			Vector vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
 			UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), ignore_monsters, ENT(pev), &tr);
 
 			//UTIL_BloodDecalTrace( &tr, m_bloodColor );
@@ -753,10 +732,9 @@ void CGib::BounceGibTouch(CBaseEntity *pOther)
 
 		if (m_material != matNone && RANDOM_LONG(0, 2) == 0)
 		{
-			float volume;
 			float zvel = fabs(pev->velocity.z);
 
-			volume = 0.8 * min(1.0, ((float)zvel) / 450.0);
+			float volume = 0.8 * min(1.0, ((float)zvel) / 450.0);
 
 			CBreakable::MaterialSoundRandom(edict(), (Materials)m_material, volume);
 		}
@@ -784,9 +762,11 @@ void CGib::StickyGibTouch(CBaseEntity *pOther)
 
 	//UTIL_BloodDecalTrace( &tr, m_bloodColor );
 
-	int blood;
-	if (m_bloodColor == BLOOD_COLOR_RED)blood = 1;
-	else if (m_bloodColor == BLOOD_COLOR_YELLOW)blood = 2;
+	int blood = 1;
+
+	if (m_bloodColor == BLOOD_COLOR_YELLOW)
+		blood = 2;
+
 	CBaseEntity *pHit = CBaseEntity::Instance(tr.pHit);
 	PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_GLOBAL, edict(), m_usDecals, 0.0, (float *)&tr.vecEndPos, (float *)&g_vecZero, 0.0, 0.0, pHit->entindex(), blood, 0, 0);
 
@@ -865,7 +845,6 @@ GLOBALS ASSUMED SET:  g_iSkillLevel
 */
 int CBaseMonster::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
 {
-	float	flTake;
 	Vector	vecDir;
 
 	if (!pev->takedamage)
@@ -883,7 +862,7 @@ int CBaseMonster::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, fl
 	}
 
 	//!!!LATER - make armor consideration here!
-	flTake = flDamage;
+	float flTake = flDamage;
 
 	// set damage type sustained
 	m_bitsDamageType |= bitsDamageType;
@@ -1423,7 +1402,6 @@ This version is used by Monsters.
 void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting, Vector vecSpread, float flDistance, int iBulletType, int iTracerFreq, int iDamage, entvars_t *pevAttacker)
 {
 	static int tracerCount;
-	int tracer;
 	TraceResult tr;
 	Vector vecRight = gpGlobals->v_right;
 	Vector vecUp = gpGlobals->v_up;
@@ -1452,7 +1430,7 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 		vecEnd = vecSrc + vecDir * flDistance;
 		UTIL_TraceLine(vecSrc, vecEnd, dont_ignore_monsters, ENT(pev)/*pentIgnore*/, &tr);
 
-		tracer = 0;
+		int tracer = 0;
 		if (iTracerFreq != 0 && (tracerCount++ % iTracerFreq) == 0)
 		{
 			Vector vecTracerSrc;
@@ -1468,6 +1446,7 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 
 			if (iTracerFreq != 1)		// guns that always trace also always decal
 				tracer = 1;
+
 			switch (iBulletType)
 			{
 			case BULLET_MONSTER_MP5:
@@ -1489,7 +1468,7 @@ void CBaseEntity::FireBullets(ULONG cShots, Vector vecSrc, Vector vecDirShooting
 		// do damage, paint decals
 		if (tr.flFraction != 1.0)
 		{
-			CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
+			CBaseEntity *pEntity = Instance(tr.pHit);
 
 			if (iDamage)
 			{
@@ -1668,22 +1647,6 @@ void CBaseEntity::TraceBleed(float flDamage, Vector vecDir, TraceResult *ptr, in
 	int cCount;
 	int i;
 
-	/*
-		if ( !IsAlive() )
-		{
-			// dealing with a dead monster.
-			if ( pev->max_health <= 0 )
-			{
-				// no blood decal for a monster that has already decalled its limit.
-				return;
-			}
-			else
-			{
-				pev->max_health--;
-			}
-		}
-	*/
-
 	if (flDamage < 10)
 	{
 		flNoise = 0.1;
@@ -1729,8 +1692,6 @@ void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult *
 {
 	// make blood decal on the wall! 
 	TraceResult Bloodtr;
-	Vector vecTraceDir;
-	int i;
 
 	if (!IsAlive())
 	{
@@ -1740,15 +1701,13 @@ void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult *
 			// no blood decal for a monster that has already decalled its limit.
 			return;
 		}
-		else
-		{
-			pev->max_health--;
-		}
+
+		pev->max_health--;
 	}
 
-	for (i = 0; i < cCount; i++)
+	for (int i = 0; i < cCount; i++)
 	{
-		vecTraceDir = vecDir;
+		Vector vecTraceDir = vecDir;
 
 		vecTraceDir.x += RANDOM_FLOAT(-flNoise, flNoise);
 		vecTraceDir.y += RANDOM_FLOAT(-flNoise, flNoise);
@@ -1771,10 +1730,12 @@ void CBaseMonster::MakeDamageBloodDecal(int cCount, float flNoise, TraceResult *
 
 		if (Bloodtr.flFraction != 1.0)
 		{
-			int blood;
-			if (BloodColor() == BLOOD_COLOR_RED)blood = 1;
-			else if (BloodColor() == BLOOD_COLOR_YELLOW)blood = 2;
-			CBaseEntity *pHit = CBaseEntity::Instance(Bloodtr.pHit);
+			int blood = 1;
+
+			if (BloodColor() == BLOOD_COLOR_YELLOW)
+				blood = 2;
+
+			CBaseEntity *pHit = Instance(Bloodtr.pHit);
 			PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_GLOBAL, edict(), m_usDecals, 0.0, (float *)&Bloodtr.vecEndPos, (float *)&g_vecZero, 0.0, 0.0, pHit->entindex(), blood, 0, 0);
 		}
 	}

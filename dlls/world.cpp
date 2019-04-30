@@ -450,10 +450,8 @@ void RestoreGlobalState(SAVERESTOREDATA *pSaveData)
 void ResetGlobalState(void)
 {
 	gGlobalState.ClearStates();
-	gInitHUD = TRUE;	// Init the HUD on a new game / load game
+	gInitHUD = false;	// Init the HUD on a new game / load game
 }
-
-
 
 // moved CWorld class definition to cbase.h
 //=======================
@@ -472,7 +470,7 @@ LINK_ENTITY_TO_CLASS(worldspawn, CWorld);
 extern DLL_GLOBAL BOOL		g_fGameOver;
 float g_flWeaponCheat;
 
-BOOL g_startSuit; //LRC
+bool g_startSuit; //LRC
 
 void CWorld::Spawn(void)
 {
@@ -727,7 +725,7 @@ void CWorld::KeyValue(KeyValueData *pkvd)
 	//LRC- let map designers start the player with his suit already on
 	else if (FStrEq(pkvd->szKeyName, "startsuit"))
 	{
-		g_startSuit = atoi(pkvd->szValue);
+		g_startSuit = (atoi(pkvd->szValue));
 		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "allowmonsters"))
