@@ -148,7 +148,7 @@ public:
 	int					m_bitsHUDDamage;		// Damage bits for the current fame. These get sent to 
 												// the hude via the DAMAGE message
 	BOOL				m_fInitHUD;				// True when deferred HUD restart msg needs to be sent
-	BOOL				m_fGameHUDInitialized;
+	bool				m_fGameHUDInitialized;
 	int					m_iTrain;				// Train control position
 	BOOL				m_fWeapon;				// Set this to FALSE to force a reset of the current weapon HUD info
 
@@ -215,6 +215,8 @@ public:
 
 	virtual BOOL IsNetClient( void ) { return TRUE; }		// Bots should return FALSE for this, they can't receive NET messages
 															// Spectators should return TRUE for this
+	virtual bool IsInGame(void) { return m_fGameHUDInitialized; }
+
 	virtual const char *TeamID( void );
 
 	virtual int		Save( CSave &save );

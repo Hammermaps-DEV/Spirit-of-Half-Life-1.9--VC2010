@@ -131,6 +131,11 @@ void ClientDisconnect(edict_t *pEntity)
 	pEntity->v.effects = 0;// clear any effects
 	UTIL_SetEdictOrigin(pEntity, pEntity->v.origin);
 
+	// Mark player as disconnected
+	CBasePlayer *pPlayer = (CBasePlayer*)UTIL_PlayerByIndex(ENTINDEX(pEntity));
+	if (pPlayer)
+		pPlayer->m_fGameHUDInitialized = false;
+
 	g_pGameRules->ClientDisconnected(pEntity);
 }
 

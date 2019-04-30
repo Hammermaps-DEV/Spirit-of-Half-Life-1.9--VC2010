@@ -4102,7 +4102,7 @@ void CBasePlayer :: UpdateClientData( void )
 			MESSAGE_END();
 
 			g_pGameRules->InitHUD( this );
-			m_fGameHUDInitialized = TRUE;
+			m_fGameHUDInitialized = true;
 			if ( g_pGameRules->IsMultiplayer() )
 			{
 				FireTargets( "game_playerjoin", this, this, USE_TOGGLE, 0 );
