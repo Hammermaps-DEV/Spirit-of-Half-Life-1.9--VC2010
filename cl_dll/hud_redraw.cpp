@@ -205,7 +205,7 @@ int CHud :: Redraw( float flTime, int intermission )
 	if ( g_iVisibleMouse )
 	{
 		void IN_GetMousePos( int *mx, int *my );
-		int mx, my;
+		float mx, my;
 
 		IN_GetMousePos( &mx, &my );
 		
