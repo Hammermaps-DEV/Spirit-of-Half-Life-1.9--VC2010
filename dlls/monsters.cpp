@@ -1313,7 +1313,7 @@ int CBaseMonster :: CheckLocalMove ( const Vector &vecStart, const Vector &vecEn
 	float	flYaw;
 	float	flDist;
 	float	flStep, stepSize;
-	int		iReturn;
+	int		iReturn = 0;
 
 	vecStartPos = pev->origin;
 	
