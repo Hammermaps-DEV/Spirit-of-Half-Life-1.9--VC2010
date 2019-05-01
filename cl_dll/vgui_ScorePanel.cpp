@@ -324,7 +324,7 @@ void ScorePanel::SortTeams()
 		int j = 1;
 		for ( j = 1; j <= m_iNumTeams; j++ )
 		{
-			if ( !stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
+			if ( !_stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
 				break;
 		}
 
@@ -422,7 +422,7 @@ void ScorePanel::SortPlayers( int iTeam, char *team )
 			{
 				cl_entity_t *ent = gEngfuncs.GetEntityByIndex( i );
 
-				if ( ent && !(team && stricmp(g_PlayerExtraInfo[i].teamname, team)) )  
+				if ( ent && !(team && _stricmp(g_PlayerExtraInfo[i].teamname, team)) )  
 				{
 					extra_player_info_t *pl_info = &g_PlayerExtraInfo[i];
 					if ( pl_info->frags > highest_frags || pl_info->deaths < lowest_deaths )
@@ -489,7 +489,7 @@ void ScorePanel::RebuildTeams()
 			if ( g_TeamInfo[j].name[0] == '\0' )
 				break;
 
-			if ( !stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
+			if ( !_stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
 				break;
 		}
 

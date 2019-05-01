@@ -2296,7 +2296,7 @@ int TeamFortressViewport::MsgFunc_TeamScore( const char *pszName, int iSize, voi
 	int i = 1;
 	for ( i = 1; i <= m_pScoreBoard->m_iNumTeams; i++ )
 	{
-		if ( !stricmp( TeamName, g_TeamInfo[i].name ) )
+		if ( !_stricmp( TeamName, g_TeamInfo[i].name ) )
 			break;
 	}
 

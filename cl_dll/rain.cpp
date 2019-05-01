@@ -462,42 +462,42 @@ void ParseRainFile( void )
 		if (!pfile)
 			break;
 
-		if (!stricmp(token, "drips")) // dripsPerSecond
+		if (!_stricmp(token, "drips")) // dripsPerSecond
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.dripsPerSecond = atoi(token);
 		}
-		else if (!stricmp(token, "distance")) // distFromPlayer
+		else if (!_stricmp(token, "distance")) // distFromPlayer
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.distFromPlayer = atof(token);
 		}
-		else if (!stricmp(token, "windx")) // windX
+		else if (!_stricmp(token, "windx")) // windX
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.windX = atof(token);
 		}
-		else if (!stricmp(token, "windy")) // windY
+		else if (!_stricmp(token, "windy")) // windY
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.windY = atof(token);		
 		}
-		else if (!stricmp(token, "randx")) // randX
+		else if (!_stricmp(token, "randx")) // randX
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.randX = atof(token);
 		}
-		else if (!stricmp(token, "randy")) // randY
+		else if (!_stricmp(token, "randy")) // randY
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.randY = atof(token);
 		}
-		else if (!stricmp(token, "mode")) // weatherMode
+		else if (!_stricmp(token, "mode")) // weatherMode
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.weatherMode = atoi(token);
 		}
-		else if (!stricmp(token, "height")) // globalHeight
+		else if (!_stricmp(token, "height")) // globalHeight
 		{
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
 			Rain.globalHeight = atof(token);
