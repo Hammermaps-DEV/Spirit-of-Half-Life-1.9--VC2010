@@ -30,7 +30,6 @@
     <ClInclude Include="eventscripts.h" />
     <ClInclude Include="ev_hldm.h" />
     <ClInclude Include="GameStudioModelRenderer.h" />
-    <ClInclude Include="GameStudioModelRenderer_Sample.h" />
     <ClInclude Include="health.h" />
     <ClInclude Include="hud.h" />
     <ClInclude Include="hud_iface.h" />
@@ -104,10 +103,6 @@
     <ClCompile Include="in_camera.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="message.cpp" />
-    <ClCompile Include="overview.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="parsemsg.cpp" />
     <ClCompile Include="particlemgr.cpp" />
     <ClCompile Include="particlemsg.cpp" />

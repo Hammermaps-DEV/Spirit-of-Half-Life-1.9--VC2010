@@ -235,7 +235,7 @@ public:
 	void		SetParent(int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
 	void		SetParent(CBaseEntity *pParent, int m_iAttachment = 0);//g-cont. dynamiclly link parents
 	void		ResetParent(void);
-	void		ClearPointers(void); //g-cont. directly clear all movewith pointer before changelevel
+	virtual void	ClearPointers(void); //g-cont. directly clear all movewith pointer before changelevel
 	virtual void	PostSpawn(void) {} //LRC - called by Activate() to handle entity-specific initialisation.
 	// (mostly setting positions, for MoveWith support)
 
