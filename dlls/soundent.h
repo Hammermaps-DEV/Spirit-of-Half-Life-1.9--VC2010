@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -45,8 +45,8 @@ class CSound
 {
 public:
 
-	void	Clear ( void );
-	void	Reset ( void );
+	void	Clear(void);
+	void	Reset(void);
 
 	Vector	m_vecOrigin;	// sound's location in space
 	int		m_iType;		// what type of sound this is
@@ -55,8 +55,8 @@ public:
 	int		m_iNext;		// index of next sound in this list ( Active or Free )
 	int		m_iNextAudible;	// temporary link that monsters use to build a list of audible sounds
 
-	BOOL	FIsSound( void );
-	BOOL	FIsScent( void );
+	BOOL	FIsSound(void);
+	BOOL	FIsScent(void);
 };
 
 //=========================================================
@@ -64,32 +64,32 @@ public:
 // the world spawns. The SoundEnt's job is to update the 
 // world's Free and Active sound lists.
 //=========================================================
-class CSoundEnt : public CBaseEntity 
+class CSoundEnt : public CBaseEntity
 {
 public:
 
-	void Precache ( void );
-	void Spawn( void );
-	void Think( void );
-	void Initialize ( void );
-	
-	static void		InsertSound ( int iType, const Vector &vecOrigin, int iVolume, float flDuration );
-	static void		FreeSound ( int iSound, int iPrevious );
-	static int		ActiveList( void );// return the head of the active list
-	static int		FreeList( void );// return the head of the free list
-	static CSound*	SoundPointerForIndex( int iIndex );// return a pointer for this index in the sound list
-	static int		ClientSoundIndex ( edict_t *pClient );
+	void Precache(void);
+	void Spawn(void);
+	void Think(void);
+	void Initialize(void);
 
-	BOOL	IsEmpty( void ) { return m_iActiveSound == SOUNDLIST_EMPTY; }
-	int		ISoundsInList ( int iListType );
-	int		IAllocSound ( void );
-	virtual int		ObjectCaps( void ) { return FCAP_DONT_SAVE; }
-	
+	static void		InsertSound(int iType, const Vector &vecOrigin, int iVolume, float flDuration);
+	static void		FreeSound(int iSound, int iPrevious);
+	static int		ActiveList(void);// return the head of the active list
+	static int		FreeList(void);// return the head of the free list
+	static CSound*	SoundPointerForIndex(int iIndex);// return a pointer for this index in the sound list
+	static int		ClientSoundIndex(edict_t *pClient);
+
+	BOOL	IsEmpty(void) { return m_iActiveSound == SOUNDLIST_EMPTY; }
+	int		ISoundsInList(int iListType);
+	int		IAllocSound(void);
+	virtual int		ObjectCaps(void) { return FCAP_DONT_SAVE; }
+
 	int		m_iFreeSound;	// index of the first sound in the free sound list
 	int		m_iActiveSound; // indes of the first sound in the active sound list
 	int		m_cLastActiveSounds; // keeps track of the number of active sounds at the last update. (for diagnostic work)
 	BOOL	m_fShowReport; // if true, dump information about free/active sounds.
 
 private:
-	CSound		m_SoundPool[ MAX_WORLD_SOUNDS ];
+	CSound		m_SoundPool[MAX_WORLD_SOUNDS];
 };

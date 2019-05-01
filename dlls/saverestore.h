@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -21,62 +21,62 @@ class CBaseEntity;
 class CSaveRestoreBuffer
 {
 public:
-	CSaveRestoreBuffer( void );
-	CSaveRestoreBuffer( SAVERESTOREDATA *pdata );
-	~CSaveRestoreBuffer( void );
+	CSaveRestoreBuffer(void);
+	CSaveRestoreBuffer(SAVERESTOREDATA *pdata);
+	~CSaveRestoreBuffer(void);
 
-	int			EntityIndex( entvars_t *pevLookup );
-	int			EntityIndex( edict_t *pentLookup );
-	int			EntityIndex( EOFFSET eoLookup );
-	int			EntityIndex( CBaseEntity *pEntity );
+	int			EntityIndex(entvars_t *pevLookup);
+	int			EntityIndex(edict_t *pentLookup);
+	int			EntityIndex(EOFFSET eoLookup);
+	int			EntityIndex(CBaseEntity *pEntity);
 
-	int			EntityFlags( int entityIndex, int flags ) { return EntityFlagsSet( entityIndex, 0 ); }
-	int			EntityFlagsSet( int entityIndex, int flags );
+	int			EntityFlags(int entityIndex, int flags) { return EntityFlagsSet(entityIndex, 0); }
+	int			EntityFlagsSet(int entityIndex, int flags);
 
-	edict_t		*EntityFromIndex( int entityIndex );
+	edict_t		*EntityFromIndex(int entityIndex);
 
-	unsigned short	TokenHash( const char *pszToken );
+	unsigned short	TokenHash(const char *pszToken);
 
 protected:
 	SAVERESTOREDATA		*m_pdata;
-	void		BufferRewind( int size );
-	unsigned int	HashString( const char *pszToken );
+	void		BufferRewind(int size);
+	unsigned int	HashString(const char *pszToken);
 };
 
 
 class CSave : public CSaveRestoreBuffer
 {
 public:
-	CSave( SAVERESTOREDATA *pdata ) : CSaveRestoreBuffer( pdata ) {};
+	CSave(SAVERESTOREDATA *pdata) : CSaveRestoreBuffer(pdata) {};
 
-	void	WriteShort( const char *pname, const short *value, int count );
-	void	WriteInt( const char *pname, const int *value, int count );		// Save an int
-	void	WriteFloat( const char *pname, const float *value, int count );	// Save a float
-	void	WriteTime( const char *pname, const float *value, int count );	// Save a float (timevalue)
-	void	WriteData( const char *pname, int size, const char *pdata );		// Save a binary data block
-	void	WriteString( const char *pname, const char *pstring );			// Save a null-terminated string
-	void	WriteString( const char *pname, const int *stringId, int count );	// Save a null-terminated string (engine string)
-	void	WriteVector( const char *pname, const Vector &value );				// Save a vector
-	void	WriteVector( const char *pname, const float *value, int count );	// Save a vector
-	void	WritePositionVector( const char *pname, const Vector &value );		// Offset for landmark if necessary
-	void	WritePositionVector( const char *pname, const float *value, int count );	// array of pos vectors
-	void	WriteFunction( const char *pname, const int *value, int count );		// Save a function pointer
+	void	WriteShort(const char *pname, const short *value, int count);
+	void	WriteInt(const char *pname, const int *value, int count);		// Save an int
+	void	WriteFloat(const char *pname, const float *value, int count);	// Save a float
+	void	WriteTime(const char *pname, const float *value, int count);	// Save a float (timevalue)
+	void	WriteData(const char *pname, int size, const char *pdata);		// Save a binary data block
+	void	WriteString(const char *pname, const char *pstring);			// Save a null-terminated string
+	void	WriteString(const char *pname, const int *stringId, int count);	// Save a null-terminated string (engine string)
+	void	WriteVector(const char *pname, const Vector &value);				// Save a vector
+	void	WriteVector(const char *pname, const float *value, int count);	// Save a vector
+	void	WritePositionVector(const char *pname, const Vector &value);		// Offset for landmark if necessary
+	void	WritePositionVector(const char *pname, const float *value, int count);	// array of pos vectors
+	void	WriteFunction(const char *pname, const int *value, int count);		// Save a function pointer
 	// Save a function pointer. (LRC- also pass the classname to allow better error messages)
-	void	WriteFunction( const char* cname, const char *pname, const int *value, int count );
+	void	WriteFunction(const char* cname, const char *pname, const int *value, int count);
 
-	int		WriteEntVars( const char *pname, entvars_t *pev );		// Save entvars_t (entvars_t)
-	int		WriteFields( const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
-	int		WriteFields( const char *cname, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
+	int		WriteEntVars(const char *pname, entvars_t *pev);		// Save entvars_t (entvars_t)
+	int		WriteFields(const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount);
+	int		WriteFields(const char *cname, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount);
 
 private:
-	int		DataEmpty( const char *pdata, int size );
-	void	BufferField( const char *pname, int size, const char *pdata );
-	void	BufferString( char *pdata, int len );
-	void	BufferData( const char *pdata, int size );
-	void	BufferHeader( const char *pname, int size );
+	int		DataEmpty(const char *pdata, int size);
+	void	BufferField(const char *pname, int size, const char *pdata);
+	void	BufferString(char *pdata, int len);
+	void	BufferData(const char *pdata, int size);
+	void	BufferHeader(const char *pname, int size);
 };
 
-typedef struct 
+typedef struct
 {
 	unsigned short		size;
 	unsigned short		token;
@@ -86,27 +86,27 @@ typedef struct
 class CRestore : public CSaveRestoreBuffer
 {
 public:
-	CRestore( SAVERESTOREDATA *pdata ) : CSaveRestoreBuffer( pdata ) { m_global = 0; m_precache = TRUE; }
+	CRestore(SAVERESTOREDATA *pdata) : CSaveRestoreBuffer(pdata) { m_global = 0; m_precache = TRUE; }
 
-	int		ReadEntVars( const char *pname, entvars_t *pev );		// entvars_t
-	int		ReadFields( const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
-	int		ReadField( void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount, int startField, int size, char *pName, void *pData );
-	int		ReadInt( void );
-	short	ReadShort( void );
-	int		ReadNamedInt( const char *pName );
-	char	*ReadNamedString( const char *pName );
-	int		Empty( void ) { return (m_pdata == NULL) || ((m_pdata->pCurrentData-m_pdata->pBaseData)>=m_pdata->bufferSize); }
-	inline	void SetGlobalMode( int global ) { m_global = global; }
-	void	PrecacheMode( BOOL mode ) { m_precache = mode; }
+	int		ReadEntVars(const char *pname, entvars_t *pev);		// entvars_t
+	int		ReadFields(const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount);
+	int		ReadField(void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount, int startField, int size, char *pName, void *pData);
+	int		ReadInt(void);
+	short	ReadShort(void);
+	int		ReadNamedInt(const char *pName);
+	char	*ReadNamedString(const char *pName);
+	int		Empty(void) { return (m_pdata == NULL) || ((m_pdata->pCurrentData - m_pdata->pBaseData) >= m_pdata->bufferSize); }
+	inline	void SetGlobalMode(int global) { m_global = global; }
+	void	PrecacheMode(BOOL mode) { m_precache = mode; }
 
 private:
-	char	*BufferPointer( void );
-	void	BufferReadBytes( char *pOutput, int size );
-	void	BufferSkipBytes( int bytes );
-	int		BufferSkipZString( void );
-	int		BufferCheckZString( const char *string );
+	char	*BufferPointer(void);
+	void	BufferReadBytes(char *pOutput, int size);
+	void	BufferSkipBytes(int bytes);
+	int		BufferSkipZString(void);
+	int		BufferCheckZString(const char *string);
 
-	void	BufferReadHeader( HEADER *pheader );
+	void	BufferReadHeader(HEADER *pheader);
 
 	int		m_global;		// Restoring a global entity?
 	BOOL	m_precache;
@@ -149,25 +149,25 @@ struct globalentity_s
 class CGlobalState
 {
 public:
-					CGlobalState();
-	void			Reset( void );
-	void			ClearStates( void );
-	void			EntityAdd( string_t globalname, string_t mapName, GLOBALESTATE state );
-	void			EntitySetState( string_t globalname, GLOBALESTATE state );
-	void			EntityUpdate( string_t globalname, string_t mapname );
-	const globalentity_t	*EntityFromTable( string_t globalname );
-	GLOBALESTATE	EntityGetState( string_t globalname );
-	int				EntityInTable( string_t globalname ) { return (Find( globalname ) != NULL) ? 1 : 0; }
-	int				Save( CSave &save );
-	int				Restore( CRestore &restore );
+	CGlobalState();
+	void			Reset(void);
+	void			ClearStates(void);
+	void			EntityAdd(string_t globalname, string_t mapName, GLOBALESTATE state);
+	void			EntitySetState(string_t globalname, GLOBALESTATE state);
+	void			EntityUpdate(string_t globalname, string_t mapname);
+	const globalentity_t	*EntityFromTable(string_t globalname);
+	GLOBALESTATE	EntityGetState(string_t globalname);
+	int				EntityInTable(string_t globalname) { return (Find(globalname) != NULL) ? 1 : 0; }
+	int				Save(CSave &save);
+	int				Restore(CRestore &restore);
 	static TYPEDESCRIPTION m_SaveData[];
 
-//#ifdef _DEBUG
-	void			DumpGlobals( void );
-//#endif
+	//#ifdef _DEBUG
+	void			DumpGlobals(void);
+	//#endif
 
 private:
-	globalentity_t	*Find( string_t globalname );
+	globalentity_t	*Find(string_t globalname);
 	globalentity_t	*m_pList;
 	int				m_listCount;
 };

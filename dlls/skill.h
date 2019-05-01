@@ -1,9 +1,9 @@
 /***
 *
 *	Copyright (c) 1996-2002, Valve LLC. All rights reserved.
-*	
-*	This product contains software technology licensed from Id 
-*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc. 
+*
+*	This product contains software technology licensed from Id
+*	Software, Inc. ("Id Technology").  Id Technology (c) 1996 Id Software, Inc.
 *	All Rights Reserved.
 *
 *   Use, distribution, and modification of this source code and/or resulting
@@ -26,7 +26,7 @@ struct skilldata_t
 	float agruntDmgPunch;
 
 	float apacheHealth;
-	
+
 	float barneyHealth;
 
 	float bigmommaHealthFactor;		// Multiply each node's health by this
@@ -91,7 +91,7 @@ struct skilldata_t
 	float sentryHealth;
 
 
-// Player Weapons
+	// Player Weapons
 	float plrDmgCrowbar;
 	float plrDmg9MM;
 	float plrDmg357;
@@ -108,29 +108,29 @@ struct skilldata_t
 	float plrDmgHandGrenade;
 	float plrDmgSatchel;
 	float plrDmgTripmine;
-	
-// weapons shared by monsters
+
+	// weapons shared by monsters
 	float monDmg9MM;
 	float monDmgMP5;
 	float monDmg12MM;
 	float monDmgHornet;
 
-// health/suit charge
+	// health/suit charge
 	float suitchargerCapacity;
 	float batteryCapacity;
 	float healthchargerCapacity;
 	float healthkitCapacity;
 	float flashlightCharge;
 	float scientistHeal;
-          
-// monster damage adj
+
+	// monster damage adj
 	float monHead;
 	float monChest;
 	float monStomach;
 	float monLeg;
 	float monArm;
 
-// player damage adj
+	// player damage adj
 	float plrHead;
 	float plrChest;
 	float plrStomach;
@@ -139,7 +139,7 @@ struct skilldata_t
 };
 
 extern	DLL_GLOBAL	skilldata_t	gSkillData;
-float GetSkillCvar( char *pName );
+float GetSkillCvar(char *pName);
 
 extern DLL_GLOBAL int		g_iSkillLevel;
 

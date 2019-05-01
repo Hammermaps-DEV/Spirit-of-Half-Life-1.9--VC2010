@@ -68,33 +68,33 @@ CBaseEntity
 #define EXPORT	/* */
 #endif
 
-extern "C" EXPORT int GetEntityAPI( DLL_FUNCTIONS *pFunctionTable, int interfaceVersion );
-extern "C" EXPORT int GetEntityAPI2( DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion );
+extern "C" EXPORT int GetEntityAPI(DLL_FUNCTIONS *pFunctionTable, int interfaceVersion);
+extern "C" EXPORT int GetEntityAPI2(DLL_FUNCTIONS *pFunctionTable, int *interfaceVersion);
 
-extern int DispatchSpawn( edict_t *pent );
-extern void DispatchKeyValue( edict_t *pentKeyvalue, KeyValueData *pkvd );
-extern void DispatchTouch( edict_t *pentTouched, edict_t *pentOther );
-extern void DispatchUse( edict_t *pentUsed, edict_t *pentOther );
-extern void DispatchThink( edict_t *pent );
-extern void DispatchBlocked( edict_t *pentBlocked, edict_t *pentOther );
-extern void DispatchSave( edict_t *pent, SAVERESTOREDATA *pSaveData );
-extern int  DispatchRestore( edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity );
-extern void	DispatchObjectCollsionBox( edict_t *pent );
-extern void SaveWriteFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
-extern void SaveReadFields( SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount );
-extern void SaveGlobalState( SAVERESTOREDATA *pSaveData );
-extern void RestoreGlobalState( SAVERESTOREDATA *pSaveData );
-extern void ResetGlobalState( void );
+extern int DispatchSpawn(edict_t *pent);
+extern void DispatchKeyValue(edict_t *pentKeyvalue, KeyValueData *pkvd);
+extern void DispatchTouch(edict_t *pentTouched, edict_t *pentOther);
+extern void DispatchUse(edict_t *pentUsed, edict_t *pentOther);
+extern void DispatchThink(edict_t *pent);
+extern void DispatchBlocked(edict_t *pentBlocked, edict_t *pentOther);
+extern void DispatchSave(edict_t *pent, SAVERESTOREDATA *pSaveData);
+extern int  DispatchRestore(edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity);
+extern void	DispatchObjectCollsionBox(edict_t *pent);
+extern void SaveWriteFields(SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount);
+extern void SaveReadFields(SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount);
+extern void SaveGlobalState(SAVERESTOREDATA *pSaveData);
+extern void RestoreGlobalState(SAVERESTOREDATA *pSaveData);
+extern void ResetGlobalState(void);
 
 //extern CBaseEntity *g_pDesiredList; //LRC- handles DesiredVel, for movewith
 
-extern char* GetStringForUseType( USE_TYPE useType );
+extern char* GetStringForUseType(USE_TYPE useType);
 
-extern void FireTargets( const char *targetName, CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+extern void FireTargets(const char *targetName, CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
 typedef void (CBaseEntity::*BASEPTR)(void);
-typedef void (CBaseEntity::*ENTITYFUNCPTR)(CBaseEntity *pOther );
-typedef void (CBaseEntity::*USEPTR)( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
+typedef void (CBaseEntity::*ENTITYFUNCPTR)(CBaseEntity *pOther);
+typedef void (CBaseEntity::*USEPTR)(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
 // For CLASSIFY
 #define	CLASS_NONE				0
@@ -133,10 +133,10 @@ private:
 	edict_t *m_pent;
 	int		m_serialnumber;
 public:
-	edict_t *Get( void );
-	edict_t *Set( edict_t *pent );
+	edict_t *Get(void);
+	edict_t *Set(edict_t *pent);
 
-	operator int ();
+	operator int();
 
 	operator CBaseEntity *();
 
@@ -177,7 +177,7 @@ public:
 	float		m_fNextThink; // LRC - for SetNextThink and SetPhysThink. Marks the time when a think will be performed - not necessarily the same as pev->nextthink!
 	float		m_fPevNextThink; // LRC - always set equal to pev->nextthink, so that we can tell when the latter gets changed by the @#$^¬! engine.
 	int		m_iLFlags; // LRC- a new set of flags. (pev->spawnflags and pev->flags are full...)
-	virtual void	DesiredAction( void ) {}; // LRC - for postponing stuff until PostThink time, not as a think.
+	virtual void	DesiredAction(void) {}; // LRC - for postponing stuff until PostThink time, not as a think.
 	int		m_iStyle; // LRC - almost anything can have a lightstyle these days...
 
 	Vector		m_vecSpawnOffset; // LRC- To fix things which (for example) MoveWith a door which Starts Open.
@@ -186,27 +186,27 @@ public:
 
 	//LRC - decent mechanisms for setting think times!
 	// this should have been done a long time ago, but MoveWith finally forced me.
-	virtual void		SetNextThink( float delay ) { SetNextThink(delay, FALSE); }
-	virtual void		SetNextThink( float delay, BOOL correctSpeed );
-	virtual void		AbsoluteNextThink( float time ) { AbsoluteNextThink(time, FALSE); }
-	virtual void		AbsoluteNextThink( float time, BOOL correctSpeed );
-	void			SetEternalThink( );
+	virtual void		SetNextThink(float delay) { SetNextThink(delay, FALSE); }
+	virtual void		SetNextThink(float delay, BOOL correctSpeed);
+	virtual void		AbsoluteNextThink(float time) { AbsoluteNextThink(time, FALSE); }
+	virtual void		AbsoluteNextThink(float time, BOOL correctSpeed);
+	void			SetEternalThink();
 
-	void	DontThink( void );
-	virtual void ThinkCorrection( void );
+	void	DontThink(void);
+	virtual void ThinkCorrection(void);
 
 	//LRC - loci
-	virtual Vector	CalcPosition( CBaseEntity *pLocus )	{ return pev->origin; }
-	virtual Vector	CalcVelocity( CBaseEntity *pLocus )	{ return pev->velocity; }
-	virtual float	CalcRatio( CBaseEntity *pLocus )	{ return 0; }
+	virtual Vector	CalcPosition(CBaseEntity *pLocus) { return pev->origin; }
+	virtual Vector	CalcVelocity(CBaseEntity *pLocus) { return pev->velocity; }
+	virtual float	CalcRatio(CBaseEntity *pLocus) { return 0; }
 
 	//LRC - aliases
-	virtual BOOL IsAlias( void ) { return FALSE; }
+	virtual BOOL IsAlias(void) { return FALSE; }
 
 	// initialization functions
-	virtual void	Spawn( void ) { return; }
-	virtual void	Precache( void ) { return; }
-	virtual void	KeyValue( KeyValueData* pkvd)
+	virtual void	Spawn(void) { return; }
+	virtual void	Precache(void) { return; }
+	virtual void	KeyValue(KeyValueData* pkvd)
 	{
 		//LRC - MoveWith for all!
 		if (FStrEq(pkvd->szKeyName, "movewith"))
@@ -226,109 +226,109 @@ public:
 		}
 		else pkvd->fHandled = FALSE;
 	}
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 	//LRC - if I MoveWith something, then only cross transitions if the MoveWith entity does too.
-	virtual int	ObjectCaps( void ) { return m_pMoveWith?m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION:FCAP_ACROSS_TRANSITION; }
-	virtual void	Activate( void ); //LRC
-	void		InitMoveWith( void ); //LRC - called by Activate() to set up moveWith values
-	void		SetParent( int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
-          void		SetParent( CBaseEntity *pParent, int m_iAttachment = 0 );//g-cont. dynamiclly link parents
-	void		ResetParent( void );
-	void		ClearPointers( void ); //g-cont. directly clear all movewith pointer before changelevel
-	virtual void	PostSpawn( void ) {} //LRC - called by Activate() to handle entity-specific initialisation.
+	virtual int	ObjectCaps(void) { return m_pMoveWith ? m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION : FCAP_ACROSS_TRANSITION; }
+	virtual void	Activate(void); //LRC
+	void		InitMoveWith(void); //LRC - called by Activate() to set up moveWith values
+	void		SetParent(int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
+	void		SetParent(CBaseEntity *pParent, int m_iAttachment = 0);//g-cont. dynamiclly link parents
+	void		ResetParent(void);
+	void		ClearPointers(void); //g-cont. directly clear all movewith pointer before changelevel
+	virtual void	PostSpawn(void) {} //LRC - called by Activate() to handle entity-specific initialisation.
 	// (mostly setting positions, for MoveWith support)
 
 	// Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
-	virtual void	SetObjectCollisionBox( void );
+	virtual void	SetObjectCollisionBox(void);
 
-	void UTIL_AutoSetSize( void )//automatically set collision box
+	void UTIL_AutoSetSize(void)//automatically set collision box
 	{
 		studiohdr_t *pstudiohdr;
-		pstudiohdr = (studiohdr_t*)GET_MODEL_PTR( ENT(pev) );
+		pstudiohdr = (studiohdr_t*)GET_MODEL_PTR(ENT(pev));
 
 		if (pstudiohdr == NULL)
 		{
-			ALERT(at_console,"Unable to fetch model pointer!\n");
+			ALERT(at_console, "Unable to fetch model pointer!\n");
 			return;
 		}
 		mstudioseqdesc_t    *pseqdesc;
 		pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex);
-		UTIL_SetSize(pev,pseqdesc[ pev->sequence ].bbmin,pseqdesc[ pev->sequence ].bbmax);
+		UTIL_SetSize(pev, pseqdesc[pev->sequence].bbmin, pseqdesc[pev->sequence].bbmax);
 	}
 
-// Classify - returns the type of group (e.g., "alien monster", or "human military" so that monsters
-// on the same side won't attack each other, even if they have different classnames.
-	virtual int Classify ( void ) { return CLASS_NONE; };
-	virtual void DeathNotice ( entvars_t *pevChild ) {}// monster maker children use this to tell the monster maker that they have died.
+	// Classify - returns the type of group (e.g., "alien monster", or "human military" so that monsters
+	// on the same side won't attack each other, even if they have different classnames.
+	virtual int Classify(void) { return CLASS_NONE; };
+	virtual void DeathNotice(entvars_t *pevChild) {}// monster maker children use this to tell the monster maker that they have died.
 
 
 // LRC- this supports a global concept of "entities with states", so that state_watchers and
 // mastership (mastery? masterhood?) can work universally.
-	virtual STATE GetState ( void ) { return STATE_OFF; };
+	virtual STATE GetState(void) { return STATE_OFF; };
 
-// For team-specific doors in multiplayer, etc: a master's state depends on who wants to know.
-	virtual STATE GetState ( CBaseEntity* pEnt ) { return GetState(); };
+	// For team-specific doors in multiplayer, etc: a master's state depends on who wants to know.
+	virtual STATE GetState(CBaseEntity* pEnt) { return GetState(); };
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	virtual void	TraceAttack( entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	virtual int		TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
-	virtual int		TakeHealth( float flHealth, int bitsDamageType );
-	virtual int		TakeArmor( float flArmor );
-	virtual void	Killed( entvars_t *pevAttacker, int iGib );
-	virtual int		BloodColor( void ) { return DONT_BLEED; }
-	virtual void	TraceBleed( float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType );
-//LRC- superceded by GetState ( pActivator ).
-//	virtual BOOL    IsTriggered( CBaseEntity *pActivator ) {return TRUE;}
-	virtual CBaseMonster *MyMonsterPointer( void ) { return NULL;}
-	virtual CSquadMonster *MySquadMonsterPointer( void ) { return NULL;}
-	virtual	int		GetToggleState( void ) { return TS_AT_TOP; }
-	virtual void	AddPoints( int score, BOOL bAllowNegativeScore ) {}
-	virtual void	AddPointsToTeam( int score, BOOL bAllowNegativeScore ) {}
-	virtual BOOL	AddPlayerItem( CBasePlayerItem *pItem ) { return 0; }
-	virtual BOOL	RemovePlayerItem( CBasePlayerItem *pItem ) { return 0; }
-	virtual int 	GiveAmmo( int iAmount, char *szName, int iMax ) { return -1; };
-	virtual float	GetDelay( void ) { return 0; }
-	virtual int		IsMoving( void ) { return pev->velocity != g_vecZero; }
-	virtual void	OverrideReset( void ) {}
-	virtual int		DamageDecal( int bitsDamageType );
+	virtual void	TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
+	virtual int		TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	virtual int		TakeHealth(float flHealth, int bitsDamageType);
+	virtual int		TakeArmor(float flArmor);
+	virtual void	Killed(entvars_t *pevAttacker, int iGib);
+	virtual int		BloodColor(void) { return DONT_BLEED; }
+	virtual void	TraceBleed(float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
+	//LRC- superceded by GetState ( pActivator ).
+	//	virtual BOOL    IsTriggered( CBaseEntity *pActivator ) {return TRUE;}
+	virtual CBaseMonster *MyMonsterPointer(void) { return NULL; }
+	virtual CSquadMonster *MySquadMonsterPointer(void) { return NULL; }
+	virtual	int		GetToggleState(void) { return TS_AT_TOP; }
+	virtual void	AddPoints(int score, BOOL bAllowNegativeScore) {}
+	virtual void	AddPointsToTeam(int score, BOOL bAllowNegativeScore) {}
+	virtual BOOL	AddPlayerItem(CBasePlayerItem *pItem) { return 0; }
+	virtual BOOL	RemovePlayerItem(CBasePlayerItem *pItem) { return 0; }
+	virtual int 	GiveAmmo(int iAmount, char *szName, int iMax) { return -1; };
+	virtual float	GetDelay(void) { return 0; }
+	virtual int		IsMoving(void) { return pev->velocity != g_vecZero; }
+	virtual void	OverrideReset(void) {}
+	virtual int		DamageDecal(int bitsDamageType);
 	// This is ONLY used by the node graph to test movement through a door
-	virtual void	SetToggleState( int state ) {}
-	virtual void    StartSneaking( void ) {}
-	virtual void    StopSneaking( void ) {}
-	virtual BOOL	OnControls( entvars_t *pev ) { return FALSE; }
-	virtual BOOL    IsSneaking( void ) { return FALSE; }
-	virtual BOOL	IsAlive( void ) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
-	virtual BOOL	IsBSPModel( void ) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
-	virtual BOOL	ReflectGauss( void ) { return ( IsBSPModel() && !pev->takedamage ); }
-	virtual BOOL	HasTarget( string_t targetname ) { return FStrEq(STRING(targetname), STRING(pev->targetname) ); }
-	virtual BOOL    IsInWorld( void );
-	virtual	BOOL	IsPlayer( void ) { return FALSE; }
-	virtual BOOL	IsNetClient( void ) { return FALSE; }
-	virtual const char *TeamID( void ) { return ""; }
+	virtual void	SetToggleState(int state) {}
+	virtual void    StartSneaking(void) {}
+	virtual void    StopSneaking(void) {}
+	virtual BOOL	OnControls(entvars_t *pev) { return FALSE; }
+	virtual BOOL    IsSneaking(void) { return FALSE; }
+	virtual BOOL	IsAlive(void) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
+	virtual BOOL	IsBSPModel(void) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
+	virtual BOOL	ReflectGauss(void) { return (IsBSPModel() && !pev->takedamage); }
+	virtual BOOL	HasTarget(string_t targetname) { return FStrEq(STRING(targetname), STRING(pev->targetname)); }
+	virtual BOOL    IsInWorld(void);
+	virtual	BOOL	IsPlayer(void) { return FALSE; }
+	virtual BOOL	IsNetClient(void) { return FALSE; }
+	virtual const char *TeamID(void) { return ""; }
 
 
-//	virtual void	SetActivator( CBaseEntity *pActivator ) {}
-	virtual CBaseEntity *GetNextTarget( void );
+	//	virtual void	SetActivator( CBaseEntity *pActivator ) {}
+	virtual CBaseEntity *GetNextTarget(void);
 
 	// fundamental callbacks
 	void (CBaseEntity ::*m_pfnThink)(void);
-	void (CBaseEntity ::*m_pfnTouch)( CBaseEntity *pOther );
-	void (CBaseEntity ::*m_pfnUse)( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	void (CBaseEntity ::*m_pfnBlocked)( CBaseEntity *pOther );
+	void (CBaseEntity ::*m_pfnTouch)(CBaseEntity *pOther);
+	void (CBaseEntity ::*m_pfnUse)(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
+	void (CBaseEntity ::*m_pfnBlocked)(CBaseEntity *pOther);
 
-	virtual void Think( void ) { if (m_pfnThink) (this->*m_pfnThink)(); };
-	virtual void Touch( CBaseEntity *pOther ) { if (m_pfnTouch) (this->*m_pfnTouch)( pOther ); };
-	virtual void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value )
+	virtual void Think(void) { if (m_pfnThink) (this->*m_pfnThink)(); };
+	virtual void Touch(CBaseEntity *pOther) { if (m_pfnTouch) (this->*m_pfnTouch)(pOther); };
+	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 	{
 		if (m_pfnUse)
-			(this->*m_pfnUse)( pActivator, pCaller, useType, value );
+			(this->*m_pfnUse)(pActivator, pCaller, useType, value);
 	}
-	virtual void Blocked( CBaseEntity *pOther ) { if (m_pfnBlocked) (this->*m_pfnBlocked)( pOther ); };
+	virtual void Blocked(CBaseEntity *pOther) { if (m_pfnBlocked) (this->*m_pfnBlocked)(pOther); };
 
 	// allow engine to allocate instance data
-    void *operator new( size_t stAllocateBlock, entvars_t *pev )
+	void *operator new(size_t stAllocateBlock, entvars_t *pev)
 	{
 		return (void *)ALLOC_PRIVATE(ENT(pev), stAllocateBlock);
 	};
@@ -341,51 +341,53 @@ public:
 	};
 #endif
 
-	virtual void UpdateOnRemove( void );
+	virtual void UpdateOnRemove(void);
 
 	// common member functions
-	void EXPORT SUB_Remove( void );
-	void EXPORT SUB_DoNothing( void );
-	void EXPORT SUB_StartFadeOut ( void );
-	void EXPORT SUB_FadeOut ( void );
-	void EXPORT SUB_CallUseToggle( void ) // a think function used at spawn time. Don't apply the moveWith fix to it.
-	{ this->Use( this, this, USE_TOGGLE, 0 );	}
-	int			ShouldToggle( USE_TYPE useType, BOOL currentState );
-	int			ShouldToggle( USE_TYPE useType ); //LRC this version uses GetState()
-	void		FireBullets( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL  );
-	Vector		FireBulletsPlayer( ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting,	Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0 );
-
-	virtual CBaseEntity *Respawn( void ) { return NULL; }
-
-	void SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, float value );
-	// Do the bounding boxes of these two intersect?
-	int		Intersects( CBaseEntity *pOther );
-	void	MakeDormant( void );
-	int		IsDormant( void );
-	BOOL    IsLockedByMaster( void ) { return FALSE; }
-
-	static CBaseEntity *Instance( edict_t *pent )
+	void EXPORT SUB_Remove(void);
+	void EXPORT SUB_DoNothing(void);
+	void EXPORT SUB_StartFadeOut(void);
+	void EXPORT SUB_FadeOut(void);
+	void EXPORT SUB_CallUseToggle(void) // a think function used at spawn time. Don't apply the moveWith fix to it.
 	{
-		if ( !pent )
+		this->Use(this, this, USE_TOGGLE, 0);
+	}
+	int			ShouldToggle(USE_TYPE useType, BOOL currentState);
+	int			ShouldToggle(USE_TYPE useType); //LRC this version uses GetState()
+	void		FireBullets(ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL);
+	Vector		FireBulletsPlayer(ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0);
+
+	virtual CBaseEntity *Respawn(void) { return NULL; }
+
+	void SUB_UseTargets(CBaseEntity *pActivator, USE_TYPE useType, float value);
+	// Do the bounding boxes of these two intersect?
+	int		Intersects(CBaseEntity *pOther);
+	void	MakeDormant(void);
+	int		IsDormant(void);
+	BOOL    IsLockedByMaster(void) { return FALSE; }
+
+	static CBaseEntity *Instance(edict_t *pent)
+	{
+		if (!pent)
 			pent = ENT(0);
 		CBaseEntity *pEnt = (CBaseEntity *)GET_PRIVATE(pent);
 		return pEnt;
 	}
 
-	static CBaseEntity *Instance( entvars_t *pev ) { return Instance( ENT( pev ) ); }
-	static CBaseEntity *Instance( int eoffset) { return Instance( ENT( eoffset) ); }
+	static CBaseEntity *Instance(entvars_t *pev) { return Instance(ENT(pev)); }
+	static CBaseEntity *Instance(int eoffset) { return Instance(ENT(eoffset)); }
 
-	CBaseMonster *GetMonsterPointer( entvars_t *pevMonster )
+	CBaseMonster *GetMonsterPointer(entvars_t *pevMonster)
 	{
-		CBaseEntity *pEntity = Instance( pevMonster );
-		if ( pEntity )
+		CBaseEntity *pEntity = Instance(pevMonster);
+		if (pEntity)
 			return pEntity->MyMonsterPointer();
 		return NULL;
 	}
-	CBaseMonster *GetMonsterPointer( edict_t *pentMonster )
+	CBaseMonster *GetMonsterPointer(edict_t *pentMonster)
 	{
-		CBaseEntity *pEntity = Instance( pentMonster );
-		if ( pEntity )
+		CBaseEntity *pEntity = Instance(pentMonster);
+		if (pEntity)
 			return pEntity->MyMonsterPointer();
 		return NULL;
 	}
@@ -393,34 +395,34 @@ public:
 
 	// Ugly code to lookup all functions to make sure they are exported when set.
 #ifdef _DEBUG
-	void FunctionCheck( void *pFunction, char *name )
+	void FunctionCheck(void *pFunction, char *name)
 	{
-		if (pFunction && !NAME_FOR_FUNCTION((unsigned long)(pFunction)) )
-			ALERT( at_error, "No EXPORT: %s:%s (%08lx)\n", STRING(pev->classname), name, (unsigned long)pFunction );
+		if (pFunction && !NAME_FOR_FUNCTION((unsigned long)(pFunction)))
+			ALERT(at_error, "No EXPORT: %s:%s (%08lx)\n", STRING(pev->classname), name, (unsigned long)pFunction);
 	}
 
-	BASEPTR	ThinkSet( BASEPTR func, char *name )
+	BASEPTR	ThinkSet(BASEPTR func, char *name)
 	{
 		m_pfnThink = func;
-		FunctionCheck( (void *)*((int *)((char *)this + ( offsetof(CBaseEntity,m_pfnThink)))), name );
+		FunctionCheck((void *)*((int *)((char *)this + (offsetof(CBaseEntity, m_pfnThink)))), name);
 		return func;
 	}
-	ENTITYFUNCPTR TouchSet( ENTITYFUNCPTR func, char *name )
+	ENTITYFUNCPTR TouchSet(ENTITYFUNCPTR func, char *name)
 	{
 		m_pfnTouch = func;
-		FunctionCheck( (void *)*((int *)((char *)this + ( offsetof(CBaseEntity,m_pfnTouch)))), name );
+		FunctionCheck((void *)*((int *)((char *)this + (offsetof(CBaseEntity, m_pfnTouch)))), name);
 		return func;
 	}
-	USEPTR	UseSet( USEPTR func, char *name )
+	USEPTR	UseSet(USEPTR func, char *name)
 	{
 		m_pfnUse = func;
-		FunctionCheck( (void *)*((int *)((char *)this + ( offsetof(CBaseEntity,m_pfnUse)))), name );
+		FunctionCheck((void *)*((int *)((char *)this + (offsetof(CBaseEntity, m_pfnUse)))), name);
 		return func;
 	}
-	ENTITYFUNCPTR	BlockedSet( ENTITYFUNCPTR func, char *name )
+	ENTITYFUNCPTR	BlockedSet(ENTITYFUNCPTR func, char *name)
 	{
 		m_pfnBlocked = func;
-		FunctionCheck( (void *)*((int *)((char *)this + ( offsetof(CBaseEntity,m_pfnBlocked)))), name );
+		FunctionCheck((void *)*((int *)((char *)this + (offsetof(CBaseEntity, m_pfnBlocked)))), name);
 		return func;
 	}
 
@@ -430,26 +432,26 @@ public:
 	// virtual functions used by a few classes
 
 	// used by monsters that are created by the MonsterMaker
-	virtual	void UpdateOwner( void ) { return; };
+	virtual	void UpdateOwner(void) { return; };
 
 
 	//
-	static CBaseEntity *Create( char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner = NULL );
+	static CBaseEntity *Create(char *szName, const Vector &vecOrigin, const Vector &vecAngles, edict_t *pentOwner = NULL);
 
-	virtual BOOL FBecomeProne( void ) {return FALSE;};
-	edict_t *edict() { return ENT( pev ); };
-	EOFFSET eoffset( ) { return OFFSET( pev ); };
-	int	  entindex( ) { return ENTINDEX( edict() ); };
+	virtual BOOL FBecomeProne(void) { return FALSE; };
+	edict_t *edict() { return ENT(pev); };
+	EOFFSET eoffset() { return OFFSET(pev); };
+	int	  entindex() { return ENTINDEX(edict()); };
 
-	virtual Vector Center( ) { return (pev->absmax + pev->absmin) * 0.5; }; // center point of entity
-	virtual Vector EyePosition( ) { return pev->origin + pev->view_ofs; };			// position of eyes
-	virtual Vector EarPosition( ) { return pev->origin + pev->view_ofs; };			// position of ears
-	virtual Vector BodyTarget( const Vector &posSrc ) { return Center( ); };		// position to shoot at
+	virtual Vector Center() { return (pev->absmax + pev->absmin) * 0.5; }; // center point of entity
+	virtual Vector EyePosition() { return pev->origin + pev->view_ofs; };			// position of eyes
+	virtual Vector EarPosition() { return pev->origin + pev->view_ofs; };			// position of ears
+	virtual Vector BodyTarget(const Vector &posSrc) { return Center(); };		// position to shoot at
 
-	virtual int Illumination( ) { return GETENTITYILLUM( ENT( pev ) ); };
+	virtual int Illumination() { return GETENTITYILLUM(ENT(pev)); };
 
-	virtual	BOOL FVisible ( CBaseEntity *pEntity );
-	virtual	BOOL FVisible ( const Vector &vecOrigin );
+	virtual	BOOL FVisible(CBaseEntity *pEntity);
+	virtual	BOOL FVisible(const Vector &vecOrigin);
 
 	//We use this variables to store each ammo count.
 	int ammo_9mm;
@@ -471,7 +473,7 @@ public:
 };
 
 //LRC- moved here from player.cpp. I'd put it in util.h with its friends, but it needs CBaseEntity to be declared.
-inline BOOL FNullEnt( CBaseEntity *ent )	{ return ent == NULL || FNullEnt( ent->edict() ); }
+inline BOOL FNullEnt(CBaseEntity *ent) { return ent == NULL || FNullEnt(ent->edict()); }
 
 // Ugly technique to override base member functions
 // Normally it's illegal to cast a pointer to a member function of a derived class to a pointer to a
@@ -497,8 +499,8 @@ inline BOOL FNullEnt( CBaseEntity *ent )	{ return ent == NULL || FNullEnt( ent->
 class CPointEntity : public CBaseEntity
 {
 public:
-	void	Spawn( void );
-	virtual int	ObjectCaps( void ) { return CBaseEntity :: ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
+	void	Spawn(void);
+	virtual int	ObjectCaps(void) { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 private:
 };
 
@@ -531,13 +533,13 @@ void PlayLockSounds(entvars_t *pev, locksound_t *pls, int flocked, int fbutton);
 class CMultiSource : public CPointEntity
 {
 public:
-	void Spawn( );
-	void KeyValue( KeyValueData *pkvd );
-	void Use( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	STATE GetState( void );
-	void EXPORT Register( void );
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	void Spawn();
+	void KeyValue(KeyValueData *pkvd);
+	void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
+	STATE GetState(void);
+	void EXPORT Register(void);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
@@ -559,50 +561,50 @@ public:
 	int			m_iszKillTarget;
 	EHANDLE		m_hActivator; //LRC - moved here from CBaseToggle
 
-	virtual void	KeyValue( KeyValueData* pkvd);
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual void	KeyValue(KeyValueData* pkvd);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 
 	static	TYPEDESCRIPTION m_SaveData[];
 	// common member functions
-	void SUB_UseTargets( CBaseEntity *pActivator, USE_TYPE useType, float value );
-	void EXPORT DelayThink( void );
+	void SUB_UseTargets(CBaseEntity *pActivator, USE_TYPE useType, float value);
+	void EXPORT DelayThink(void);
 };
 
 
 class CBaseAnimating : public CBaseDelay
 {
 public:
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	// Basic Monster Animation functions
-	float StudioFrameAdvance( float flInterval = 0.0 ); // accumulate animation frame time from last time called until now
-	int	 GetSequenceFlags( void );
-	int  LookupActivity ( int activity );
-	int  LookupActivityHeaviest ( int activity );
-	int  LookupSequence ( const char *label );
-	void ResetSequenceInfo ( );
-	void DispatchAnimEvents ( float flFutureInterval = 0.1 ); // Handle events that have happend since last time called up until X seconds into the future
-	virtual void HandleAnimEvent( MonsterEvent_t *pEvent ) { return; };
-	float SetBoneController ( int iController, float flValue );
-	void InitBoneControllers ( void );
-	float SetBlending ( int iBlender, float flValue );
-	void GetBonePosition ( int iBone, Vector &origin, Vector &angles );
-	void GetAutomovement( Vector &origin, Vector &angles, float flInterval = 0.1 );
-	int  FindTransition( int iEndingSequence, int iGoalSequence, int *piDir );
-	void GetAttachment ( int iAttachment, Vector &origin, Vector &angles );
-	void SetBodygroup( int iGroup, int iValue );
-	int GetBodygroup( int iGroup );
+	float StudioFrameAdvance(float flInterval = 0.0); // accumulate animation frame time from last time called until now
+	int	 GetSequenceFlags(void);
+	int  LookupActivity(int activity);
+	int  LookupActivityHeaviest(int activity);
+	int  LookupSequence(const char *label);
+	void ResetSequenceInfo();
+	void DispatchAnimEvents(float flFutureInterval = 0.1); // Handle events that have happend since last time called up until X seconds into the future
+	virtual void HandleAnimEvent(MonsterEvent_t *pEvent) { return; };
+	float SetBoneController(int iController, float flValue);
+	void InitBoneControllers(void);
+	float SetBlending(int iBlender, float flValue);
+	void GetBonePosition(int iBone, Vector &origin, Vector &angles);
+	void GetAutomovement(Vector &origin, Vector &angles, float flInterval = 0.1);
+	int  FindTransition(int iEndingSequence, int iGoalSequence, int *piDir);
+	void GetAttachment(int iAttachment, Vector &origin, Vector &angles);
+	void SetBodygroup(int iGroup, int iValue);
+	int GetBodygroup(int iGroup);
 
 	//LRC
-	int GetBoneCount( void );
-	void SetBones( float (*data)[3], int datasize );
+	int GetBoneCount(void);
+	void SetBones(float(*data)[3], int datasize);
 
-	int ExtractBbox( int sequence, float *mins, float *maxs );
-	void SetSequenceBox( void );
+	int ExtractBbox(int sequence, float *mins, float *maxs);
+	void SetSequenceBox(void);
 
 	// animation needs
 	float				m_flFrameRate;		// computed FPS for current sequence
@@ -621,7 +623,7 @@ public:
 class CBaseToggle : public CBaseAnimating
 {
 public:
-	void				KeyValue( KeyValueData *pkvd );
+	void				KeyValue(KeyValueData *pkvd);
 
 	TOGGLE_STATE		m_toggle_state;
 	float				m_flActivateFinished;//like attack_finished, but for doors
@@ -648,33 +650,33 @@ public:
 
 	int					m_bitsDamageInflict;	// DMG_ damage type that the door or tigger does
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	virtual int		GetToggleState( void ) { return m_toggle_state; }
+	virtual int		GetToggleState(void) { return m_toggle_state; }
 
 	// LRC- overridden because toggling entities have general rules governing their states.
-	virtual STATE GetState( void );
+	virtual STATE GetState(void);
 
-	virtual float	GetDelay( void ) { return m_flWait; }
+	virtual float	GetDelay(void) { return m_flWait; }
 
 	// common member functions
-	void LinearMove( Vector	vecInput, float flSpeed );
-	void EXPORT LinearMoveNow( void ); //LRC- think function that lets us guarantee a LinearMove gets done as a think.
-	void EXPORT LinearMoveDone( void );
-	void EXPORT LinearMoveDoneNow( void ); //LRC
+	void LinearMove(Vector	vecInput, float flSpeed);
+	void EXPORT LinearMoveNow(void); //LRC- think function that lets us guarantee a LinearMove gets done as a think.
+	void EXPORT LinearMoveDone(void);
+	void EXPORT LinearMoveDoneNow(void); //LRC
 //	void EXPORT LinearMoveFinalDone( void );
-	void AngularMove( Vector vecDestAngle, float flSpeed );
-	void EXPORT AngularMoveNow( void ); //LRC- think function that lets us guarantee an AngularMove gets done as a think.
-	void EXPORT AngularMoveDone( void );
-	void EXPORT AngularMoveDoneNow( void );
-	BOOL IsLockedByMaster( void );
+	void AngularMove(Vector vecDestAngle, float flSpeed);
+	void EXPORT AngularMoveNow(void); //LRC- think function that lets us guarantee an AngularMove gets done as a think.
+	void EXPORT AngularMoveDone(void);
+	void EXPORT AngularMoveDoneNow(void);
+	BOOL IsLockedByMaster(void);
 
-	static float		AxisValue( int flags, const Vector &angles );
-	static void			AxisDir( entvars_t *pev );
-	static float		AxisDelta( int flags, const Vector &angle1, const Vector &angle2 );
+	static float		AxisValue(int flags, const Vector &angles);
+	static void			AxisDir(entvars_t *pev);
+	static float		AxisDelta(int flags, const Vector &angle1, const Vector &angle2);
 
 	string_t m_sMaster;		// If this button has a master switch, this is the targetname.
 							// A master switch must be of the multisource type. If all
@@ -797,7 +799,7 @@ class CSound;
 #include "basemonster.h"
 
 
-char *ButtonSound( int sound );				// get string of button sound number
+char *ButtonSound(int sound);				// get string of button sound number
 
 
 //
@@ -806,32 +808,32 @@ char *ButtonSound( int sound );				// get string of button sound number
 class CBaseButton : public CBaseToggle
 {
 public:
-	void Spawn( void );
-	virtual void PostSpawn( void ); //LRC
-	virtual void Precache( void );
-	void RotSpawn( void );
-	virtual void KeyValue( KeyValueData* pkvd);
+	void Spawn(void);
+	virtual void PostSpawn(void); //LRC
+	virtual void Precache(void);
+	void RotSpawn(void);
+	virtual void KeyValue(KeyValueData* pkvd);
 
-	void ButtonActivate( );
-	void SparkSoundCache( void );
+	void ButtonActivate();
+	void SparkSoundCache(void);
 
-	void EXPORT ButtonShot( void );
-	void EXPORT ButtonTouch( CBaseEntity *pOther );
-	void EXPORT ButtonSpark ( void );
-	void EXPORT TriggerAndWait( void );
-	void EXPORT ButtonReturn( void );
-	void EXPORT ButtonBackHome( void );
-	void EXPORT ButtonUse_IgnorePlayer( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	void EXPORT ButtonUse ( CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value );
-	virtual int		TakeDamage( entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType );
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	void EXPORT ButtonShot(void);
+	void EXPORT ButtonTouch(CBaseEntity *pOther);
+	void EXPORT ButtonSpark(void);
+	void EXPORT TriggerAndWait(void);
+	void EXPORT ButtonReturn(void);
+	void EXPORT ButtonBackHome(void);
+	void EXPORT ButtonUse_IgnorePlayer(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
+	void EXPORT ButtonUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
+	virtual int		TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 
 	enum BUTTON_CODE { BUTTON_NOTHING, BUTTON_ACTIVATE, BUTTON_RETURN };
-	BUTTON_CODE	ButtonResponseToTouch( void );
+	BUTTON_CODE	ButtonResponseToTouch(void);
 
 	static	TYPEDESCRIPTION m_SaveData[];
-	virtual int	ObjectCaps( void );
+	virtual int	ObjectCaps(void);
 
 	BOOL	m_fStayPushed;	// button stays pushed in until touched again?
 	BOOL	m_fRotating;		// a rotating button?  default is a sliding button.
@@ -859,7 +861,7 @@ public:
 // Converts a entvars_t * to a class pointer
 // It will allocate the class and entity if necessary
 //
-template <class T> T * GetClassPtr( T *a )
+template <class T> T * GetClassPtr(T *a)
 {
 	entvars_t *pev = (entvars_t *)a;
 
@@ -920,14 +922,14 @@ extern BOOL g_startSuit;
 class CBaseAlias : public CPointEntity
 {
 public:
-	BOOL IsAlias( void ) { return TRUE; };
-	virtual CBaseEntity *FollowAlias( CBaseEntity *pFrom ) { return NULL; };
-	virtual void ChangeValue( int iszValue ) { ALERT(at_error, "%s entities cannot change value!", STRING(pev->classname)); }
-	virtual void ChangeValue( CBaseEntity *pValue ) { ChangeValue(pValue->pev->targetname); }
-	virtual void FlushChanges( void ) {};
+	BOOL IsAlias(void) { return TRUE; };
+	virtual CBaseEntity *FollowAlias(CBaseEntity *pFrom) { return NULL; };
+	virtual void ChangeValue(int iszValue) { ALERT(at_error, "%s entities cannot change value!", STRING(pev->classname)); }
+	virtual void ChangeValue(CBaseEntity *pValue) { ChangeValue(pValue->pev->targetname); }
+	virtual void FlushChanges(void) {};
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	CBaseAlias *m_pNextAlias;
@@ -936,37 +938,37 @@ public:
 class CInfoGroup : public CPointEntity
 {
 public:
-	void KeyValue( KeyValueData *pkvd );
+	void KeyValue(KeyValueData *pkvd);
 	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
-	int GetMember( const char* szMemberName );
+	int GetMember(const char* szMemberName);
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int		m_cMembers;
-	int		m_iszMemberName	[ MAX_MULTI_TARGETS ];
-	int		m_iszMemberValue [ MAX_MULTI_TARGETS ];
+	int		m_iszMemberName[MAX_MULTI_TARGETS];
+	int		m_iszMemberValue[MAX_MULTI_TARGETS];
 	int		m_iszDefaultMember;
 };
 
 class CMultiAlias : public CBaseAlias
 {
 public:
-	void KeyValue( KeyValueData *pkvd );
+	void KeyValue(KeyValueData *pkvd);
 
-	virtual int		Save( CSave &save );
-	virtual int		Restore( CRestore &restore );
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	CBaseEntity *FollowAlias( CBaseEntity *pFrom );
+	CBaseEntity *FollowAlias(CBaseEntity *pFrom);
 
 	int		m_cTargets;
-	int		m_iszTargets	[ MAX_MULTI_TARGETS ];
+	int		m_iszTargets[MAX_MULTI_TARGETS];
 	int		m_iTotalValue;
-	int		m_iValues	[ MAX_MULTI_TARGETS ];
+	int		m_iValues[MAX_MULTI_TARGETS];
 	int		m_iMode;
 };
 
@@ -980,9 +982,9 @@ public:
 class CWorld : public CBaseEntity
 {
 public:
-	void Spawn( void );
-	void Precache( void );
-	void KeyValue( KeyValueData *pkvd );
+	void Spawn(void);
+	void Precache(void);
+	void KeyValue(KeyValueData *pkvd);
 
 	CBaseAlias *m_pFirstAlias;
 };
