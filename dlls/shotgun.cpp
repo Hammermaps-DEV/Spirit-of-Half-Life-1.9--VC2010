@@ -109,7 +109,7 @@ BOOL CShotgun::Deploy()
 
 void CShotgun::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 	SendWeaponAnim(SHOTGUN_HOLSTER);
 }
 
@@ -119,7 +119,7 @@ void CShotgun::PrimaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound(4);
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.15;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.15;
 		return;
 	}
 
@@ -154,11 +154,11 @@ void CShotgun::PrimaryAttack()
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
+	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.0;
+	m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.0;
 
-	if (m_iClip != 0) m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5.0;
-	else 		  m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.9;
+	if (m_iClip != 0) m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 5.0;
+	else 		  m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.9;
 	m_iChargeLevel = 0;
 }
 
@@ -169,7 +169,7 @@ void CShotgun::SecondaryAttack(void)
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound(4);
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.15;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.15;
 		return;
 	}
 
@@ -213,11 +213,11 @@ void CShotgun::SecondaryAttack(void)
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.5;
-	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.5;
+	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.5;
+	m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.5;
 
-	if (m_iClip != 0) m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 6.0;
-	else	        m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.9;
+	if (m_iClip != 0) m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 6.0;
+	else	        m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.9;
 	m_iChargeLevel = 0;
 	m_pPlayer->pev->punchangle.x -= 5;
 }
@@ -228,22 +228,22 @@ void CShotgun::Reload(void)
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == SHOTGUN_MAX_CLIP) return;
 
 	// don't reload until recoil is done
-	if (m_flNextPrimaryAttack > UTIL_WeaponTimeBase()) return;
+	if (m_flNextPrimaryAttack > UTIL_GlobalTimeBase()) return;
 
 	// check to see if we're ready to reload
 	if (m_iChargeLevel == 0)
 	{
 		SendWeaponAnim(SHOTGUN_START_RELOAD);
 		m_iChargeLevel = 1;
-		m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.6;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.6;
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.0;
-		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
+		m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.6;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 0.6;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.0;
+		m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.0;
 		return;
 	}
 	else if (m_iChargeLevel == 1)
 	{
-		if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+		if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 		// was waiting for gun to move to side
 		m_iChargeLevel = 2;
 
@@ -252,7 +252,7 @@ void CShotgun::Reload(void)
 
 		SendWeaponAnim(SHOTGUN_RELOAD);
 
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.6;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 0.6;
 	}
 	else
 	{
@@ -260,7 +260,7 @@ void CShotgun::Reload(void)
 		m_iClip += 1;
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] -= 1;
 		m_iChargeLevel = 1;
-		if (m_iClip == SHOTGUN_MAX_CLIP) m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.1;
+		if (m_iClip == SHOTGUN_MAX_CLIP) m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 0.1;
 	}
 }
 
@@ -270,7 +270,7 @@ void CShotgun::WeaponIdle(void)
 {
 	m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
 
-	if (m_flTimeWeaponIdle < UTIL_WeaponTimeBase())
+	if (m_flTimeWeaponIdle < UTIL_GlobalTimeBase())
 	{
 		if (m_iClip == 0 && m_iChargeLevel == 0 && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]) Reload();
 		else if (m_iChargeLevel != 0)
@@ -281,7 +281,7 @@ void CShotgun::WeaponIdle(void)
 				// reload debounce has timed out
 				SendWeaponAnim(SHOTGUN_PUMP);
 				m_iChargeLevel = 0;
-				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
+				m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
 			}
 		}
 		else
@@ -291,7 +291,7 @@ void CShotgun::WeaponIdle(void)
 			if (flRand <= 0.5)
 			{
 				SendWeaponAnim(SHOTGUN_IDLE);
-				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+				m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 			}
 		}
 	}

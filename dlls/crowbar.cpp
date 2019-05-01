@@ -122,7 +122,7 @@ BOOL CCrowbar::Deploy()
 
 void CCrowbar::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 	SendWeaponAnim(CROWBAR_HOLSTER);
 }
 
@@ -175,13 +175,13 @@ void FindHullIntersection(const Vector &vecSrc, TraceResult &tr, float *mins, fl
 void CCrowbar::PrimaryAttack()
 {
 	if (!Swing(TRUE)) Swing(FALSE);
-	m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.2;
+	m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.2;
 }
 
 void CCrowbar::SecondaryAttack()
 {
 	if (!Swing(TRUE)) Swing(FALSE);
-	m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.2;
+	m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.2;
 }
 
 int CCrowbar::Swing(int fFirst)
@@ -190,9 +190,9 @@ int CCrowbar::Swing(int fFirst)
 	bHit = FALSE;
 	TraceResult tr;
 
-	if (m_flTimeUpdate > UTIL_WeaponTimeBase()) return fDidHit;
+	if (m_flTimeUpdate > UTIL_GlobalTimeBase()) return fDidHit;
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3;
 
 	UTIL_MakeVectors(m_pPlayer->pev->v_angle);
 	Vector vecSrc = m_pPlayer->GetGunPosition();
@@ -241,14 +241,14 @@ int CCrowbar::Swing(int fFirst)
 				bHit = TRUE;//play hitbody sound on client
 				m_pPlayer->m_iWeaponVolume = CROWBAR_BODYHIT_VOLUME;
 				if (!pEntity->IsAlive())
-					m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+					m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 				else flVol = 0.1;
 				fHitWorld = FALSE;
 			}
 		}
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
-		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.25;
-		m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.2;
+		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.25;
+		m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.2;
 	}
 
 	PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usCrowbar, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, pev->body, fFirst, bHit, 0);
@@ -257,12 +257,12 @@ int CCrowbar::Swing(int fFirst)
 
 void CCrowbar::WeaponIdle(void)
 {
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 	float flRand = RANDOM_FLOAT(0, 1);
 	if (flRand <= 0.5)
 	{
 		SendWeaponAnim(CROWBAR_IDLE);
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 }
 

@@ -423,8 +423,8 @@ BOOL CTripmine::Deploy()
 void CTripmine::Holster()
 {
 	//don't play holster animation if ammo is out
-	if (m_iBody)m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase();
-	else m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	if (m_iBody)m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase();
+	else m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 
 	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
 	{
@@ -469,14 +469,14 @@ void CTripmine::PrimaryAttack(void)
 		}
 	}
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.3;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
-	m_flTimeUpdate = UTIL_WeaponTimeBase() + RANDOM_FLOAT(0.5, 1.0); //time to deploy next tripmine
+	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.3;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
+	m_flTimeUpdate = UTIL_GlobalTimeBase() + RANDOM_FLOAT(0.5, 1.0); //time to deploy next tripmine
 }
 
 void CTripmine::WeaponIdle(void)
 {
-	if (m_flTimeUpdate < UTIL_WeaponTimeBase() && m_iBody)
+	if (m_flTimeUpdate < UTIL_GlobalTimeBase() && m_iBody)
 	{
 		if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
 		{
@@ -490,28 +490,28 @@ void CTripmine::WeaponIdle(void)
 		}
 	}
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase())return;
 	int iAnim;
 	float flRand = RANDOM_FLOAT(0, 1);
 	if (flRand <= 0.25)
 	{
 		iAnim = TRIPMINE_IDLE1;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 90.0 / 30.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 90.0 / 30.0;
 	}
 	else if (flRand <= 0.75)
 	{
 		iAnim = TRIPMINE_IDLE2;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 60.0 / 30.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 60.0 / 30.0;
 	}
 	else if (flRand <= 0.85)
 	{
 		iAnim = TRIPMINE_FIDGET;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 100.0 / 30.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 100.0 / 30.0;
 	}
 	else
 	{
 		iAnim = TRIPMINE_ARM1;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 45.0 / 15.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 45.0 / 15.0;
 	}
 	SendWeaponAnim(iAnim);
 }

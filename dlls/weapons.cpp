@@ -749,7 +749,7 @@ void CBasePlayerWeapon::ItemPostFrame(void)
 	{
 		WeaponIdle();
 	}
-	if ((m_fInReload) && (m_pPlayer->m_flNextAttack <= UTIL_WeaponTimeBase()))
+	if ((m_fInReload) && (m_pPlayer->m_flNextAttack <= UTIL_GlobalTimeBase()))
 	{
 		// complete the reload. 
 		int j = min(iMaxClip() - m_iClip, m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]);
@@ -886,7 +886,7 @@ void CBasePlayerItem::AttachToPlayer(CBasePlayer *pPlayer)
 //LRC
 void CBasePlayerWeapon::SetNextThink(float delay)
 {
-	m_fNextThink = UTIL_WeaponTimeBase() + delay;
+	m_fNextThink = UTIL_GlobalTimeBase() + delay;
 	pev->nextthink = m_fNextThink;
 }
 
@@ -1109,8 +1109,8 @@ BOOL CBasePlayerWeapon::DefaultDeploy(char *szViewModel, char *szWeaponModel, in
 	strcpy(m_pPlayer->m_szAnimExtention, szAnimExt);
 	SendWeaponAnim(iAnim);
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + fDrawTime;//Custom time for deploy
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + fDrawTime + 0.5; //Make half-second delay beetwen draw and idle animation
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + fDrawTime;//Custom time for deploy
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + fDrawTime + 0.5; //Make half-second delay beetwen draw and idle animation
 
 	return TRUE;
 }
@@ -1131,8 +1131,8 @@ BOOL CBasePlayerWeapon::DefaultDeploy(string_t iViewModel, string_t iWeaponModel
 	strcpy(m_pPlayer->m_szAnimExtention, szAnimExt);
 	SendWeaponAnim(iAnim);
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + fDrawTime;//Custom time for deploy
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + fDrawTime + 0.5; //Make half-second delay beetwen draw and idle animation
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + fDrawTime;//Custom time for deploy
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + fDrawTime + 0.5; //Make half-second delay beetwen draw and idle animation
 
 	return TRUE;
 }
@@ -1146,13 +1146,13 @@ BOOL CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay)
 
 	if (j == 0) return FALSE;
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + fDelay;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + fDelay;
 
 	SendWeaponAnim(iAnim);
 
 	m_fInReload = TRUE;
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + fDelay + 0.5;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + fDelay + 0.5;
 	return TRUE;
 }
 
@@ -1189,7 +1189,7 @@ void CBasePlayerWeapon::RestoreBody(void)
 		MESSAGE_END();
 
 		//restore idle animation and hands position
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase();
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase();
 
 		//saved in CBasePlayer
 		//strcpy( m_pPlayer->m_szAnimExtention, szAnimExt );

@@ -105,7 +105,7 @@ BOOL CHgun::Deploy()
 
 void CHgun::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.4;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 1.4;
 	SendWeaponAnim(HGUN_DOWN);
 
 	if (!m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()])
@@ -135,9 +135,9 @@ void CHgun::PrimaryAttack()
 
 	m_flNextPrimaryAttack = m_flNextPrimaryAttack + 0.25;
 
-	if (m_flNextPrimaryAttack < UTIL_WeaponTimeBase())
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.25;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_LONG(10, 15);
+	if (m_flNextPrimaryAttack < UTIL_GlobalTimeBase())
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.25;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 15);
 }
 
 
@@ -204,8 +204,8 @@ void CHgun::SecondaryAttack(void)
 	// player "shoot" animation
 	m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
-	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.1;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_LONG(10, 15);
+	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.1;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 15);
 	m_pPlayer->pev->punchangle.x = RANDOM_FLOAT(0, 2);
 }
 
@@ -225,7 +225,7 @@ void CHgun::WeaponIdle(void)
 {
 	Reload();
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase())
 		return;
 
 	int iAnim;
@@ -233,17 +233,17 @@ void CHgun::WeaponIdle(void)
 	if (flRand <= 0.75)
 	{
 		iAnim = HGUN_IDLE1;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 30.0 / 16 * (2);
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 30.0 / 16 * (2);
 	}
 	else if (flRand <= 0.875)
 	{
 		iAnim = HGUN_FIDGETSWAY;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 40.0 / 16.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 40.0 / 16.0;
 	}
 	else
 	{
 		iAnim = HGUN_FIDGETSHAKE;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 35.0 / 16.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 35.0 / 16.0;
 	}
 	SendWeaponAnim(iAnim);
 }

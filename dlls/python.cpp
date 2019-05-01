@@ -107,7 +107,7 @@ BOOL CPython::Deploy()
 void CPython::Holster()
 {
 	m_fInReload = FALSE;// cancel any reload in progress.
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.6;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.6;
 
 	SendWeaponAnim(PYTHON_HOLSTER);
 
@@ -132,7 +132,7 @@ void CPython::SecondaryAttack(void)
 		}
 
 	}
-	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.3;
+	m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.3;
 }
 
 void CPython::PrimaryAttack()
@@ -160,12 +160,12 @@ void CPython::PrimaryAttack()
 		PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usFirePython, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, pev->body, 0, 0, 0);
 
 		m_flNextPrimaryAttack = gpGlobals->time + 1.0;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.7;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.7;
 	}
 }
 
@@ -179,7 +179,7 @@ void CPython::Reload(void)
 	{
 		m_flSoundDelay = gpGlobals->time + 1.5;
 	}
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 }
 
 void CPython::UpdateSpot(void)
@@ -238,7 +238,7 @@ void CPython::WeaponIdle(void)
 
 	m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase())return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase())return;
 
 	// only idle if the slid isn't back
 	if (m_iClip)
@@ -248,24 +248,24 @@ void CPython::WeaponIdle(void)
 		if (flRand <= 0.5)
 		{
 			iAnim = PYTHON_IDLE1;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (70.0 / 30.0);
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + (70.0 / 30.0);
 		}
 		else if (flRand <= 0.7)
 		{
 			iAnim = PYTHON_IDLE2;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (60.0 / 30.0);
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + (60.0 / 30.0);
 		}
 		else if (flRand <= 0.9)
 		{
 			iAnim = PYTHON_IDLE3;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (88.0 / 30.0);
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + (88.0 / 30.0);
 		}
 		else
 		{
 			if (!m_fSpotActive)
 			{
 				iAnim = PYTHON_FIDGET;
-				m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + (170.0 / 30.0);
+				m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + (170.0 / 30.0);
 			}
 		}
 		SendWeaponAnim(iAnim);

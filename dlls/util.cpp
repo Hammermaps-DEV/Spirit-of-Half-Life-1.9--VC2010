@@ -206,7 +206,7 @@ unsigned short PRECACHE_EVENT(int type, const char* psz)
 	return g_engfuncs.pfnPrecacheEvent(type, "events/null.sc");
 }
 
-float UTIL_WeaponTimeBase(void)
+float UTIL_GlobalTimeBase(void) 
 {
 	return gpGlobals->time;
 }

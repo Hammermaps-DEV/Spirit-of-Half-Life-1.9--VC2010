@@ -95,9 +95,7 @@ DLL_DECALLIST gDecals[] = {
 
 /*
 ==============================================================================
-
 BODY QUE
-
 ==============================================================================
 */
 
@@ -142,7 +140,6 @@ void CDecal::TriggerDecal(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	// this is set up as a USE function for infodecals that have targetnames, so that the
 	// decal doesn't get applied until it is fired. (usually by a scripted sequence)
 	TraceResult trace;
-	int			entityIndex;
 
 	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), ignore_monsters, ENT(pev), &trace);
 
@@ -152,7 +149,7 @@ void CDecal::TriggerDecal(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 	WRITE_COORD(pev->origin.y);
 	WRITE_COORD(pev->origin.z);
 	WRITE_SHORT((int)pev->skin);
-	entityIndex = (short)ENTINDEX(trace.pHit);
+	int entityIndex = (short)ENTINDEX(trace.pHit);
 	WRITE_SHORT(entityIndex);
 	if (entityIndex)
 		WRITE_SHORT((int)VARS(trace.pHit)->modelindex);
@@ -166,11 +163,11 @@ void CDecal::TriggerDecal(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 void CDecal::StaticDecal(void)
 {
 	TraceResult trace;
-	int			entityIndex, modelIndex;
+	int modelIndex;
 
 	UTIL_TraceLine(pev->origin - Vector(5, 5, 5), pev->origin + Vector(5, 5, 5), ignore_monsters, ENT(pev), &trace);
 
-	entityIndex = (short)ENTINDEX(trace.pHit);
+	int entityIndex = (short)ENTINDEX(trace.pHit);
 	if (entityIndex)
 		modelIndex = (int)VARS(trace.pHit)->modelindex;
 	else
@@ -261,7 +258,6 @@ void CopyToBodyQue(entvars_t *pev)
 	g_pBodyQueueHead = pevHead->owner;
 }
 
-
 CGlobalState::CGlobalState(void)
 {
 	Reset();
@@ -278,11 +274,10 @@ globalentity_t *CGlobalState::Find(string_t globalname)
 	if (!globalname)
 		return NULL;
 
-	globalentity_t *pTest;
 	const char *pEntityName = STRING(globalname);
 
 
-	pTest = m_pList;
+	globalentity_t* pTest = m_pList;
 	while (pTest)
 	{
 		if (FStrEq(pEntityName, pTest->name))
@@ -294,16 +289,14 @@ globalentity_t *CGlobalState::Find(string_t globalname)
 	return pTest;
 }
 
-
 // This is available all the time now on impulse 104, remove later
 //#ifdef _DEBUG
 void CGlobalState::DumpGlobals(void)
 {
 	static char *estates[] = { "Off", "On", "Dead" };
-	globalentity_t *pTest;
 
 	ALERT(at_debug, "-- Globals --\n");
-	pTest = m_pList;
+	globalentity_t* pTest = m_pList;
 	while (pTest)
 	{
 		ALERT(at_debug, "%s: %s (%s)\n", pTest->name, pTest->levelName, estates[pTest->state]);
@@ -311,7 +304,6 @@ void CGlobalState::DumpGlobals(void)
 	}
 }
 //#endif
-
 
 void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GLOBALESTATE state)
 {
@@ -327,7 +319,6 @@ void CGlobalState::EntityAdd(string_t globalname, string_t mapName, GLOBALESTATE
 	m_listCount++;
 }
 
-
 void CGlobalState::EntitySetState(string_t globalname, GLOBALESTATE state)
 {
 	globalentity_t *pEnt = Find(globalname);
@@ -336,14 +327,12 @@ void CGlobalState::EntitySetState(string_t globalname, GLOBALESTATE state)
 		pEnt->state = state;
 }
 
-
 const globalentity_t *CGlobalState::EntityFromTable(string_t globalname)
 {
 	globalentity_t *pEnt = Find(globalname);
 
 	return pEnt;
 }
-
 
 GLOBALESTATE CGlobalState::EntityGetState(string_t globalname)
 {
@@ -353,7 +342,6 @@ GLOBALESTATE CGlobalState::EntityGetState(string_t globalname)
 
 	return GLOBAL_OFF;
 }
-
 
 // Global Savedata for Delay
 TYPEDESCRIPTION	CGlobalState::m_SaveData[] =
@@ -372,14 +360,11 @@ TYPEDESCRIPTION	gGlobalEntitySaveData[] =
 
 int CGlobalState::Save(CSave &save)
 {
-	int i;
-	globalentity_t *pEntity;
-
 	if (!save.WriteFields("cGLOBAL", "GLOBAL", this, m_SaveData, HL_ARRAYSIZE(m_SaveData)))
 		return 0;
 
-	pEntity = m_pList;
-	for (i = 0; i < m_listCount && pEntity; i++)
+	globalentity_t* pEntity = m_pList;
+	for (int i = 0; i < m_listCount && pEntity; i++)
 	{
 		if (!save.WriteFields("cGENT", "GENT", pEntity, gGlobalEntitySaveData, HL_ARRAYSIZE(gGlobalEntitySaveData)))
 			return 0;
@@ -392,17 +377,16 @@ int CGlobalState::Save(CSave &save)
 
 int CGlobalState::Restore(CRestore &restore)
 {
-	int i, listCount;
 	globalentity_t tmpEntity;
 
 	ClearStates();
 	if (!restore.ReadFields("GLOBAL", this, m_SaveData, HL_ARRAYSIZE(m_SaveData)))
 		return 0;
 
-	listCount = m_listCount;	// Get new list count
+	int listCount = m_listCount;	// Get new list count
 	m_listCount = 0;				// Clear loaded data
 
-	for (i = 0; i < listCount; i++)
+	for (int i = 0; i < listCount; i++)
 	{
 		if (!restore.ReadFields("GENT", &tmpEntity, gGlobalEntitySaveData, HL_ARRAYSIZE(gGlobalEntitySaveData)))
 			return 0;
@@ -432,13 +416,11 @@ void CGlobalState::ClearStates(void)
 	Reset();
 }
 
-
 void SaveGlobalState(SAVERESTOREDATA *pSaveData)
 {
 	CSave saveHelper(pSaveData);
 	gGlobalState.Save(saveHelper);
 }
-
 
 void RestoreGlobalState(SAVERESTOREDATA *pSaveData)
 {
@@ -446,14 +428,11 @@ void RestoreGlobalState(SAVERESTOREDATA *pSaveData)
 	gGlobalState.Restore(restoreHelper);
 }
 
-
 void ResetGlobalState(void)
 {
 	gGlobalState.ClearStates();
 	gInitHUD = TRUE;	// Init the HUD on a new game / load game
 }
-
-
 
 // moved CWorld class definition to cbase.h
 //=======================
@@ -469,14 +448,14 @@ LINK_ENTITY_TO_CLASS(worldspawn, CWorld);
 #define SF_WORLD_FORCETEAM	0x0004		// Force teams
 //#define SF_WORLD_STARTSUIT	0x0008		// LRC- Start this level with an HEV suit!
 
-extern DLL_GLOBAL BOOL		g_fGameOver;
-float g_flWeaponCheat;
+extern DLL_GLOBAL bool g_fGameOver;
 
-BOOL g_startSuit; //LRC
+float g_flWeaponCheat;
+bool g_startSuit; //LRC
 
 void CWorld::Spawn(void)
 {
-	g_fGameOver = FALSE;
+	g_fGameOver = false;
 	Precache();
 }
 
@@ -735,7 +714,7 @@ void CWorld::KeyValue(KeyValueData *pkvd)
 	//LRC- let map designers start the player with his suit already on
 	else if (FStrEq(pkvd->szKeyName, "startsuit"))
 	{
-		g_startSuit = atoi(pkvd->szValue);
+		g_startSuit = bool(atoi(pkvd->szValue));
 		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "allowmonsters"))

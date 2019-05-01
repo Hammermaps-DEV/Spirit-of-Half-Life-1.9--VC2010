@@ -145,7 +145,7 @@ void CSqueakGrenade::Spawn(void)
 	m_flDie = gpGlobals->time + SQUEEK_DETONATE_DELAY;
 	m_flFieldOfView = 0; // 180 degrees
 	if (pev->owner) m_hOwner = Instance(pev->owner);
-	m_flNextBounceSoundTime = UTIL_WeaponTimeBase();// reset each time a snark is spawned.
+	m_flNextBounceSoundTime = UTIL_GlobalTimeBase();// reset each time a snark is spawned.
 
 	pev->sequence = WSQUEAK_RUN;
 	ResetSequenceInfo();
@@ -438,7 +438,7 @@ BOOL CSqueak::Deploy()
 
 void CSqueak::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.4;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 1.4;
 	SendWeaponAnim(SQUEAK_DOWN);
 	EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);
 
@@ -489,8 +489,8 @@ void CSqueak::PrimaryAttack()
 			m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 			m_fJustThrown = 1;
 
-			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.3;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.0;
+			m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.3;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.0;
 		}
 	}
 }
@@ -498,7 +498,7 @@ void CSqueak::PrimaryAttack()
 
 void CSqueak::WeaponIdle(void)
 {
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 
 	if (m_fJustThrown)
 	{
@@ -511,7 +511,7 @@ void CSqueak::WeaponIdle(void)
 		}
 
 		SendWeaponAnim(SQUEAK_UP);
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_LONG(10, 15);
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 15);
 		return;
 	}
 
@@ -520,17 +520,17 @@ void CSqueak::WeaponIdle(void)
 	if (flRand <= 0.75)
 	{
 		iAnim = SQUEAK_IDLE1;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 30.0 / 16 * (2);
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 30.0 / 16 * (2);
 	}
 	else if (flRand <= 0.875)
 	{
 		iAnim = SQUEAK_FIDGETFIT;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 70.0 / 16.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 70.0 / 16.0;
 	}
 	else
 	{
 		iAnim = SQUEAK_FIDGETNIP;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 80.0 / 16.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 80.0 / 16.0;
 	}
 	SendWeaponAnim(iAnim);
 }

@@ -343,7 +343,7 @@ void CHoundeye::Spawn()
 	if (pev->health == 0)
 		pev->health = gSkillData.houndeyeHealth;
 	pev->yaw_speed = 5;//!!! should we put this in the monster's changeanim function since turn rates may vary with state/anim?
-	m_flFieldOfView = 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	m_flFieldOfView = VIEW_FIELD_NORMAL;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState = MONSTERSTATE_NONE;
 	m_fAsleep = FALSE; // everyone spawns awake
 	m_fDontBlink = FALSE;

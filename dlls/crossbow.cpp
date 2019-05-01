@@ -235,7 +235,7 @@ public:
 	void FireBolt(void);
 	void FireSniperBolt(void);
 	void PrimaryAttack(void);
-	void SecondaryAttack(void) { m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1E6; };//just stub
+	void SecondaryAttack(void) { m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1E6; };//just stub
 	BOOL Deploy();
 	void Holster();
 	BOOL ShouldWeaponIdle(void) { return TRUE; };
@@ -298,7 +298,7 @@ BOOL CCrossbow::Deploy()
 void CCrossbow::Holster()
 {
 	m_fInReload = FALSE;// cancel any reload in progress.
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 	ZoomReset();
 
 	if (m_iClip) SendWeaponAnim(CROSSBOW_HOLSTER1);
@@ -319,7 +319,7 @@ void CCrossbow::PrimaryAttack(void)
 // this function only gets called in multiplayer
 void CCrossbow::FireSniperBolt()
 {
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.75;
+	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.75;
 
 	if (m_iClip == 0)
 	{
@@ -447,11 +447,11 @@ void CCrossbow::FireBolt()
 	if (!m_iClip && m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0)
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.75;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.75;
 
 	if (m_iClip != 0)
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5.0;
-	else	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.75;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 5.0;
+	else	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 0.75;
 }
 
 
@@ -472,9 +472,9 @@ void CCrossbow::ZoomUpdate(void)
 	{
 		if (m_iChargeLevel == 0)
 		{
-			if (m_flShockTime > UTIL_WeaponTimeBase()) return;
+			if (m_flShockTime > UTIL_GlobalTimeBase()) return;
 			m_iChargeLevel = 1;
-			m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.5;
+			m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.5;
 		}
 		if (m_iChargeLevel == 1)
 		{
@@ -482,11 +482,11 @@ void CCrossbow::ZoomUpdate(void)
 			m_iChargeLevel = 2;//ready to zooming, wait for 0.5 secs
 		}
 
-		if (m_flTimeUpdate > UTIL_WeaponTimeBase()) return;
+		if (m_flTimeUpdate > UTIL_GlobalTimeBase()) return;
 		if (m_iChargeLevel == 2 && m_pPlayer->m_iFOV > 20)
 		{
 			m_pPlayer->m_iFOV--;
-			m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.02;
+			m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.02;
 		}
 		if (m_iChargeLevel == 3) ZoomReset();
 	}
@@ -495,7 +495,7 @@ void CCrossbow::ZoomUpdate(void)
 
 void CCrossbow::ZoomReset(void)
 {
-	m_flShockTime = UTIL_WeaponTimeBase() + 0.5;
+	m_flShockTime = UTIL_GlobalTimeBase() + 0.5;
 	m_pPlayer->m_iFOV = 90;
 	m_iChargeLevel = 0;//clear zoom
 }
@@ -505,7 +505,7 @@ void CCrossbow::WeaponIdle(void)
 	m_pPlayer->GetAutoaimVector(AUTOAIM_2DEGREES);  // get the autoaim vector but ignore it;  used for autoaim crosshair in DM
 	ZoomUpdate();
 
-	if (m_flTimeWeaponIdle < UTIL_WeaponTimeBase())
+	if (m_flTimeWeaponIdle < UTIL_GlobalTimeBase())
 	{
 		float flRand = RANDOM_FLOAT(0, 1);
 		if (flRand <= 0.75)
@@ -518,12 +518,12 @@ void CCrossbow::WeaponIdle(void)
 			{
 				SendWeaponAnim(CROSSBOW_IDLE2);
 			}
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 		}
 		else if (m_iClip)
 		{
 			SendWeaponAnim(CROSSBOW_FIDGET1);
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 90.0 / 30.0;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 90.0 / 30.0;
 		}
 	}
 }

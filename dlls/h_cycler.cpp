@@ -438,7 +438,7 @@ BOOL CWeaponCycler::Deploy()
 
 void CWeaponCycler::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 1.0;
 	SendWeaponAnim(pev->button);
 }
 

@@ -269,8 +269,8 @@ BOOL CSatchel::CanDeploy(void)
 
 BOOL CSatchel::Deploy()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 1.0;
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 1.0;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 
 	if (m_chargeReady)
 		return DefaultDeploy("models/v_satchel_radio.mdl", "models/p_satchel_radio.mdl", SATCHEL_RADIO_DRAW, "hive", 0.6);
@@ -281,7 +281,7 @@ BOOL CSatchel::Deploy()
 
 void CSatchel::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.6;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.6;
 
 	if (m_chargeReady) SendWeaponAnim(SATCHEL_RADIO_HOLSTER);
 	else		 SendWeaponAnim(SATCHEL_DROP);
@@ -311,10 +311,10 @@ void CSatchel::PrimaryAttack()
 		SendWeaponAnim(SATCHEL_RADIO_FIRE);
 		m_chargeReady = 2;
 		m_iChargeLevel = 1;
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
-		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
-		m_flTimeUpdate = UTIL_WeaponTimeBase() + RANDOM_FLOAT(0.3, 0.5);
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
+		m_flTimeUpdate = UTIL_GlobalTimeBase() + RANDOM_FLOAT(0.3, 0.5);
 		break;
 	}
 	case 2:
@@ -352,16 +352,16 @@ void CSatchel::Throw(void)
 		m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
 		m_iOverloadLevel = 0;//reset
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.0;
-		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.0;
+		m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
 	}
 }
 
 
 void CSatchel::WeaponIdle(void)
 {
-	if (m_flTimeUpdate < UTIL_WeaponTimeBase() && m_iChargeLevel)
+	if (m_flTimeUpdate < UTIL_GlobalTimeBase() && m_iChargeLevel)
 	{
 		edict_t *pPlayer = m_pPlayer->edict();
 		CBaseEntity *pSatchel = NULL;
@@ -380,7 +380,7 @@ void CSatchel::WeaponIdle(void)
 		m_iChargeLevel = 0;
 	}
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 	switch (m_chargeReady)
 	{
 	case 0:
@@ -408,12 +408,12 @@ void CSatchel::WeaponIdle(void)
 		// use tripmine animations
 		strcpy(m_pPlayer->m_szAnimExtention, "trip");
 
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
-		m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.5;
 		m_chargeReady = 0;
 		break;
 	}
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_LONG(10, 15);// how long till we do this again.
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 15);// how long till we do this again.
 }
 
 //=========================================================

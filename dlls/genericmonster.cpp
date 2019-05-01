@@ -220,7 +220,7 @@ void CGenericMonster::Spawn()
 	pev->movetype = MOVETYPE_STEP;
 	if (!m_bloodColor) m_bloodColor = BLOOD_COLOR_RED;
 	if (!pev->health) pev->health = 8;
-	m_flFieldOfView = 0.5;// indicates the width of this monster's forward view cone ( as a dotproduct result )
+	m_flFieldOfView = VIEW_FIELD_NORMAL;// indicates the width of this monster's forward view cone ( as a dotproduct result )
 	m_MonsterState = MONSTERSTATE_NONE;
 
 	MonsterInit();

@@ -69,7 +69,7 @@ void CGlock::Spawn()
 
 void CGlock::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.8;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.8;
 	SendWeaponAnim(GLOCK_HOLSTER);
 }
 
@@ -132,16 +132,16 @@ void CGlock::SecondaryAttack(void)
 		SendWeaponAnim(GLOCK_HOLSTER2);
 		m_iBody = 1;
 		m_iOverloadLevel = 1;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.5;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 0.5;
 	}
 	else
 	{
 		SendWeaponAnim(GLOCK_DEL_SILENCER);
 		m_iBody = 0;
 		m_iOverloadLevel = 2;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3.0;
 	}
-	m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 4.0;
+	m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 4.0;
 }
 
 void CGlock::PrimaryAttack(void)
@@ -176,13 +176,13 @@ void CGlock::PrimaryAttack(void)
 
 		PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usFireGlock, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, pev->body, 0, (m_iClip == 0) ? 1 : 0, m_iBody);
 
-		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.35;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.35;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.7;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.7;
 	}
 }
 
@@ -192,7 +192,7 @@ void CGlock::Reload(void)
 
 	if (m_iClip == 0) DefaultReload(17, GLOCK_RELOAD, 1.5);
 	else	DefaultReload(17, GLOCK_RELOAD_NOT_EMPTY, 1.5);
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 }
 
 
@@ -201,19 +201,19 @@ void CGlock::WeaponIdle(void)
 {
 	m_pPlayer->GetAutoaimVector(AUTOAIM_10DEGREES);
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 	if (m_iOverloadLevel == 1)
 	{
 		SendWeaponAnim(GLOCK_ADD_SILENCER);
 		m_iOverloadLevel = 0; //silencer added
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3.0;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3.0;
 		return;
 	}
 	if (m_iOverloadLevel == 2)
 	{
 		SendWeaponAnim(GLOCK_DRAW);
 		m_iOverloadLevel = 0; //silencer removed
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.2;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.2;
 		return;
 	}
 	// only idle if the slid isn't back
@@ -224,19 +224,19 @@ void CGlock::WeaponIdle(void)
 		if (flRand < 0.2)
 		{
 			iAnim = GLOCK_IDLE1;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 4.0;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 4.0;
 		}
 		else if (0.4 > flRand && flRand > 0.2)
 		{
 			iAnim = GLOCK_IDLE2;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.8;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 2.8;
 		}
 		else if (0.8 > flRand && flRand > 0.5)
 		{
 			iAnim = GLOCK_IDLE3;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3.7;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3.7;
 		}
-		else	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_LONG(10, 30);
+		else	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 30);
 		SendWeaponAnim(iAnim);
 	}
 }

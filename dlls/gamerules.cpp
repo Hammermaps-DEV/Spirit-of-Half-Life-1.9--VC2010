@@ -29,7 +29,7 @@
 extern edict_t *EntSelectSpawnPoint(CBaseEntity *pPlayer);
 
 DLL_GLOBAL CGameRules*	g_pGameRules = NULL;
-extern DLL_GLOBAL BOOL	g_fGameOver;
+extern DLL_GLOBAL bool	g_fGameOver;
 extern int gmsgDeathMsg;	// client dll messages
 extern int gmsgMOTD;
 
@@ -74,7 +74,7 @@ edict_t *CGameRules::GetPlayerSpawnSpot(CBasePlayer *pPlayer)
 	//LRC
 	if (pentSpawnSpot->v.spawnflags & 1) // the START WITH SUIT flag
 	{
-		g_startSuit = TRUE;
+		g_startSuit = true;
 	}
 
 	return pentSpawnSpot;
@@ -214,10 +214,18 @@ void CGameRules::RefreshSkillData(void)
 	gSkillData.snarkDmgBite = GetSkillCvar("sk_snark_dmg_bite");
 	gSkillData.snarkDmgPop = GetSkillCvar("sk_snark_dmg_pop");
 
-	// Zombie
+	//=========================================================
+	// NPCs: Zombie Scientist
+	// For Spirit of Half-Life v1.9: Opposing-Force Edition
+	//=========================================================
 	gSkillData.zombieHealth = GetSkillCvar("sk_zombie_health");
 	gSkillData.zombieDmgOneSlash = GetSkillCvar("sk_zombie_dmg_one_slash");
 	gSkillData.zombieDmgBothSlash = GetSkillCvar("sk_zombie_dmg_both_slash");
+	gSkillData.zombieHead = GetSkillCvar("sk_zombie_head"); //Hitgroup
+	gSkillData.zombieChest = GetSkillCvar("sk_zombie_chest"); //Hitgroup
+	gSkillData.zombieStomach = GetSkillCvar("sk_zombie_stomach"); //Hitgroup
+	gSkillData.zombieLeg = GetSkillCvar("sk_zombie_leg"); //Hitgroup
+	gSkillData.zombieArm = GetSkillCvar("sk_zombie_arm"); //Hitgroup
 
 	//Turret
 	gSkillData.turretHealth = GetSkillCvar("sk_turret_health");

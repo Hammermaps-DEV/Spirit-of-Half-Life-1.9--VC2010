@@ -353,7 +353,7 @@ void CRpg::Holster()
 {
 	ShutdownScreen();//set skin to 0 manually
 	m_fInReload = FALSE;// cancel any reload in progress.
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 	SendWeaponAnim(RPG_HOLSTER);
 }
 
@@ -380,13 +380,13 @@ void CRpg::PrimaryAttack()
 		// Ken signed up for this as a global change (sjb)
 
 		m_iClip--;
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 1.5;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 1.5;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.5;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.7;//no longer indicate fps :)
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.7;//no longer indicate fps :)
 	}
 	UpdateSpot();
 }
@@ -396,14 +396,14 @@ void CRpg::SecondaryAttack()
 	m_iOverloadLevel = !m_iOverloadLevel;
 	if (!m_iOverloadLevel && m_pSpot) ShutdownScreen();//simply call shutdown function
 
-	m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.3;
+	m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.3;
 }
 
 void CRpg::Reload(void)
 {
 	if ((m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] == 0) || (m_iClip == 1)) return;
 
-	m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
 
 	if (m_iChargeLevel && m_iOverloadLevel) return;
 
@@ -413,7 +413,7 @@ void CRpg::Reload(void)
 		if (m_pMirSpot && m_iOverloadLevel) m_pMirSpot->Suspend(2.1);
 		m_iBody = 0;//show rocket
 		DefaultReload(RPG_MAX_CLIP, RPG_RELOAD, 2.1);
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 }
 
@@ -459,7 +459,7 @@ void CRpg::UpdateSpot(void)
 
 void CRpg::UpdateScreen(void)
 {
-	if (m_flTimeUpdate > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeUpdate > UTIL_GlobalTimeBase()) return;
 
 	if (m_pSpot)
 	{
@@ -473,7 +473,7 @@ void CRpg::UpdateScreen(void)
 	}
 	else pev->skin = 0;
 
-	m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.3;
+	m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.3;
 }
 
 void CRpg::ShutdownScreen(void)
@@ -496,7 +496,7 @@ void CRpg::WeaponIdle(void)
 {
 	UpdateSpot();
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 
 	if (m_iClip && !m_iOverloadLevel)
 	{
@@ -505,12 +505,12 @@ void CRpg::WeaponIdle(void)
 		if (flRand <= 0.75)
 		{
 			iAnim = RPG_IDLE;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 6.3;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 6.3;
 		}
 		else
 		{
 			iAnim = RPG_IDLE2;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 6.3;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 6.3;
 		}
 		SendWeaponAnim(iAnim);
 	}

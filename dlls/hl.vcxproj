@@ -75,6 +75,7 @@
     <ClCompile Include="monstermaker.cpp" />
     <ClCompile Include="monsters.cpp" />
     <ClCompile Include="monsterstate.cpp" />
+    <ClCompile Include="monster_zombie.cpp" />
     <ClCompile Include="mortar.cpp" />
     <ClCompile Include="movewith.cpp" />
     <ClCompile Include="mp5.cpp" />
@@ -116,7 +117,6 @@
     <ClCompile Include="weapons.cpp" />
     <ClCompile Include="world.cpp" />
     <ClCompile Include="xen.cpp" />
-    <ClCompile Include="zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\pm_shared\pm_debug.h" />
@@ -149,6 +149,7 @@
     <ClInclude Include="maprules.h" />
     <ClInclude Include="monsterevent.h" />
     <ClInclude Include="monsters.h" />
+    <ClInclude Include="monster_zombie.h" />
     <ClInclude Include="movewith.h" />
     <ClInclude Include="nodes.h" />
     <ClInclude Include="plane.h" />

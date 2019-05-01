@@ -13,6 +13,12 @@
       <UniqueIdentifier>{4e7211c7-dc1b-409e-ac41-fef4c0918c7c}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Source Files\NPCs">
+      <UniqueIdentifier>{e6a337fc-0bda-4188-91a9-09d6a95bae77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\NPCs">
+      <UniqueIdentifier>{e3a56408-561a-4807-a57f-bf60b0f9d6fc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="aflock.cpp">
@@ -318,9 +324,6 @@
     <ClCompile Include="xen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="zombie.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\pm_shared\pm_shared.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -332,6 +335,9 @@
     </ClCompile>
     <ClCompile Include="..\game_shared\voice_gamemgr.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="monster_zombie.cpp">
+      <Filter>Source Files\NPCs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -481,6 +487,9 @@
     </ClInclude>
     <ClInclude Include="..\pm_shared\pm_movevars.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="monster_zombie.h">
+      <Filter>Header Files\NPCs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

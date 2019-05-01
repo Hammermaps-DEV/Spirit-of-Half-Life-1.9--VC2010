@@ -108,7 +108,7 @@ BOOL CMP5::Deploy()
 
 void CMP5::Holster()
 {
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.6;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.6;
 	SendWeaponAnim(MP5_HOLSTER);
 }
 
@@ -135,16 +135,16 @@ void CMP5::PrimaryAttack()
 
 		PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usMP5, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, pev->body, 0, 0, 0);
 
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.1;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.1;
 
-		if (m_flNextPrimaryAttack < UTIL_WeaponTimeBase())
-			m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.2;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+		if (m_flNextPrimaryAttack < UTIL_GlobalTimeBase())
+			m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.2;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
 	}
 }
 
@@ -159,7 +159,7 @@ void CMP5::SecondaryAttack(void)
 		m_pPlayer->m_iWeaponFlash = BRIGHT_GUN_FLASH;
 
 		m_pPlayer->m_iExtraSoundTypes = bits_SOUND_DANGER;
-		m_pPlayer->m_flStopExtraSoundTime = UTIL_WeaponTimeBase() + 0.2;
+		m_pPlayer->m_flStopExtraSoundTime = UTIL_GlobalTimeBase() + 0.2;
 
 		m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType]--;
 
@@ -174,13 +174,13 @@ void CMP5::SecondaryAttack(void)
 		SendWeaponAnim(MP5_LAUNCH);
 		m_pPlayer->pev->punchangle.x -= 10;
 
-		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 5;
+		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 5;
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.5;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
 	}
 }
 
@@ -195,7 +195,7 @@ void CMP5::WeaponIdle(void)
 {
 	m_pPlayer->GetAutoaimVector(AUTOAIM_5DEGREES);
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 
 	if (m_iClip)
 	{
@@ -203,9 +203,9 @@ void CMP5::WeaponIdle(void)
 		if (flRand <= 0.3)
 		{
 			SendWeaponAnim(MP5_IDLE);
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 41.0 / 8.0;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 41.0 / 8.0;
 		}
-		else	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_LONG(10, 30);
+		else	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 30);
 	}
 }
 

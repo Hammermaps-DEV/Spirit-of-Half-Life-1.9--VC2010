@@ -82,9 +82,20 @@ struct skilldata_t
 	float snarkDmgBite;
 	float snarkDmgPop;
 
+	//=========================================================
+	// NPCs: Zombie,Zombie Soldier,Zombie Barney
+	// For Spirit of Half-Life v1.9: Opposing-Force Edition
+	//=========================================================
+
+	// Zombie Scientist
 	float zombieHealth;
 	float zombieDmgOneSlash;
 	float zombieDmgBothSlash;
+	float zombieHead;
+	float zombieChest;
+	float zombieStomach;
+	float zombieLeg;
+	float zombieArm;
 
 	float turretHealth;
 	float miniturretHealth;

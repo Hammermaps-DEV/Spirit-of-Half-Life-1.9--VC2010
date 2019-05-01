@@ -41,8 +41,8 @@
 // #define DUCKFIX
 
 extern DLL_GLOBAL ULONG		g_ulModelIndexPlayer;
-extern DLL_GLOBAL BOOL		g_fGameOver;
-extern DLL_GLOBAL	BOOL	g_fDrawLines;
+extern DLL_GLOBAL bool		g_fGameOver;
+extern DLL_GLOBAL BOOL		g_fDrawLines;
 int gEvilImpulse101;
 BOOL g_markFrameBounds = 0; //LRC
 extern DLL_GLOBAL int		g_iSkillLevel, gDisplayTitle;
@@ -1049,7 +1049,7 @@ void CBasePlayer::RemoveItems(int iWeaponMask, int i9mm, int i357, int iBuck, in
 		if (m_pActiveItem && !((CBasePlayerWeapon*)m_pActiveItem)->IsUseable())
 		{
 			//lower the gun if it's out of ammo
-			((CBasePlayerWeapon*)m_pActiveItem)->m_flTimeWeaponIdle = UTIL_WeaponTimeBase();
+			((CBasePlayerWeapon*)m_pActiveItem)->m_flTimeWeaponIdle = UTIL_GlobalTimeBase();
 		}
 		UpdateClientData();
 	}
@@ -2988,10 +2988,10 @@ void CBasePlayer::Spawn(void)
 
 	m_flTimeStepSound = 0;
 	m_iStepLeft = 0;
-	m_flFieldOfView = 0.5;// some monsters use this to determine whether or not the player is looking at them.
+	m_flFieldOfView = VIEW_FIELD_NORMAL;// some monsters use this to determine whether or not the player is looking at them.
 
 	m_bloodColor = BLOOD_COLOR_RED;
-	m_flNextAttack = UTIL_WeaponTimeBase();
+	m_flNextAttack = UTIL_GlobalTimeBase();
 	StartSneaking();
 
 	m_iFlashBattery = 0; //discharge flashlight at start

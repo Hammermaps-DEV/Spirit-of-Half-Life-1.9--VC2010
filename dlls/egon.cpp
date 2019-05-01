@@ -148,7 +148,7 @@ void CEgon::Holster()
 	if (m_fireState != FIRE_OFF) EndAttack();
 
 	ShutdownScreen();
-	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 	SendWeaponAnim(EGON_HOLSTER);
 }
 
@@ -195,7 +195,7 @@ void CEgon::PrimaryAttack(void)
 		if (m_fireState != FIRE_OFF || m_pBeam) EndAttack();
 		else PlayEmptySound(2);
 
-		m_flNextPrimaryAttack = UTIL_WeaponTimeBase() + 0.08;
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.08;
 		return;
 	}
 
@@ -209,22 +209,22 @@ void CEgon::PrimaryAttack(void)
 	{
 		if (!HasAmmo())
 		{
-			m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.08;
+			m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.08;
 			PlayEmptySound(1);
 			return;
 		}
 
-		m_flAmmoUseTime = UTIL_WeaponTimeBase();// start using ammo ASAP.
+		m_flAmmoUseTime = UTIL_GlobalTimeBase();// start using ammo ASAP.
 
 		PLAYBACK_EVENT_FULL(flags(), m_pPlayer->edict(), m_usEgonFire, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, pev->body, m_fireMode, 1, m_fireState);
 		SendWeaponAnim(EGON_FIRECYCLE);
 		m_shakeTime = 0;
 
 		m_pPlayer->m_iWeaponVolume = PRIMARY_FIRE_VOLUME;
-		m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 0.1;
-		m_shootTime = UTIL_WeaponTimeBase() + 2;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 0.1;
+		m_shootTime = UTIL_GlobalTimeBase() + 2;
 
-		pev->dmgtime = UTIL_WeaponTimeBase() + EGON_PULSE_INTERVAL;
+		pev->dmgtime = UTIL_GlobalTimeBase() + EGON_PULSE_INTERVAL;
 		m_fireState = FIRE_CHARGE;
 	}
 	break;
@@ -234,7 +234,7 @@ void CEgon::PrimaryAttack(void)
 		Fire(vecSrc, vecAiming);
 		m_pPlayer->m_iWeaponVolume = PRIMARY_FIRE_VOLUME;
 
-		if (m_shootTime != 0 && UTIL_WeaponTimeBase() > m_shootTime)
+		if (m_shootTime != 0 && UTIL_GlobalTimeBase() > m_shootTime)
 		{
 			PLAYBACK_EVENT_FULL(flags(), m_pPlayer->edict(), m_usEgonFire, 0, (float *)&g_vecZero, (float *)&g_vecZero, 0.0, 0.0, pev->body, m_fireMode, 0, m_fireState);
 			SendWeaponAnim(EGON_FIRECYCLE);
@@ -252,7 +252,7 @@ void CEgon::PrimaryAttack(void)
 		{
 			EndAttack();
 			m_fireState = FIRE_OFF;
-			m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.0;
+			m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.0;
 		}
 
 	}
@@ -269,18 +269,18 @@ void CEgon::SecondaryAttack(void)
 		SendWeaponAnim(EGON_ALTFIREON);
 		m_fireMode = FIRE_NARROW;
 		m_iBody = 1;
-		m_flTimeUpdate = UTIL_WeaponTimeBase() + 1.1;
+		m_flTimeUpdate = UTIL_GlobalTimeBase() + 1.1;
 	}
 	else
 	{
 		m_iBody = 0;
 		SendWeaponAnim(EGON_ALTFIREOFF);
 		m_fireMode = FIRE_WIDE;
-		m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.7;//off animation is faster than on
+		m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.7;//off animation is faster than on
 	}
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3;
-	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 1.5;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3;
+	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.5;
 }
 
 void CEgon::Fire(const Vector &vecOrigSrc, const Vector &vecDir)
@@ -313,7 +313,7 @@ void CEgon::Fire(const Vector &vecOrigSrc, const Vector &vecDir)
 	switch (m_fireMode)
 	{
 	case FIRE_NARROW:
-		if (pev->dmgtime < UTIL_WeaponTimeBase())
+		if (pev->dmgtime < UTIL_GlobalTimeBase())
 		{
 			// Narrow mode only does damage to the entity it hits
 			ClearMultiDamage();
@@ -326,29 +326,29 @@ void CEgon::Fire(const Vector &vecOrigSrc, const Vector &vecDir)
 			if (IsMultiplayer())
 			{
 				// multiplayer uses 1 ammo every 1/10th second
-				if (UTIL_WeaponTimeBase() >= m_flAmmoUseTime)
+				if (UTIL_GlobalTimeBase() >= m_flAmmoUseTime)
 				{
 					UseAmmo(1);
-					m_flAmmoUseTime = UTIL_WeaponTimeBase() + 0.1;
+					m_flAmmoUseTime = UTIL_GlobalTimeBase() + 0.1;
 				}
 			}
 			else
 			{
 				// single player, use 3 ammo/second
-				if (UTIL_WeaponTimeBase() >= m_flAmmoUseTime)
+				if (UTIL_GlobalTimeBase() >= m_flAmmoUseTime)
 				{
 					UseAmmo(1);
-					m_flAmmoUseTime = UTIL_WeaponTimeBase() + 0.2;
+					m_flAmmoUseTime = UTIL_GlobalTimeBase() + 0.2;
 				}
 			}
 
-			pev->dmgtime = UTIL_WeaponTimeBase() + EGON_PULSE_INTERVAL;
+			pev->dmgtime = UTIL_GlobalTimeBase() + EGON_PULSE_INTERVAL;
 		}
-		timedist = (pev->dmgtime - UTIL_WeaponTimeBase()) / EGON_PULSE_INTERVAL;
+		timedist = (pev->dmgtime - UTIL_GlobalTimeBase()) / EGON_PULSE_INTERVAL;
 		break;
 
 	case FIRE_WIDE:
-		if (pev->dmgtime < UTIL_WeaponTimeBase())
+		if (pev->dmgtime < UTIL_GlobalTimeBase())
 		{
 			// wide mode does damage to the ent, and radius damage
 			ClearMultiDamage();
@@ -369,30 +369,30 @@ void CEgon::Fire(const Vector &vecOrigSrc, const Vector &vecDir)
 			if (IsMultiplayer())
 			{
 				//multiplayer uses 5 ammo/second
-				if (UTIL_WeaponTimeBase() >= m_flAmmoUseTime)
+				if (UTIL_GlobalTimeBase() >= m_flAmmoUseTime)
 				{
 					UseAmmo(1);
-					m_flAmmoUseTime = UTIL_WeaponTimeBase() + 0.2;
+					m_flAmmoUseTime = UTIL_GlobalTimeBase() + 0.2;
 				}
 			}
 			else
 			{
 				// Wide mode uses 10 charges per second in single player
-				if (UTIL_WeaponTimeBase() >= m_flAmmoUseTime)
+				if (UTIL_GlobalTimeBase() >= m_flAmmoUseTime)
 				{
 					UseAmmo(1);
-					m_flAmmoUseTime = UTIL_WeaponTimeBase() + 0.1;
+					m_flAmmoUseTime = UTIL_GlobalTimeBase() + 0.1;
 				}
 			}
 
-			pev->dmgtime = UTIL_WeaponTimeBase() + EGON_DISCHARGE_INTERVAL;
-			if (m_shakeTime < UTIL_WeaponTimeBase())
+			pev->dmgtime = UTIL_GlobalTimeBase() + EGON_DISCHARGE_INTERVAL;
+			if (m_shakeTime < UTIL_GlobalTimeBase())
 			{
 				UTIL_ScreenShake(tr.vecEndPos, 5.0, 150.0, 0.75, 250.0);
-				m_shakeTime = UTIL_WeaponTimeBase() + 1.5;
+				m_shakeTime = UTIL_GlobalTimeBase() + 1.5;
 			}
 		}
-		timedist = (pev->dmgtime - UTIL_WeaponTimeBase()) / EGON_DISCHARGE_INTERVAL;
+		timedist = (pev->dmgtime - UTIL_GlobalTimeBase()) / EGON_DISCHARGE_INTERVAL;
 		break;
 	}
 
@@ -414,9 +414,9 @@ void CEgon::UpdateEffect(const Vector &startPoint, const Vector &endPoint, float
 	m_pBeam->SetWidth(40 - (timeBlend * 20));
 
 	if (m_fireMode == FIRE_WIDE)
-		m_pBeam->SetColor(30 + (25 * timeBlend), 30 + (30 * timeBlend), 64 + 80 * fabs(sin(UTIL_WeaponTimeBase() * 10)));
+		m_pBeam->SetColor(30 + (25 * timeBlend), 30 + (30 * timeBlend), 64 + 80 * fabs(sin(UTIL_GlobalTimeBase() * 10)));
 	else
-		m_pBeam->SetColor(60 + (25 * timeBlend), 120 + (30 * timeBlend), 64 + 80 * fabs(sin(UTIL_WeaponTimeBase() * 10)));
+		m_pBeam->SetColor(60 + (25 * timeBlend), 120 + (30 * timeBlend), 64 + 80 * fabs(sin(UTIL_GlobalTimeBase() * 10)));
 
 	UTIL_SetOrigin(m_pSprite, endPoint);
 	m_pSprite->pev->frame += 8 * gpGlobals->frametime;
@@ -498,15 +498,15 @@ void CEgon::EndAttack(void)
 	PLAYBACK_EVENT_FULL(FEV_GLOBAL | FEV_RELIABLE, m_pPlayer->edict(), m_usEgonStop, 0, (float *)&m_pPlayer->pev->origin, (float *)&m_pPlayer->pev->angles, 0.0, 0.0, m_fireState, pev->body, 0, 0);
 	m_fireState = FIRE_OFF;
 
-	m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 2.0;
-	m_flNextSecondaryAttack = UTIL_WeaponTimeBase() + 0.5;
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 2.0;
+	m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.5;
 
 	DestroyEffect();
 }
 
 void CEgon::UpdateScreen(void)
 {
-	if (m_flTimeUpdate > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeUpdate > UTIL_GlobalTimeBase()) return;
 
 	if (HasAmmo() && m_fireState == FIRE_CHARGE)
 	{
@@ -538,7 +538,7 @@ void CEgon::UpdateScreen(void)
 	WRITE_BYTE(pev->skin); //weaponmodel skin.
 	MESSAGE_END();
 
-	m_flTimeUpdate = UTIL_WeaponTimeBase() + 0.08;//refresh rate
+	m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.08;//refresh rate
 }
 
 void CEgon::ShutdownScreen(void)
@@ -556,7 +556,7 @@ void CEgon::WeaponIdle(void)
 {
 	UpdateScreen();
 
-	if (m_flTimeWeaponIdle > UTIL_WeaponTimeBase()) return;
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
 	if (m_fireState != FIRE_OFF) EndAttack();
 
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
@@ -567,12 +567,12 @@ void CEgon::WeaponIdle(void)
 		if (flRand > 0.8)
 		{
 			iAnim = EGON_IDLE1;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + RANDOM_FLOAT(10, 15);
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 		}
 		else if ((m_iBody == 0) && (flRand < 0.2))
 		{
 			iAnim = EGON_FIDGET1;
-			m_flTimeWeaponIdle = UTIL_WeaponTimeBase() + 3;
+			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3;
 		}
 		SendWeaponAnim(iAnim);
 	}
