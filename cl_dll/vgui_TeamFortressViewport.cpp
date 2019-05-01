@@ -1557,7 +1557,7 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 	char sz[256];
 	char *cText;
 	char *pfile = NULL;
-	static const int MAX_TITLE_LENGTH = 64;
+	static const int MAX_TITLE_LENGTH = 32;
 	char cTitle[MAX_TITLE_LENGTH];
 
 	if ( iTextToShow == SHOW_MOTD )
@@ -2252,8 +2252,6 @@ int TeamFortressViewport::MsgFunc_ServerName( const char *pszName, int iSize, vo
 
 	strncpy( m_szServerName, READ_STRING(), MAX_SERVERNAME_LENGTH );
 
-	m_szServerName[MAX_SERVERNAME_LENGTH - 1] = 0;
-
 	return 1;
 }
 
@@ -2298,7 +2296,7 @@ int TeamFortressViewport::MsgFunc_TeamScore( const char *pszName, int iSize, voi
 	int i = 1;
 	for ( i = 1; i <= m_pScoreBoard->m_iNumTeams; i++ )
 	{
-		if ( !_stricmp( TeamName, g_TeamInfo[i].name ) )
+		if ( !stricmp( TeamName, g_TeamInfo[i].name ) )
 			break;
 	}
 

@@ -119,7 +119,7 @@ ScorePanel::ScorePanel(int x,int y,int wide,int tall) : Panel(x,y,wide,tall)
 		// only expand column size for res greater than 640
 		xpos = XRES(xpos);
 	}
-	m_TitleLabel.setBounds(xpos, 4, wide - xpos * 2, SBOARD_TITLE_SIZE_Y);
+	m_TitleLabel.setBounds(xpos, 4, wide, SBOARD_TITLE_SIZE_Y);
 	m_TitleLabel.setContentFitted(false);
 	m_TitleLabel.setParent(this);
 
@@ -260,8 +260,8 @@ void ScorePanel::Update()
 	// Set the title
 	if (gViewPort->m_szServerName)
 	{
-		char sz[MAX_SERVERNAME_LENGTH];
-		sprintf_s(sz, MAX_SERVERNAME_LENGTH, "%s", gViewPort->m_szServerName);
+		char sz[MAX_SERVERNAME_LENGTH + 16];
+		sprintf(sz, "%s", gViewPort->m_szServerName );
 		m_TitleLabel.setText(sz);
 	}
 
@@ -324,7 +324,7 @@ void ScorePanel::SortTeams()
 		int j = 1;
 		for ( j = 1; j <= m_iNumTeams; j++ )
 		{
-			if ( !_stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
+			if ( !stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
 				break;
 		}
 
@@ -422,7 +422,7 @@ void ScorePanel::SortPlayers( int iTeam, char *team )
 			{
 				cl_entity_t *ent = gEngfuncs.GetEntityByIndex( i );
 
-				if ( ent && !(team && _stricmp(g_PlayerExtraInfo[i].teamname, team)) )  
+				if ( ent && !(team && stricmp(g_PlayerExtraInfo[i].teamname, team)) )  
 				{
 					extra_player_info_t *pl_info = &g_PlayerExtraInfo[i];
 					if ( pl_info->frags > highest_frags || pl_info->deaths < lowest_deaths )
@@ -489,7 +489,7 @@ void ScorePanel::RebuildTeams()
 			if ( g_TeamInfo[j].name[0] == '\0' )
 				break;
 
-			if ( !_stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
+			if ( !stricmp( g_PlayerExtraInfo[i].teamname, g_TeamInfo[j].name ) )
 				break;
 		}
 

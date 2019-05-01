@@ -129,13 +129,7 @@ void ClientDisconnect(edict_t *pEntity)
 	pEntity->v.takedamage = DAMAGE_NO;// don't attract autoaim
 	pEntity->v.solid = SOLID_NOT;// nonsolid
 	pEntity->v.effects = 0;// clear any effects
-	pEntity->v.flags = 0;	// clear client flags, because engine doesn't clear them before calling ClientConnect, but only before ClientPutInServer, on next connection to this slot
 	UTIL_SetEdictOrigin(pEntity, pEntity->v.origin);
-
-	// Mark player as disconnected
-	CBasePlayer *pPlayer = (CBasePlayer*)UTIL_PlayerByIndex(ENTINDEX(pEntity));
-	if (pPlayer)
-		pPlayer->m_fGameHUDInitialized = false;
 
 	g_pGameRules->ClientDisconnected(pEntity);
 }
@@ -235,10 +229,9 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	const char *cpSay = "say";
 	const char *cpSayTeam = "say_team";
 	const char *pcmd = CMD_ARGV(0);
-	const int cmdc = CMD_ARGC();
 
 	// We can get a raw string now, without the "say " prepended
-	if (cmdc == 0)
+	if (CMD_ARGC() == 0)
 		return;
 
 	entvars_t *pev = &pEntity->v;
@@ -248,11 +241,11 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	if (player->m_flNextChatTime > gpGlobals->time)
 		return;
 
-	if (!_stricmp(pcmd, cpSay) || !_stricmp(pcmd, cpSayTeam))
+	if (!stricmp(pcmd, cpSay) || !stricmp(pcmd, cpSayTeam))
 	{
-		if (cmdc > 1)
+		if (CMD_ARGC() >= 2)
 		{
-			sprintf(szTemp, "%s", (char *)CMD_ARGS());
+			p = (char *)CMD_ARGS();
 		}
 		else
 		{
@@ -262,7 +255,7 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	}
 	else  // Raw text, need to prepend argv[0]
 	{
-		if (cmdc > 1)
+		if (CMD_ARGC() >= 2)
 		{
 			sprintf(szTemp, "%s %s", (char *)pcmd, (char *)CMD_ARGS());
 		}
@@ -278,17 +271,14 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	if (*p == '"')
 	{
 		p++;
-		int len = (int)strlen(p);
-		if (p[len - 1] == '"')
-			p[len - 1] = 0;
+		p[strlen(p) - 1] = 0;
 	}
 
 	// make sure the text has content
 	char *pc;
 	for (pc = p; pc != NULL && *pc != 0; pc++)
 	{
-		if ((byte)(*pc) >= (byte)0x80 ||	// UTF-8 symbol
-			isprint(*pc) && !isspace(*pc))
+		if (isprint(*pc) && !isspace(*pc))
 		{
 			pc = NULL;	// we've found an alphanumeric character,  so text is valid
 			break;
@@ -306,17 +296,6 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	j = sizeof(text) - 2 - strlen(text);  // -2 for /n and null terminator
 	if ((int)strlen(p) > j)
 		p[j] = 0;
-
-	// remove empty space at the end
-	for (pc = p + (int)strlen(p) - 1; pc != p; pc--)
-	{
-		if ((byte)(*pc) >= (byte)0x80 ||	// UTF-8 symbol
-			!isspace(*pc))
-		{
-			break;
-		}
-		*pc = 0;
-	}
 
 	strcat(text, p);
 	strcat(text, "\n");
@@ -558,9 +537,6 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 	if (!pEntity->pvPrivateData)
 		return;
 
-	char text[256];
-	CBasePlayer *pPlayer = GetClassPtr((CBasePlayer *)&pEntity->v);
-
 	// msg everyone if someone changes their name,  and it isn't the first time (changing no name to current name)
 	if (pEntity->v.netname && STRING(pEntity->v.netname)[0] != 0 && !FStrEq(STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name")))
 	{
@@ -580,8 +556,12 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 		// Set the name
 		g_engfuncs.pfnSetClientKeyValue(ENTINDEX(pEntity), infobuffer, "name", sName);
 
+		char text[256];
 		snprintf(text, sizeof(text), "* %s changed name to %s\n", STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
-		UTIL_SayTextAll(text, pPlayer);
+		MESSAGE_BEGIN(MSG_ALL, gmsgSayText, NULL);
+		WRITE_BYTE(ENTINDEX(pEntity));
+		WRITE_STRING(text);
+		MESSAGE_END();
 
 		// team match?
 		if (g_teamplay)
@@ -604,34 +584,7 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 		}
 	}
 
-	// Check for incorrect player model
-	char *mdls = g_engfuncs.pfnInfoKeyValue(infobuffer, "model");
-	if (_stricmp(mdls, pPlayer->m_szTeamName))	// Yes m_szTeamName will be always "" in non-teamplay, so we will do some extra unneeded checks to model, but it is not hard.
-	{
-		char model[256];
-		strncpy(model, mdls, sizeof(model) - 1);
-		model[sizeof(model) - 1] = '\0';
-		char *p = model;
-		while (*p != NULL)
-		{
-			if (*p < 32 ||
-				*p == '<' || *p == '>' || *p == ':' || *p == ';' ||
-				*p == '%' || *p == '?' || *p == '*' || *p == '"' ||
-				*p == '|' || *p == '/' || *p == '\\')
-				*p = ' ';
-			p++;
-		}
-		if (_stricmp(mdls, model))
-		{
-			int clientIndex = pPlayer->entindex();
-			g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "model", model);
-			g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "team", model);
-			sprintf(text, "* Model can't contain special characters like: <>:;%%?*\"|/\\\n");
-			UTIL_SayText(text, pPlayer);
-		}
-	}
-
-	g_pGameRules->ClientUserInfoChanged(pPlayer, infobuffer);
+	g_pGameRules->ClientUserInfoChanged(GetClassPtr((CBasePlayer *)&pEntity->v), infobuffer);
 }
 
 void ServerDeactivate(void)

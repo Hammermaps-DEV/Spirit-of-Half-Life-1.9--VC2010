@@ -225,7 +225,7 @@ struct kbutton_s DLLEXPORT *KB_Find( const char *name )
 	p = g_kbkeys;
 	while ( p )
 	{
-		if ( !_stricmp( name, p->name ) )
+		if ( !stricmp( name, p->name ) )
 			return p->pkey;
 
 		p = p->next;
@@ -606,7 +606,7 @@ CL_AdjustAngles
 Moves the local angle positions
 ================
 */
-void CL_AdjustAngles(float frametime, vec3_t &viewangles)
+void CL_AdjustAngles ( float frametime, float *viewangles )
 {
 	float	speed;
 	float	up, down;

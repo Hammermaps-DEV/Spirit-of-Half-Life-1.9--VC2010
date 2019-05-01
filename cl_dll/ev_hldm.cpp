@@ -31,7 +31,6 @@
 #include "in_defs.h"
 
 #include <string.h>
-#include "eiface.h"
 
 #include "r_studioint.h"
 #include "com_model.h"
@@ -39,7 +38,7 @@
 
 extern engine_studio_api_t IEngineStudio;
 
-static int tracerCount[4096];
+static int tracerCount[ 32 ];
 
 extern "C" char PM_FindTextureType( char *name );
 
@@ -569,12 +568,13 @@ int EV_HLDM_CheckTracer( int idx, float *vecSrc, float *end, float *forward, flo
 {
 	int tracer = 0;
 	int i;
+	qboolean player = idx >= 1 && idx <= gEngfuncs.GetMaxClients() ? true : false;
 
 	if ( iTracerFreq != 0 && ( (*tracerCount)++ % iTracerFreq) == 0 )
 	{
 		vec3_t vecTracerSrc;
 
-		if (EV_IsPlayer(idx))
+		if ( player )
 		{
 			vec3_t offset( 0, 0, -4 );
 
@@ -907,7 +907,7 @@ void EV_FireGlock1( event_args_t *args )
 	VectorCopy( forward, vecAiming );
 
 	EV_HLDM_MuzzleFlash( vecSrc, gEngfuncs.pfnRandomLong( 260, 300 ), 255, 255, 128 ); //SOHL 1.9.1
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, nullptr, args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_9MM, 0, 0, args->fparam1, args->fparam2 );
 }
 
 //======================
@@ -964,7 +964,10 @@ void EV_FireMP5( event_args_t *args )
 	VectorCopy( forward, vecAiming );
 
 	EV_HLDM_MuzzleFlash( vecSrc, gEngfuncs.pfnRandomLong( 260, 300 ), 255, 255, 128 ); //SOHL 1.9.1
-	EV_HLDM_FireBullets(idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx % ARRAYSIZE(tracerCount) - 1], args->fparam1, args->fparam2);
+
+	if ( gEngfuncs.GetMaxClients() > 1 )
+		EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
+	else 	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_MP5, 2, &tracerCount[idx-1], args->fparam1, args->fparam2 );
 }
 
 //======================
@@ -1017,9 +1020,9 @@ void EV_FireShotGunDouble( event_args_t *args )
 	EV_HLDM_MuzzleFlash( vecSrc, gEngfuncs.pfnRandomLong( 260, 300 ), 255, 255, 128 ); //SOHL 1.9.1
 
 	if ( gEngfuncs.GetMaxClients() > 1 )
-		EV_HLDM_FireBullets( idx, forward, right, up, 8, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, NULL, 0.17365, 0.04362 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 8, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.17365, 0.04362 );
 	else
-		EV_HLDM_FireBullets( idx, forward, right, up, 12, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, NULL, 0.08716, 0.08716 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 12, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
 }
 
 void EV_FireShotGunSingle( event_args_t *args )
@@ -1066,9 +1069,9 @@ void EV_FireShotGunSingle( event_args_t *args )
 	EV_HLDM_MuzzleFlash( vecSrc, gEngfuncs.pfnRandomLong( 260, 300 ), 255, 255, 128 ); //SOHL 1.9.1
 
 	if ( gEngfuncs.GetMaxClients() > 1 )
-		EV_HLDM_FireBullets( idx, forward, right, up, 4, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, NULL, 0.08716, 0.04362 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 4, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.04362 );
 	else
-		EV_HLDM_FireBullets( idx, forward, right, up, 6, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, NULL, 0.08716, 0.08716 );
+		EV_HLDM_FireBullets( idx, forward, right, up, 6, vecSrc, vecAiming, 2048, BULLET_PLAYER_BUCKSHOT, 0, &tracerCount[idx-1], 0.08716, 0.08716 );
 }
 
 //======================
@@ -1120,7 +1123,7 @@ void EV_FirePython( event_args_t *args )
 	VectorCopy( forward, vecAiming );
 
 	EV_HLDM_MuzzleFlash( vecSrc, gEngfuncs.pfnRandomLong( 260, 300 ), 255, 255, 128 ); //SOHL 1.9.1
-	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_357, 0, nullptr, args->fparam1, args->fparam2 );
+	EV_HLDM_FireBullets( idx, forward, right, up, 1, vecSrc, vecAiming, 8192, BULLET_PLAYER_357, 0, 0, args->fparam1, args->fparam2 );
 }
 
 //======================

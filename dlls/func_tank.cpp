@@ -525,7 +525,7 @@ BOOL CFuncTank :: StartControl( CBasePlayer* pController, CFuncTankControls *pCo
 
 //	ALERT( at_console, "using TANK!\n");
 
-    m_iActive = 1;
+          m_iActive = 1;
 	m_pControls = pControls;
 
 	if (m_pSpot) m_pSpot->Revive();

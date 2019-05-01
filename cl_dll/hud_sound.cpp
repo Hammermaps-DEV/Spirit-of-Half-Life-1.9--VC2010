@@ -187,17 +187,17 @@ static int CheckFormat( qboolean skip_buffer )
 		return false;
 
 	// detect of music type
-	if( !_stricmp( UTIL_FileExtension( songname ), "mp3" ))
+	if( !stricmp( UTIL_FileExtension( songname ), "mp3" ))
 		return STREAM;
-	if( !_stricmp( UTIL_FileExtension( songname ), "wma" ))
+	if( !stricmp( UTIL_FileExtension( songname ), "wma" ))
 		return STREAM;
-	if( !_stricmp( UTIL_FileExtension( songname ), "ogg" ))
+	if( !stricmp( UTIL_FileExtension( songname ), "ogg" ))
 		return STREAM;	
-	if( !_stricmp( UTIL_FileExtension( songname ), "xm" ))
+	if( !stricmp( UTIL_FileExtension( songname ), "xm" ))
 		return TRACK;
-	if( !_stricmp( UTIL_FileExtension( songname ), "it" ))
+	if( !stricmp( UTIL_FileExtension( songname ), "it" ))
 		return TRACK;
-	if( !_stricmp( UTIL_FileExtension( songname ), "s3m" ))
+	if( !stricmp( UTIL_FileExtension( songname ), "s3m" ))
 		return TRACK;
 	return false;
 }

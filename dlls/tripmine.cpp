@@ -51,7 +51,6 @@ class CTripmineGrenade : public CGrenade
 	void EXPORT BeamBreakThink( void );
 	void EXPORT DelayDeathThink( void );
 	void Killed( entvars_t *pevAttacker, int iGib );
-	void AutoSetSize(void);
 
 	void MakeBeam( void );
 	void KillBeam( void );
@@ -99,20 +98,6 @@ TYPEDESCRIPTION	CTripmineGrenade::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CTripmineGrenade,CGrenade);
 
-void CTripmineGrenade::AutoSetSize(void)
-{
-	studiohdr_t* pstudiohdr = (studiohdr_t*)GET_MODEL_PTR(ENT(pev));
-
-	if (pstudiohdr == NULL)
-	{
-		ALERT(at_console, "Unable to fetch model pointer!\n");
-		return;
-	}
-
-	mstudioseqdesc_t* pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex);
-
-	UTIL_SetSize(pev, pseqdesc[pev->sequence].bbmin, pseqdesc[pev->sequence].bbmax);
-}
 
 void CTripmineGrenade :: Spawn( void )
 {
@@ -123,7 +108,7 @@ void CTripmineGrenade :: Spawn( void )
 
 	SET_MODEL(ENT(pev), "models/w_tripmine.mdl");
 	
-	AutoSetSize();
+	UTIL_AutoSetSize();
 	UTIL_SetOrigin( this, pev->origin );
 
 	if (pev->spawnflags & 1)

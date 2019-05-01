@@ -181,7 +181,7 @@ public:
 	int		m_iStyle; // LRC - almost anything can have a lightstyle these days...
 
 	Vector		m_vecSpawnOffset; // LRC- To fix things which (for example) MoveWith a door which Starts Open.
-	bool		m_activated; // LRC- moved here from func_train. Signifies that an entity has already been
+	BOOL		m_activated; // LRC- moved here from func_train. Signifies that an entity has already been
 										// activated. (and hence doesn't need reactivating.)
 
 	//LRC - decent mechanisms for setting think times!
@@ -229,18 +229,33 @@ public:
 	virtual int		Save( CSave &save );
 	virtual int		Restore( CRestore &restore );
 	//LRC - if I MoveWith something, then only cross transitions if the MoveWith entity does too.
-	virtual int		ObjectCaps( void ) { return m_pMoveWith?m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION:FCAP_ACROSS_TRANSITION; }
+	virtual int	ObjectCaps( void ) { return m_pMoveWith?m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION:FCAP_ACROSS_TRANSITION; }
 	virtual void	Activate( void ); //LRC
-	void			InitMoveWith( void ); //LRC - called by Activate() to set up moveWith values
-	void			SetParent( int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
+	void		InitMoveWith( void ); //LRC - called by Activate() to set up moveWith values
+	void		SetParent( int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
           void		SetParent( CBaseEntity *pParent, int m_iAttachment = 0 );//g-cont. dynamiclly link parents
-	void			ResetParent( void );
-	virtual void	ClearPointers( void ); //g-cont. directly clear all movewith pointer before changelevel
+	void		ResetParent( void );
+	void		ClearPointers( void ); //g-cont. directly clear all movewith pointer before changelevel
 	virtual void	PostSpawn( void ) {} //LRC - called by Activate() to handle entity-specific initialisation.
 	// (mostly setting positions, for MoveWith support)
 
 	// Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
 	virtual void	SetObjectCollisionBox( void );
+
+	void UTIL_AutoSetSize( void )//automatically set collision box
+	{
+		studiohdr_t *pstudiohdr;
+		pstudiohdr = (studiohdr_t*)GET_MODEL_PTR( ENT(pev) );
+
+		if (pstudiohdr == NULL)
+		{
+			ALERT(at_console,"Unable to fetch model pointer!\n");
+			return;
+		}
+		mstudioseqdesc_t    *pseqdesc;
+		pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex);
+		UTIL_SetSize(pev,pseqdesc[ pev->sequence ].bbmin,pseqdesc[ pev->sequence ].bbmax);
+	}
 
 // Classify - returns the type of group (e.g., "alien monster", or "human military" so that monsters
 // on the same side won't attack each other, even if they have different classnames.
@@ -899,7 +914,7 @@ typedef struct _SelAmmo
 } SelAmmo;
 
 //LRC- much as I hate to add new globals, I can't see how to read data from the World entity.
-extern bool g_startSuit;
+extern BOOL g_startSuit;
 
 //LRC- moved here from alias.cpp so that util functions can use these defs.
 class CBaseAlias : public CPointEntity

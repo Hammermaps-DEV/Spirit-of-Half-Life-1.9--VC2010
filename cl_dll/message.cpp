@@ -152,6 +152,7 @@ void CHudMessage::MessageScanNextChar( void )
 	// Fade-in / Fade-out
 	case 0:
 	case 1:
+		destRed = destGreen = destBlue = 0;
 		blend = m_parms.fadeBlend;
 		break;
 

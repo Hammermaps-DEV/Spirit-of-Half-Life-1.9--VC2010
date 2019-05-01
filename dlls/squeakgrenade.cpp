@@ -454,7 +454,7 @@ void CSqueak::Holster( )
 
 void CSqueak::PrimaryAttack()
 {
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
+	if ( m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
 	{
 		UTIL_MakeVectors( m_pPlayer->pev->v_angle );
 		TraceResult tr;

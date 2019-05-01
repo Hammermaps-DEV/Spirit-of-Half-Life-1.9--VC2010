@@ -210,7 +210,7 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 
 		// get the '=' character
 		pFile = gEngfuncs.COM_ParseFile( pFile, token );
-		if ( _stricmp( token, "=" ) )
+		if ( stricmp( token, "=" ) )
 		{
 			if ( currentScheme < 0 )
 			{
@@ -229,7 +229,7 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 		paramValue[tokenSize-1] = 0; // ensure null termination
 		
 		// is this a new scheme?
-		if ( !_stricmp(paramName, "SchemeName") )
+		if ( !stricmp(paramName, "SchemeName") )
 		{
 			// setup the defaults for the current scheme
 			if ( pScheme )
@@ -289,50 +289,50 @@ CSchemeManager::CSchemeManager( int xRes, int yRes )
 		}
 
 		// pull the data out into the scheme
-		if ( !_stricmp(paramName, "FontName") )
+		if ( !stricmp(paramName, "FontName") )
 		{
 			strncpy( pScheme->fontName, paramValue, CScheme::FONT_NAME_LENGTH );
 			pScheme->fontName[CScheme::FONT_NAME_LENGTH-1] = 0;
 		}
-		else if ( !_stricmp(paramName, "FontSize") )
+		else if ( !stricmp(paramName, "FontSize") )
 		{
 			pScheme->fontSize = atoi( paramValue );
 		}
-		else if ( !_stricmp(paramName, "FontWeight") )
+		else if ( !stricmp(paramName, "FontWeight") )
 		{
 			pScheme->fontWeight = atoi( paramValue );
 		}
-		else if ( !_stricmp(paramName, "FgColor") )
+		else if ( !stricmp(paramName, "FgColor") )
 		{
 			ParseRGBAFromString( pScheme->fgColor, paramValue );
 			hasFgColor = true;
 		}
-		else if ( !_stricmp(paramName, "BgColor") )
+		else if ( !stricmp(paramName, "BgColor") )
 		{
 			ParseRGBAFromString( pScheme->bgColor, paramValue );
 			hasBgColor = true;
 		}
-		else if ( !_stricmp(paramName, "FgColorArmed") )
+		else if ( !stricmp(paramName, "FgColorArmed") )
 		{
 			ParseRGBAFromString( pScheme->armedFgColor, paramValue );
 			hasArmedFgColor = true;
 		}	
-		else if ( !_stricmp(paramName, "BgColorArmed") )
+		else if ( !stricmp(paramName, "BgColorArmed") )
 		{
 			ParseRGBAFromString( pScheme->armedBgColor, paramValue );
 			hasArmedBgColor = true;
 		}
-		else if ( !_stricmp(paramName, "FgColorMousedown") )
+		else if ( !stricmp(paramName, "FgColorMousedown") )
 		{
 			ParseRGBAFromString( pScheme->mousedownFgColor, paramValue );
 			hasMouseDownFgColor = true;
 		}
-		else if ( !_stricmp(paramName, "BgColorMousedown") )
+		else if ( !stricmp(paramName, "BgColorMousedown") )
 		{
 			ParseRGBAFromString( pScheme->mousedownBgColor, paramValue );
 			hasMouseDownBgColor = true;
 		}
-		else if ( !_stricmp(paramName, "BorderColor") )
+		else if ( !stricmp(paramName, "BorderColor") )
 		{
 			ParseRGBAFromString( pScheme->borderColor, paramValue );
 			hasMouseDownBgColor = true;
@@ -377,7 +377,7 @@ buildDefaultFont:
 		for ( int j = 0; j < i; j++ )
 		{
 			// check if the font name, size, and weight are the same
-			if ( !_stricmp(m_pSchemeList[i].fontName, m_pSchemeList[j].fontName)  
+			if ( !stricmp(m_pSchemeList[i].fontName, m_pSchemeList[j].fontName)  
 				&& m_pSchemeList[i].fontSize == m_pSchemeList[j].fontSize
 				&& m_pSchemeList[i].fontWeight == m_pSchemeList[j].fontWeight )
 			{
@@ -446,7 +446,7 @@ SchemeHandle_t CSchemeManager::getSchemeHandle( const char *schemeName )
 	// iterate through the list
 	for ( int i = 0; i < m_iNumSchemes; i++ )
 	{
-		if ( !_stricmp(schemeName, m_pSchemeList[i].schemeName) )
+		if ( !stricmp(schemeName, m_pSchemeList[i].schemeName) )
 			return i;
 	}
 

@@ -1056,7 +1056,7 @@ void CStudioModelRenderer::StudioMergeBones ( model_t *m_pSubModel )
 	{
 		for (j = 0; j < m_nCachedBones; j++)
 		{
-			if (_stricmp(pbones[i].name, m_nCachedBoneNames[j]) == 0)
+			if (stricmp(pbones[i].name, m_nCachedBoneNames[j]) == 0)
 			{
 				MatrixCopy( m_rgCachedBoneTransform[j], (*m_pbonetransform)[i] );
 				MatrixCopy( m_rgCachedLightTransform[j], (*m_plighttransform)[i] );

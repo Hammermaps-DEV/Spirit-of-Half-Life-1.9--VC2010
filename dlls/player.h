@@ -148,7 +148,7 @@ public:
 	int					m_bitsHUDDamage;		// Damage bits for the current fame. These get sent to 
 												// the hude via the DAMAGE message
 	BOOL				m_fInitHUD;				// True when deferred HUD restart msg needs to be sent
-	bool				m_fGameHUDInitialized;
+	BOOL				m_fGameHUDInitialized;
 	int					m_iTrain;				// Train control position
 	BOOL				m_fWeapon;				// Set this to FALSE to force a reset of the current weapon HUD info
 
@@ -169,8 +169,6 @@ public:
 	int	m_iFOV;		// field of view
 	int	m_iClientFOV;	// client's known FOV
 
-	Vector m_vecLastViewAngles;
-
 	// usable player items 
 	CBasePlayerItem	*m_rgpPlayerItems[MAX_ITEM_TYPES];
 	CBasePlayerItem *m_pActiveItem;
@@ -184,7 +182,7 @@ public:
 	Vector				m_vecAutoAim;
 	BOOL				m_fOnTarget;
 	int					m_iDeaths;
-	float				m_flDeathAnimationStartTime;	// used in PlayerDeathThink() to make sure players can always respawn
+	float				m_iRespawnFrames;	// used in PlayerDeathThink() to make sure players can always respawn
 
 	int m_lastx, m_lasty;  // These are the previous update's crosshair angles, DON"T SAVE/RESTORE
 
@@ -217,8 +215,6 @@ public:
 
 	virtual BOOL IsNetClient( void ) { return TRUE; }		// Bots should return FALSE for this, they can't receive NET messages
 															// Spectators should return TRUE for this
-	virtual bool IsInGame(void) { return m_fGameHUDInitialized; }
-
 	virtual const char *TeamID( void );
 
 	virtual int		Save( CSave &save );
@@ -228,7 +224,7 @@ public:
 	void RemoveAllItems( BOOL removeSuit );
 	void RemoveItems( int iWeaponMask, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iEgon, int iSatchel, int iSnark, int iTrip, int iGren, int iHornet, int iCycler );
 	void RemoveAmmo( const char* szName, int iAmount );
-	bool SwitchWeapon( CBasePlayerItem *pWeapon );
+	BOOL SwitchWeapon( CBasePlayerItem *pWeapon );
 
 	// JOHN:  sends custom messages if player HUD data has changed  (eg health, ammo)
 	virtual void UpdateClientData( void );
@@ -347,6 +343,6 @@ extern int	gmsgSetBody;
 extern int	gmsgSetSkin;
 extern int	gmsgSetMirror;
 extern int	gmsgFsound;
-extern bool gInitHUD;
+extern BOOL gInitHUD;
 
 #endif // PLAYER_H

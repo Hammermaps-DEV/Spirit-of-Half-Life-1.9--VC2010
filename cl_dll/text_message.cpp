@@ -182,12 +182,12 @@ int CHudTextMessage::MsgFunc_TextMsg( const char *pszName, int iSize, void *pbuf
 	StripEndNewlineFromString( sstr4 );
 	char *psz = szBuf[5];
 
+	if ( gViewPort && gViewPort->AllowedToPrintText() == FALSE )
+		return 1;
+
 	switch ( msg_dest )
 	{
 	case HUD_PRINTCENTER:
-		if (gViewPort && gViewPort->AllowedToPrintText() == FALSE)
-			return 1;
-
 		sprintf( psz, msg_text, sstr1, sstr2, sstr3, sstr4 );
 		CenterPrint( ConvertCRtoNL( psz ) );
 		break;

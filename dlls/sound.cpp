@@ -1569,7 +1569,7 @@ int SENTENCEG_Lookup(const char *sample, char *sentencenum)
 	// this is a sentence name; lookup sentence number
 	// and give to engine as string.
 	for (i = 0; i < gcallsentences; i++)
-		if (!_stricmp(gszallsentencenames[i], sample+1))
+		if (!stricmp(gszallsentencenames[i], sample+1))
 		{
 			if (sentencenum)
 			{
@@ -1715,7 +1715,7 @@ void TEXTURETYPE_Init()
 	char buffer[512];
 	int i, j;
 	byte *pMemFile;
-	int fileSize, filePos = 0;
+	int fileSize, filePos;
 
 	if (fTextureTypeInit)
 		return;

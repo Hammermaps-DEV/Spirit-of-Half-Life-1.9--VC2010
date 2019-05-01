@@ -147,10 +147,7 @@ typedef struct hull_s
 #define CONTENTS_FLYFIELD_GRAVITY	-18
 #define CONTENTS_FOG			-19
 
-#define MAX_STUCKTABLE_ENTRIES	52
-
-static vec3_t rgv3tStuckTable[MAX_STUCKTABLE_ENTRIES];
-static int g_iBigMovesOffsetInStuckTable;
+static vec3_t rgv3tStuckTable[54];
 static int rgStuckLast[MAX_CLIENTS][2];
 
 // Texture names
@@ -185,7 +182,7 @@ void PM_SortTextures( void )
 	{
 		for ( j = i + 1; j < gcTextures; j++ )
 		{
-			if ( _stricmp( grgszTextureName[ i ], grgszTextureName[ j ] ) > 0 )
+			if ( stricmp( grgszTextureName[ i ], grgszTextureName[ j ] ) > 0 )
 			{
 				// Swap
 				//
@@ -200,7 +197,7 @@ void PM_InitTextureTypes()
 	char buffer[512];
 	int i, j;
 	byte *pMemFile;
-	int fileSize, filePos = 0;
+	int fileSize, filePos;
 	static qboolean bTextureTypeInit = false;
 
 	if ( bTextureTypeInit )
@@ -1722,13 +1719,13 @@ Grab a test offset for the player based on a passed in index
 */
 int PM_GetRandomStuckOffsets(int nIndex, int server, vec3_t offset)
 {
-	// Last time we did a full
+ // Last time we did a full
 	int idx;
 	idx = rgStuckLast[nIndex][server]++;
 
-	VectorCopy(rgv3tStuckTable[idx % MAX_STUCKTABLE_ENTRIES], offset);
+	VectorCopy(rgv3tStuckTable[idx % 54], offset);
 
-	return (idx % MAX_STUCKTABLE_ENTRIES);
+	return (idx % 54);
 }
 
 void PM_ResetStuckOffsets(int nIndex, int server)
@@ -1747,12 +1744,13 @@ allow for the cut precision of the net coordinates
 */
 #define PM_CHECKSTUCK_MINTIME 0.05  // Don't check again too quickly.
 
-int PM_CheckStuck(void)
+int PM_CheckStuck (void)
 {
 	vec3_t	base;
 	vec3_t  offset;
 	vec3_t  test;
 	int     hitent;
+	int		idx;
 	float	fTime;
 	int i;
 	pmtrace_t traceresult;
@@ -1760,91 +1758,100 @@ int PM_CheckStuck(void)
 	static float rgStuckCheckTime[MAX_CLIENTS][2]; // Last time we did a full
 
 	// If position is okay, exit
-	hitent = pmove->PM_TestPlayerPosition(pmove->origin, &traceresult);
-	if (hitent == -1)
+	hitent = pmove->PM_TestPlayerPosition (pmove->origin, &traceresult );
+	if (hitent == -1 )
 	{
-		PM_ResetStuckOffsets(pmove->player_index, pmove->server);
+		PM_ResetStuckOffsets( pmove->player_index, pmove->server );
 		return 0;
 	}
 
-	VectorCopy(pmove->origin, base);
+	VectorCopy (pmove->origin, base);
 
+	// 
 	// Deal with precision error in network.
-	// Only an issue on the client.
+	// 
 	if (!pmove->server)
 	{
-		i = 0;
-		do
+		// World or BSP model
+		if ( ( hitent == 0 ) ||
+			 ( pmove->physents[hitent].model != NULL ) )
 		{
-			VectorAdd(base, rgv3tStuckTable[i], test);
-			if (pmove->PM_TestPlayerPosition(test, &traceresult) == -1)
+			int nReps = 0;
+			PM_ResetStuckOffsets( pmove->player_index, pmove->server );
+			do 
 			{
-				PM_ResetStuckOffsets(pmove->player_index, pmove->server);
-				VectorCopy(test, pmove->origin);
-				return 0;
-			}
-			i++;
-		} while (i < g_iBigMovesOffsetInStuckTable);	// test only small oscillations
+				i = PM_GetRandomStuckOffsets(pmove->player_index, pmove->server, offset);
+
+				VectorAdd(base, offset, test);
+				if (pmove->PM_TestPlayerPosition (test, &traceresult ) == -1)
+				{
+					PM_ResetStuckOffsets( pmove->player_index, pmove->server );
+		
+					VectorCopy ( test, pmove->origin );
+					return 0;
+				}
+				nReps++;
+			} while (nReps < 54);
+		}
 	}
 
-	// Check if we are stuck in a satchel (commonly because spawned on it)
-	while ((hitent = pmove->PM_TestPlayerPosition(pmove->origin, NULL)) &&
-		hitent >= 0 && hitent < pmove->numphysent &&
-		!strcmp(pmove->physents[hitent].name, "models/w_satchel.mdl"))
-	{
-		// Remove satchel in which we are stuck from current player move iteration
-		memset(&(pmove->physents[hitent]), 0, sizeof(physent_t));
-	}
-	// If position is okay, exit
-	if (hitent == -1)
-	{
-		PM_ResetStuckOffsets(pmove->player_index, pmove->server);
-		return 0;
-	}
+	// Only an issue on the client.
+
+	if (pmove->server)
+		idx = 0;
+	else
+		idx = 1;
 
 	fTime = pmove->Sys_FloatTime();
 	// Too soon?
-	if (rgStuckCheckTime[pmove->player_index][pmove->server] >= fTime)
+	if (rgStuckCheckTime[pmove->player_index][idx] >= 
+		( fTime - PM_CHECKSTUCK_MINTIME ) )
+	{
 		return 1;
-	rgStuckCheckTime[pmove->player_index][pmove->server] = fTime + PM_CHECKSTUCK_MINTIME;
+	}
+	rgStuckCheckTime[pmove->player_index][idx] = fTime;
 
-	pmove->PM_StuckTouch(hitent, &traceresult);
+	pmove->PM_StuckTouch( hitent, &traceresult );
 
 	i = PM_GetRandomStuckOffsets(pmove->player_index, pmove->server, offset);
+
 	VectorAdd(base, offset, test);
-	if ((hitent = pmove->PM_TestPlayerPosition(test, NULL)) == -1)
+	if ( ( hitent = pmove->PM_TestPlayerPosition ( test, NULL ) ) == -1 )
 	{
 		//Con_DPrintf("Nudged\n");
-		PM_ResetStuckOffsets(pmove->player_index, pmove->server);
-		VectorCopy(test, pmove->origin);
+
+		PM_ResetStuckOffsets( pmove->player_index, pmove->server );
+
+		if (i >= 27)
+			VectorCopy ( test, pmove->origin );
+
 		return 0;
 	}
 
 	// If player is flailing while stuck in another player ( should never happen ), then see
 	//  if we can't "unstick" them forceably.
-	// Seems some rare conditions. Will check this only on server side, cos .player is bugged on clientside or I does't get a clue how it works.
-	if (pmove->server && pmove->cmd.buttons & (IN_JUMP | IN_DUCK | IN_ATTACK) && pmove->physents[hitent].player != 0)
+	if ( pmove->cmd.buttons & ( IN_JUMP | IN_DUCK | IN_ATTACK ) && ( pmove->physents[ hitent ].player != 0 ) )
 	{
 		float x, y, z;
 		float xystep = 8.0;
 		float zstep = 18.0;
 		float xyminmax = xystep;
 		float zminmax = 4 * zstep;
-
-		for (z = 0; z <= zminmax; z += zstep)
+		
+		for ( z = 0; z <= zminmax; z += zstep )
 		{
-			for (x = -xyminmax; x <= xyminmax; x += xystep)
+			for ( x = -xyminmax; x <= xyminmax; x += xystep )
 			{
-				for (y = -xyminmax; y <= xyminmax; y += xystep)
+				for ( y = -xyminmax; y <= xyminmax; y += xystep )
 				{
-					VectorCopy(base, test);
+					VectorCopy( base, test );
 					test[0] += x;
 					test[1] += y;
 					test[2] += z;
 
-					if (pmove->PM_TestPlayerPosition(test, NULL) == -1)
+					if ( pmove->PM_TestPlayerPosition ( test, NULL ) == -1 )
 					{
-						VectorCopy(test, pmove->origin);
+						VectorCopy( test, pmove->origin );
 						return 0;
 					}
 				}
@@ -3287,38 +3294,38 @@ void PM_PlayerMove ( qboolean server )
 	}
 }
 
-void PM_CreateStuckTable(void)
+void PM_CreateStuckTable( void )
 {
 	float x, y, z;
+	int idx;
 	int i;
 	float zi[3];
 
-	memset(rgv3tStuckTable, 0, MAX_STUCKTABLE_ENTRIES * sizeof(vec3_t));
+	memset(rgv3tStuckTable, 0, 54 * sizeof(vec3_t));
 
+	idx = 0;
 	// Little Moves.
-
-	int idx = 0;
-	// Z moves
 	x = y = 0;
-	for (z = -0.125; z <= 0.125; z += 0.250)
+	// Z moves
+	for (z = -0.125 ; z <= 0.125 ; z += 0.125)
 	{
 		rgv3tStuckTable[idx][0] = x;
 		rgv3tStuckTable[idx][1] = y;
 		rgv3tStuckTable[idx][2] = z;
 		idx++;
 	}
-	// Y moves
 	x = z = 0;
-	for (y = -0.125; y <= 0.125; y += 0.250)
+	// Y moves
+	for (y = -0.125 ; y <= 0.125 ; y += 0.125)
 	{
 		rgv3tStuckTable[idx][0] = x;
 		rgv3tStuckTable[idx][1] = y;
 		rgv3tStuckTable[idx][2] = z;
 		idx++;
 	}
-	// X moves
 	y = z = 0;
-	for (x = -0.125; x <= 0.125; x += 0.250)
+	// X moves
+	for (x = -0.125 ; x <= 0.125 ; x += 0.125)
 	{
 		rgv3tStuckTable[idx][0] = x;
 		rgv3tStuckTable[idx][1] = y;
@@ -3326,19 +3333,13 @@ void PM_CreateStuckTable(void)
 		idx++;
 	}
 
-	// idx == 6
 	// Remaining multi axis nudges.
-	for (x = -0.125; x <= 0.125; x += 0.125)
+	for ( x = - 0.125; x <= 0.125; x += 0.250 )
 	{
-		for (y = -0.125; y <= 0.125; y += 0.125)
+		for ( y = - 0.125; y <= 0.125; y += 0.250 )
 		{
-			for (z = -0.125; z <= 0.125; z += 0.125)
+			for ( z = - 0.125; z <= 0.125; z += 0.250 )
 			{
-				if ((x == 0 && y == 0 && z == 0) ||
-					(x == 0 && y == 0) ||
-					(x == 0 && z == 0) ||
-					(y == 0 && z == 0))
-					continue;
 				rgv3tStuckTable[idx][0] = x;
 				rgv3tStuckTable[idx][1] = y;
 				rgv3tStuckTable[idx][2] = z;
@@ -3348,60 +3349,50 @@ void PM_CreateStuckTable(void)
 	}
 
 	// Big Moves.
-	g_iBigMovesOffsetInStuckTable = idx;
-	zi[0] = 0.0;
-	zi[1] = 1.0;
-	zi[2] = 6.0;
-
-	// idx == 26
-	// Y moves
 	x = y = 0;
-	for (i = 1; i < 3; i++)
-	{
-		z = zi[i];
-		rgv3tStuckTable[idx][0] = x;
-		rgv3tStuckTable[idx][1] = y;
-		rgv3tStuckTable[idx][2] = z;
-		idx++;
-	}
+	zi[0] = 0.0f;
+	zi[1] = 1.0f;
+	zi[2] = 6.0f;
 
-	// idx == 28
-	// Y moves
-	x = z = 0;
-	for (y = -2.0; y <= 2.0; y += 4.0)
-	{
-		rgv3tStuckTable[idx][0] = x;
-		rgv3tStuckTable[idx][1] = y;
-		rgv3tStuckTable[idx][2] = z;
-		idx++;
-	}
-
-	// idx == 30
-	// X moves
-	y = z = 0;
-	for (x = -2.0; x <= 2.0; x += 4.0)
-	{
-		rgv3tStuckTable[idx][0] = x;
-		rgv3tStuckTable[idx][1] = y;
-		rgv3tStuckTable[idx][2] = z;
-		idx++;
-	}
-
-	// idx == 32
-	// Remaining multi axis nudges.
 	for (i = 0; i < 3; i++)
 	{
+		// Z moves
 		z = zi[i];
+		rgv3tStuckTable[idx][0] = x;
+		rgv3tStuckTable[idx][1] = y;
+		rgv3tStuckTable[idx][2] = z;
+		idx++;
+	}
 
-		for (x = -2.0; x <= 2.0; x += 2.0)
+	x = z = 0;
+
+	// Y moves
+	for (y = -2.0f ; y <= 2.0f ; y += 2.0)
+	{
+		rgv3tStuckTable[idx][0] = x;
+		rgv3tStuckTable[idx][1] = y;
+		rgv3tStuckTable[idx][2] = z;
+		idx++;
+	}
+	y = z = 0;
+	// X moves
+	for (x = -2.0f ; x <= 2.0f ; x += 2.0f)
+	{
+		rgv3tStuckTable[idx][0] = x;
+		rgv3tStuckTable[idx][1] = y;
+		rgv3tStuckTable[idx][2] = z;
+		idx++;
+	}
+
+	// Remaining multi axis nudges.
+	for (i = 0 ; i < 3; i++)
+	{
+		z = zi[i];
+		
+		for (x = -2.0f ; x <= 2.0f ; x += 2.0f)
 		{
-			for (y = -2.0; y <= 2.0; y += 2.0)
+			for (y = -2.0f ; y <= 2.0f ; y += 2.0)
 			{
-				if ((x == 0 && y == 0 && z == 0) ||
-					(x == 0 && y == 0) ||
-					(x == 0 && z == 0) ||
-					(y == 0 && z == 0))
-					continue;
 				rgv3tStuckTable[idx][0] = x;
 				rgv3tStuckTable[idx][1] = y;
 				rgv3tStuckTable[idx][2] = z;
@@ -3409,10 +3400,9 @@ void PM_CreateStuckTable(void)
 			}
 		}
 	}
-
-	// idx == 52
-	assert(idx == MAX_STUCKTABLE_ENTRIES);
 }
+
+
 
 /*
 This modume implements the shared player physics code between any particular game and 

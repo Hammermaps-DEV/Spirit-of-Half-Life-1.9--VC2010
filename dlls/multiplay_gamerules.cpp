@@ -390,7 +390,9 @@ BOOL CHalfLifeMultiplay :: GetNextBestWeapon( CBasePlayer *pPlayer, CBasePlayerI
 		return FALSE;
 	}
 
-	return pPlayer->SwitchWeapon( pBest );
+	pPlayer->SwitchWeapon( pBest );
+
+	return TRUE;
 }
 
 //=========================================================
@@ -504,12 +506,6 @@ void CHalfLifeMultiplay :: ClientDisconnected( edict_t *pClient )
 					GETPLAYERUSERID( pPlayer->edict() ) );
 			}
 
-			if (pPlayer->m_pTank != NULL)
-			{
-				// Stop controlling the tank
-				pPlayer->m_pTank->Use(pPlayer, pPlayer, USE_OFF, 0);
-			}
-
 			pPlayer->RemoveAllItems( TRUE );// destroy all of the players weapons and items
 		}
 	}
@@ -581,8 +577,6 @@ void CHalfLifeMultiplay :: PlayerSpawn( CBasePlayer *pPlayer )
 		pPlayer->GiveNamedItem( "weapon_9mmhandgun" );
 		pPlayer->GiveAmmo( 68, "9mm", _9MM_MAX_CARRY );// 4 full reloads
 	}
-
-	FireTargets("game_playerspawn", pPlayer, pPlayer, USE_TOGGLE, 0);
 }
 
 //=========================================================
@@ -1550,7 +1544,7 @@ void CHalfLifeMultiplay :: ChangeLevel( void )
 	curplayers = CountPlayers();
 
 	// Has the map cycle filename changed?
-	if ( _stricmp( mapcfile, szPreviousMapCycleFile ) )
+	if ( stricmp( mapcfile, szPreviousMapCycleFile ) )
 	{
 		strcpy( szPreviousMapCycleFile, mapcfile );
 

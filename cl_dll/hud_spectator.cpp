@@ -941,11 +941,11 @@ bool CHudSpectator::ParseOverviewFile( )
 		if (!pfile)
 			break;
 
-		if ( !_stricmp( token, "global" ) )
+		if ( !stricmp( token, "global" ) )
 		{
 			// parse the global data
 			pfile = gEngfuncs.COM_ParseFile(pfile, token);
-			if ( _stricmp( token, "{" ) ) 
+			if ( stricmp( token, "{" ) ) 
 			{
 				gEngfuncs.Con_Printf("Error parsing overview file %s. (expected { )\n", filename );
 				return false;
@@ -953,14 +953,14 @@ bool CHudSpectator::ParseOverviewFile( )
 
 			pfile = gEngfuncs.COM_ParseFile(pfile,token);
 
-			while (_stricmp( token, "}") )
+			while (stricmp( token, "}") )
 			{
-				if ( !_stricmp( token, "zoom" ) )
+				if ( !stricmp( token, "zoom" ) )
 				{
 					pfile = gEngfuncs.COM_ParseFile(pfile,token);
 					m_OverviewData.zoom = atof( token );
 				} 
-				else if ( !_stricmp( token, "origin" ) )
+				else if ( !stricmp( token, "origin" ) )
 				{
 					pfile = gEngfuncs.COM_ParseFile(pfile, token); 
 					m_OverviewData.origin[0] = atof( token );
@@ -969,12 +969,12 @@ bool CHudSpectator::ParseOverviewFile( )
 					pfile = gEngfuncs.COM_ParseFile(pfile, token); 
 					m_OverviewData.origin[2] = atof( token );
 				}
-				else if ( !_stricmp( token, "rotated" ) )
+				else if ( !stricmp( token, "rotated" ) )
 				{
 					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
 					m_OverviewData.rotated = atoi( token );
 				}
-				else if ( !_stricmp( token, "inset" ) )
+				else if ( !stricmp( token, "inset" ) )
 				{
 					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
 					m_OverviewData.insetWindowX = atof( token );
@@ -996,7 +996,7 @@ bool CHudSpectator::ParseOverviewFile( )
 
 			}
 		}
-		else if ( !_stricmp( token, "layer" ) )
+		else if ( !stricmp( token, "layer" ) )
 		{
 			// parse a layer data
 
@@ -1009,7 +1009,7 @@ bool CHudSpectator::ParseOverviewFile( )
 			pfile = gEngfuncs.COM_ParseFile(pfile,token);
 
 				
-			if ( _stricmp( token, "{" ) ) 
+			if ( stricmp( token, "{" ) ) 
 			{
 				gEngfuncs.Con_Printf("Error parsing overview file %s. (expected { )\n", filename );
 				return false;
@@ -1017,16 +1017,16 @@ bool CHudSpectator::ParseOverviewFile( )
 
 			pfile = gEngfuncs.COM_ParseFile(pfile,token);
 
-			while (_stricmp( token, "}") )
+			while (stricmp( token, "}") )
 			{
-				if ( !_stricmp( token, "image" ) )
+				if ( !stricmp( token, "image" ) )
 				{
 					pfile = gEngfuncs.COM_ParseFile(pfile,token);
 					strcpy(m_OverviewData.layersImages[ m_OverviewData.layers ], token);
 					
 					
 				} 
-				else if ( !_stricmp( token, "height" ) )
+				else if ( !stricmp( token, "height" ) )
 				{
 					pfile = gEngfuncs.COM_ParseFile(pfile,token); 
 					height = atof(token);

@@ -715,25 +715,18 @@ int UTIL_MonstersInSphere( CBaseEntity **pList, int listMax, const Vector &cente
 
 CBaseEntity *UTIL_FindEntityInSphere( CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius )
 {
-	CBaseEntity *resultEntity = NULL;
-	edict_t *pentEntity;
+	edict_t	*pentEntity;
 
 	if (pStartEntity)
 		pentEntity = pStartEntity->edict();
 	else
 		pentEntity = NULL;
 
-	while (true)
-	{
-		pentEntity = FIND_ENTITY_IN_SPHERE(pentEntity, vecCenter, flRadius);
-		if (pentEntity == NULL) return NULL;
-		if (FNullEnt(pentEntity)) return NULL;
-		resultEntity = CBaseEntity::Instance(pentEntity);
-		// If we will find edict that doesn't have class we will skip it
-		if (resultEntity != NULL) break;
-	}
+	pentEntity = FIND_ENTITY_IN_SPHERE( pentEntity, vecCenter, flRadius);
 
-	return resultEntity;
+	if (!FNullEnt(pentEntity))
+		return CBaseEntity::Instance(pentEntity);
+	return NULL;
 }
 
 
@@ -1042,14 +1035,14 @@ CBaseEntity *UTIL_FindEntityGeneric( const char *szWhatever, Vector &vecSrc, flo
 // Index is 1 based
 CBaseEntity	*UTIL_PlayerByIndex( int playerIndex )
 {
-	CBasePlayer *pPlayer = NULL;
+	CBaseEntity *pPlayer = NULL;
 
 	if ( playerIndex > 0 && playerIndex <= gpGlobals->maxClients )
 	{
 		edict_t *pPlayerEdict = INDEXENT( playerIndex );
 		if ( pPlayerEdict && !pPlayerEdict->free )
 		{
-			pPlayer = (CBasePlayer *)CBaseEntity::Instance( pPlayerEdict );
+			pPlayer = CBaseEntity::Instance( pPlayerEdict );
 		}
 	}
 	
@@ -1666,9 +1659,10 @@ void UTIL_BloodStream( const Vector &origin, const Vector &direction, int color,
 	if ( !UTIL_ShouldShowBlood( color ) )
 		return;
 
-	if (color == BLOOD_COLOR_RED )
+	if ( g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED )
 		color = 0;
 
+	
 	MESSAGE_BEGIN( MSG_PVS, SVC_TEMPENTITY, origin );
 		WRITE_BYTE( TE_BLOODSTREAM );
 		WRITE_COORD( origin.x );
@@ -1690,7 +1684,7 @@ void UTIL_BloodDrips( const Vector &origin, const Vector &direction, int color, 
 	if ( color == DONT_BLEED || amount == 0 )
 		return;
 
-	if (color == BLOOD_COLOR_RED )
+	if ( g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED )
 		color = 0;
 
 	if ( g_pGameRules->IsMultiplayer() )
@@ -1888,7 +1882,7 @@ BOOL UTIL_TeamsMatch( const char *pTeamName1, const char *pTeamName2 )
 	// Both on a team?
 	if ( *pTeamName1 != 0 && *pTeamName2 != 0 )
 	{
-		if ( !_stricmp( pTeamName1, pTeamName2 ) )	// Same Team?
+		if ( !stricmp( pTeamName1, pTeamName2 ) )	// Same Team?
 			return TRUE;
 	}
 
@@ -2589,7 +2583,7 @@ void EntvarsKeyvalue( entvars_t *pev, KeyValueData *pkvd )
 	{
 		pField = &gEntvarsDescription[i];
 
-		if ( !_stricmp( pField->fieldName, pkvd->szKeyName ) )
+		if ( !stricmp( pField->fieldName, pkvd->szKeyName ) )
 		{
 			switch( pField->fieldType )
 			{
@@ -2837,7 +2831,7 @@ int CRestore::ReadField( void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCou
 	{
 		fieldNumber = (i+startField)%fieldCount;
 		pTest = &pFields[ fieldNumber ];
-		if ( !_stricmp( pTest->fieldName, pName ) )
+		if ( !stricmp( pTest->fieldName, pName ) )
 		{
 			if ( !m_global || !(pTest->flags & FTYPEDESC_GLOBAL) )
 			{

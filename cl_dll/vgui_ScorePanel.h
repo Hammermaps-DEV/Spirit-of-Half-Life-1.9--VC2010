@@ -154,7 +154,7 @@ public:
 		strcpy(buf, text);
 
 		int len = strlen(buf);
-		for (int i = len - 1; i >= 0 && (unsigned char)buf[i] < (unsigned char)0x80 && isspace(buf[i]); i--)
+		while (len && isspace(buf[--len]))
 		{
 			buf[len] = 0;
 		}

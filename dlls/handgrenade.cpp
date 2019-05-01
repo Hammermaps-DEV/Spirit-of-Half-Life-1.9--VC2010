@@ -104,7 +104,7 @@ void CHandGrenade::Holster( )
 {
 	m_pPlayer->m_flNextAttack = UTIL_WeaponTimeBase() + 0.5;
 
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
+	if ( m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
 		SendWeaponAnim( HANDGRENADE_HOLSTER );
 	else
 	{
@@ -136,7 +136,7 @@ void CHandGrenade::WeaponIdle( void )
 		// we've finished the throw, restart.
 		m_flStartThrow = 0;
 		m_iChargeLevel = 0;
-		if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
+		if ( m_pPlayer->m_rgAmmo[ m_iPrimaryAmmoType ] )
 			SendWeaponAnim( HANDGRENADE_DRAW );
 		else
 		{

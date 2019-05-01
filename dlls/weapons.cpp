@@ -331,7 +331,7 @@ void AddAmmoNameToAmmoRegistry( const char *szAmmoname )
 		if ( !CBasePlayerItem::AmmoInfoArray[i].pszName)
 			continue;
 
-		if ( _stricmp( CBasePlayerItem::AmmoInfoArray[i].pszName, szAmmoname ) == 0 )
+		if ( stricmp( CBasePlayerItem::AmmoInfoArray[i].pszName, szAmmoname ) == 0 )
 			return; // ammo already in registry, just quite
 	}
 
@@ -405,7 +405,6 @@ void W_Precache(void)
 
 	// common world objects
 	UTIL_PrecacheOther( "item_suit" );
-	UTIL_PrecacheOther( "item_healthkit" );
 	UTIL_PrecacheOther( "item_battery" );
 	UTIL_PrecacheOther( "item_antidote" );
 	UTIL_PrecacheOther( "item_security" );
@@ -427,7 +426,6 @@ void W_Precache(void)
 	UTIL_PrecacheOtherWeapon( "weapon_9mmAR" );
 	UTIL_PrecacheOther( "ammo_9mmAR" );
 	UTIL_PrecacheOther( "ammo_ARgrenades" );
-	UTIL_PrecacheOther( "ammo_9mmbox" );
 
 	// python
 	UTIL_PrecacheOtherWeapon( "weapon_357" );
@@ -853,7 +851,9 @@ int CBasePlayerItem::AddToPlayer( CBasePlayer *pPlayer )
 
 void CBasePlayerItem::Drop( void )
 {
-	Kill();
+	SetTouch( NULL );
+	SetThink(&CBasePlayerItem::SUB_Remove);
+	SetNextThink( 0.1 );
 }
 
 void CBasePlayerItem::Kill( void )
@@ -878,7 +878,7 @@ void CBasePlayerItem::AttachToPlayer ( CBasePlayer *pPlayer )
 	pev->modelindex = 0;// server won't send down to clients if modelindex == 0
 	pev->model = iStringNull;
 	pev->owner = pPlayer->edict();
-	DontThink();
+	SetNextThink( 0 );
 	SetTouch( NULL );
 	SetThink(NULL);
 }
@@ -1076,11 +1076,11 @@ BOOL CBasePlayerWeapon :: CanDeploy( void )
 
 	if ( pszAmmo1() )
 	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0);
+		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] != 0);
 	}
 	if ( pszAmmo2() )
 	{
-		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] > 0);
+		bHasAmmo |= (m_pPlayer->m_rgAmmo[m_iSecondaryAmmoType] != 0);
 	}
 	if (m_iClip > 0)
 	{
@@ -1312,7 +1312,7 @@ void CBasePlayerAmmo :: DefaultTouch( CBaseEntity *pOther )
 //=========================================================
 int CBasePlayerWeapon::ExtractAmmo( CBasePlayerWeapon *pWeapon )
 {
-	int	iReturn = 0;
+	int			iReturn;
 
 	if ( pszAmmo1() != NULL )
 	{
@@ -1640,7 +1640,7 @@ int CWeaponBox::GiveAmmo( int iCount, char *szName, int iMax, int *pIndex/* = NU
 
 	for (i = 1; i < MAX_AMMO_SLOTS && !FStringNull( m_rgiszAmmo[i] ); i++)
 	{
-		if (_stricmp( szName, STRING( m_rgiszAmmo[i])) == 0)
+		if (stricmp( szName, STRING( m_rgiszAmmo[i])) == 0)
 		{
 			if (pIndex)
 				*pIndex = i;
