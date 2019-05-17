@@ -347,19 +347,19 @@
     <ClCompile Include="..\game_shared\vgui_helpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\pm_shared\pm_debug.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\pm_shared\pm_math.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\pm_shared\pm_shared.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\game_shared\vgui_loadtga.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\game_shared\vgui_listbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pm_shared\pm_debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pm_shared\pm_math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pm_shared\pm_shared.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -27,41 +27,32 @@
 #include "hltv.h"
 #include "studio.h"
 
-// Spectator Mode
-extern "C" 
-{
-	float	vecNewViewAngles[3];
-	int		iHasNewViewAngles;
-	float	vecNewViewOrigin[3];
-	int		iHasNewViewOrigin;
-	int		iIsSpectator;
-}
-
 #ifndef M_PI
 #define M_PI		3.14159265358979323846	// matches value in gcc v2 math.h
 #endif
 
-extern "C" 
+extern "C"
 {
-	int CL_IsThirdPerson( void );
-	void CL_CameraOffset( float *ofs );
+	int CL_IsThirdPerson(void);
+	void CL_CameraOffset(float *ofs);
 
-	void DLLEXPORT V_CalcRefdef( struct ref_params_s *pparams );
+	void DLLEXPORT V_CalcRefdef(struct ref_params_s *pparams);
 
-	void PM_ParticleLine( float *start, float *end, int pcolor, float life, float vert);
-	int		PM_GetVisEntInfo( int ent );
-	int		PM_GetPhysEntInfo( int ent );
-	void	InterpolateAngles(  float * start, float * end, float * output, float frac );
-	void	NormalizeAngles( float * angles );
-	float	Distance(const float * v1, const float * v2);
-	float	AngleBetweenVectors(  const float * v1,  const float * v2 );
-
-	float	vJumpOrigin[3];
-	float	vJumpAngles[3];
+	void PM_ParticleLine(float *start, float *end, int pcolor, float life, float vert);
 }
 
-void V_DropPunchAngle ( float frametime, float *ev_punchangle );
-void VectorAngles( const float *forward, float *angles );
+extern float AngleBetweenVectors(const float* v1, const float* v2);
+extern void NormalizeAngles(float* angles);
+extern void InterpolateAngles(float* start, float* end, float* output, float frac);
+extern int	PM_GetVisEntInfo(int ent);
+extern int PM_GetPhysEntInfo(int ent);
+extern float Distance(const float * v1, const float * v2);
+
+extern float vJumpOrigin[3];
+extern float vJumpAngles[3];
+
+void V_DropPunchAngle(float frametime, float *ev_punchangle);
+void VectorAngles(const float *forward, float *angles);
 
 #include "r_studioint.h"
 #include "com_model.h"

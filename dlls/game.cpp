@@ -441,7 +441,8 @@ void GameDLLInit(void)
 	REGISTER_SKILL_CVARS(player_leg);
 
 	// END REGISTER CVARS FOR SKILL LEVEL STUFF
-
 	SERVER_COMMAND("exec skill.cfg\n");
+	SERVER_COMMAND("exec skill_opfor.cfg\n"); // Opposing-Force
+	SERVER_COMMAND("exec skill_hitgroups.cfg\n"); // Hitgroups
 }
 

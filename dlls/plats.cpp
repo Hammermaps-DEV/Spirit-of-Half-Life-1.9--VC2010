@@ -34,12 +34,12 @@ static void PlatSpawnInsideTrigger(entvars_t* pevPlatform);
 // No idea why windows does not pick that up, in fact
 // MSVC will complain it's not delcared if you use extern...
 #ifdef _WIN32
-int nanmask = 255 << 23;
+int nanmask_dll = 255 << 23;
+#define	IS_NAN(x) (((*(int *)&x)&nanmask_dll)==nanmask_dll)
 #else
 extern int nanmask;
-#endif
-
 #define	IS_NAN(x) (((*(int *)&x)&nanmask)==nanmask)
+#endif
 
 static float Fix(float angle)
 {

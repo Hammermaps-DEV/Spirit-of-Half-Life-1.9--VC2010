@@ -44,7 +44,7 @@ extern DLL_GLOBAL	BOOL	g_fDrawLines;
 extern DLL_GLOBAL	short	g_sModelIndexLaser;// holds the index for the laser beam
 extern DLL_GLOBAL	short	g_sModelIndexLaserDot;// holds the index for the laser beam dot
 
-extern "C" char PM_FindTextureType(char *name);
+extern char PM_FindTextureType(char *name);
 
 extern CGraph WorldGraph;// the world node graph
 

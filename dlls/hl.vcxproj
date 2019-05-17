@@ -12,9 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\game_shared\voice_gamemgr.cpp" />
-    <ClCompile Include="..\pm_shared\pm_debug.c" />
-    <ClCompile Include="..\pm_shared\pm_math.c" />
-    <ClCompile Include="..\pm_shared\pm_shared.c" />
+    <ClCompile Include="..\pm_shared\pm_debug.cpp" />
+    <ClCompile Include="..\pm_shared\pm_math.cpp" />
+    <ClCompile Include="..\pm_shared\pm_shared.cpp" />
     <ClCompile Include="aflock.cpp" />
     <ClCompile Include="agrunt.cpp" />
     <ClCompile Include="airtank.cpp" />

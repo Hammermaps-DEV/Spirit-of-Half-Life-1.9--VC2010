@@ -18,11 +18,10 @@
 
 struct skilldata_t
 {
-
 	int iSkillLevel; // game skill level
 
 // Monster Health & Damage
-	float	agruntHealth;
+	float agruntHealth;
 	float agruntDmgPunch;
 
 	float apacheHealth;
@@ -100,7 +99,6 @@ struct skilldata_t
 	float turretHealth;
 	float miniturretHealth;
 	float sentryHealth;
-
 
 	// Player Weapons
 	float plrDmgCrowbar;
