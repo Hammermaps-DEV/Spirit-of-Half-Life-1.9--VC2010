@@ -53,6 +53,9 @@ extern int gmsgSayText;
 extern int gmsgHUDColor;
 extern int gmsgCamData; // for trigger_viewset
 
+extern cvar_t bhopcap;
+extern int g_bhopcap;
+
 extern int g_teamplay;
 DLL_GLOBAL int g_serveractive = 0;
 void LinkUserMessages(void);
@@ -1603,6 +1606,8 @@ void CmdStart(const edict_t *player, const struct usercmd_s *cmd, unsigned int r
 	}
 
 	pl->random_seed = random_seed;
+
+	g_bhopcap = (gpGlobals->maxClients > 1 && bhopcap.value != 0.0f) ? 1 : 0;
 }
 
 /*

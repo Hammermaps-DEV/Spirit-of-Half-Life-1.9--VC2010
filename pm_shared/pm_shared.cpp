@@ -156,6 +156,7 @@ static char grgszTextureName[CTEXTURESMAX][CBTEXTURENAMEMAX];
 static char grgchTextureType[CTEXTURESMAX];
 
 int g_onladder = 0;
+int g_bhopcap = 1;
 
 void PM_SwapTextures(int i, int j)
 {
@@ -2651,7 +2652,8 @@ void PM_Jump(void)
 	// In the air now.
 	pmove->onground = -1;
 
-	PM_PreventMegaBunnyJumping();
+	if (g_bhopcap)
+		PM_PreventMegaBunnyJumping();
 
 	if (tfc)
 	{
