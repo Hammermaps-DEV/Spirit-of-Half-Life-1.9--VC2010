@@ -57,7 +57,9 @@ enum crowbar_e {
 	CROWBAR_ATTACK2MISS,
 	CROWBAR_ATTACK2HIT,
 	CROWBAR_ATTACK3MISS,
-	CROWBAR_ATTACK3HIT
+	CROWBAR_ATTACK3HIT,
+	CROWBAR_IDLE2,
+	CROWBAR_IDLE3
 };
 
 
@@ -171,7 +173,6 @@ void FindHullIntersection(const Vector &vecSrc, TraceResult &tr, float *mins, fl
 	}
 }
 
-
 void CCrowbar::PrimaryAttack()
 {
 	if (!Swing(TRUE)) Swing(FALSE);
@@ -207,14 +208,15 @@ int CCrowbar::Swing(int fFirst)
 		{
 			// Calculate the point of intersection of the line (or hull) and the object we hit
 			// This is and approximation of the "best" intersection
-			CBaseEntity *pHit = CBaseEntity::Instance(tr.pHit);
+			CBaseEntity *pHit = Instance(tr.pHit);
 			if (!pHit || pHit->IsBSPModel())
 				FindHullIntersection(vecSrc, tr, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX, m_pPlayer->edict());
 			vecEnd = tr.vecEndPos;	// This is the point on the actual surface (the hull could have hit space)
 		}
 	}
 
-	if (tr.flFraction >= 1.0 && fFirst) m_pPlayer->SetAnimation(PLAYER_ATTACK1);
+	if (tr.flFraction >= 1.0 && fFirst) 
+		m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 	else
 	{
 		// player "shoot" animation
@@ -222,7 +224,7 @@ int CCrowbar::Swing(int fFirst)
 
 		// hit
 		fDidHit = TRUE;
-		CBaseEntity *pEntity = CBaseEntity::Instance(tr.pHit);
+		CBaseEntity *pEntity = Instance(tr.pHit);
 
 		ClearMultiDamage();
 
@@ -232,7 +234,6 @@ int CCrowbar::Swing(int fFirst)
 
 		// play thwack, smack, or dong sound
 		float flVol = 1.0;
-		int fHitWorld = TRUE;
 
 		if (pEntity)
 		{
@@ -243,28 +244,40 @@ int CCrowbar::Swing(int fFirst)
 				if (!pEntity->IsAlive())
 					m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 				else flVol = 0.1;
-				fHitWorld = FALSE;
 			}
 		}
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
 		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.25;
 		m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.2;
+		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
 	}
 
 	PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usCrowbar, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, 0, 0, pev->body, fFirst, bHit, 0);
 	return fDidHit;
 }
 
-void CCrowbar::WeaponIdle(void)
+void CCrowbar::WeaponIdle()
 {
-	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase()) return;
-	float flRand = RANDOM_FLOAT(0, 1);
-	if (flRand <= 0.5)
+	if (m_flTimeWeaponIdle > UTIL_GlobalTimeBase())
+		return;
+
+	int iAnim = 0;
+	float flAnimTime = 5.34; // Only CROWBAR_IDLE has a different time
+	switch (RANDOM_LONG(0, 2))
 	{
-		SendWeaponAnim(CROWBAR_IDLE);
-		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
+	case 0:
+		iAnim = CROWBAR_IDLE;
+		flAnimTime = 2.7;
+		break;
+	case 1:
+		iAnim = CROWBAR_IDLE2;
+		break;
+	case 2:
+		iAnim = CROWBAR_IDLE3;
+		break;
 	}
+
+	SendWeaponAnim(iAnim);
+
+	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + flAnimTime;
 }
-
-
-

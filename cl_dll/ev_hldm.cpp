@@ -425,7 +425,7 @@ void EV_HLDM_FindHullIntersection( int idx, vec3_t vecSrc, pmtrace_t pTrace, flo
 				
 				if ( tmpTrace.fraction < 1.0 )
 				{
-					float thisDistance = (tmpTrace.endpos - vecSrc).Length();
+					float thisDistance = Vector(tmpTrace.endpos - vecSrc).Length();
 					if ( thisDistance < distance )
 					{
 						pTrace = tmpTrace;
@@ -724,7 +724,9 @@ enum crowbar_e {
 	CROWBAR_ATTACK2MISS,
 	CROWBAR_ATTACK2HIT,
 	CROWBAR_ATTACK3MISS,
-	CROWBAR_ATTACK3HIT
+	CROWBAR_ATTACK3HIT,
+	CROWBAR_IDLE2,
+	CROWBAR_IDLE3
 };
 
 int g_iSwing;
