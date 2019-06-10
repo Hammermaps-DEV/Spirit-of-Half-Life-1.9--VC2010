@@ -72,7 +72,7 @@ public:
 
 	int m_iTrail;
 	float m_flIgniteTime;
-	CRpg *m_pLauncher;// pointer back to the launcher that fired me. 
+	EHANDLE m_hLauncher;// handle back to the launcher that fired me. 
 	BOOL b_setup;
 };
 
@@ -93,8 +93,8 @@ CRpgRocket *CRpgRocket::Create(Vector vecOrigin, Vector vecAngles, CBaseEntity *
 	pRocket->pev->angles = vecAngles;
 	pRocket->Spawn();
 	pRocket->SetTouch(&CRpgRocket::RocketTouch);
-	pRocket->m_pLauncher = pLauncher;// remember what RPG fired me. 
-	pRocket->m_pLauncher->m_iChargeLevel++;// register this missile as active for the launcher
+	pRocket->m_hLauncher = pLauncher;// remember what RPG fired me. 
+	pLauncher->m_iChargeLevel++;// register this missile as active for the launcher
 	pRocket->pev->owner = pOwner->edict();
 
 	return pRocket;
@@ -103,7 +103,7 @@ CRpgRocket *CRpgRocket::Create(Vector vecOrigin, Vector vecAngles, CBaseEntity *
 TYPEDESCRIPTION	CRpgRocket::m_SaveData[] =
 {
 	DEFINE_FIELD(CRpgRocket, m_flIgniteTime, FIELD_TIME),
-	DEFINE_FIELD(CRpgRocket, m_pLauncher, FIELD_CLASSPTR),
+	DEFINE_FIELD(CRpgRocket, m_hLauncher, FIELD_EHANDLE),
 };
 IMPLEMENT_SAVERESTORE(CRpgRocket, CGrenade);
 
@@ -137,11 +137,11 @@ void CRpgRocket::Spawn(void)
 void CRpgRocket::RocketTouch(CBaseEntity *pOther)
 {
 	CBaseEntity *pPlayer = CBaseEntity::Instance(pev->owner);
-	if (m_pLauncher)
+	if (CRpg* pLauncher = static_cast<CRpg*>(static_cast<CBaseEntity*>(m_hLauncher)))
 	{
 		// my launcher is still around, tell it I'm dead.
-		m_pLauncher->m_iChargeLevel--;
-		if (m_pLauncher->m_pSpot)//make sound only if laser spot created
+		pLauncher->m_iChargeLevel--;
+		if (pLauncher->m_pSpot)//make sound only if laser spot created
 			EMIT_SOUND(pPlayer->edict(), CHAN_ITEM, "weapons/beep2.wav", 1, ATTN_NORM);//play sound at player
 	}
 	STOP_SOUND(edict(), CHAN_VOICE, "weapons/rocket1.wav");
@@ -153,11 +153,11 @@ void CRpgRocket::Detonate(void)
 	TraceResult tr;
 	Vector		vecSpot;// trace starts here!
 	CBaseEntity *pPlayer = CBaseEntity::Instance(pev->owner);
-	if (m_pLauncher)
+	if (CRpg* pLauncher = static_cast<CRpg*>(static_cast<CBaseEntity*>(m_hLauncher)))
 	{
 		// my launcher is still around, tell it I'm dead.
-		m_pLauncher->m_iChargeLevel--;
-		if (m_pLauncher->m_pSpot)//make sound only if laser spot created
+		pLauncher->m_iChargeLevel--;
+		if (pLauncher->m_pSpot)//make sound only if laser spot created
 			EMIT_SOUND(pPlayer->edict(), CHAN_ITEM, "weapons/beep2.wav", 1, ATTN_NORM);//play sound at player
 	}
 	STOP_SOUND(edict(), CHAN_VOICE, "weapons/rocket1.wav");
