@@ -2552,13 +2552,12 @@ float	CBaseMonster::FlYawDiff(void)
 //=========================================================
 float CBaseMonster::ChangeYaw(int yawSpeed)
 {
-	float		ideal, current, move, speed;
+	float ideal, current, move, speed;
 
 	current = UTIL_AngleMod(pev->angles.y);
 	ideal = pev->ideal_yaw;
 	if (current != ideal)
 	{
-		//speed = (float)yawSpeed * gpGlobals->frametime * 10;
 		float delta = gpGlobals->time - m_flLastYawTime;
 
 		//Clamp delta like the engine does with frametime
