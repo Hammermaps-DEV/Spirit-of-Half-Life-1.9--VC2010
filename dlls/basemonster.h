@@ -104,6 +104,8 @@ public:
 
 	Vector				m_HackedGunPos;	// HACK until we can query end of gun
 
+	float               m_flLastYawTime; // Fix for higher FPS NPC yaw speed
+
 // Scripted sequence Info
 	SCRIPTSTATE			m_scriptState;		// internal cinematic state
 	CCineMonster		*m_pCine;
