@@ -3167,6 +3167,10 @@ int CBasePlayer::Restore(CRestore &restore)
 	}
 
 	RenewItems();
+
+	//Resync ammo data so you can reload - Solokiller
+	TabulateAmmo();
+
 	return status;
 }
 
