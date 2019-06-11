@@ -277,7 +277,14 @@ void DecalGunshot(TraceResult *pTrace, int iBulletType)
 	}
 }
 
-
+//
+// WeaponFlash - tosses a brass shell from passed origin at passed velocity
+//
+void WeaponFlash(const Vector &vecOrigin)
+{
+	const int m_iRadius = RANDOM_FLOAT(16, 12);
+	UTIL_DynamicMuzzleFlash(vecOrigin, m_iRadius, 255, 255, 128, 0.01, 0);
+}
 
 //
 // EjectBrass - tosses a brass shell from passed origin at passed velocity

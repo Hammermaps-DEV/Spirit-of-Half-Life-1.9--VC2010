@@ -608,6 +608,7 @@ void UTIL_UnsetGroupTrace(void);
 int UTIL_SharedRandomLong(unsigned int seed, int low, int high);
 float UTIL_SharedRandomFloat(unsigned int seed, float low, float high);
 float UTIL_GlobalTimeBase(void);
+void UTIL_DynamicMuzzleFlash(const Vector &vecShootOrigin, float radius, int colorR, int colorG, int colorB, float time, float decay);
 
 int GetStdLightStyle(int iStyle); //LRC- declared here so it can be used by everything that
 									// needs to deal with the standard lightstyles.

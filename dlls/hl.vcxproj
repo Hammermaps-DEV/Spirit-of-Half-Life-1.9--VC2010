@@ -23,7 +23,7 @@
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="apache.cpp" />
     <ClCompile Include="barnacle.cpp" />
-    <ClCompile Include="barney.cpp" />
+    <ClCompile Include="monster_barney.cpp" />
     <ClCompile Include="bigmomma.cpp" />
     <ClCompile Include="bloater.cpp" />
     <ClCompile Include="bmodels.cpp" />
@@ -75,6 +75,7 @@
     <ClCompile Include="monstermaker.cpp" />
     <ClCompile Include="monsters.cpp" />
     <ClCompile Include="monsterstate.cpp" />
+    <ClCompile Include="monster_barney_dead.cpp" />
     <ClCompile Include="monster_zombie.cpp" />
     <ClCompile Include="mortar.cpp" />
     <ClCompile Include="movewith.cpp" />

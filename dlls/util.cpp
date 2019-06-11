@@ -2982,7 +2982,6 @@ int CRestore::ReadEntVars(const char *pname, entvars_t *pev)
 	return ReadFields(pname, pev, gEntvarsDescription, ENTVARS_COUNT);
 }
 
-
 int CRestore::ReadFields(const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount)
 {
 	unsigned short	i, token;
@@ -3271,4 +3270,24 @@ Vector UTIL_MirrorPos(Vector endpos)
 		pFind = FIND_ENTITY_BY_CLASSNAME(pFind, "env_mirror");
 	}
 	return mirpos;
+}
+
+//=========================================================
+// Simple way of adding muzzle flashes to ENTITIES NOT PLAYERS
+//=========================================================
+void UTIL_DynamicMuzzleFlash(const Vector &vecShootOrigin, float radius, int colorR, int colorG, int colorB, float time, float decay)
+{
+	//Suggested Defaults for gun muzzleflashes in comments.
+	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, vecShootOrigin);
+	WRITE_BYTE(TE_DLIGHT);
+	WRITE_COORD(vecShootOrigin.x);	// X = vecShootOrigin.x
+	WRITE_COORD(vecShootOrigin.y);	// Y = vecShootOrigin.y
+	WRITE_COORD(vecShootOrigin.z);	// Z = vecShootOrigin.z
+	WRITE_BYTE(radius);		// radius * 0.1 Suggested 35
+	WRITE_BYTE(colorR);		// R  Suggested 255
+	WRITE_BYTE(colorG);		// G  Suggested 255
+	WRITE_BYTE(colorB);		// B  Suggested 128
+	WRITE_BYTE(time);		// time * 10 = Suggested 1
+	WRITE_BYTE(decay);		// decay * 0.1 - Suggested 00.1
+	MESSAGE_END();
 }

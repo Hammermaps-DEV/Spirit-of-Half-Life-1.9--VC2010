@@ -45,9 +45,6 @@
     <ClCompile Include="barnacle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="barney.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bigmomma.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -338,6 +335,12 @@
     </ClCompile>
     <ClCompile Include="..\pm_shared\pm_shared.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="monster_barney.cpp">
+      <Filter>Source Files\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="monster_barney_dead.cpp">
+      <Filter>Source Files\NPCs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
