@@ -83,7 +83,6 @@ public:
 	BOOL	m_lastAttackCheck;
 
 	int	 m_iBrassShell; // used for ejecting shells
-	int	 m_iEmptyMag; // will eject out empty magazines on reload
 
 	// UNDONE: What is this for?  It isn't used?
 	float	m_flPlayerDamage;// how much pain has the player inflicted on me?
