@@ -547,7 +547,6 @@ void CBarney::Precache()
 	PRECACHE_SOUND("barney/ba_reload1.wav");
 
 	m_iBrassShell = PRECACHE_MODEL("models/shell.mdl");
-	m_iEmptyMag = PRECACHE_MODEL("models/w_9mmclip.mdl");
 
 	// every new barney must call this, otherwise
 	// when a level is loaded, nobody will talk (time is reset to 0)
