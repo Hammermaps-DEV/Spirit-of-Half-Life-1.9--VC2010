@@ -265,7 +265,7 @@ public:
 	BOOL MoveToEnemy(Activity movementAct, float waitTime);
 
 	// Returns the time when the door will be open
-	float	OpenDoorAndWait(entvars_t *pevDoor);
+	float OpenDoorAndWait(CBaseEntity* pDoor);
 
 	virtual int ISoundMask(void);
 	virtual CSound* PBestSound(void);

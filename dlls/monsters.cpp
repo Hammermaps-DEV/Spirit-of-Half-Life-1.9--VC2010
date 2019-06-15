@@ -48,8 +48,6 @@ extern char PM_FindTextureType(char *name);
 
 extern CGraph WorldGraph;// the world node graph
 
-
-
 // Global Savedata for monster
 // UNDONE: Save schedule data?  Can this be done?  We may
 // lose our enemy pointer or other data (goal ent, target, etc)
@@ -133,6 +131,7 @@ int CBaseMonster::Restore(CRestore &restore)
 {
 	if (!CBaseToggle::Restore(restore))
 		return 0;
+
 	int status = restore.ReadFields("CBaseMonster", this, m_SaveData, HL_ARRAYSIZE(m_SaveData));
 
 	// We don't save/restore routes yet
@@ -236,6 +235,12 @@ void CBaseMonster::Listen(void)
 	while (iSound != SOUNDLIST_EMPTY)
 	{
 		pCurrentSound = CSoundEnt::SoundPointerForIndex(iSound);
+
+		if (!pCurrentSound)
+		{
+			ALERT(at_console, "CBaseMonster::Listen: NULL sound pointer!\n");
+			break;
+		}
 
 		if (pCurrentSound &&
 			(pCurrentSound->m_iType & iMySounds) &&
@@ -522,8 +527,6 @@ CSound* CBaseMonster::PBestScent(void)
 	return NULL;
 }
 
-
-
 //=========================================================
 // Monster Think - calls out to core AI functions and handles this
 // monster's specific animation events
@@ -651,11 +654,10 @@ BOOL CBaseMonster::FRefreshRoute(void)
 {
 	CBaseEntity	*pPathCorner;
 	int			i;
-	BOOL		returnCode;
 
 	RouteNew();
 
-	returnCode = FALSE;
+	BOOL returnCode = FALSE;
 
 	switch (m_movementGoal)
 	{
@@ -1411,37 +1413,36 @@ int CBaseMonster::CheckLocalMove(const Vector &vecStart, const Vector &vecEnd, C
 }
 
 
-float CBaseMonster::OpenDoorAndWait(entvars_t *pevDoor)
+float CBaseMonster::OpenDoorAndWait(CBaseEntity* pDoor)
 {
 	float flTravelTime = 0;
 
 	//ALERT(at_aiconsole, "A door. ");
-	CBaseEntity *pcbeDoor = CBaseEntity::Instance(pevDoor);
-	if (pcbeDoor && !pcbeDoor->IsLockedByMaster())
+	if (pDoor && !pDoor->IsLockedByMaster())
 	{
 		//ALERT(at_aiconsole, "unlocked! ");
-		pcbeDoor->Use(this, this, USE_ON, 0.0);
+		pDoor->Use(this, this, USE_ON, 0.0);
 		//ALERT(at_aiconsole, "pevDoor->nextthink = %d ms\n", (int)(1000*pevDoor->nextthink));
 		//ALERT(at_aiconsole, "pevDoor->ltime = %d ms\n", (int)(1000*pevDoor->ltime));
 		//ALERT(at_aiconsole, "pev-> nextthink = %d ms\n", (int)(1000*pev->nextthink));
 		//ALERT(at_aiconsole, "pev->ltime = %d ms\n", (int)(1000*pev->ltime));
 
-		flTravelTime = pcbeDoor->m_fNextThink - pevDoor->ltime;
+		flTravelTime = pDoor->m_fNextThink - pDoor->pev->ltime;
 
 		//ALERT(at_aiconsole, "Waiting %d ms\n", (int)(1000*flTravelTime));
-		if (pcbeDoor->pev->targetname)
-		{
-			CBaseEntity *pTarget = NULL;
-			for (;;)
-			{
-				pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pcbeDoor->pev->targetname));
-				if (!pTarget)
-					break;
 
-				if (VARS(pTarget->pev) != pcbeDoor->pev &&
-					FClassnameIs(pTarget->pev, STRING(pcbeDoor->pev->classname)))
+		if (pDoor->pev->targetname)
+		{
+			CBaseEntity* pTarget = NULL;
+			while ((pTarget = UTIL_FindEntityByTargetname(pTarget, STRING(pDoor->pev->targetname))) != NULL)
+			{
+				if (pTarget != pDoor)
 				{
-					pTarget->Use(this, this, USE_ON, 0.0);
+					if (VARS(pTarget->pev) != pDoor->pev &&
+						FClassnameIs(pTarget->pev, STRING(pDoor->pev->classname)))
+					{
+						pDoor->Use(this, this, USE_ON, 0.0);
+					}
 				}
 			}
 		}
@@ -1449,7 +1450,6 @@ float CBaseMonster::OpenDoorAndWait(entvars_t *pevDoor)
 
 	return gpGlobals->time + flTravelTime;
 }
-
 
 //=========================================================
 // AdvanceRoute - poorly named function that advances the 
@@ -1494,11 +1494,13 @@ void CBaseMonster::AdvanceRoute(float distance)
 					if (WorldGraph.HandleLinkEnt(iSrcNode, WorldGraph.m_pLinkPool[iLink].m_pLinkEnt, m_afCapability, CGraph::NODEGRAPH_DYNAMIC))
 					{
 						//ALERT(at_aiconsole, "usable.");
-						entvars_t *pevDoor = WorldGraph.m_pLinkPool[iLink].m_pLinkEnt;
-						if (pevDoor)
+						if (entvars_t *pevDoor = WorldGraph.m_pLinkPool[iLink].m_pLinkEnt)
 						{
-							m_flMoveWaitFinished = OpenDoorAndWait(pevDoor);
-							//							ALERT( at_aiconsole, "Wating for door %.2f\n", m_flMoveWaitFinished-gpGlobals->time );
+							if (auto pDoor = Instance(pevDoor))
+							{
+								m_flMoveWaitFinished = OpenDoorAndWait(pDoor);
+								//ALERT( at_aiconsole, "Wating for door %.2f\n", m_flMoveWaitFinished-gpGlobals->time );
+							}
 						}
 					}
 				}
