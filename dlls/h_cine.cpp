@@ -201,7 +201,7 @@ void CCineBlood::BloodGush(void)
 
 	UTIL_MakeVectors(pev->angles);
 	if (pev->health-- < 0)
-		REMOVE_ENTITY(ENT(pev));
+		UTIL_RemoveNow(this);
 	// CHANGE_METHOD ( ENT(pev), em_think, SUB_Remove );
 
 	if (RANDOM_FLOAT(0, 1) < 0.7)// larger chance of globs

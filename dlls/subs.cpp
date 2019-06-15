@@ -51,7 +51,7 @@ public:
 // Null Entity, remove on startup
 void CNullEntity::Spawn(void)
 {
-	REMOVE_ENTITY(ENT(pev));
+	UTIL_RemoveNow(this);
 }
 LINK_ENTITY_TO_CLASS(info_null, CNullEntity);
 LINK_ENTITY_TO_CLASS(info_texlights, CNullEntity); // don't complain about Merl's new info entities
@@ -126,7 +126,7 @@ void CBaseEntity::SUB_Remove(void)
 		ALERT(at_aiconsole, "SUB_Remove called on entity with health > 0\n");
 	}
 
-	REMOVE_ENTITY(ENT(pev));
+	UTIL_RemoveNow(this);
 }
 
 
@@ -411,7 +411,7 @@ void CBaseDelay::DelayThink(void)
 	// The use type is cached (and stashed) in pev->button
 	//LRC - now using m_hActivator.
 	SUB_UseTargets(m_hActivator, (USE_TYPE)pev->button, 0);
-	REMOVE_ENTITY(ENT(pev));
+	UTIL_RemoveNow(this);
 }
 
 
