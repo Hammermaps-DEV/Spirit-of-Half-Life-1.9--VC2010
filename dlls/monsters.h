@@ -25,19 +25,38 @@
 */
 
 // CHECKLOCALMOVE result types 
-#define	LOCALMOVE_INVALID					0 // move is not possible
-#define LOCALMOVE_INVALID_DONT_TRIANGULATE	1 // move is not possible, don't try to triangulate
-#define LOCALMOVE_VALID						2 // move is possible
+enum LocalMove
+{
+	/**
+	*	Move is not possible.
+	*/
+	LOCALMOVE_INVALID = 0,
 
-// Hit Group standards
-#define	HITGROUP_GENERIC	0
-#define	HITGROUP_HEAD		1
-#define	HITGROUP_CHEST		2
-#define	HITGROUP_STOMACH	3
-#define HITGROUP_LEFTARM	4	
-#define HITGROUP_RIGHTARM	5
-#define HITGROUP_LEFTLEG	6
-#define HITGROUP_RIGHTLEG	7
+	/**
+	*	Move is not possible, don't try to triangulate.
+	*/
+	LOCALMOVE_INVALID_DONT_TRIANGULATE = 1,
+
+	/**
+	*	Move is possible.
+	*/
+	LOCALMOVE_VALID = 2,
+};
+
+/**
+*	Hit Group standards
+*/
+enum HitGroup
+{
+	HITGROUP_GENERIC = 0,
+	HITGROUP_HEAD = 1,
+	HITGROUP_CHEST = 2,
+	HITGROUP_STOMACH = 3,
+	HITGROUP_LEFTARM = 4,
+	HITGROUP_RIGHTARM = 5,
+	HITGROUP_LEFTLEG = 6,
+	HITGROUP_RIGHTLEG = 7,
+};
 
 // =====================================
 // Monster Spawnflags
