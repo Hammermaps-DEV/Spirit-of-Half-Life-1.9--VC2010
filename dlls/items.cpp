@@ -83,7 +83,7 @@ void CWorldItem::Spawn(void)
 		pEntity->pev->spawnflags = pev->spawnflags;
 	}
 
-	UTIL_RemoveNow(this);
+	REMOVE_ENTITY(edict());
 }
 
 

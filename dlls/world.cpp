@@ -117,7 +117,7 @@ void CDecal::Spawn(void)
 {
 	if (pev->skin < 0 || (gpGlobals->deathmatch && FBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
 	{
-		UTIL_RemoveNow(this);
+		REMOVE_ENTITY(ENT(pev));
 		return;
 	}
 

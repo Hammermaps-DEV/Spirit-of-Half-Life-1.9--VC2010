@@ -151,20 +151,6 @@ public:
 class CBaseEntity
 {
 public:
-	CBaseEntity()
-	{
-	}
-
-	virtual ~CBaseEntity()
-	{
-	}
-
-	/**
-	*	Called when the entity is destroyed. - Solokiller
-	*	Do not access other entities or do anything beyond simple cleanup and memory freeing.
-	*/
-	virtual void  OnDestroy() {}
-
 	// Constructor.  Set engine to use C/C++ callback functions
 	// pointers to engine data
 	entvars_t *pev;		// Don't need to save/restore this pointer, the engine resets it

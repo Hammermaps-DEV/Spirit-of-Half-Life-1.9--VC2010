@@ -277,7 +277,7 @@ void CLight::Spawn(void)
 {
 	if (FStringNull(pev->targetname))
 	{       // inert light
-		UTIL_RemoveNow(this);
+		REMOVE_ENTITY(ENT(pev));
 		return;
 	}
 

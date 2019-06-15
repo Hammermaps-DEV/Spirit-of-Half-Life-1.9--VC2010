@@ -150,7 +150,7 @@ void CFlockingFlyerFlock::Spawn()
 	Precache();
 	SpawnFlock();
 
-	UTIL_RemoveNow(this);
+	REMOVE_ENTITY(ENT(pev));		// dump the spawn ent
 }
 
 //=========================================================

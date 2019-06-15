@@ -2020,7 +2020,7 @@ void CBaseMonster::MonsterInit(void)
 	if (!g_pGameRules->FAllowMonsters())
 	{
 		pev->flags |= FL_KILLME;		// Post this because some monster code modifies class data after calling this function
-//		UTIL_RemoveNow(this);
+//		REMOVE_ENTITY(ENT(pev));
 		return;
 	}
 

@@ -4412,7 +4412,7 @@ void CTriggerSave::Spawn(void)
 {
 	if (g_pGameRules->IsDeathmatch())
 	{
-		UTIL_RemoveNow(this);
+		REMOVE_ENTITY(ENT(pev));
 		return;
 	}
 
@@ -4466,7 +4466,7 @@ void CTriggerEndSection::Spawn(void)
 {
 	if (g_pGameRules->IsDeathmatch())
 	{
-		UTIL_RemoveNow(this);
+		REMOVE_ENTITY(ENT(pev));
 		return;
 	}
 

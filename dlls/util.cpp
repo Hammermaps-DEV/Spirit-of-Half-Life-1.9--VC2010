@@ -2126,6 +2126,18 @@ void UTIL_BubbleTrail(Vector from, Vector to, int count)
 	MESSAGE_END();
 }
 
+
+void UTIL_Remove(CBaseEntity *pEntity)
+{
+	if (!pEntity)
+		return;
+
+	pEntity->UpdateOnRemove();
+	pEntity->pev->flags |= FL_KILLME;
+	pEntity->pev->targetname = 0;
+}
+
+
 BOOL UTIL_IsValidEntity(edict_t *pent)
 {
 	if (!pent || pent->free || (pent->v.flags & FL_KILLME))
@@ -3278,41 +3290,4 @@ void UTIL_DynamicMuzzleFlash(const Vector &vecShootOrigin, float radius, int col
 	WRITE_BYTE(time);		// time * 10 = Suggested 1
 	WRITE_BYTE(decay);		// decay * 0.1 - Suggested 00.1
 	MESSAGE_END();
-}
-
-void UTIL_DestructEntity(CBaseEntity* pEntity)
-{
-	pEntity->OnDestroy();
-	pEntity->~CBaseEntity();
-}
-
-void UTIL_RemoveCleanup(CBaseEntity* pEntity)
-{
-	pEntity->UpdateOnRemove();
-	pEntity->pev->flags |= FL_KILLME;
-	pEntity->pev->targetname = 0;
-}
-
-void UTIL_Remove(CBaseEntity *pEntity)
-{
-	if (!pEntity)
-		return;
-
-	UTIL_RemoveCleanup(pEntity);
-}
-
-void UTIL_RemoveNow(CBaseEntity* pEntity)
-{
-	if (!pEntity)
-		return;
-
-	//Let UTIL_Remove's stuff happen even when removing right away. - Solokiller
-	UTIL_RemoveCleanup(pEntity);
-
-	REMOVE_ENTITY(pEntity->edict());
-
-	UTIL_DestructEntity(pEntity);
-
-	//On the client, entities are allocated using byte arrays. - Solokiller
-	delete[] reinterpret_cast<byte*>(pEntity);
 }
