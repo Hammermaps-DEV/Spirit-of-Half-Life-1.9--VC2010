@@ -358,7 +358,7 @@ void CFuncPlat::Setup(void)
 	pev->movetype = MOVETYPE_PUSH;
 
 	UTIL_SetOrigin(this, pev->origin);		// set size and link into world
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	UTIL_SetSize(this, pev->mins, pev->maxs);
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
 	// vecPosition1 is the top position, vecPosition2 is the bottom
@@ -466,7 +466,7 @@ void CPlatTrigger::SpawnInsideTrigger(CFuncPlat *pPlatform)
 		vecTMin.y = (m_pPlatform->pev->mins.y + m_pPlatform->pev->maxs.y) / 2;
 		vecTMax.y = vecTMin.y + 1;
 	}
-	UTIL_SetSize(pev, vecTMin, vecTMax);
+	UTIL_SetSize(this, vecTMin, vecTMax);
 }
 
 
@@ -933,7 +933,6 @@ void CFuncTrain::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE use
 			UTIL_SetVelocity(this, g_vecZero);
 			UTIL_SetAvelocity(this, g_vecZero);
 			m_iState = STATE_OFF;
-			//			pev->velocity = g_vecZero;
 
 			if (pev->noiseMovement)
 				STOP_SOUND(edict(), CHAN_STATIC, (char*)STRING(pev->noiseMovement));
@@ -1304,7 +1303,7 @@ void CFuncTrain::Spawn(void)
 		pev->solid = SOLID_BSP;
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	UTIL_SetSize(this, pev->mins, pev->maxs);
 	UTIL_SetOrigin(this, pev->origin);
 
 	m_iState = STATE_OFF;
@@ -1417,7 +1416,7 @@ void CFuncTrackTrain::Spawn(void)
 		m_speed = pev->speed;
 
 	pev->speed = 0;
-	pev->velocity = g_vecZero; // why do they set this stuff? --LRC
+	SetVelocityZero(); // why do they set this stuff? --LRC
 	m_vecBaseAvel = pev->avelocity; //LRC - save it for later
 	pev->avelocity = g_vecZero;
 	pev->impulse = m_speed;
@@ -1438,7 +1437,7 @@ void CFuncTrackTrain::Spawn(void)
 
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	UTIL_SetSize(this, pev->mins, pev->maxs);
 	UTIL_SetOrigin(this, pev->origin);
 	//	ALERT(at_console, "SpawnOrigin %f %f %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
 
@@ -1643,7 +1642,7 @@ void CFuncTrackTrain::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 		{
 			pev->speed = 0;
 			UTIL_SetVelocity(this, g_vecZero); //LRC
-			//pev->velocity = g_vecZero;
+			
 			if (!FBitSet(pev->spawnflags, SF_TRACKTRAIN_AVELOCITY))
 				UTIL_SetAvelocity(this, g_vecZero); //LRC
 			//pev->avelocity = g_vecZero;
@@ -1830,9 +1829,7 @@ void CFuncTrackTrain::DesiredAction(void) // Next( void )
 	nextPos.z += m_height;
 
 	UTIL_SetVelocity(this, (nextPos - pev->origin) * 10); //LRC
-//	Vector vD = (nextPos - pev->origin) * 10;
-//	ALERT(at_debug, "TRAIN: Set vel to (%f %f %f)\n", vD.x, vD.y, vD.z);
-	//pev->velocity = (nextPos - pev->origin) * 10;
+
 	Vector nextFront = pev->origin;
 
 	nextFront.z -= m_height;
@@ -2036,15 +2033,11 @@ void CFuncTrackTrain::DesiredAction(void) // Next( void )
 
 //		ALERT(at_debug, "TRAIN: path end\n");
 
-//		UTIL_SetVelocity( this, (nextPos - pev->origin) * 10 ); //LRC
-//		pev->velocity = (nextPos - pev->origin);
 		if (!FBitSet(pev->spawnflags, SF_TRACKTRAIN_AVELOCITY)) //LRC
 			UTIL_SetAvelocity(this, g_vecZero);
-		//pev->avelocity = g_vecZero;
+		
 		float distance = vecTemp.Length(); //LRC
-		//float distance = pev->velocity.Length();
 		m_oldSpeed = pev->speed;
-
 
 		pev->speed = 0;
 
@@ -2056,7 +2049,7 @@ void CFuncTrackTrain::DesiredAction(void) // Next( void )
 			// no, how long to get there?
 			time = distance / m_oldSpeed;
 			UTIL_SetVelocity(this, vecTemp * (m_oldSpeed / distance)); //LRC
-			//pev->velocity = pev->velocity * (m_oldSpeed / distance);
+
 			SetThink(&CFuncTrackTrain::DeadEnd);
 			NextThink(time, FALSE);
 		}
@@ -2105,10 +2098,10 @@ void CFuncTrackTrain::DeadEnd(void)
 	}
 
 	UTIL_SetVelocity(this, g_vecZero); //LRC
-//	pev->velocity = g_vecZero;
+
 	if (!FBitSet(pev->spawnflags, SF_TRACKTRAIN_AVELOCITY)) //LRC
 		UTIL_SetAvelocity(this, g_vecZero);
-	//pev->avelocity = g_vecZero;
+
 	if (pTrack)
 	{
 		ALERT(at_aiconsole, "at %s\n", STRING(pTrack->pev->targetname));
@@ -2332,7 +2325,7 @@ void CFuncTrainControls::Spawn(void)
 	pev->movetype = MOVETYPE_NONE;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	UTIL_SetSize(this, pev->mins, pev->maxs);
 	UTIL_SetOrigin(this, pev->origin);
 
 	SetThink(&CFuncTrainControls::Find);
@@ -2659,13 +2652,13 @@ void CFuncTrackChange::UpdateTrain(Vector &dest)
 		time = (pev->nextthink - pev->ltime);
 	}
 
-	m_train->pev->velocity = vel;
+	m_train->SetVelocity(vel);
 	m_train->pev->avelocity = pev->avelocity;
 	m_train->NextThink(m_train->pev->ltime + time, FALSE);
 
 	if (m_train->m_pDoor)
 	{
-		m_train->m_pDoor->pev->velocity = m_train->pev->velocity;
+		m_train->m_pDoor->SetVelocity(m_train->pev->velocity);
 		m_train->m_pDoor->pev->avelocity = m_train->pev->avelocity;
 		m_train->m_pDoor->SetNextThink(m_train->m_pDoor->pev->ltime + time, TRUE);
 
@@ -2691,10 +2684,10 @@ void CFuncTrackChange::UpdateTrain(Vector &dest)
 	local.z = DotProduct(offset, gpGlobals->v_up);
 
 	local = local - offset;
-	m_train->pev->velocity = vel + (local * (1.0 / time));
+	m_train->SetVelocity(vel + (local * (1.0 / time)));
 
 	if (m_train->m_pDoor)
-		m_train->m_pDoor->pev->velocity = m_train->pev->velocity;
+		m_train->m_pDoor->SetVelocity(m_train->pev->velocity);
 
 	//	ALERT(at_console, "set trainvel %f %f %f\n", m_train->pev->velocity.x, m_train->pev->velocity.y, m_train->pev->velocity.z);
 }
@@ -3155,7 +3148,7 @@ void CGunTarget::Wait(void)
 
 void CGunTarget::Stop(void)
 {
-	pev->velocity = g_vecZero;
+	SetVelocityZero();
 	DontThink();
 	pev->takedamage = DAMAGE_NO;
 }

@@ -115,7 +115,7 @@ void CRpgRocket::Spawn(void)
 	pev->solid = SOLID_BBOX;
 	pev->renderfx = kRenderFxEntInPVS;//for telemetric rocket
 	SET_MODEL(ENT(pev), "models/rpgrocket.mdl");
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin(this, pev->origin);
 
 	pev->classname = MAKE_STRING("rpg_rocket");
@@ -126,7 +126,7 @@ void CRpgRocket::Spawn(void)
 	pev->angles.x -= 30;
 	UTIL_MakeVectors(pev->angles);
 	pev->angles.x = -(pev->angles.x + 30);
-	pev->velocity = gpGlobals->v_forward * 250;
+	SetVelocity(gpGlobals->v_forward * 250);
 	pev->gravity = 0.5;
 
 	SetNextThink(0.4);
@@ -137,7 +137,7 @@ void CRpgRocket::Spawn(void)
 void CRpgRocket::RocketTouch(CBaseEntity *pOther)
 {
 	CBaseEntity *pPlayer = CBaseEntity::Instance(pev->owner);
-	if (CRpg* pLauncher = static_cast<CRpg*>(static_cast<CBaseEntity*>(m_hLauncher)))
+	if (CRpg* pLauncher = dynamic_cast<CRpg*>(static_cast<CBaseEntity*>(m_hLauncher)))
 	{
 		// my launcher is still around, tell it I'm dead.
 		pLauncher->m_iChargeLevel--;
@@ -153,7 +153,7 @@ void CRpgRocket::Detonate(void)
 	TraceResult tr;
 	Vector		vecSpot;// trace starts here!
 	CBaseEntity *pPlayer = CBaseEntity::Instance(pev->owner);
-	if (CRpg* pLauncher = static_cast<CRpg*>(static_cast<CBaseEntity*>(m_hLauncher)))
+	if (CRpg* pLauncher = dynamic_cast<CRpg*>(static_cast<CBaseEntity*>(m_hLauncher)))
 	{
 		// my launcher is still around, tell it I'm dead.
 		pLauncher->m_iChargeLevel--;
@@ -250,13 +250,13 @@ void CRpgRocket::FollowThink(void)
 	float flSpeed = pev->velocity.Length();
 	if (gpGlobals->time - m_flIgniteTime < 1.0)
 	{
-		pev->velocity = pev->velocity * 0.2 + vecTarget * (flSpeed * 0.8 + 400);
+		SetVelocity(pev->velocity * 0.2 + vecTarget * (flSpeed * 0.8 + 400));
 		if (pev->waterlevel == 3 && pev->watertype > CONTENT_FLYFIELD)
 		{
 			// go slow underwater
 			if (pev->velocity.Length() > 300)
 			{
-				pev->velocity = pev->velocity.Normalize() * 300;
+				SetVelocity(pev->velocity.Normalize() * 300);
 			}
 			UTIL_BubbleTrail(pev->origin - pev->velocity * 0.1, pev->origin, 4);
 		}
@@ -264,7 +264,7 @@ void CRpgRocket::FollowThink(void)
 		{
 			if (pev->velocity.Length() > 2000)
 			{
-				pev->velocity = pev->velocity.Normalize() * 2000;
+				SetVelocity(pev->velocity.Normalize() * 2000);
 			}
 		}
 	}
@@ -275,7 +275,7 @@ void CRpgRocket::FollowThink(void)
 			pev->effects = 0;
 			STOP_SOUND(ENT(pev), CHAN_VOICE, "weapons/rocket1.wav");
 		}
-		pev->velocity = pev->velocity * 0.2 + vecTarget * flSpeed * 0.798;
+		SetVelocity(pev->velocity * 0.2 + vecTarget * flSpeed * 0.798);
 		if ((pev->waterlevel == 0 || pev->watertype == CONTENT_FOG) && pev->velocity.Length() < 1500)
 		{
 			Detonate();
@@ -374,7 +374,7 @@ void CRpg::PrimaryAttack()
 
 		CRpgRocket *pRocket = CRpgRocket::Create(vecSrc, m_pPlayer->pev->v_angle, m_pPlayer, this);
 		UTIL_MakeVectors(m_pPlayer->pev->v_angle);// RpgRocket::Create stomps on globals, so remake.
-		pRocket->pev->velocity = pRocket->pev->velocity + gpGlobals->v_forward * DotProduct(m_pPlayer->pev->velocity, gpGlobals->v_forward);
+		pRocket->SetVelocity(pRocket->pev->velocity + gpGlobals->v_forward * DotProduct(m_pPlayer->pev->velocity, gpGlobals->v_forward));
 
 		// firing RPG no longer turns on the designator. ALT fire is a toggle switch for the LTD.
 		// Ken signed up for this as a global change (sjb)

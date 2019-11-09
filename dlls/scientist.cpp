@@ -662,7 +662,7 @@ void CScientist::Spawn(void)
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/scientist.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
@@ -1244,7 +1244,7 @@ void CSittingScientist::Spawn()
 	Precache();
 	InitBoneControllers();
 
-	UTIL_SetSize(pev, Vector(-14, -14, 0), Vector(14, 14, 36));
+	UTIL_SetSize(this, Vector(-14, -14, 0), Vector(14, 14, 36));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;

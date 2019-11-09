@@ -185,11 +185,9 @@ void CLeech::Spawn(void)
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/leech.mdl");
-	// Just for fun
-	//	SET_MODEL(ENT(pev), "models/icky.mdl");
 
-//	UTIL_SetSize( pev, g_vecZero, g_vecZero );
-	UTIL_SetSize(pev, Vector(-1, -1, 0), Vector(1, 1, 2));
+	UTIL_SetSize(this, Vector(-1, -1, 0), Vector(1, 1, 2));
+	
 	// Don't push the minz down too much or the water check will fail because this entity is really point-sized
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_FLY;
@@ -314,12 +312,12 @@ void CLeech::Precache(void)
 
 int CLeech::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
 {
-	pev->velocity = g_vecZero;
+	SetVelocityZero();
 
 	// Nudge the leech away from the damage
 	if (pevInflictor)
 	{
-		pev->velocity = (pev->origin - pevInflictor->origin).Normalize() * 25;
+		SetVelocity((pev->origin - pevInflictor->origin).Normalize() * 25);
 	}
 	else if (pev->movetype == MOVETYPE_TOSS)
 	{
@@ -522,7 +520,7 @@ void CLeech::UpdateMotion(void)
 	{
 		pev->movetype = MOVETYPE_TOSS;
 		m_IdealActivity = ACT_TWITCH;
-		pev->velocity = g_vecZero;
+		SetVelocityZero();
 
 		// Animation will intersect the floor if either of these is non-zero
 		pev->angles.z = 0;
@@ -587,7 +585,7 @@ void CLeech::SwimThink(void)
 	if (FNullEnt(FIND_CLIENT_IN_PVS(edict())) && !HaveCamerasInPVS(edict()))
 	{
 		SetNextThink(RANDOM_FLOAT(1, 1.5));
-		pev->velocity = g_vecZero;
+		SetVelocityZero();
 		return;
 	}
 	else
@@ -672,7 +670,7 @@ void CLeech::SwimThink(void)
 
 		m_fPathBlocked = FALSE;
 		pev->speed = UTIL_Approach(targetSpeed, pev->speed, LEECH_SWIM_ACCEL * LEECH_FRAMETIME);
-		pev->velocity = gpGlobals->v_forward * pev->speed;
+		SetVelocity(gpGlobals->v_forward * pev->speed);
 
 	}
 	else
@@ -701,7 +699,7 @@ void CLeech::SwimThink(void)
 				m_flTurning = LEECH_TURN_RATE;
 		}
 		pev->speed = UTIL_Approach(-(LEECH_SWIM_SPEED*0.5), pev->speed, LEECH_SWIM_DECEL * LEECH_FRAMETIME * m_obstacle);
-		pev->velocity = gpGlobals->v_forward * pev->speed;
+		SetVelocity(gpGlobals->v_forward * pev->speed);
 	}
 	pev->ideal_yaw = m_flTurning + targetYaw;
 	UpdateMotion();

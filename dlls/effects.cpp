@@ -54,7 +54,7 @@ void CInfoTarget::Spawn(void)
 	if (pev->spawnflags & SF_TARGET_HACK_VISIBLE)
 	{
 		SET_MODEL(ENT(pev), "sprites/null.spr");
-		UTIL_SetSize(pev, g_vecZero, g_vecZero);
+		UTIL_SetSize(this, g_vecZero, g_vecZero);
 	}
 }
 
@@ -338,7 +338,7 @@ void CBeam::RelinkBeam(void)
 	pev->mins = pev->mins - pev->origin;
 	pev->maxs = pev->maxs - pev->origin;
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	UTIL_SetSize(this, pev->mins, pev->maxs);
 	UTIL_SetOrigin(this, pev->origin);
 }
 
@@ -1761,7 +1761,7 @@ void CEnvModel::Spawn(void)
 	if (pev->spawnflags & SF_ENVMODEL_SOLID)
 	{
 		pev->solid = SOLID_SLIDEBOX;
-		UTIL_SetSize(pev, Vector(-10, -10, -10), Vector(10, 10, 10));	//LRCT
+		UTIL_SetSize(this, Vector(-10, -10, -10), Vector(10, 10, 10));	//LRCT
 	}
 
 	if (pev->spawnflags & SF_ENVMODEL_DROPTOFLOOR)
@@ -2057,7 +2057,7 @@ CBaseEntity *CGibShooter::CreateGib(Vector vecPos, Vector vecVel)
 	//		ALERT(at_console, "Gib created ok\n");
 
 	pGib->pev->origin = vecPos;
-	pGib->pev->velocity = vecVel;
+	pGib->SetVelocity(vecVel);
 
 	if (m_iBloodColor == BLOOD_COLOR_YELLOW)
 	{
@@ -2145,7 +2145,6 @@ void CGibShooter::ShootThink(void)
 		if (pGib)
 		{
 			pGib->pev->targetname = m_iszTargetname;
-			//			pGib->pev->velocity = vecShootDir * flGibVelocity;
 
 			if (pev->spawnflags & SF_GIBSHOOTER_DEBUG)
 				ALERT(at_debug, "DEBUG: %s \"%s\" creates a shot at %f %f %f; vel %f %f %f; pos \"%s\"\n", STRING(pev->classname), STRING(pev->targetname), pGib->pev->origin.x, pGib->pev->origin.y, pGib->pev->origin.z, pGib->pev->velocity.x, pGib->pev->velocity.y, pGib->pev->velocity.z, STRING(m_iszPosition));
@@ -2317,14 +2316,14 @@ CBaseEntity *CEnvShooter::CreateGib(Vector vecPos, Vector vecVel)
 		CGib *pGib = GetClassPtr((CGib *)NULL);
 
 		pGib->pev->origin = vecPos;
-		pGib->pev->velocity = vecVel;
+		pGib->SetVelocity(vecVel);
 		pGib->Spawn(STRING(pev->model));
 
 		if (m_iPhysics) // sticky gib
 		{
 			pGib->pev->movetype = MOVETYPE_TOSS;
 			pGib->pev->solid = SOLID_BBOX;
-			UTIL_SetSize(pGib->pev, Vector(0, 0, 0), Vector(0, 0, 0));
+			UTIL_SetSize(pGib, Vector(0, 0, 0), Vector(0, 0, 0));
 			pGib->SetTouch(&CGib::StickyGibTouch);
 		}
 
@@ -2393,10 +2392,10 @@ CBaseEntity *CEnvShooter::CreateGib(Vector vecPos, Vector vecVel)
 	pShot->pev->classname = MAKE_STRING("shot");
 	pShot->pev->solid = SOLID_SLIDEBOX;
 	pShot->pev->origin = vecPos;
-	pShot->pev->velocity = vecVel;
+	pShot->SetVelocity(vecVel);
 	pShot->pev->avelocity = pev->avelocity;	// g-cont. copy avelocity to particle
 	SET_MODEL(ENT(pShot->pev), STRING(pev->model));
-	UTIL_SetSize(pShot->pev, -m_vecSize, m_vecSize);
+	UTIL_SetSize(pShot, -m_vecSize, m_vecSize);
 	pShot->pev->renderamt = pev->renderamt;
 	pShot->pev->rendermode = pev->rendermode;
 	pShot->pev->rendercolor = pev->rendercolor;
@@ -3244,7 +3243,7 @@ void CEnvBeamTrail::Spawn(void)
 	Precache();
 
 	SET_MODEL(ENT(pev), "sprites/null.spr");
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	if (!(pev->spawnflags & SF_BEAMTRAIL_OFF))
 	{
@@ -4356,7 +4355,7 @@ void CItemSoda::Spawn(void)
 	pev->movetype = MOVETYPE_TOSS;
 
 	SET_MODEL(ENT(pev), "models/can.mdl");
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	SetThink(&CItemSoda::CanThink);
 	SetNextThink(0.5);
@@ -4367,7 +4366,7 @@ void CItemSoda::CanThink(void)
 	EMIT_SOUND(ENT(pev), CHAN_WEAPON, "weapons/g_bounce3.wav", 1, ATTN_NORM);
 
 	pev->solid = SOLID_TRIGGER;
-	UTIL_SetSize(pev, Vector(-8, -8, 0), Vector(8, 8, 8));
+	UTIL_SetSize(this, Vector(-8, -8, 0), Vector(8, 8, 8));
 	SetThink(NULL);
 	SetTouch(&CItemSoda::CanTouch);
 }

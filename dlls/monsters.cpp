@@ -198,7 +198,7 @@ void CBaseMonster::BarnacleVictimReleased(void)
 {
 	m_IdealMonsterState = MONSTERSTATE_IDLE;
 
-	pev->velocity = g_vecZero;
+	SetVelocityZero();
 	pev->movetype = MOVETYPE_STEP;
 }
 
@@ -3483,7 +3483,7 @@ void CBaseMonster::MonsterInitDead(void)
 	pev->max_health = pev->health;
 	pev->deadflag = DEAD_DEAD;
 
-	UTIL_SetSize(pev, g_vecZero, g_vecZero);
+	UTIL_SetSize(this, g_vecZero, g_vecZero);
 	UTIL_SetOrigin(this, pev->origin);
 
 	// Setup health counters, etc.
@@ -3624,7 +3624,7 @@ CBaseEntity* CBaseMonster::DropItem(char *pszItemName, const Vector &vecPos, con
 	if (pItem)
 	{
 		// do we want this behavior to be default?! (sjb)
-		pItem->pev->velocity = pev->velocity;
+		pItem->SetVelocity(pev->velocity);
 		pItem->pev->avelocity = Vector(0, RANDOM_FLOAT(0, 100), 0);
 		return pItem;
 	}

@@ -272,8 +272,7 @@ public:
 	virtual void ItemPreFrame(void) { return; }		// called each frame by the player PreThink
 	virtual void ItemPostFrame(void) { return; }		// called each frame by the player PostThink
 
-	virtual void Drop(void);
-	virtual void Kill(void);
+	virtual void Kill();
 	virtual void AttachToPlayer(CBasePlayer *pPlayer);
 
 	virtual int PrimaryAmmoIndex() { return -1; };

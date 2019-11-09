@@ -50,7 +50,7 @@ void CGib::LimitVelocity(void)
 	// ceiling at 1500.  The gib velocity equation is not bounded properly.  Rather than tune it
 	// in 3 separate places again, I'll just limit it here.
 	if (length > 1500.0)
-		pev->velocity = pev->velocity.Normalize() * 1500;		// This should really be sv_maxvelocity * 0.75 or something
+		SetVelocity(pev->velocity.Normalize() * 1500);		// This should really be sv_maxvelocity * 0.75 or something
 }
 
 
@@ -84,14 +84,14 @@ void CGib::SpawnStickyGibs(entvars_t *pevVictim, Vector vecOrigin, int cGibs)
 			*/
 
 			// make the gib fly away from the attack vector
-			pGib->pev->velocity = g_vecAttackDir * -1;
+			pGib->SetVelocity(g_vecAttackDir * -1);
 
 			// mix in some noise
 			pGib->pev->velocity.x += RANDOM_FLOAT(-0.15, 0.15);
 			pGib->pev->velocity.y += RANDOM_FLOAT(-0.15, 0.15);
 			pGib->pev->velocity.z += RANDOM_FLOAT(-0.15, 0.15);
 
-			pGib->pev->velocity = pGib->pev->velocity * 900;
+			pGib->SetVelocity(pGib->pev->velocity * 900);
 
 			pGib->pev->avelocity.x = RANDOM_FLOAT(250, 400);
 			pGib->pev->avelocity.y = RANDOM_FLOAT(250, 400);
@@ -101,21 +101,21 @@ void CGib::SpawnStickyGibs(entvars_t *pevVictim, Vector vecOrigin, int cGibs)
 
 			if (pevVictim->health > -50)
 			{
-				pGib->pev->velocity = pGib->pev->velocity * 0.7;
+				pGib->SetVelocity(pGib->pev->velocity * 0.7);
 			}
 			else if (pevVictim->health > -200)
 			{
-				pGib->pev->velocity = pGib->pev->velocity * 2;
+				pGib->SetVelocity(pGib->pev->velocity * 2);
 			}
 			else
 			{
-				pGib->pev->velocity = pGib->pev->velocity * 4;
+				pGib->SetVelocity(pGib->pev->velocity * 4);
 			}
 
 
 			pGib->pev->movetype = MOVETYPE_TOSS;
 			pGib->pev->solid = SOLID_BBOX;
-			UTIL_SetSize(pGib->pev, Vector(0, 0, 0), Vector(0, 0, 0));
+			UTIL_SetSize(pGib, Vector(0, 0, 0), Vector(0, 0, 0));
 			pGib->SetTouch(&CGib::StickyGibTouch);
 			pGib->SetThink(NULL);
 		}
@@ -146,16 +146,13 @@ void CGib::SpawnHeadGib(entvars_t *pevVictim, const char* szGibModel)
 
 		if (RANDOM_LONG(0, 100) <= 5 && pentPlayer)
 		{
-			// 5% chance head will be thrown at player's face.
-			entvars_t	*pevPlayer;
-
-			pevPlayer = VARS(pentPlayer);
-			pGib->pev->velocity = ((pevPlayer->origin + pevPlayer->view_ofs) - pGib->pev->origin).Normalize() * 300;
+			entvars_t* pevPlayer = VARS(pentPlayer);
+			pGib->SetVelocity(((pevPlayer->origin + pevPlayer->view_ofs) - pGib->pev->origin).Normalize() * 300);
 			pGib->pev->velocity.z += 100;
 		}
 		else
 		{
-			pGib->pev->velocity = Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300));
+			pGib->SetVelocity(Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300)));
 		}
 
 
@@ -167,15 +164,15 @@ void CGib::SpawnHeadGib(entvars_t *pevVictim, const char* szGibModel)
 
 		if (pevVictim->health > -50)
 		{
-			pGib->pev->velocity = pGib->pev->velocity * 0.7;
+			pGib->SetVelocity(pGib->pev->velocity * 0.7);
 		}
 		else if (pevVictim->health > -200)
 		{
-			pGib->pev->velocity = pGib->pev->velocity * 2;
+			pGib->SetVelocity(pGib->pev->velocity * 2);
 		}
 		else
 		{
-			pGib->pev->velocity = pGib->pev->velocity * 4;
+			pGib->SetVelocity(pGib->pev->velocity * 4);
 		}
 	}
 	pGib->LimitVelocity();
@@ -228,36 +225,36 @@ void CGib::SpawnRandomGibs(entvars_t *pevVictim, int cGibs, int notfirst, const 
 			pGib->pev->origin.z = pevVictim->absmin.z + pevVictim->size.z * (RANDOM_FLOAT(0, 1)) + 1;	// absmin.z is in the floor because the engine subtracts 1 to enlarge the box
 
 			// make the gib fly away from the attack vector
-			pGib->pev->velocity = g_vecAttackDir * -1;
+			pGib->SetVelocity(g_vecAttackDir * -1);
 
 			// mix in some noise
 			pGib->pev->velocity.x += RANDOM_FLOAT(-0.25, 0.25);
 			pGib->pev->velocity.y += RANDOM_FLOAT(-0.25, 0.25);
 			pGib->pev->velocity.z += RANDOM_FLOAT(-0.25, 0.25);
 
-			pGib->pev->velocity = pGib->pev->velocity * RANDOM_FLOAT(300, 400);
+			pGib->SetVelocity(pGib->pev->velocity * RANDOM_FLOAT(300, 400));
 
 			pGib->pev->avelocity.x = RANDOM_FLOAT(100, 200);
 			pGib->pev->avelocity.y = RANDOM_FLOAT(100, 300);
 
 			// copy owner's blood color
-			pGib->m_bloodColor = (CBaseEntity::Instance(pevVictim))->BloodColor();
+			pGib->m_bloodColor = Instance(pevVictim)->BloodColor();
 
 			if (pevVictim->health > -50)
 			{
-				pGib->pev->velocity = pGib->pev->velocity * 0.7;
+				pGib->SetVelocity(pGib->pev->velocity * 0.7);
 			}
 			else if (pevVictim->health > -200)
 			{
-				pGib->pev->velocity = pGib->pev->velocity * 2;
+				pGib->SetVelocity(pGib->pev->velocity * 2);
 			}
 			else
 			{
-				pGib->pev->velocity = pGib->pev->velocity * 4;
+				pGib->SetVelocity(pGib->pev->velocity * 4);
 			}
 
 			pGib->pev->solid = SOLID_BBOX;
-			UTIL_SetSize(pGib->pev, Vector(0, 0, 0), Vector(0, 0, 0));
+			UTIL_SetSize(pGib, Vector(0, 0, 0), Vector(0, 0, 0));
 		}
 		pGib->LimitVelocity();
 		pGib = NULL; //LRC
@@ -326,7 +323,7 @@ BOOL CBaseMonster::HasAlienGibs(void)
 void CBaseMonster::FadeMonster(void)
 {
 	StopAnimation();
-	pev->velocity = g_vecZero;
+	SetVelocityZero();
 	pev->movetype = MOVETYPE_NONE;
 	pev->avelocity = g_vecZero;
 	pev->animtime = gpGlobals->time;
@@ -573,12 +570,7 @@ void CBaseMonster::BecomeDead(void)
 
 	// make the corpse fly away from the attack vector
 	pev->movetype = MOVETYPE_TOSS;
-	//pev->flags &= ~FL_ONGROUND;
-	//pev->origin.z += 2;
-	//pev->velocity = g_vecAttackDir * -1;
-	//pev->velocity = pev->velocity * RANDOM_FLOAT( 300, 400 );
 }
-
 
 BOOL CBaseMonster::ShouldGibMonster(int iGib)
 {
@@ -587,7 +579,6 @@ BOOL CBaseMonster::ShouldGibMonster(int iGib)
 
 	return FALSE;
 }
-
 
 void CBaseMonster::CallGibMonster(void)
 {
@@ -766,7 +757,7 @@ void CGib::BounceGibTouch(CBaseEntity *pOther)
 
 	if (pev->flags & FL_ONGROUND)
 	{
-		pev->velocity = pev->velocity * 0.9;
+		SetVelocity(pev->velocity * 0.9);
 		pev->angles.x = 0;
 		pev->angles.z = 0;
 		pev->avelocity.x = 0;
@@ -829,9 +820,9 @@ void CGib::StickyGibTouch(CBaseEntity *pOther)
 	CBaseEntity *pHit = CBaseEntity::Instance(tr.pHit);
 	PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_GLOBAL, edict(), m_usDecals, 0.0, (float *)&tr.vecEndPos, (float *)&g_vecZero, 0.0, 0.0, pHit->entindex(), blood, 0, 0);
 
-	pev->velocity = tr.vecPlaneNormal * -1;
+	SetVelocity(tr.vecPlaneNormal * -1);
 	pev->angles = UTIL_VecToAngles(pev->velocity);
-	pev->velocity = g_vecZero;
+	SetVelocityZero();
 	pev->avelocity = g_vecZero;
 	pev->movetype = MOVETYPE_NONE;
 }
@@ -854,7 +845,7 @@ void CGib::Spawn(const char *szGibModel)
 	pev->classname = MAKE_STRING("gib");
 
 	SET_MODEL(ENT(pev), szGibModel);
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	SetNextThink(4);
 	m_lifeTime = 25;
@@ -959,7 +950,7 @@ int CBaseMonster::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, fl
 	// if this is a player, move him around!
 	if ((!FNullEnt(pevInflictor)) && (pev->movetype == MOVETYPE_WALK) && (!pevAttacker || pevAttacker->solid != SOLID_TRIGGER))
 	{
-		pev->velocity = pev->velocity + vecDir * -DamageForce(flDamage);
+		SetVelocity(pev->velocity + vecDir * -DamageForce(flDamage));
 	}
 
 	// do the damage
@@ -1074,19 +1065,6 @@ int CBaseMonster::DeadTakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker
 			vecDir = g_vecAttackDir = vecDir.Normalize();
 		}
 	}
-
-#if 0// turn this back on when the bounding box issues are resolved.
-
-	pev->flags &= ~FL_ONGROUND;
-	pev->origin.z += 1;
-
-	// let the damage scoot the corpse around a bit.
-	if (!FNullEnt(pevInflictor) && (pevAttacker->solid != SOLID_TRIGGER))
-	{
-		pev->velocity = pev->velocity + vecDir * -DamageForce(flDamage);
-	}
-
-#endif
 
 	// kill the corpse if enough damage was done to destroy the corpse and the damage is of a type that is allowed to destroy the corpse.
 	if (bitsDamageType & DMG_GIB_CORPSE)

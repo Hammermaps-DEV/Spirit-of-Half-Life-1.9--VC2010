@@ -103,7 +103,7 @@ void CZombie::Spawn() {
 	else
 		SET_MODEL(ENT(pev), "models/zombie.mdl");
 
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
@@ -202,7 +202,7 @@ int CZombie::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float f
 		Vector vecDir = pev->origin - (pevInflictor->absmin + pevInflictor->absmax) * 0.5;
 		vecDir = vecDir.Normalize();
 		float flForce = DamageForce(flDamage);
-		pev->velocity = pev->velocity + vecDir * flForce;
+		SetVelocity(pev->velocity + vecDir * flForce);
 		flDamage *= m_flBulletDR;
 	}
 
@@ -315,7 +315,7 @@ void CZombie::HandleAnimEvent(MonsterEvent_t *pEvent) {
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT)) {
 				pHurt->pev->punchangle.z = -18;
 				pHurt->pev->punchangle.x = 5;
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 100;
+				pHurt->SetVelocity(pHurt->pev->velocity + gpGlobals->v_right * 100);
 			}
 
 			EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pAttackHitSounds);
@@ -335,7 +335,7 @@ void CZombie::HandleAnimEvent(MonsterEvent_t *pEvent) {
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT)) {
 				pHurt->pev->punchangle.z = 18;
 				pHurt->pev->punchangle.x = 5;
-				pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 100;
+				pHurt->SetVelocity(pHurt->pev->velocity - gpGlobals->v_right * 100);
 			}
 
 			EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pAttackHitSounds);
@@ -352,7 +352,7 @@ void CZombie::HandleAnimEvent(MonsterEvent_t *pEvent) {
 		if (pHurt) {
 			if (pHurt->pev->flags & (FL_MONSTER | FL_CLIENT)) {
 				pHurt->pev->punchangle.x = 20;
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * -100;
+				pHurt->SetVelocity(pHurt->pev->velocity + gpGlobals->v_forward * -100);
 			}
 
 			EMIT_SOUND_ARRAY_DYN(CHAN_WEAPON, pAttackHitSounds);

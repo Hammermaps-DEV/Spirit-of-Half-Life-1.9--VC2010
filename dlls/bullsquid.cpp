@@ -96,7 +96,7 @@ void CSquidSpit::Spawn(void)
 	pev->frame = 0;
 	pev->scale = 0.5;
 
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 }
@@ -120,7 +120,7 @@ void CSquidSpit::Shoot(entvars_t *pevOwner, Vector vecStart, Vector vecVelocity)
 	pSpit->Spawn();
 
 	UTIL_SetOrigin(pSpit, vecStart);
-	pSpit->pev->velocity = vecVelocity;
+	pSpit->SetVelocity(vecVelocity);
 	pSpit->pev->owner = ENT(pevOwner);
 
 	pSpit->SetThink(&CSquidSpit::Animate);
@@ -594,8 +594,8 @@ void CBullsquid::HandleAnimEvent(MonsterEvent_t *pEvent)
 		{
 			//pHurt->pev->punchangle.z = -15;
 			//pHurt->pev->punchangle.x = -45;
-			pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_forward * 100;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_up * 100;
+			pHurt->SetVelocity(pHurt->pev->velocity - gpGlobals->v_forward * 100);
+			pHurt->SetVelocity(pHurt->pev->velocity + gpGlobals->v_up * 100);
 		}
 	}
 	break;
@@ -607,8 +607,8 @@ void CBullsquid::HandleAnimEvent(MonsterEvent_t *pEvent)
 		{
 			pHurt->pev->punchangle.z = -20;
 			pHurt->pev->punchangle.x = 20;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_right * 200;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_up * 100;
+			pHurt->SetVelocity(pHurt->pev->velocity + gpGlobals->v_right * 200);
+			pHurt->SetVelocity(pHurt->pev->velocity + gpGlobals->v_up * 100);
 		}
 	}
 	break;
@@ -669,7 +669,7 @@ void CBullsquid::HandleAnimEvent(MonsterEvent_t *pEvent)
 			if (pHurt->IsPlayer())
 			{
 				UTIL_MakeVectors(pev->angles);
-				pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * 300 + gpGlobals->v_up * 300;
+				pHurt->SetVelocity(pHurt->pev->velocity + gpGlobals->v_forward * 300 + gpGlobals->v_up * 300);
 			}
 		}
 	}
@@ -691,7 +691,7 @@ void CBullsquid::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/bullsquid.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;

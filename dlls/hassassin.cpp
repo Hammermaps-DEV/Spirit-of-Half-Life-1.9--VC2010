@@ -285,17 +285,14 @@ void CHAssassin::HandleAnimEvent(MonsterEvent_t *pEvent)
 		pev->flags &= ~FL_ONGROUND;
 		if (m_pCine) //LRC...
 		{
-			pev->velocity = g_vecZero;
+			SetVelocityZero();
 			if (m_pCine->PreciseAttack() && m_hTargetEnt != NULL)
 			{
 				Vector vecTemp = m_hTargetEnt->pev->origin;
 				vecTemp.y = vecTemp.y + 50; // put her feet on the target.
-				pev->velocity = VecCheckToss(pev, pev->origin, vecTemp, 0.5);
-				//if (pev->velocity != g_vecZero)
-				//	ALERT(at_console,"Precise jump for assassin %s\n",STRING(pev->targetname));
-				//else
-				//	ALERT(at_console,"Precise jump failed. ");
+				SetVelocity(VecCheckToss(pev, pev->origin, vecTemp, 0.5));
 			}
+			
 			if (pev->velocity == g_vecZero)
 			{ // just jump, it doesn't matter where to.
 				//ALERT(at_console,"Nonprecise jump for assassin %s\n",STRING(pev->targetname));
@@ -305,11 +302,12 @@ void CHAssassin::HandleAnimEvent(MonsterEvent_t *pEvent)
 				UTIL_MakeVectors(pev->angles);
 				Vector vecDest = pev->origin + (gpGlobals->v_forward * 32);
 				vecDest.z += 160; // don't forget to jump into the air, now...
-				pev->velocity = (vecDest - pev->origin) * speed;
+				SetVelocity((vecDest - pev->origin) * speed);
 			}
 		}
 		else
-			pev->velocity = m_vecJumpVelocity;
+			SetVelocity(m_vecJumpVelocity);
+			
 		m_flNextJump = gpGlobals->time + 3.0;
 	}
 	return;
@@ -330,7 +328,7 @@ void CHAssassin::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/hassassin.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;

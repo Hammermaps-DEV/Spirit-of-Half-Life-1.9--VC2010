@@ -473,15 +473,15 @@ void CBigMomma::HandleAnimEvent(MonsterEvent_t *pEvent)
 			switch (pEvent->event)
 			{
 			case BIG_AE_MELEE_ATTACKBR:
-				pHurt->pev->velocity = pHurt->pev->velocity + (forward * 150) + Vector(0, 0, 250) - (right * 200);
+				pHurt->SetVelocity(pHurt->pev->velocity + (forward * 150) + Vector(0, 0, 250) - (right * 200));
 				break;
 
 			case BIG_AE_MELEE_ATTACKBL:
-				pHurt->pev->velocity = pHurt->pev->velocity + (forward * 150) + Vector(0, 0, 250) + (right * 200);
+				pHurt->SetVelocity(pHurt->pev->velocity + (forward * 150) + Vector(0, 0, 250) + (right * 200));
 				break;
 
 			case BIG_AE_MELEE_ATTACK1:
-				pHurt->pev->velocity = pHurt->pev->velocity + (forward * 220) + Vector(0, 0, 200);
+				pHurt->SetVelocity(pHurt->pev->velocity + (forward * 220) + Vector(0, 0, 200));
 				break;
 			}
 
@@ -540,7 +540,7 @@ void CBigMomma::HandleAnimEvent(MonsterEvent_t *pEvent)
 		UTIL_SetOrigin(this, pev->origin + Vector(0, 0, 1));// take her off ground so engine doesn't instantly reset onground 
 		UTIL_MakeVectors(pev->angles);
 
-		pev->velocity = (gpGlobals->v_forward * 200) + gpGlobals->v_up * 500;
+		SetVelocity((gpGlobals->v_forward * 200) + gpGlobals->v_up * 500);
 		break;
 
 	case BIG_AE_EARLY_TARGET:
@@ -683,7 +683,7 @@ void CBigMomma::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/big_mom.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
@@ -1233,7 +1233,7 @@ void CBMortar::Spawn(void)
 	pev->frame = 0;
 	pev->scale = 0.5;
 
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 	pev->dmgtime = gpGlobals->time + 0.4;
@@ -1263,7 +1263,7 @@ CBMortar *CBMortar::Shoot(edict_t *pOwner, Vector vecStart, Vector vecVelocity)
 	pSpit->Spawn();
 
 	UTIL_SetOrigin(pSpit, vecStart);
-	pSpit->pev->velocity = vecVelocity;
+	pSpit->SetVelocity(vecVelocity);
 	pSpit->pev->owner = pOwner;
 	pSpit->pev->scale = 2.5;
 	pSpit->SetThink(&CBMortar::Animate);

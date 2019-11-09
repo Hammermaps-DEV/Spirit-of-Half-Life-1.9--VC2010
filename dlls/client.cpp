@@ -845,18 +845,11 @@ void ClientPrecache(void)
 
 	//SOHL 1.9.1
 	// BulletFlyBy sounds 
-	PRECACHE_SOUND("fx/whizz_bullet1.wav");
-	PRECACHE_SOUND("fx/whizz_bullet2.wav");
-	PRECACHE_SOUND("fx/whizz_bullet3.wav");
-	PRECACHE_SOUND("fx/whizz_bullet4.wav");
-	PRECACHE_SOUND("fx/whizz_bullet5.wav");
-	PRECACHE_SOUND("fx/whizz_bullet6.wav");
-	PRECACHE_SOUND("fx/whizz_bullet7.wav");
-	PRECACHE_SOUND("fx/whizz_bullet8.wav");
-	PRECACHE_SOUND("fx/whizz_bullet9.wav");
-	PRECACHE_SOUND("fx/whizz_bullet10.wav");
-	PRECACHE_SOUND("fx/whizz_bullet11.wav");
-	PRECACHE_SOUND("fx/whizz_bullet12.wav");
+	PRECACHE_SOUND("misc/whizz1.wav");
+	PRECACHE_SOUND("misc/whizz2.wav");
+	PRECACHE_SOUND("misc/whizz3.wav");
+	PRECACHE_SOUND("misc/whizz4.wav");
+	PRECACHE_SOUND("misc/whizz5.wav");
 
 	if (giPrecacheGrunt)
 		UTIL_PrecacheOther("monster_human_grunt");

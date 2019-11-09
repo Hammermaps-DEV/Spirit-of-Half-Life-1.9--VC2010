@@ -108,7 +108,7 @@ void CBarnacle::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/barnacle.mdl");
-	UTIL_SetSize(pev, Vector(-16, -16, -32), Vector(16, 16, 0));
+	UTIL_SetSize(this, Vector(-16, -16, -32), Vector(16, 16, 0));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_NONE;
@@ -284,7 +284,7 @@ void CBarnacle::BarnacleThink(void)
 				m_hEnemy = pTouchEnt;
 
 				pTouchEnt->pev->movetype = MOVETYPE_FLY;
-				pTouchEnt->pev->velocity = pev->velocity; //LRC- make him come _with_ me
+				pTouchEnt->SetVelocity(pev->velocity); //LRC- make him come _with_ me
 				pTouchEnt->pev->basevelocity = pev->velocity; //LRC
 				pTouchEnt->pev->origin.x = pev->origin.x;
 				pTouchEnt->pev->origin.y = pev->origin.y;

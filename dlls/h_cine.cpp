@@ -106,7 +106,7 @@ void CLegacyCineMonster::CineSpawn(char *szModel)
 {
 	PRECACHE_MODEL(szModel);
 	SET_MODEL(ENT(pev), szModel);
-	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 64));
+	UTIL_SetSize(this, Vector(-16, -16, 0), Vector(16, 16, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;

@@ -40,7 +40,7 @@ LINK_ENTITY_TO_CLASS(spark_shower, CShower);
 
 void CShower::Spawn(void)
 {
-	pev->velocity = RANDOM_FLOAT(200, 300) * pev->angles;
+	SetVelocity(RANDOM_FLOAT(200, 300) * pev->angles);
 	pev->velocity.x += RANDOM_FLOAT(-100.f, 100.f);
 	pev->velocity.y += RANDOM_FLOAT(-100.f, 100.f);
 	if (pev->velocity.z >= 0)
@@ -52,7 +52,7 @@ void CShower::Spawn(void)
 	SetNextThink(0.1);
 	pev->solid = SOLID_NOT;
 	SET_MODEL(edict(), "models/grenade.mdl");	// Need a model, just use the grenade, we don't draw it anyway
-	UTIL_SetSize(pev, g_vecZero, g_vecZero);
+	UTIL_SetSize(this, g_vecZero, g_vecZero);
 	pev->effects |= EF_NODRAW;
 	pev->speed = RANDOM_FLOAT(0.5, 1.5);
 
@@ -75,9 +75,9 @@ void CShower::Think(void)
 void CShower::Touch(CBaseEntity *pOther)
 {
 	if (pev->flags & FL_ONGROUND)
-		pev->velocity = pev->velocity * 0.1;
+		SetVelocity(pev->velocity * 0.1);
 	else
-		pev->velocity = pev->velocity * 0.6;
+		SetVelocity(pev->velocity * 0.6);
 
 	if ((pev->velocity.x*pev->velocity.x + pev->velocity.y*pev->velocity.y) < 10.0)
 		pev->speed = 0;

@@ -151,6 +151,10 @@ public:
 class CBaseEntity
 {
 public:
+	CBaseEntity() { }
+
+	virtual ~CBaseEntity() { }
+
 	// Constructor.  Set engine to use C/C++ callback functions
 	// pointers to engine data
 	entvars_t *pev;		// Don't need to save/restore this pointer, the engine resets it
@@ -254,7 +258,7 @@ public:
 		}
 		mstudioseqdesc_t    *pseqdesc;
 		pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex);
-		UTIL_SetSize(pev, pseqdesc[pev->sequence].bbmin, pseqdesc[pev->sequence].bbmax);
+		UTIL_SetSize(this, pseqdesc[pev->sequence].bbmin, pseqdesc[pev->sequence].bbmax);
 	}
 
 	// Classify - returns the type of group (e.g., "alien monster", or "human military" so that monsters
@@ -279,8 +283,6 @@ public:
 	virtual void	Killed(entvars_t *pevAttacker, int iGib);
 	virtual int		BloodColor(void) { return DONT_BLEED; }
 	virtual void	TraceBleed(float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	//LRC- superceded by GetState ( pActivator ).
-	//	virtual BOOL    IsTriggered( CBaseEntity *pActivator ) {return TRUE;}
 	virtual CBaseMonster *MyMonsterPointer(void) { return NULL; }
 	virtual CSquadMonster *MySquadMonsterPointer(void) { return NULL; }
 	virtual	int		GetToggleState(void) { return TS_AT_TOP; }
@@ -293,6 +295,10 @@ public:
 	virtual int		IsMoving(void) { return pev->velocity != g_vecZero; }
 	virtual void	OverrideReset(void) {}
 	virtual int		DamageDecal(int bitsDamageType);
+
+	virtual void	SetVelocity(const Vector velocity) { pev->velocity = velocity; }
+	virtual void	SetVelocityZero() { SetVelocity(Vector(0, 0, 0)); }
+	
 	// This is ONLY used by the node graph to test movement through a door
 	virtual void	SetToggleState(int state) {}
 	virtual void    StartSneaking(void) {}
@@ -307,8 +313,7 @@ public:
 	virtual	BOOL	IsPlayer(void) { return FALSE; }
 	virtual BOOL	IsNetClient(void) { return FALSE; }
 	virtual const char *TeamID(void) { return ""; }
-
-
+	
 	//	virtual void	SetActivator( CBaseEntity *pActivator ) {}
 	virtual CBaseEntity *GetNextTarget(void);
 

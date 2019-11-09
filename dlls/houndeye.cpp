@@ -291,7 +291,7 @@ void CHoundeye::HandleAnimEvent(MonsterEvent_t *pEvent)
 
 		pev->flags &= ~FL_ONGROUND;
 
-		pev->velocity = gpGlobals->v_forward * -200;
+		SetVelocity(gpGlobals->v_forward * -200);
 		pev->velocity.z += (0.6 * flGravity) * 0.5;
 
 		break;
@@ -334,7 +334,7 @@ void CHoundeye::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/houndeye.mdl");
-	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 36));
+	UTIL_SetSize(this, Vector(-16, -16, 0), Vector(16, 16, 36));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;

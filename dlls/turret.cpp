@@ -317,7 +317,7 @@ void CTurret::Spawn()
 	m_iRetractHeight = 16;
 	m_iDeployHeight = 32;
 	m_iMinPitch = -15;
-	UTIL_SetSize(pev, Vector(-32, -32, -m_iRetractHeight), Vector(32, 32, m_iRetractHeight));
+	UTIL_SetSize(this, Vector(-32, -32, -m_iRetractHeight), Vector(32, 32, m_iRetractHeight));
 
 	SetThink(&CTurret::Initialize);
 
@@ -356,7 +356,7 @@ void CMiniTurret::Spawn()
 	m_iRetractHeight = 16;
 	m_iDeployHeight = 32;
 	m_iMinPitch = -15;
-	UTIL_SetSize(pev, Vector(-16, -16, -m_iRetractHeight), Vector(16, 16, m_iRetractHeight));
+	UTIL_SetSize(this, Vector(-16, -16, -m_iRetractHeight), Vector(16, 16, m_iRetractHeight));
 
 	SetThink(&CMiniTurret::Initialize);
 	SetNextThink(0.3);
@@ -678,7 +678,7 @@ void CBaseTurret::Deploy(void)
 	{
 		pev->maxs.z = m_iDeployHeight;
 		pev->mins.z = -m_iDeployHeight;
-		UTIL_SetSize(pev, pev->mins, pev->maxs);
+		UTIL_SetSize(this, pev->mins, pev->maxs);
 
 		m_vecCurAngles.x = 0;
 
@@ -730,7 +730,7 @@ void CBaseTurret::Retire(void)
 			SetTurretAnim(TURRET_ANIM_NONE);
 			pev->maxs.z = m_iRetractHeight;
 			pev->mins.z = -m_iRetractHeight;
-			UTIL_SetSize(pev, pev->mins, pev->maxs);
+			UTIL_SetSize(this, pev->mins, pev->maxs);
 			if (m_iAutoStart)
 			{
 				SetThink(&CBaseTurret::AutoSearchThink);
@@ -1215,7 +1215,7 @@ void CSentry::Spawn()
 	m_iRetractHeight = 64;
 	m_iDeployHeight = 64;
 	m_iMinPitch = -60;
-	UTIL_SetSize(pev, Vector(-16, -16, -m_iRetractHeight), Vector(16, 16, m_iRetractHeight));
+	UTIL_SetSize(this, Vector(-16, -16, -m_iRetractHeight), Vector(16, 16, m_iRetractHeight));
 
 	SetTouch(&CSentry::SentryTouch);
 	SetThink(&CSentry::Initialize);

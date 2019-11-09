@@ -91,7 +91,7 @@ void CPlayerMonster::Spawn()
 	Precache();
 
 	SET_MODEL(ENT(pev), "models/player.mdl");
-	UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+	UTIL_SetSize(this, VEC_HULL_MIN, VEC_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;

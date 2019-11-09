@@ -97,7 +97,7 @@ void CXenPLight::Spawn(void)
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_TRIGGER;
 
-	UTIL_SetSize(pev, Vector(-80, -80, 0), Vector(80, 80, 32));
+	UTIL_SetSize(this, Vector(-80, -80, 0), Vector(80, 80, 32));
 	SetActivity(ACT_IDLE);
 	SetNextThink(0.1);
 	pev->frame = RANDOM_FLOAT(0, 255);
@@ -196,7 +196,7 @@ void CXenHair::Spawn(void)
 {
 	Precache();
 	SET_MODEL(edict(), "models/hair.mdl");
-	UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 32));
+	UTIL_SetSize(this, Vector(-4, -4, 0), Vector(4, 4, 32));
 	pev->sequence = 0;
 
 	if (!(pev->spawnflags & SF_HAIR_SYNC))
@@ -300,7 +300,7 @@ void CXenTree::Spawn(void)
 
 	pev->takedamage = DAMAGE_YES;
 
-	UTIL_SetSize(pev, Vector(-30, -30, 0), Vector(30, 30, 188));
+	UTIL_SetSize(this, Vector(-30, -30, 0), Vector(30, 30, 188));
 	SetActivity(ACT_IDLE);
 	SetNextThink(0.1);
 	pev->frame = RANDOM_FLOAT(0, 255);
@@ -311,7 +311,7 @@ void CXenTree::Spawn(void)
 	triggerPosition = pev->origin + (triggerPosition * 64);
 	// Create the trigger
 	m_pTrigger = CXenTreeTrigger::TriggerCreate(edict(), triggerPosition);
-	UTIL_SetSize(m_pTrigger->pev, Vector(-24, -24, 0), Vector(24, 24, 128));
+	UTIL_SetSize(m_pTrigger, Vector(-24, -24, 0), Vector(24, 24, 128));
 }
 
 const char *CXenTree::pAttackHitSounds[] =
@@ -378,7 +378,7 @@ void CXenTree::HandleAnimEvent(MonsterEvent_t *pEvent)
 					sound = TRUE;
 					pList[i]->TakeDamage(pev, pev, 25, DMG_CRUSH | DMG_SLASH);
 					pList[i]->pev->punchangle.x = 15;
-					pList[i]->pev->velocity = pList[i]->pev->velocity + forward * 100;
+					pList[i]->SetVelocity(pList[i]->pev->velocity + forward * 100);
 				}
 			}
 		}
@@ -474,14 +474,13 @@ CXenHull *CXenHull::CreateHull(CBaseEntity *source, const Vector &mins, const Ve
 	pHull->pev->classname = MAKE_STRING("xen_hull");
 	pHull->pev->movetype = MOVETYPE_NONE;
 	pHull->pev->owner = source->edict();
-	UTIL_SetSize(pHull->pev, mins, maxs);
+	UTIL_SetSize(pHull, mins, maxs);
 	pHull->pev->renderamt = 0;
 	pHull->pev->rendermode = kRenderTransTexture;
 	//	pHull->pev->effects = EF_NODRAW;
 
 	return pHull;
 }
-
 
 LINK_ENTITY_TO_CLASS(xen_spore_small, CXenSporeSmall);
 LINK_ENTITY_TO_CLASS(xen_spore_medium, CXenSporeMed);
@@ -492,13 +491,13 @@ void CXenSporeSmall::Spawn(void)
 {
 	pev->skin = 0;
 	CXenSpore::Spawn();
-	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 64));
+	UTIL_SetSize(this, Vector(-16, -16, 0), Vector(16, 16, 64));
 }
 void CXenSporeMed::Spawn(void)
 {
 	pev->skin = 1;
 	CXenSpore::Spawn();
-	UTIL_SetSize(pev, Vector(-40, -40, 0), Vector(40, 40, 120));
+	UTIL_SetSize(this, Vector(-40, -40, 0), Vector(40, 40, 120));
 }
 
 
@@ -516,7 +515,7 @@ void CXenSporeLarge::Spawn(void)
 {
 	pev->skin = 2;
 	CXenSpore::Spawn();
-	UTIL_SetSize(pev, Vector(-48, -48, 110), Vector(48, 48, 240));
+	UTIL_SetSize(this, Vector(-48, -48, 110), Vector(48, 48, 240));
 
 	Vector forward, right;
 

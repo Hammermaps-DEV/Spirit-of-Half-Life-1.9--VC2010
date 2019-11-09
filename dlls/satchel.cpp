@@ -92,7 +92,7 @@ void CSatchelCharge::Spawn(void)
 	pev->solid = SOLID_BBOX;
 
 	SET_MODEL(ENT(pev), "models/w_satchel.mdl");
-	UTIL_SetSize(pev, Vector(-4, -4, -4), Vector(4, 4, 4));	// Uses point-sized, and can be stepped over
+	UTIL_SetSize(this, Vector(-4, -4, -4), Vector(4, 4, 4));	// Uses point-sized, and can be stepped over
 	UTIL_SetOrigin(this, pev->origin);
 
 	SetTouch(&CSatchelCharge::SatchelSlide);
@@ -122,7 +122,7 @@ void CSatchelCharge::SatchelSlide(CBaseEntity *pOther)
 	if (tr.flFraction < 1.0)
 	{
 		// add a bit of static friction
-		pev->velocity = pev->velocity * 0.95;
+		SetVelocity(pev->velocity * 0.95);
 		pev->avelocity = pev->avelocity * 0.9;
 		// play sliding sound, volume based on velocity
 	}
@@ -148,7 +148,7 @@ void CSatchelCharge::SatchelThink(void)
 	if (pev->waterlevel == 3 && pev->watertype != CONTENT_FOG)
 	{
 		pev->movetype = MOVETYPE_FLY;
-		pev->velocity = pev->velocity * 0.8;
+		SetVelocity(pev->velocity * 0.8);
 		pev->avelocity = pev->avelocity * 0.9;
 		pev->velocity.z += 8;
 	}
@@ -338,7 +338,7 @@ void CSatchel::Throw(void)
 		Vector vecSrc = m_pPlayer->pev->origin;
 		Vector vecThrow = gpGlobals->v_forward * 274 + m_pPlayer->pev->velocity;
 		CBaseEntity *pSatchel = Create("monster_satchel", vecSrc, Vector(0, 0, 0), m_pPlayer->edict());
-		pSatchel->pev->velocity = vecThrow;
+		pSatchel->SetVelocity(vecThrow);
 		pSatchel->pev->avelocity.y = 400;
 
 		m_chargeReady = 1;

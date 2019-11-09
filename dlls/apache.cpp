@@ -125,7 +125,7 @@ void CApache::Spawn(void)
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/apache.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, -64), Vector(32, 32, 0));
+	UTIL_SetSize(this, Vector(-32, -32, -64), Vector(32, 32, 0));
 	UTIL_SetOrigin(this, pev->origin);
 
 	pev->flags |= FL_MONSTER;
@@ -206,7 +206,7 @@ void CApache::Killed(entvars_t *pevAttacker, int iGib)
 
 	STOP_SOUND(ENT(pev), CHAN_STATIC, "apache/ap_rotor2.wav");
 
-	UTIL_SetSize(pev, Vector(-32, -32, -64), Vector(32, 32, 0));
+	UTIL_SetSize(this, Vector(-32, -32, -64), Vector(32, 32, 0));
 	SetThink(&CApache::DyingThink);
 	SetTouch(&CApache::CrashTouch);
 	SetNextThink(0.1);
@@ -365,7 +365,7 @@ void CApache::DyingThink(void)
 		{
 			CBaseEntity *pWreckage = Create("cycler_wreckage", pev->origin, pev->angles);
 			// SET_MODEL( ENT(pWreckage->pev), STRING(pev->model) );
-			UTIL_SetSize(pWreckage->pev, Vector(-200, -200, -128), Vector(200, 200, -32));
+			UTIL_SetSize(pWreckage, Vector(-200, -200, -128), Vector(200, 200, -32));
 			pWreckage->pev->frame = pev->frame;
 			pWreckage->pev->sequence = pev->sequence;
 			pWreckage->pev->framerate = 0;
@@ -423,7 +423,7 @@ void CApache::FlyTouch(CBaseEntity *pOther)
 		TraceResult tr = UTIL_GetGlobalTrace();
 
 		// UNDONE, do a real bounce
-		pev->velocity = pev->velocity + tr.vecPlaneNormal * (pev->velocity.Length() + 200);
+		SetVelocity(pev->velocity + tr.vecPlaneNormal * (pev->velocity.Length() + 200));
 	}
 }
 
@@ -669,7 +669,7 @@ void CApache::Flight(void)
 	pev->velocity.z = pev->velocity.z * (1.0 - fabs(gpGlobals->v_right.z) * 0.05);
 
 	// general drag
-	pev->velocity = pev->velocity * 0.995;
+	SetVelocity(pev->velocity * 0.995);
 
 	// apply power to stay correct height
 	if (m_flForce < 80 && vecEst.z < m_posDesired.z)
@@ -782,7 +782,7 @@ void CApache::FireRocket(void)
 
 	CBaseEntity *pRocket = CBaseEntity::Create("hvr_rocket", vecSrc, pev->angles, edict());
 	if (pRocket)
-		pRocket->pev->velocity = pev->velocity + gpGlobals->v_forward * 100;
+		pRocket->SetVelocity(pev->velocity + gpGlobals->v_forward * 100);
 
 	m_iRockets--;
 
@@ -976,7 +976,7 @@ void CApacheHVR::Spawn(void)
 	pev->solid = SOLID_BBOX;
 
 	SET_MODEL(ENT(pev), "models/HVR.mdl");
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin(this, pev->origin);
 
 	SetThink(&CApacheHVR::IgniteThink);
@@ -1044,7 +1044,7 @@ void CApacheHVR::AccelerateThink(void)
 	float flSpeed = pev->velocity.Length();
 	if (flSpeed < 1800)
 	{
-		pev->velocity = pev->velocity + m_vecForward * 200;
+		SetVelocity(pev->velocity + m_vecForward * 200);
 	}
 
 	// re-aim

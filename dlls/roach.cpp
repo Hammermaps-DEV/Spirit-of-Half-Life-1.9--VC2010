@@ -22,7 +22,6 @@
 #include	"monsters.h"
 #include	"schedule.h"
 #include	"soundent.h"
-#include	"decals.h"
 #include	"weapons.h"
 
 #define		ROACH_IDLE				0
@@ -84,21 +83,17 @@ int	CRoach::Classify(void)
 //=========================================================
 void CRoach::Touch(CBaseEntity *pOther)
 {
-	Vector		vecSpot;
 	TraceResult	tr;
 
 	if (pOther->pev->velocity == g_vecZero || !pOther->IsPlayer())
-	{
 		return;
-	}
 
-	vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
+	Vector vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
 	UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), ignore_monsters, ENT(pev), &tr);
 
 	// This isn't really blood.  So you don't have to screen it out based on violence levels (UTIL_ShouldShowBlood())
-	CBaseEntity *pHit = CBaseEntity::Instance(tr.pHit);
+	CBaseEntity *pHit = Instance(tr.pHit);
 	PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_GLOBAL, edict(), m_usDecals, 0.0, (float *)&tr.vecEndPos, (float *)&g_vecZero, 0.0, 0.0, pHit->entindex(), 2, 0, 0);
-	//UTIL_DecalTrace( &tr, DECAL_YBLOOD1 +RANDOM_LONG(0,5) );
 
 	TakeDamage(pOther->pev, pOther->pev, pev->health, DMG_CRUSH);
 }
@@ -109,11 +104,7 @@ void CRoach::Touch(CBaseEntity *pOther)
 //=========================================================
 void CRoach::SetYawSpeed(void)
 {
-	int ys;
-
-	ys = 120;
-
-	pev->yaw_speed = ys;
+	pev->yaw_speed = 120;
 }
 
 //=========================================================
@@ -127,7 +118,8 @@ void CRoach::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/roach.mdl");
-	UTIL_SetSize(pev, Vector(-1, -1, 0), Vector(1, 1, 2));
+	
+	UTIL_SetSize(this, Vector(-1, -1, 0), Vector(1, 1, 2));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;

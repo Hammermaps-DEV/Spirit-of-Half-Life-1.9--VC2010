@@ -217,11 +217,11 @@ public:
 															// Spectators should return TRUE for this
 	virtual const char *TeamID(void);
 
-	virtual int		Save(CSave &save);
-	virtual int		Restore(CRestore &restore);
+	virtual int	Save(CSave &save);
+	virtual int	Restore(CRestore &restore);
 	void RenewItems(void);
 	void PackDeadPlayerItems(void);
-	void RemoveAllItems(BOOL removeSuit);
+	void RemoveAllItems(bool removeSuit);
 	void RemoveItems(int iWeaponMask, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iEgon, int iSatchel, int iSnark, int iTrip, int iGren, int iHornet, int iCycler);
 	void RemoveAmmo(const char* szName, int iAmount);
 	BOOL SwitchWeapon(CBasePlayerItem *pWeapon);

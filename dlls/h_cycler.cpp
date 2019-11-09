@@ -108,7 +108,7 @@ void CCycler::GenericCyclerSpawn(char *szModel, Vector vecMin, Vector vecMax)
 
 	CCycler::Spawn();
 
-	UTIL_SetSize(pev, vecMin, vecMax);
+	UTIL_SetSize(this, vecMin, vecMax);
 }
 
 

@@ -563,7 +563,7 @@ void CBasePlayerItem::FallInit(void)
 	pev->solid = SOLID_BBOX;
 
 	UTIL_SetOrigin(this, pev->origin);
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));//pointsize until it lands on the ground.
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));//pointsize until it lands on the ground.
 
 	SetTouch(&CBasePlayerItem::DefaultTouch);
 	SetThink(&CBasePlayerItem::FallThink);
@@ -856,14 +856,7 @@ int CBasePlayerItem::AddToPlayer(CBasePlayer *pPlayer)
 	return TRUE;
 }
 
-void CBasePlayerItem::Drop(void)
-{
-	SetTouch(NULL);
-	SetThink(&CBasePlayerItem::SUB_Remove);
-	SetNextThink(0.1);
-}
-
-void CBasePlayerItem::Kill(void)
+void CBasePlayerItem::Kill()
 {
 	SetTouch(NULL);
 	SetThink(&CBasePlayerItem::SUB_Remove);
@@ -1244,7 +1237,7 @@ void CBasePlayerAmmo::Spawn(void)
 {
 	pev->movetype = MOVETYPE_TOSS;
 	pev->solid = SOLID_TRIGGER;
-	UTIL_SetSize(pev, Vector(-16, -16, 0), Vector(16, 16, 16));
+	UTIL_SetSize(this, Vector(-16, -16, 0), Vector(16, 16, 16));
 	UTIL_SetOrigin(this, pev->origin);
 
 	SetTouch(&CBasePlayerAmmo::DefaultTouch);
@@ -1458,7 +1451,7 @@ void CWeaponBox::Spawn(void)
 	pev->movetype = MOVETYPE_TOSS;
 	pev->solid = SOLID_TRIGGER;
 
-	UTIL_SetSize(pev, g_vecZero, g_vecZero);
+	UTIL_SetSize(this, g_vecZero, g_vecZero);
 
 	SET_MODEL(ENT(pev), "models/w_weaponbox.mdl");
 }

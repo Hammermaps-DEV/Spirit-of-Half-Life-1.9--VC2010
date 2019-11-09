@@ -659,7 +659,7 @@ void CBreakable::TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecD
 	if (m_iszWhenHit)
 	{
 		m_pHitProxy->pev->origin = ptr->vecEndPos;
-		m_pHitProxy->pev->velocity = vecDir;
+		m_pHitProxy->SetVelocity(vecDir);
 		FireTargets(STRING(m_iszWhenHit), m_pHitProxy, this, USE_TOGGLE, 0);
 	}
 
@@ -1019,8 +1019,6 @@ void CPushable::Spawn(void)
 	pev->solid = SOLID_BBOX;
 	SET_MODEL(ENT(pev), STRING(pev->model));
 
-	//	UTIL_SetSize( pev, vecMins, vecMaxs );
-
 	if (pev->friction > 399)
 		pev->friction = 399;
 
@@ -1057,20 +1055,20 @@ void CPushable::KeyValue(KeyValueData *pkvd)
 		switch (bbox)
 		{
 		case 0:	// Point
-			UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
+			UTIL_SetSize(this, Vector(-8, -8, -8), Vector(8, 8, 8));
 			break;
 
 		case 2: // Big Hull!?!?	!!!BUGBUG Figure out what this hull really is
-			UTIL_SetSize(pev, VEC_DUCK_HULL_MIN * 2, VEC_DUCK_HULL_MAX * 2);
+			UTIL_SetSize(this, VEC_DUCK_HULL_MIN * 2, VEC_DUCK_HULL_MAX * 2);
 			break;
 
 		case 3: // Player duck
-			UTIL_SetSize(pev, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
+			UTIL_SetSize(this, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX);
 			break;
 
 		default:
 		case 1: // Player
-			UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+			UTIL_SetSize(this, VEC_HULL_MIN, VEC_HULL_MAX);
 			break;
 		}
 

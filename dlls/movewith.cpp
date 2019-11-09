@@ -58,7 +58,7 @@ void HandlePostAssist(CBaseEntity *pEnt)
 		//			pEnt->pev->velocity.x, pEnt->pev->velocity.y, pEnt->pev->velocity.z,
 		//			pEnt->m_vecPostAssistVel.x, pEnt->m_vecPostAssistVel.y, pEnt->m_vecPostAssistVel.z
 		//		);
-		pEnt->pev->velocity = pEnt->m_vecPostAssistVel;
+		pEnt->SetVelocity(pEnt->m_vecPostAssistVel);
 		pEnt->m_vecPostAssistVel = g_vecZero;
 		pEnt->m_iLFlags &= ~LF_POSTASSISTVEL;
 	}
@@ -140,7 +140,7 @@ void AssistChildren(CBaseEntity *pEnt, Vector vecAdjustVel, Vector vecAdjustAVel
 			pChild->m_vecPostAssistAVel = pChild->pev->avelocity;
 			pChild->m_iLFlags |= LF_POSTASSISTAVEL;
 		}
-		pChild->pev->velocity = pChild->pev->velocity - vecAdjustVel;// (pChild->pev->velocity - pEnt->m_vecPostAssistVel) + pEnt->m_vecPostAssistVel*fFraction;
+		pChild->SetVelocity(pChild->pev->velocity - vecAdjustVel);// (pChild->pev->velocity - pEnt->m_vecPostAssistVel) + pEnt->m_vecPostAssistVel*fFraction;
 		pChild->pev->avelocity = pChild->pev->avelocity - vecAdjustAVel;// (pChild->pev->avelocity - pEnt->m_vecPostAssistAVel) + pEnt->m_vecPostAssistAVel*fFraction;
 
 		//ALERT(at_console, "AssistChild %s: origin %f %f %f, old vel %f %f %f. fraction %f, new vel %f %f %f, dest %f %f %f\n", STRING(pChild->pev->targetname), pChild->pev->origin.x, pChild->pev->origin.y, pChild->pev->origin.z, pChild->m_vecPostAssistVel.x, pChild->m_vecPostAssistVel.y, pChild->m_vecPostAssistVel.z, fFraction, pChild->pev->velocity.x, pChild->pev->velocity.y, pChild->pev->velocity.z, pChild->pev->origin.x + pChild->pev->velocity.x*gpGlobals->frametime, pChild->pev->origin.y + pChild->pev->velocity.y*gpGlobals->frametime, pChild->pev->origin.z + pChild->pev->velocity.z*gpGlobals->frametime );
@@ -217,12 +217,12 @@ int TryAssistEntity(CBaseEntity *pEnt)
 
 			if (pEnt->m_pMoveWith)
 			{
-				pEnt->pev->velocity = (pEnt->pev->velocity - pEnt->m_pMoveWith->pev->velocity)*fFraction + pEnt->m_pMoveWith->pev->velocity;
+				pEnt->SetVelocity((pEnt->pev->velocity - pEnt->m_pMoveWith->pev->velocity)*fFraction + pEnt->m_pMoveWith->pev->velocity);
 				pEnt->pev->avelocity = (pEnt->pev->avelocity - pEnt->m_pMoveWith->pev->avelocity)*fFraction + pEnt->m_pMoveWith->pev->avelocity;
 			}
 			else
 			{
-				pEnt->pev->velocity = pEnt->pev->velocity*fFraction;
+				pEnt->SetVelocity(pEnt->pev->velocity*fFraction);
 				pEnt->pev->avelocity = pEnt->pev->avelocity*fFraction;
 			}
 
@@ -511,11 +511,8 @@ void UTIL_SetMoveWithVelocity(CBaseEntity *pEnt, const Vector vecSet, int loopbr
 			}
 		}
 	}
-
-	//	if (bImmediate)
-	pEnt->pev->velocity = vecNew;
-	//	else
-	//		UTIL_SetDesiredVel(pEnt, vecNew);
+	
+	pEnt->SetVelocity(vecNew);
 }
 
 //LRC
@@ -552,7 +549,7 @@ void UTIL_SetVelocity(CBaseEntity *pEnt, const Vector vecSet)
 		}
 	}
 
-	pEnt->pev->velocity = vecNew;
+	pEnt->SetVelocity(vecNew);
 }
 
 //LRC - one more MoveWith utility. This one's for the simple version of RotWith.

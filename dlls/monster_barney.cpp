@@ -495,7 +495,8 @@ void CBarney::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/barney.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	
+	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
@@ -537,14 +538,10 @@ void CBarney::Precache()
 	PRECACHE_SOUND("barney/ba_pain1.wav");
 	PRECACHE_SOUND("barney/ba_pain2.wav");
 	PRECACHE_SOUND("barney/ba_pain3.wav");
-	PRECACHE_SOUND("barney/ba_pain4.wav");
-	PRECACHE_SOUND("barney/ba_pain5.wav");
 
 	PRECACHE_SOUND("barney/ba_die1.wav");
 	PRECACHE_SOUND("barney/ba_die2.wav");
 	PRECACHE_SOUND("barney/ba_die3.wav");
-
-	PRECACHE_SOUND("barney/ba_reload1.wav");
 
 	m_iBrassShell = PRECACHE_MODEL("models/shell.mdl");
 
@@ -709,8 +706,6 @@ void CBarney::PainSound(void)
 	case 0: EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "barney/ba_pain1.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
 	case 1: EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "barney/ba_pain2.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
 	case 2: EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "barney/ba_pain3.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
-	case 3: EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "barney/ba_pain4.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
-	case 4: EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "barney/ba_pain5.wav", 1, ATTN_NORM, 0, GetVoicePitch()); break;
 	}
 }
 

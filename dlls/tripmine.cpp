@@ -111,7 +111,7 @@ void CTripmineGrenade::AutoSetSize(void)
 
 	mstudioseqdesc_t* pseqdesc = (mstudioseqdesc_t *)((byte *)pstudiohdr + pstudiohdr->seqindex);
 
-	UTIL_SetSize(pev, pseqdesc[pev->sequence].bbmin, pseqdesc[pev->sequence].bbmax);
+	UTIL_SetSize(this, pseqdesc[pev->sequence].bbmin, pseqdesc[pev->sequence].bbmax);
 }
 
 void CTripmineGrenade::Spawn(void)

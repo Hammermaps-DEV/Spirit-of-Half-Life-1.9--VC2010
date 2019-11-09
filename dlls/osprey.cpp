@@ -152,7 +152,7 @@ void COsprey::Spawn(void)
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/osprey.mdl");
-	UTIL_SetSize(pev, Vector(-400, -400, -100), Vector(400, 400, 32));
+	UTIL_SetSize(this, Vector(-400, -400, -100), Vector(400, 400, 32));
 	UTIL_SetOrigin(this, pev->origin);
 
 	//ALERT(at_console, "Osprey origin %f %f %f\n", pev->origin.x, pev->origin.y, pev->origin.z);
@@ -312,7 +312,7 @@ CBaseMonster *COsprey::MakeGrunt(Vector vecSrc)
 			pEntity = Create("monster_human_grunt", vecSrc, pev->angles);
 			pGrunt = pEntity->MyMonsterPointer();
 			pGrunt->pev->movetype = MOVETYPE_FLY;
-			pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
+			pGrunt->SetVelocity(Vector(0, 0, RANDOM_FLOAT(-196, -128)));
 			pGrunt->SetActivity(ACT_GLIDE);
 
 			CBeam *pBeam = CBeam::BeamCreate("sprites/rope.spr", 10);
@@ -535,11 +535,11 @@ void COsprey::Killed(entvars_t *pevAttacker, int iGib)
 {
 	pev->movetype = MOVETYPE_TOSS;
 	pev->gravity = 0.3;
-	pev->velocity = m_velocity;
+	SetVelocity(m_velocity);
 	pev->avelocity = Vector(RANDOM_FLOAT(-20, 20), 0, RANDOM_FLOAT(-50, 50));
 	STOP_SOUND(ENT(pev), CHAN_STATIC, "apache/ap_rotor4.wav");
 
-	UTIL_SetSize(pev, Vector(-32, -32, -64), Vector(32, 32, 0));
+	UTIL_SetSize(this, Vector(-32, -32, -64), Vector(32, 32, 0));
 	SetThink(&COsprey::DyingThink);
 	SetTouch(&COsprey::CrashTouch);
 	SetNextThink(0.1);

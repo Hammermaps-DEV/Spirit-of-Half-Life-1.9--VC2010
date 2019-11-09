@@ -347,18 +347,11 @@ void EV_HLDM_BulletFlyBySound ( int idx, vec3_t start, vec3_t end )
 		{
 			if (iRand < 5)
 			{
-				zngs[0] = "fx/whizz_bullet1.wav";
-				zngs[1] = "fx/whizz_bullet2.wav";
-				zngs[2] = "fx/whizz_bullet3.wav";
-				zngs[3] = "fx/whizz_bullet4.wav";
-				zngs[4] = "fx/whizz_bullet5.wav";
-				zngs[5] = "fx/whizz_bullet6.wav";
-				zngs[6] = "fx/whizz_bullet7.wav";
-				zngs[7] = "fx/whizz_bullet8.wav";
-				zngs[8] = "fx/whizz_bullet9.wav";
-				zngs[9] = "fx/whizz_bullet10.wav";
-				zngs[10] = "fx/whizz_bullet11.wav";
-				zngs[11] = "fx/whizz_bullet12.wav";
+				zngs[0] = "misc/whizz1.wav";
+				zngs[1] = "misc/whizz2.wav";
+				zngs[2] = "misc/whizz3.wav";
+				zngs[3] = "misc/whizz4.wav";
+				zngs[4] = "misc/whizz5.wav";
 
 				cnt = (sizeof(zngs) / sizeof(int));
 				gEngfuncs.pEventAPI->EV_PlaySound( pthisplayer->index, 

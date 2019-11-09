@@ -62,7 +62,7 @@ void CCrossbowBolt::Spawn()
 	SET_MODEL(ENT(pev), "models/crossbow_bolt.mdl");
 
 	UTIL_SetOrigin(this, pev->origin);
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 
 	SetTouch(&CCrossbowBolt::BoltTouch);
 	SetThink(&CCrossbowBolt::BubbleThink);
@@ -113,7 +113,8 @@ void CCrossbowBolt::BoltTouch(CBaseEntity *pOther)
 
 		ApplyMultiDamage(pev, pevOwner);
 
-		pev->velocity = Vector(0, 0, 0);
+		SetVelocityZero();
+		
 		// play body "thwack" sound
 		switch (RANDOM_LONG(0, 1))
 		{
@@ -141,7 +142,7 @@ void CCrossbowBolt::BoltTouch(CBaseEntity *pOther)
 		pev->angles = UTIL_VecToAngles(vecDir);
 		pev->solid = SOLID_NOT;
 		pev->movetype = MOVETYPE_FLY;
-		pev->velocity = Vector(0, 0, 0);
+		SetVelocityZero();
 		pev->avelocity.z = 0;
 		pev->angles.z = RANDOM_LONG(0, 360);
 
@@ -434,12 +435,12 @@ void CCrossbow::FireBolt()
 
 	if (m_pPlayer->pev->waterlevel == 3 && m_pPlayer->pev->watertype > CONTENT_FLYFIELD)
 	{
-		pBolt->pev->velocity = vecDir * BOLT_WATER_VELOCITY;
+		pBolt->SetVelocity(vecDir * BOLT_WATER_VELOCITY);
 		pBolt->pev->speed = BOLT_WATER_VELOCITY;
 	}
 	else
 	{
-		pBolt->pev->velocity = vecDir * BOLT_AIR_VELOCITY;
+		pBolt->SetVelocity(vecDir * BOLT_AIR_VELOCITY);
 		pBolt->pev->speed = BOLT_AIR_VELOCITY;
 	}
 	pBolt->pev->avelocity.z = 10;

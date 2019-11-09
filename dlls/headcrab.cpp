@@ -261,7 +261,7 @@ void CHeadCrab::HandleAnimEvent(MonsterEvent_t *pEvent)
 		if (iSound != 0)
 			EMIT_SOUND_DYN(edict(), CHAN_VOICE, pAttackSounds[iSound], GetSoundVolue(), ATTN_IDLE, 0, GetVoicePitch());
 
-		pev->velocity = vecJumpDir;
+		SetVelocity(vecJumpDir);
 		m_flNextAttack = gpGlobals->time + 2;
 	}
 	break;
@@ -283,7 +283,7 @@ void CHeadCrab::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/headcrab.mdl");
-	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
+	UTIL_SetSize(this, Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
@@ -511,7 +511,7 @@ void CBabyCrab::Spawn(void)
 		SET_MODEL(ENT(pev), "models/baby_headcrab.mdl");
 	pev->rendermode = kRenderTransTexture;
 	pev->renderamt = 192;
-	UTIL_SetSize(pev, Vector(-12, -12, 0), Vector(12, 12, 24));
+	UTIL_SetSize(this, Vector(-12, -12, 0), Vector(12, 12, 24));
 
 	pev->health = gSkillData.headcrabHealth * 0.25;	// less health than full grown
 }

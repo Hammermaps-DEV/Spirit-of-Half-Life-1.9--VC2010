@@ -277,7 +277,7 @@ void CGauss::StartFire(void)
 	{
 		float flZVel = m_pPlayer->pev->velocity.z;
 
-		if (!pev->frags) m_pPlayer->pev->velocity = m_pPlayer->pev->velocity - gpGlobals->v_forward * flDamage * 10;
+		if (!pev->frags) m_pPlayer->SetVelocity(m_pPlayer->pev->velocity - gpGlobals->v_forward * flDamage * 10);
 		if (!IsMultiplayer()) m_pPlayer->pev->velocity.z = flZVel;
 	}
 	// player "shoot" animation

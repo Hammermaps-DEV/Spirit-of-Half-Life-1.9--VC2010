@@ -544,7 +544,6 @@ void CBaseToggle::LinearMoveNow(void)
 	SetThink(&CBaseToggle::LinearMoveDone);
 
 	// scale the destdelta vector by the time spent traveling to get velocity
-//	pev->velocity = vecDestDelta / flTravelTime;
 	UTIL_SetVelocity(this, vecDestDelta / flTravelTime);
 
 	//	ALERT(at_console, "LMNow \"%s\": Vel %f %f %f, think %f\n", STRING(pev->targetname), pev->velocity.x, pev->velocity.y, pev->velocity.z, pev->nextthink);
@@ -590,7 +589,7 @@ void CBaseToggle::LinearMoveDoneNow(void)
 	//	ALERT(at_console, "LMDone %s\n", STRING(pev->targetname));
 
 	UTIL_SetVelocity(this, g_vecZero);//, TRUE);
-//	pev->velocity = g_vecZero;
+
 	if (m_pMoveWith)
 	{
 		vecDest = m_vecFinalDest + m_pMoveWith->pev->origin;

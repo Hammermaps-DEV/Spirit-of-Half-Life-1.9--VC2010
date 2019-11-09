@@ -1929,14 +1929,16 @@ void CEnvCustomize::Affect(CBaseEntity *pTarget, USE_TYPE useType)
 		SET_MODEL(pTarget->edict(), STRING(m_iszModel));
 		//		if (pTarget->pev->flags & FL_CLIENT)
 		//			g_ulModelIndexPlayer = pTarget->pev->modelindex;
-		UTIL_SetSize(pTarget->pev, vecMins, vecMaxs);
+		UTIL_SetSize(pTarget, vecMins, vecMaxs);
 		if (pev->spawnflags & SF_CUSTOM_DEBUG)
 			ALERT(at_debug, " model=%s", STRING(m_iszModel));
 	}
+	
 	SetBoneController(m_fController0, 0, pTarget);
 	SetBoneController(m_fController1, 1, pTarget);
 	SetBoneController(m_fController2, 2, pTarget);
 	SetBoneController(m_fController3, 3, pTarget);
+	
 	if (m_fFramerate != -1)
 	{
 		//FIXME: check for env_model, stop it from changing its own framerate
@@ -4097,9 +4099,9 @@ void CTriggerBounce::Touch(CBaseEntity *pOther)
 	if (dot < -pev->armorvalue)
 	{
 		if (pev->spawnflags & SF_BOUNCE_CUTOFF)
-			pOther->pev->velocity = pOther->pev->velocity - (dot + pev->frags*(dot + pev->armorvalue))*pev->movedir;
+			pOther->SetVelocity(pOther->pev->velocity - (dot + pev->frags*(dot + pev->armorvalue))*pev->movedir);
 		else
-			pOther->pev->velocity = pOther->pev->velocity - (dot + pev->frags*dot)*pev->movedir;
+			pOther->SetVelocity(pOther->pev->velocity - (dot + pev->frags*dot)*pev->movedir);
 		SUB_UseTargets(pOther, USE_TOGGLE, 0);
 	}
 }
@@ -4347,7 +4349,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity *pOther)
 			vecVA = UTIL_VecToAngles(pOther->pev->velocity);
 			vecVA.y += ydiff;
 			UTIL_MakeVectors(vecVA);
-			pOther->pev->velocity = gpGlobals->v_forward * pOther->pev->velocity.Length();
+			pOther->SetVelocity(gpGlobals->v_forward * pOther->pev->velocity.Length());
 			// fix the ugly "angle to vector" behaviour - a legacy from Quake
 			pOther->pev->velocity.z = -pOther->pev->velocity.z;
 
@@ -4381,7 +4383,7 @@ void CTriggerTeleport::TeleportTouch(CBaseEntity *pOther)
 		UTIL_SetOrigin(pOther, tmp);
 
 		pOther->pev->angles = pTarget->pev->angles;
-		pOther->pev->velocity = pOther->pev->basevelocity = g_vecZero;
+		pOther->SetVelocityZero();
 		if (pOther->IsPlayer())
 		{
 			pOther->pev->v_angle = pTarget->pev->angles; //LRC
@@ -4748,14 +4750,14 @@ void CTriggerMotion::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 		case 0:
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "DEBUG: Set velocity from %f %f %f ", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
-			pTarget->pev->velocity = CalcLocus_Velocity(this, pActivator, STRING(m_iszVelocity));
+			pTarget->SetVelocity(CalcLocus_Velocity(this, pActivator, STRING(m_iszVelocity)));
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "to %f %f %f\n", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
 			break;
 		case 1:
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "DEBUG: Set velocity from %f %f %f ", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
-			pTarget->pev->velocity = pTarget->pev->velocity + CalcLocus_Velocity(this, pActivator, STRING(m_iszVelocity));
+			pTarget->SetVelocity(pTarget->pev->velocity + CalcLocus_Velocity(this, pActivator, STRING(m_iszVelocity)));
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "to %f %f %f\n", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
 			break;
@@ -4765,7 +4767,7 @@ void CTriggerMotion::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 			UTIL_MakeVectors(vecVelAngles);
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "DEBUG: Rotate velocity from %f %f %f ", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
-			pTarget->pev->velocity = pTarget->pev->velocity.Length() * gpGlobals->v_forward;
+			pTarget->SetVelocity(pTarget->pev->velocity.Length() * gpGlobals->v_forward);
 			pTarget->pev->velocity.z = -pTarget->pev->velocity.z; //vecToAngles reverses the z angle
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "to %f %f %f\n", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
@@ -4776,7 +4778,7 @@ void CTriggerMotion::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 			UTIL_MakeVectors(vecVelAngles);
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "DEBUG: Rotate velocity from %f %f %f ", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
-			pTarget->pev->velocity = pTarget->pev->velocity.Length() * gpGlobals->v_forward;
+			pTarget->SetVelocity(pTarget->pev->velocity.Length() * gpGlobals->v_forward);
 			pTarget->pev->velocity.z = -pTarget->pev->velocity.z; //vecToAngles reverses the z angle
 			if (pev->spawnflags & SF_MOTION_DEBUG)
 				ALERT(at_debug, "to %f %f %f\n", pTarget->pev->velocity.x, pTarget->pev->velocity.y, pTarget->pev->velocity.z);
@@ -5448,11 +5450,11 @@ void CTriggerCamera::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 		pev->angles.x = -pActivator->pev->angles.x;
 		pev->angles.y = pActivator->pev->angles.y;
 		pev->angles.z = 0;
-		pev->velocity = pActivator->pev->velocity;
+		SetVelocity(pActivator->pev->velocity);
 	}
 	else
 	{
-		pev->velocity = Vector(0, 0, 0);
+		SetVelocityZero();
 	}
 
 	//LRC
@@ -5542,9 +5544,9 @@ void CTriggerCamera::FollowTarget()
 
 	if (!(FBitSet(pev->spawnflags, SF_CAMERA_PLAYER_TAKECONTROL)))
 	{
-		pev->velocity = pev->velocity * 0.8;
+		SetVelocity(pev->velocity * 0.8);
 		if (pev->velocity.Length() < 10.0) //LRC- whyyyyyy???
-			pev->velocity = g_vecZero;
+			SetVelocityZero();
 	}
 
 	SetNextThink(0);
@@ -5577,7 +5579,7 @@ void CTriggerCamera::Move()
 		// Set up next corner
 		if (!m_pentPath)
 		{
-			pev->velocity = g_vecZero;
+			SetVelocityZero();
 		}
 		else
 		{
@@ -5597,6 +5599,6 @@ void CTriggerCamera::Move()
 		pev->speed = UTIL_Approach(m_targetSpeed, pev->speed, m_acceleration * gpGlobals->frametime);
 
 	float fraction = 2 * gpGlobals->frametime;
-	pev->velocity = ((pev->movedir * pev->speed) * fraction) + (pev->velocity * (1 - fraction));
+	SetVelocity(((pev->movedir * pev->speed) * fraction) + (pev->velocity * (1 - fraction)));
 }
 

@@ -396,7 +396,7 @@ void CIchthyosaur::SetYawSpeed(void)
 void CIchthyosaur::Killed(entvars_t *pevAttacker, int iGib)
 {
 	CBaseMonster::Killed(pevAttacker, iGib);
-	pev->velocity = Vector(0, 0, 0);
+	SetVelocityZero();
 }
 
 void CIchthyosaur::BecomeDead(void)
@@ -439,7 +439,7 @@ void CIchthyosaur::HandleAnimEvent(MonsterEvent_t *pEvent)
 				m_bOnAttack = TRUE;
 				pHurt->pev->punchangle.z = -18;
 				pHurt->pev->punchangle.x = 5;
-				pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 300;
+				pHurt->SetVelocity(pHurt->pev->velocity - gpGlobals->v_right * 300);
 				if (pHurt->IsPlayer())
 				{
 					pHurt->pev->angles.x += RANDOM_FLOAT(-35, 35);
@@ -478,7 +478,7 @@ void CIchthyosaur::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/icky.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, -32), Vector(32, 32, 32));
+	UTIL_SetSize(this, Vector(-32, -32, -32), Vector(32, 32, 32));
 
 	pev->solid = SOLID_BBOX;
 	pev->movetype = MOVETYPE_FLY;
@@ -506,7 +506,7 @@ void CIchthyosaur::Spawn()
 
 	Vector Forward;
 	UTIL_MakeVectorsPrivate(pev->angles, Forward, 0, 0);
-	pev->velocity = m_flightSpeed * Forward.Normalize();
+	SetVelocity(m_flightSpeed * Forward.Normalize());
 	m_SaveVelocity = pev->velocity;
 }
 
@@ -733,7 +733,7 @@ void CIchthyosaur::RunTask(Task_t *pTask)
 
 	case TASK_ICHTHYOSAUR_FLOAT:
 		pev->angles.x = UTIL_ApproachAngle(0, pev->angles.x, 20);
-		pev->velocity = pev->velocity * 0.8;
+		SetVelocity(pev->velocity * 0.8);
 		if (pev->waterlevel > 1 && pev->watertype != CONTENT_FOG && pev->velocity.z < 64)
 		{
 			pev->velocity.z += 8;
@@ -902,7 +902,7 @@ void CIchthyosaur::Swim()
 		Angles = Vector(-pev->angles.x, pev->angles.y, pev->angles.z);
 		UTIL_MakeVectorsPrivate(Angles, Forward, Right, Up);
 
-		pev->velocity = Forward * 200 + Up * 200;
+		SetVelocity(Forward * 200 + Up * 200);
 
 		return;
 	}
@@ -959,11 +959,11 @@ void CIchthyosaur::Swim()
 
 	float flDot = DotProduct(Forward, m_SaveVelocity);
 	if (flDot > 0.5)
-		pev->velocity = m_SaveVelocity = m_SaveVelocity * m_flightSpeed;
+		SetVelocity(m_SaveVelocity = m_SaveVelocity * m_flightSpeed);
 	else if (flDot > 0)
-		pev->velocity = m_SaveVelocity = m_SaveVelocity * m_flightSpeed * (flDot + 0.5);
+		SetVelocity(m_SaveVelocity = m_SaveVelocity * m_flightSpeed * (flDot + 0.5));
 	else
-		pev->velocity = m_SaveVelocity = m_SaveVelocity * 80;
+		SetVelocity(m_SaveVelocity = m_SaveVelocity * 80);
 
 	// ALERT( at_console, "%.0f %.0f\n", m_flightSpeed, pev->velocity.Length() );
 

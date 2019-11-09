@@ -19,8 +19,6 @@
 //LRC
 #define GAME_NAME "SoHL:CB 1.9 final"
 
-//#include "weapons.h"
-//#include "items.h"
 class CBasePlayerItem;
 class CBasePlayer;
 class CItem;

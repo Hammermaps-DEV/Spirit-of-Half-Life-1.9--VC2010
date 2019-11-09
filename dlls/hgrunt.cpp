@@ -297,7 +297,7 @@ void CHGrunt::GibMonster(void)
 		}
 		if (pGun)
 		{
-			pGun->pev->velocity = Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300));
+			pGun->SetVelocity(Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300)));
 			pGun->pev->avelocity = Vector(0, RANDOM_FLOAT(200, 400), 0);
 		}
 
@@ -306,7 +306,7 @@ void CHGrunt::GibMonster(void)
 			pGun = DropItem("ammo_ARgrenades", vecGunPos, vecGunAngles);
 			if (pGun)
 			{
-				pGun->pev->velocity = Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300));
+				pGun->SetVelocity(Vector(RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(-100, 100), RANDOM_FLOAT(200, 300)));
 				pGun->pev->avelocity = Vector(0, RANDOM_FLOAT(200, 400), 0);
 			}
 		}
@@ -1028,7 +1028,7 @@ void CHGrunt::HandleAnimEvent(MonsterEvent_t *pEvent)
 			// SOUND HERE!
 			UTIL_MakeVectors(pev->angles);
 			pHurt->pev->punchangle.x = 15;
-			pHurt->pev->velocity = pHurt->pev->velocity + gpGlobals->v_forward * 100 + gpGlobals->v_up * 50;
+			pHurt->SetVelocity(pHurt->pev->velocity + gpGlobals->v_forward * 100 + gpGlobals->v_up * 50);
 			pHurt->TakeDamage(pev, pev, gSkillData.hgruntDmgKick, DMG_CLUB);
 		}
 	}
@@ -1061,7 +1061,7 @@ void CHGrunt::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/hgrunt.mdl");
-	UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
@@ -2506,7 +2506,7 @@ void CHGruntRepel::RepelUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	CBaseEntity *pEntity = Create("monster_human_grunt", pev->origin, pev->angles);
 	CBaseMonster *pGrunt = pEntity->MyMonsterPointer();
 	pGrunt->pev->movetype = MOVETYPE_FLY;
-	pGrunt->pev->velocity = Vector(0, 0, RANDOM_FLOAT(-196, -128));
+	pGrunt->SetVelocity(Vector(0, 0, RANDOM_FLOAT(-196, -128)));
 	pGrunt->SetActivity(ACT_GLIDE);
 	// UNDONE: position?
 	pGrunt->m_vecLastPosition = tr.vecEndPos;

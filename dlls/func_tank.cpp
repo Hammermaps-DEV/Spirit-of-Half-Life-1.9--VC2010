@@ -1739,7 +1739,7 @@ void CFuncTankControls::Spawn(void)
 	if (pev->frags == 0) //LRC- in case the level designer didn't set it.
 		pev->frags = 30;
 
-	UTIL_SetSize(pev, pev->mins, pev->maxs);
+	UTIL_SetSize(this, pev->mins, pev->maxs);
 	UTIL_SetOrigin(this, pev->origin);
 
 	//LRC	SetNextThink( 0.3 );	// After all the func_tanks have spawned

@@ -225,7 +225,7 @@ void CPathTrack::Link(void)
 void CPathTrack::Spawn(void)
 {
 	pev->solid = SOLID_TRIGGER;
-	UTIL_SetSize(pev, Vector(-8, -8, -8), Vector(8, 8, 8));
+	UTIL_SetSize(this, Vector(-8, -8, -8), Vector(8, 8, 8));
 
 	m_pnext = NULL;
 	m_pprevious = NULL;

@@ -318,7 +318,7 @@ void CController::HandleAnimEvent(MonsterEvent_t *pEvent)
 
 		CBaseMonster *pBall = (CBaseMonster*)Create("controller_head_ball", vecStart, pev->angles, edict());
 
-		pBall->pev->velocity = Vector(0, 0, 32);
+		pBall->SetVelocity(Vector(0, 0, 32));
 		if (m_pCine)
 		{
 			pBall->m_hEnemy = m_hTargetEnt;
@@ -376,7 +376,7 @@ void CController::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/controller.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_FLY;
@@ -689,7 +689,7 @@ void CController::RunTask(Task_t *pTask)
 
 				vecSrc = vecSrc + vecDir * (gpGlobals->time - m_flShootTime);
 				CBaseMonster *pBall = (CBaseMonster*)Create("controller_energy_ball", vecSrc, pev->angles, edict());
-				pBall->pev->velocity = vecDir;
+				pBall->SetVelocity(vecDir);
 			}
 			m_flShootTime += 0.2;
 		}
@@ -1200,7 +1200,7 @@ void CControllerHeadBall::Spawn(void)
 	pev->renderamt = 255;
 	pev->scale = 2.0;
 
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin(this, pev->origin);
 
 	SetThink(&CControllerHeadBall::HuntThink);
@@ -1319,7 +1319,7 @@ void CControllerHeadBall::MovetoTarget(Vector vecTarget)
 		m_vecIdeal = m_vecIdeal.Normalize() * 400;
 	}
 	m_vecIdeal = m_vecIdeal + (vecTarget - pev->origin).Normalize() * 100;
-	pev->velocity = m_vecIdeal;
+	SetVelocity(m_vecIdeal);
 }
 
 
@@ -1394,7 +1394,7 @@ void CControllerZapBall::Spawn(void)
 	pev->renderamt = 255;
 	pev->scale = 0.5;
 
-	UTIL_SetSize(pev, Vector(0, 0, 0), Vector(0, 0, 0));
+	UTIL_SetSize(this, Vector(0, 0, 0), Vector(0, 0, 0));
 	UTIL_SetOrigin(this, pev->origin);
 
 	SetThink(&CControllerZapBall::AnimateThink);

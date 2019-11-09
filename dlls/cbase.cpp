@@ -664,7 +664,7 @@ void CBaseEntity::SetParent(CBaseEntity *pParent, int m_iAttachment)
 
 		if (g_serveractive)//maybe parent is moving ?
 		{
-			pev->velocity = pev->velocity + m_pMoveWith->pev->velocity;
+			SetVelocity(pev->velocity + m_pMoveWith->pev->velocity);
 			pev->avelocity = pev->avelocity + m_pMoveWith->pev->avelocity;
 		}
 	}
@@ -914,7 +914,8 @@ int CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 
 		if (flForce > 1000.0)
 			flForce = 1000.0;
-		pev->velocity = pev->velocity + vecDir * flForce;
+		
+		SetVelocity(pev->velocity + vecDir * flForce);
 	}
 
 	// do the damage
@@ -1006,7 +1007,7 @@ int CBaseEntity::Restore(CRestore &restore)
 
 		PRECACHE_MODEL((char *)STRING(pev->model));
 		SET_MODEL(ENT(pev), STRING(pev->model));
-		UTIL_SetSize(pev, mins, maxs);	// Reset them
+		UTIL_SetSize(this, mins, maxs);	// Reset them
 	}
 
 	return status;
@@ -1153,8 +1154,6 @@ int	CBaseEntity::DamageDecal(int bitsDamageType)
 
 	return DECAL_GUNSHOT1 + RANDOM_LONG(0, 4);
 }
-
-
 
 // NOTE: szName must be a pointer to constant memory, e.g. "monster_class" because the entity
 // will keep a pointer to it after this call.

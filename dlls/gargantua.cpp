@@ -159,8 +159,7 @@ void CStomp::Think(void)
 			{
 				UTIL_TraceLine(pev->origin, pev->origin - Vector(0, 0, 500), ignore_monsters, edict(), &tr);
 				pSprite->pev->origin = tr.vecEndPos;
-				pSprite->pev->velocity = Vector(RANDOM_FLOAT(-200, 200), RANDOM_FLOAT(-200, 200), 175);
-				// pSprite->AnimateAndDie( RANDOM_FLOAT( 8.0, 12.0 ) );
+				pSprite->SetVelocity(Vector(RANDOM_FLOAT(-200, 200), RANDOM_FLOAT(-200, 200), 175));
 				pSprite->SetNextThink(0.3);
 				pSprite->SetThink(&CSprite::SUB_Remove);
 				pSprite->SetTransparency(kRenderTransAdd, 255, 255, 255, 255, kRenderFxFadeFast);
@@ -759,7 +758,7 @@ void CGargantua::Spawn()
 		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/garg.mdl");
-	UTIL_SetSize(pev, Vector(-32, -32, 0), Vector(32, 32, 64));
+	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
@@ -1002,7 +1001,7 @@ void CGargantua::HandleAnimEvent(MonsterEvent_t *pEvent)
 				pHurt->pev->punchangle.y = -30;	// yaw
 				pHurt->pev->punchangle.z = 30;	// roll
 				//UTIL_MakeVectors(pev->angles);	// called by CheckTraceHullAttack
-				pHurt->pev->velocity = pHurt->pev->velocity - gpGlobals->v_right * 100;
+				pHurt->SetVelocity(pHurt->pev->velocity - gpGlobals->v_right * 100);
 			}
 			EMIT_SOUND_DYN(edict(), CHAN_WEAPON, pAttackHitSounds[RANDOM_LONG(0, HL_ARRAYSIZE(pAttackHitSounds) - 1)], 1.0, ATTN_NORM, 0, 50 + RANDOM_LONG(0, 15));
 		}
@@ -1169,7 +1168,7 @@ void CGargantua::RunTask(Task_t *pTask)
 				pGib->m_bloodColor = BLOOD_COLOR_YELLOW;
 				pGib->m_material = matNone;
 				pGib->pev->origin = pev->origin;
-				pGib->pev->velocity = UTIL_RandomBloodVector() * RANDOM_FLOAT(300, 500);
+				pGib->SetVelocity(UTIL_RandomBloodVector() * RANDOM_FLOAT(300, 500));
 				pGib->SetNextThink(1.25);
 				pGib->SetThink(&CGib::SUB_FadeOut);
 			}
@@ -1298,7 +1297,7 @@ void CSmoker::Spawn(void)
 	pev->movetype = MOVETYPE_NONE;
 	SetNextThink(0);
 	pev->solid = SOLID_NOT;
-	UTIL_SetSize(pev, g_vecZero, g_vecZero);
+	UTIL_SetSize(this, g_vecZero, g_vecZero);
 	pev->effects |= EF_NODRAW;
 	pev->angles = g_vecZero;
 }
@@ -1330,7 +1329,7 @@ void CSpiral::Spawn(void)
 	pev->movetype = MOVETYPE_NONE;
 	SetNextThink(0);
 	pev->solid = SOLID_NOT;
-	UTIL_SetSize(pev, g_vecZero, g_vecZero);
+	UTIL_SetSize(this, g_vecZero, g_vecZero);
 	pev->effects |= EF_NODRAW;
 	pev->angles = g_vecZero;
 }

@@ -125,7 +125,7 @@ void CSqueakGrenade::Spawn(void)
 	pev->solid = SOLID_BBOX;
 
 	SET_MODEL(ENT(pev), "models/w_squeak.mdl");
-	UTIL_SetSize(pev, Vector(-4, -4, 0), Vector(4, 4, 8));
+	UTIL_SetSize(this, Vector(-4, -4, 0), Vector(4, 4, 8));
 	UTIL_SetOrigin(this, pev->origin);
 
 	SetTouch(&CSqueakGrenade::SuperBounceTouch);
@@ -225,7 +225,7 @@ void CSqueakGrenade::HuntThink(void)
 		{
 			pev->movetype = MOVETYPE_FLY;
 		}
-		pev->velocity = pev->velocity * 0.9;
+		SetVelocity(pev->velocity * 0.9);
 		pev->velocity.z += 8.0;
 	}
 	else if (pev->movetype == MOVETYPE_FLY)
@@ -279,7 +279,7 @@ void CSqueakGrenade::HuntThink(void)
 		float flAdj = 50.0 / (flVel + 10.0);
 
 		if (flAdj > 1.2) flAdj = 1.2;
-		pev->velocity = pev->velocity * flAdj + m_vecTarget * 300;
+		SetVelocity(pev->velocity * flAdj + m_vecTarget * 300);
 	}
 
 	if (pev->flags & FL_ONGROUND) pev->avelocity = Vector(0, 0, 0);
@@ -476,7 +476,7 @@ void CSqueak::PrimaryAttack()
 			m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
 			CBaseEntity *pSqueak = CBaseEntity::Create("monster_snark", tr.vecEndPos, m_pPlayer->pev->v_angle, m_pPlayer->edict());
-			pSqueak->pev->velocity = gpGlobals->v_forward * 200 + m_pPlayer->pev->velocity;
+			pSqueak->SetVelocity(gpGlobals->v_forward * 200 + m_pPlayer->pev->velocity);
 
 			// play hunt sound
 			float flRndSound = RANDOM_FLOAT(0, 1);

@@ -91,7 +91,7 @@ void CHornet::Spawn(void)
 	}
 
 	SET_MODEL(ENT(pev), "models/hornet.mdl");
-	UTIL_SetSize(pev, Vector(-4, -4, -4), Vector(4, 4, 4));
+	UTIL_SetSize(this, Vector(-4, -4, -4), Vector(4, 4, 4));
 
 	SetTouch(&CHornet::DieTouch);
 	SetThink(&CHornet::StartTrack);
@@ -310,7 +310,7 @@ void CHornet::TrackTarget(void)
 		flDelta = 0.25;
 	}
 
-	pev->velocity = (vecFlightDir + vecDirToEnemy).Normalize();
+	SetVelocity((vecFlightDir + vecDirToEnemy).Normalize());
 
 	if (pev->owner && (pev->owner->v.flags & FL_MONSTER))
 	{
@@ -324,11 +324,11 @@ void CHornet::TrackTarget(void)
 	switch (m_iHornetType)
 	{
 	case HORNET_TYPE_RED:
-		pev->velocity = pev->velocity * (m_flFlySpeed * flDelta);// scale the dir by the ( speed * width of turn )
+		SetVelocity(pev->velocity * (m_flFlySpeed * flDelta));// scale the dir by the ( speed * width of turn )
 		SetNextThink(RANDOM_FLOAT(0.1, 0.3));
 		break;
 	case HORNET_TYPE_ORANGE:
-		pev->velocity = pev->velocity * m_flFlySpeed;// do not have to slow down to turn.
+		SetVelocity(pev->velocity * m_flFlySpeed);// do not have to slow down to turn.
 		SetNextThink(0.1);// fixed think time
 		break;
 	}
@@ -360,8 +360,10 @@ void CHornet::TrackTarget(void)
 			case 1:	EMIT_SOUND(ENT(pev), CHAN_VOICE, "hornet/ag_buzz2.wav", HORNET_BUZZ_VOLUME, ATTN_NORM);	break;
 			case 2:	EMIT_SOUND(ENT(pev), CHAN_VOICE, "hornet/ag_buzz3.wav", HORNET_BUZZ_VOLUME, ATTN_NORM);	break;
 			}
-			pev->velocity = pev->velocity * 2;
+			
+			SetVelocity(pev->velocity * 2);
 			SetNextThink(1.0);
+			
 			// don't attack again
 			m_flStopAttack = gpGlobals->time;
 		}
@@ -383,13 +385,13 @@ void CHornet::TrackTouch(CBaseEntity *pOther)
 	{
 		// hit something we don't want to hurt, so turn around.
 
-		pev->velocity = pev->velocity.Normalize();
+		SetVelocity(pev->velocity.Normalize());
 
 		pev->velocity.x *= -1;
 		pev->velocity.y *= -1;
 
 		pev->origin = pev->origin + pev->velocity * 4; // bounce the hornet off a bit.
-		pev->velocity = pev->velocity * m_flFlySpeed;
+		SetVelocity(pev->velocity * m_flFlySpeed);
 
 		return;
 	}

@@ -205,16 +205,16 @@ void CGenericMonster::Spawn()
 			vecMin.z = 0;
 			vecMax.z = vecSize.z;
 		}
-		UTIL_SetSize(pev, vecMin, vecMax);
+		UTIL_SetSize(this, vecMin, vecMax);
 	}
 	else if (
 		pev->spawnflags & SF_GENERICMONSTER_PLAYERMODEL ||
 		FStrEq(STRING(pev->model), "models/player.mdl") ||
 		FStrEq(STRING(pev->model), "models/holo.mdl")
 		)
-		UTIL_SetSize(pev, VEC_HULL_MIN, VEC_HULL_MAX);
+		UTIL_SetSize(this, VEC_HULL_MIN, VEC_HULL_MAX);
 	else
-		UTIL_SetSize(pev, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
+		UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
 
 	pev->solid = SOLID_SLIDEBOX;
 	pev->movetype = MOVETYPE_STEP;
