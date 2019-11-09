@@ -80,7 +80,7 @@ void CFuncWall::Spawn(void)
 	pev->angles = g_vecZero;
 	pev->movetype = MOVETYPE_PUSH;  // so it doesn't get pushed by anything
 	pev->solid = SOLID_BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 
 
@@ -267,7 +267,7 @@ void CFuncIllusionary::Spawn(void)
 	pev->angles = g_vecZero;
 	pev->movetype = MOVETYPE_NONE;
 	pev->solid = SOLID_NOT;// always solid_not 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	// I'd rather eat the network bandwidth of this than figure out how to save/restore
 	// these entities after they have been moved to the client, or respawn them ala Quake
@@ -295,7 +295,7 @@ extern int gmsgAddShine;
 void CFuncShine::Spawn(void)
 {
 	pev->solid = SOLID_NOT;// always solid_not 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 	pev->effects |= EF_NODRAW;
 
 	// not that we actually need to precache it here, but we do need to make sure it exists
@@ -535,7 +535,7 @@ void CFuncRotating::Spawn()
 	}
 
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	if (pev->origin == g_vecZero)//G-Cont. Set custom orirgin. Don't right work :(
 	{
@@ -944,7 +944,7 @@ void CPendulum::Spawn(void)
 		pev->solid = SOLID_BSP;
 	pev->movetype = MOVETYPE_PUSH;
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	if (m_distance == 0)
 		return;

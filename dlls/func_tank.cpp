@@ -301,7 +301,7 @@ void CFuncTank::Spawn(void)
 
 	pev->movetype = MOVETYPE_PUSH;  // so it doesn't get pushed by anything
 	pev->solid = SOLID_BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	//	if (pev->health) pev->flags |= FL_MONSTER; //LRC - maybe?
 
@@ -1734,7 +1734,7 @@ void CFuncTankControls::Spawn(void)
 	pev->movetype = MOVETYPE_NONE;
 	if (!(pev->spawnflags & SF_TANKCONTROLS_VISIBLE))
 		pev->effects |= EF_NODRAW;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	if (pev->frags == 0) //LRC- in case the level designer didn't set it.
 		pev->frags = 30;

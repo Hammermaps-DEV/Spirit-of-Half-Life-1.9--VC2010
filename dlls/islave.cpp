@@ -49,8 +49,8 @@ public:
 	int  Classify(void);
 	int  IRelationship(CBaseEntity *pTarget);
 	void HandleAnimEvent(MonsterEvent_t *pEvent);
-	BOOL CheckRangeAttack1(float flDot, float flDist);
-	BOOL CheckRangeAttack2(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack2(float flDot, float flDist);
 	void CallForHelp(char *szClassname, float flDist, EHANDLE hEnemy, Vector &vecLocation);
 	void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
@@ -452,11 +452,11 @@ void CISlave::HandleAnimEvent(MonsterEvent_t *pEvent)
 //=========================================================
 // CheckRangeAttack1 - normal beam attack 
 //=========================================================
-BOOL CISlave::CheckRangeAttack1(float flDot, float flDist)
+bool CISlave::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (m_flNextAttack > gpGlobals->time)
 	{
-		return FALSE;
+		return false;
 	}
 
 	return CSquadMonster::CheckRangeAttack1(flDot, flDist);
@@ -465,14 +465,10 @@ BOOL CISlave::CheckRangeAttack1(float flDot, float flDist)
 //=========================================================
 // CheckRangeAttack2 - check bravery and try to resurect dead comrades
 //=========================================================
-BOOL CISlave::CheckRangeAttack2(float flDot, float flDist)
+bool CISlave::CheckRangeAttack2(float flDot, float flDist)
 {
-	return FALSE;
-
 	if (m_flNextAttack > gpGlobals->time)
-	{
-		return FALSE;
-	}
+		return false;
 
 	m_hDead = NULL;
 	m_iBravery = 0;
@@ -502,9 +498,9 @@ BOOL CISlave::CheckRangeAttack2(float flDot, float flDist)
 		}
 	}
 	if (m_hDead != NULL)
-		return TRUE;
-	else
-		return FALSE;
+		return true;
+
+	return false;
 }
 
 
@@ -527,7 +523,7 @@ void CISlave::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/islave.mdl");
 	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
@@ -556,7 +552,7 @@ void CISlave::Precache()
 	int i;
 
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/islave.mdl");
 	PRECACHE_MODEL("sprites/lgtning.spr");

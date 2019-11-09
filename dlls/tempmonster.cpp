@@ -88,7 +88,7 @@ void CMyMonster::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/mymodel.mdl");
 	UTIL_SetSize(this, Vector(-12, -12, 0), Vector(12, 12, 24));

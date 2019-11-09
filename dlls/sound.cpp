@@ -1161,7 +1161,7 @@ void CTriggerSound::Spawn()
 {
 	pev->solid = SOLID_TRIGGER;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(ENT(pev), pev->model);    // set size and link into world
 	SetBits(pev->effects, EF_NODRAW);
 }
 

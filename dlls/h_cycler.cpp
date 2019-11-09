@@ -260,7 +260,7 @@ void CCyclerSprite::Spawn(void)
 	m_lastTime = gpGlobals->time;
 
 	PRECACHE_MODEL((char *)STRING(pev->model));
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 }
@@ -374,13 +374,13 @@ void CWeaponCycler::Spawn()
 		// set right world model
 		pev->model = m_iWorldModel;
 
-		SET_MODEL(ENT(pev), STRING(pev->model));
+		SET_MODEL(ENT(pev), pev->model);
 	}
 	else
 	{
 		// fallback to default relationship
 		PRECACHE_MODEL((char *)STRING(pev->model));
-		SET_MODEL(ENT(pev), STRING(pev->model));
+		SET_MODEL(ENT(pev), pev->model);
 
 		// setup viewmodel
 		m_iViewModel = pev->model;
@@ -492,7 +492,7 @@ void CWreckage::Spawn(void)
 	if (pev->model)
 	{
 		PRECACHE_MODEL((char *)STRING(pev->model));
-		SET_MODEL(ENT(pev), STRING(pev->model));
+		SET_MODEL(ENT(pev), pev->model);
 	}
 	// pev->scale = 5.0;
 

@@ -288,9 +288,9 @@ public:
 		pev->absmax = pev->origin + Vector(95, 95, 190);
 	}
 
-	BOOL CheckMeleeAttack1(float flDot, float flDist);	// Slash
-	BOOL CheckMeleeAttack2(float flDot, float flDist);	// Lay a crab
-	BOOL CheckRangeAttack1(float flDot, float flDist);	// Mortar launch
+	bool CheckMeleeAttack1(float flDot, float flDist);	// Slash
+	bool CheckMeleeAttack2(float flDot, float flDist);	// Lay a crab
+	bool CheckRangeAttack1(float flDot, float flDist);	// Mortar launch
 
 	virtual int	Save(CSave &save);
 	virtual int	Restore(CRestore &restore);
@@ -680,7 +680,7 @@ void CBigMomma::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/big_mom.mdl");
 	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
@@ -703,7 +703,7 @@ void CBigMomma::Spawn()
 void CBigMomma::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/big_mom.mdl");
 
@@ -789,28 +789,25 @@ void CBigMomma::NodeReach(void)
 		Remember(bits_MEMORY_ADVANCE_NODE);	// Move on if no health at this node
 }
 
-
 // Slash
-BOOL CBigMomma::CheckMeleeAttack1(float flDot, float flDist)
+bool CBigMomma::CheckMeleeAttack1(float flDot, float flDist)
 {
 	if (flDot >= 0.7)
 	{
 		if (flDist <= BIG_ATTACKDIST)
-			return TRUE;
+			return true;
 	}
-	return FALSE;
+	return false;
 }
 
-
 // Lay a crab
-BOOL CBigMomma::CheckMeleeAttack2(float flDot, float flDist)
+bool CBigMomma::CheckMeleeAttack2(float flDot, float flDist)
 {
 	return CanLayCrab();
 }
 
-
 // Mortar launch
-BOOL CBigMomma::CheckRangeAttack1(float flDot, float flDist)
+bool CBigMomma::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (flDist <= BIG_MORTARDIST && m_mortarTime < gpGlobals->time)
 	{
@@ -822,10 +819,11 @@ BOOL CBigMomma::CheckRangeAttack1(float flDot, float flDist)
 			startPos.z += 180;
 			pev->movedir = VecCheckSplatToss(pev, startPos, pEnemy->BodyTarget(pev->origin), RANDOM_FLOAT(150, 500));
 			if (pev->movedir != g_vecZero)
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+	
+	return false;
 }
 
 //=========================================================

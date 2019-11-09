@@ -99,7 +99,7 @@ enum
 class CTalkMonster : public CBaseMonster
 {
 public:
-	void			TalkInit(void);
+	virtual void			TalkInit(void);
 	CBaseEntity		*FindNearestFriend(BOOL fPlayer);
 	float			TargetDistance(void);
 	void			StopTalking(void) { SentenceStop(); }

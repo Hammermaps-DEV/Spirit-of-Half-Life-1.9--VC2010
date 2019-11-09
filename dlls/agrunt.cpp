@@ -91,8 +91,8 @@ public:
 	Schedule_t* GetSchedule(void);
 	Schedule_t* GetScheduleOfType(int Type);
 	BOOL FCanCheckAttacks(void);
-	BOOL CheckMeleeAttack1(float flDot, float flDist);
-	BOOL CheckRangeAttack1(float flDot, float flDist);
+	bool CheckMeleeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
 	void StartTask(Task_t *pTask);
 	void AlertSound(void);
 	void DeathSound(void);
@@ -120,7 +120,7 @@ public:
 	static const char *pIdleSounds[];
 	static const char *pAlertSounds[];
 
-	BOOL	m_fCanHornetAttack;
+	bool	m_fCanHornetAttack;
 	float	m_flNextHornetAttackCheck;
 
 	float m_flNextPainTime;
@@ -585,7 +585,7 @@ void CAGrunt::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/agrunt.mdl");
 	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
@@ -617,7 +617,7 @@ void CAGrunt::Precache()
 	int i;
 
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/agrunt.mdl");
 
@@ -922,13 +922,12 @@ BOOL CAGrunt::FCanCheckAttacks(void)
 // CheckMeleeAttack1 - alien grunts zap the crap out of 
 // any enemy that gets too close. 
 //=========================================================
-BOOL CAGrunt::CheckMeleeAttack1(float flDot, float flDist)
+bool CAGrunt::CheckMeleeAttack1(float flDot, float flDist)
 {
 	if (HasConditions(bits_COND_SEE_ENEMY) && flDist <= AGRUNT_MELEE_DIST && flDot >= 0.6 && m_hEnemy != NULL)
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+	
+	return false;
 }
 
 //=========================================================
@@ -938,7 +937,7 @@ BOOL CAGrunt::CheckMeleeAttack1(float flDot, float flDist)
 // tracelines are done, so we may not want to do this every
 // server frame. Definitely not while firing. 
 //=========================================================
-BOOL CAGrunt::CheckRangeAttack1(float flDot, float flDist)
+bool CAGrunt::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (gpGlobals->time < m_flNextHornetAttackCheck)
 	{
@@ -960,13 +959,13 @@ BOOL CAGrunt::CheckRangeAttack1(float flDot, float flDist)
 		if (tr.flFraction == 1.0 || tr.pHit == m_hEnemy->edict())
 		{
 			m_flNextHornetAttackCheck = gpGlobals->time + RANDOM_FLOAT(2, 5);
-			m_fCanHornetAttack = TRUE;
+			m_fCanHornetAttack = true;
 			return m_fCanHornetAttack;
 		}
 	}
 
 	m_flNextHornetAttackCheck = gpGlobals->time + 0.2;// don't check for half second if this check wasn't successful
-	m_fCanHornetAttack = FALSE;
+	m_fCanHornetAttack = false;
 	return m_fCanHornetAttack;
 }
 

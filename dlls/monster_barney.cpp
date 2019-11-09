@@ -26,7 +26,6 @@
 //=========================================================
 // Monster's Anim Events Go Here
 //=========================================================
-// first flag is barney dying for scripted sequences?
 #define	BARNEY_AE_DRAW		( 2 )
 #define	BARNEY_AE_SHOOT		( 3 )
 #define	BARNEY_AE_HOLSTER	( 4 )
@@ -41,21 +40,21 @@
 class CBarney : public CTalkMonster
 {
 public:
-	void Spawn(void) override;
-	void Precache(void) override;
-	void SetYawSpeed(void) override;
-	void CheckAmmo(void) override;
-	int  ISoundMask(void) override;
-	void BarneyFirePistol(void);
-	void AlertSound(void) override;
-	int  Classify(void) override;
+	void Spawn() override;
+	void Precache() override;
+	void SetYawSpeed() override;
+	void CheckAmmo() override;
+	int  ISoundMask() override;
+	void BarneyFirePistol();
+	void AlertSound() override;
+	int  Classify() override;
 	void HandleAnimEvent(MonsterEvent_t *pEvent) override;
 
 	void RunTask(Task_t *pTask) override;
 	void StartTask(Task_t *pTask) override;
 	int	ObjectCaps(void) override { return CTalkMonster::ObjectCaps() | FCAP_IMPULSE_USE; }
 	int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType) override;
-	BOOL CheckRangeAttack1(float flDot, float flDist) override;
+	bool CheckRangeAttack1(float flDot, float flDist) override;
 
 	void DeclineFollowing(void) override;
 
@@ -64,10 +63,10 @@ public:
 	Schedule_t *GetSchedule(void) override;
 	MONSTERSTATE GetIdealState(void) override;
 
-	void DeathSound(void) override;
-	void PainSound(void) override;
+	void DeathSound() override;
+	void PainSound() override;
 
-	void TalkInit(void);
+	void TalkInit() override;
 
 	void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) override;
 	void Killed(entvars_t *pevAttacker, int iGib) override;
@@ -82,11 +81,8 @@ public:
 	float	m_checkAttackTime;
 	BOOL	m_lastAttackCheck;
 
-	int	 m_iBrassShell; // used for ejecting shells
-
-	// UNDONE: What is this for?  It isn't used?
+	int		m_iBrassShell; // used for ejecting shells
 	float	m_flPlayerDamage;// how much pain has the player inflicted on me?
-
 	int		m_cClipSize; // clip/magazine size
 
 	CUSTOM_SCHEDULES;
@@ -350,33 +346,27 @@ void CBarney::AlertSound(void)
 //=========================================================
 void CBarney::SetYawSpeed(void)
 {
-	int ys;
-
-	ys = 0;
-
 	switch (m_Activity)
 	{
 	case ACT_IDLE:
-		ys = 70;
+		pev->yaw_speed = 70;
 		break;
 	case ACT_WALK:
-		ys = 70;
+		pev->yaw_speed = 70;
 		break;
 	case ACT_RUN:
-		ys = 90;
+		pev->yaw_speed = 90;
 		break;
 	default:
-		ys = 70;
+		pev->yaw_speed = 70;
 		break;
 	}
-
-	pev->yaw_speed = ys;
 }
 
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBarney::CheckRangeAttack1(float flDot, float flDist)
+bool CBarney::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (flDist <= 1024 && flDot >= 0.5)
 	{
@@ -384,20 +374,22 @@ BOOL CBarney::CheckRangeAttack1(float flDot, float flDist)
 		{
 			TraceResult tr;
 
-			Vector shootOrigin = pev->origin + Vector(0, 0, 55);
+			const Vector shootOrigin = pev->origin + Vector(0, 0, 55);
 			CBaseEntity *pEnemy = m_hEnemy;
-			Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
+			const Vector shootTarget = ((pEnemy->BodyTarget(shootOrigin) - pEnemy->pev->origin) + m_vecEnemyLKP);
 			UTIL_TraceLine(shootOrigin, shootTarget, dont_ignore_monsters, ENT(pev), &tr);
 			m_checkAttackTime = gpGlobals->time + 1;
-			if (tr.flFraction == 1.0 || (tr.pHit != NULL && CBaseEntity::Instance(tr.pHit) == pEnemy))
-				m_lastAttackCheck = TRUE;
+			if (tr.flFraction == 1.0 || (tr.pHit != NULL && Instance(tr.pHit) == pEnemy))
+				m_lastAttackCheck = true;
 			else
-				m_lastAttackCheck = FALSE;
+				m_lastAttackCheck = false;
+			
 			m_checkAttackTime = gpGlobals->time + 1.5;
 		}
 		return m_lastAttackCheck;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 //=========================================================
@@ -492,7 +484,7 @@ void CBarney::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/barney.mdl");
 	
@@ -528,7 +520,7 @@ void CBarney::Spawn()
 void CBarney::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/barney.mdl");
 

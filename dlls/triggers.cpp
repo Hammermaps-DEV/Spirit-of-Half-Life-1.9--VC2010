@@ -79,7 +79,7 @@ IMPLEMENT_SAVERESTORE(CFrictionModifier, CBaseEntity);
 void CFrictionModifier::Spawn(void)
 {
 	pev->solid = SOLID_TRIGGER;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(ENT(pev), pev->model);    // set size and link into world
 	pev->movetype = MOVETYPE_NONE;
 	SetTouch(&CFrictionModifier::ChangeFriction);
 }
@@ -2327,7 +2327,7 @@ void CBaseTrigger::InitTrigger()
 		SetMovedir(pev);
 	pev->solid = SOLID_TRIGGER;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(ENT(pev), pev->model);    // set size and link into world
 	if (CVAR_GET_FLOAT("showtriggers") == 0)
 		SetBits(pev->effects, EF_NODRAW);
 }
@@ -3446,7 +3446,7 @@ void CTriggerVolume::Spawn(void)
 {
 	pev->solid = SOLID_NOT;
 	pev->movetype = MOVETYPE_NONE;
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(ENT(pev), pev->model);    // set size and link into world
 	pev->model = NULL;
 	pev->modelindex = 0;
 }
@@ -3946,7 +3946,7 @@ void CLadder::Spawn(void)
 {
 	Precache();
 
-	SET_MODEL(ENT(pev), STRING(pev->model));    // set size and link into world
+	SET_MODEL(ENT(pev), pev->model);    // set size and link into world
 	pev->movetype = MOVETYPE_PUSH;
 }
 

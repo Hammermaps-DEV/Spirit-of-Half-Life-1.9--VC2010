@@ -115,7 +115,7 @@ void CRoach::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/roach.mdl");
 	
@@ -146,7 +146,7 @@ void CRoach::Spawn()
 void CRoach::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/roach.mdl");
 

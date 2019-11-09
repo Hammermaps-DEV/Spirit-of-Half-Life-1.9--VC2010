@@ -201,7 +201,7 @@ void CBreakable::Spawn(void)
 		pev->playerclass = 1;
 	}
 
-	SET_MODEL(ENT(pev), STRING(pev->model));//set size and link into world.
+	SET_MODEL(ENT(pev), pev->model);//set size and link into world.
 
 	SetTouch(&CBreakable::BreakTouch);
 	SetUse(&CBreakable::BreakUse);
@@ -1017,7 +1017,7 @@ void CPushable::Spawn(void)
 
 	pev->movetype = MOVETYPE_PUSHSTEP;
 	pev->solid = SOLID_BBOX;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	if (pev->friction > 399)
 		pev->friction = 399;

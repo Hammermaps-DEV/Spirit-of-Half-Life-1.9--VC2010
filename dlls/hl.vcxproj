@@ -15,7 +15,7 @@
     <ClCompile Include="..\pm_shared\pm_debug.cpp" />
     <ClCompile Include="..\pm_shared\pm_math.cpp" />
     <ClCompile Include="..\pm_shared\pm_shared.cpp" />
-    <ClCompile Include="aflock.cpp" />
+    <ClCompile Include="monster_flyer.cpp" />
     <ClCompile Include="agrunt.cpp" />
     <ClCompile Include="airtank.cpp" />
     <ClCompile Include="alias.cpp" />

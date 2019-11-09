@@ -208,9 +208,9 @@ public:
 	void AttackSound(void);
 	void StartTask(Task_t *pTask);
 	void RunTask(Task_t *pTask);
-	BOOL CheckMeleeAttack1(float flDot, float flDist);
-	BOOL CheckMeleeAttack2(float flDot, float flDist);
-	BOOL CheckRangeAttack1(float flDot, float flDist);
+	bool CheckMeleeAttack1(float flDot, float flDist);
+	bool CheckMeleeAttack2(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
 	void RunAI(void);
 	BOOL FValidateHintType(short sHint);
 	Schedule_t *GetSchedule(void);
@@ -325,12 +325,12 @@ int CBullsquid::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, floa
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CBullsquid::CheckRangeAttack1(float flDot, float flDist)
+bool CBullsquid::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (IsMoving() && flDist >= 512)
 	{
 		// squid will far too far behind if he stops running to spit at this distance from the enemy.
-		return FALSE;
+		return false;
 	}
 
 	if (flDist > 64 && flDist <= 784 && flDot >= 0.5 && gpGlobals->time >= m_flNextSpitTime)
@@ -340,7 +340,7 @@ BOOL CBullsquid::CheckRangeAttack1(float flDot, float flDist)
 			if (fabs(pev->origin.z - m_hEnemy->pev->origin.z) > 256)
 			{
 				// don't try to spit at someone up really high or down really low.
-				return FALSE;
+				return false;
 			}
 		}
 
@@ -355,23 +355,22 @@ BOOL CBullsquid::CheckRangeAttack1(float flDot, float flDist)
 			m_flNextSpitTime = gpGlobals->time + 0.5;
 		}
 
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CheckMeleeAttack1 - bullsquid is a big guy, so has a longer
 // melee range than most monsters. This is the tailwhip attack
 //=========================================================
-BOOL CBullsquid::CheckMeleeAttack1(float flDot, float flDist)
+bool CBullsquid::CheckMeleeAttack1(float flDot, float flDist)
 {
 	if (m_hEnemy->pev->health <= gSkillData.bullsquidDmgWhip && flDist <= 85 && flDot >= 0.7)
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+	
+	return false;
 }
 
 //=========================================================
@@ -380,13 +379,12 @@ BOOL CBullsquid::CheckMeleeAttack1(float flDot, float flDist)
 // this attack will not be performed if the tailwhip attack
 // is valid.
 //=========================================================
-BOOL CBullsquid::CheckMeleeAttack2(float flDot, float flDist)
+bool CBullsquid::CheckMeleeAttack2(float flDot, float flDist)
 {
-	if (flDist <= 85 && flDot >= 0.7 && !HasConditions(bits_COND_CAN_MELEE_ATTACK1))		// The player & bullsquid can be as much as their bboxes 
-	{										// apart (48 * sqrt(3)) and he can still attack (85 is a little more than 48*sqrt(3))
-		return TRUE;
-	}
-	return FALSE;
+	if (flDist <= 85 && flDot >= 0.7 && !HasConditions(bits_COND_CAN_MELEE_ATTACK1)) // The player & bullsquid can be as much as their bboxes  apart (48 * sqrt(3)) and he can still attack (85 is a little more than 48*sqrt(3))
+		return true;
+
+	return false;
 }
 
 //=========================================================
@@ -688,7 +686,7 @@ void CBullsquid::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/bullsquid.mdl");
 	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
@@ -714,7 +712,7 @@ void CBullsquid::Spawn()
 void CBullsquid::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/bullsquid.mdl");
 

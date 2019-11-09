@@ -303,7 +303,7 @@ void CTurret::Spawn()
 {
 	Precache();
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/turret.mdl");
 	if (!pev->health)
@@ -333,7 +333,7 @@ void CTurret::Precache()
 {
 	CBaseTurret::Precache();
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/turret.mdl");
 	PRECACHE_MODEL(TURRET_GLOW_SPRITE);
@@ -343,7 +343,7 @@ void CMiniTurret::Spawn()
 {
 	Precache();
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/miniturret.mdl");
 	if (!pev->health)
@@ -367,7 +367,7 @@ void CMiniTurret::Precache()
 {
 	CBaseTurret::Precache();
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/miniturret.mdl");
 
@@ -1187,7 +1187,7 @@ void CSentry::Precache()
 {
 	CBaseTurret::Precache();
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/sentry.mdl");
 
@@ -1200,7 +1200,7 @@ void CSentry::Spawn()
 {
 	Precache();
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/sentry.mdl");
 	if (!pev->health) //LRC

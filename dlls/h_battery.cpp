@@ -93,7 +93,7 @@ void CRecharge::Spawn()
 
 	UTIL_SetOrigin(this, pev->origin);		// set size and link into world
 	UTIL_SetSize(this, pev->mins, pev->maxs);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 	m_iJuice = gSkillData.suitchargerCapacity;
 	pev->frame = 0;
 	//LRC

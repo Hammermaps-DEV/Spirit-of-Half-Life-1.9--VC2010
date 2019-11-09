@@ -88,8 +88,8 @@ public:
 	void PrescheduleThink(void);
 	int  Classify(void);
 	void HandleAnimEvent(MonsterEvent_t *pEvent);
-	BOOL CheckRangeAttack1(float flDot, float flDist);
-	BOOL CheckRangeAttack2(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack2(float flDot, float flDist);
 	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
 
 	virtual float GetDamageAmount(void) { return gSkillData.headcrabDmgBite; }
@@ -280,7 +280,7 @@ void CHeadCrab::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/headcrab.mdl");
 	UTIL_SetSize(this, Vector(-12, -12, 0), Vector(12, 12, 24));
@@ -312,7 +312,7 @@ void CHeadCrab::Precache()
 	PRECACHE_SOUND_ARRAY(pBiteSounds);
 
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/headcrab.mdl");
 }
@@ -406,29 +406,20 @@ void CHeadCrab::StartTask(Task_t *pTask)
 //=========================================================
 // CheckRangeAttack1
 //=========================================================
-BOOL CHeadCrab::CheckRangeAttack1(float flDot, float flDist)
+bool CHeadCrab::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (FBitSet(pev->flags, FL_ONGROUND) && flDist <= 256 && flDot >= 0.65)
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack2
 //=========================================================
-BOOL CHeadCrab::CheckRangeAttack2(float flDot, float flDist)
+bool CHeadCrab::CheckRangeAttack2(float flDot, float flDist)
 {
-	return FALSE;
-	// BUGBUG: Why is this code here?  There is no ACT_RANGE_ATTACK2 animation.  I've disabled it for now.
-#if 0
-	if (FBitSet(pev->flags, FL_ONGROUND) && flDist > 64 && flDist <= 256 && flDot >= 0.5)
-	{
-		return TRUE;
-	}
-	return FALSE;
-#endif
+	return false;
 }
 
 int CHeadCrab::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType)
@@ -495,7 +486,7 @@ public:
 	void Precache(void);
 	void SetYawSpeed(void);
 	float GetDamageAmount(void) { return gSkillData.headcrabDmgBite * 0.3; }
-	BOOL CheckRangeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
 	Schedule_t* GetScheduleOfType(int Type);
 	virtual int GetVoicePitch(void) { return PITCH_NORM + RANDOM_LONG(40, 50); }
 	virtual float GetSoundVolue(void) { return 0.8; }
@@ -506,7 +497,7 @@ void CBabyCrab::Spawn(void)
 {
 	CHeadCrab::Spawn();
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/baby_headcrab.mdl");
 	pev->rendermode = kRenderTransTexture;
@@ -519,7 +510,7 @@ void CBabyCrab::Spawn(void)
 void CBabyCrab::Precache(void)
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/baby_headcrab.mdl");
 	CHeadCrab::Precache();
@@ -532,21 +523,20 @@ void CBabyCrab::SetYawSpeed(void)
 }
 
 
-BOOL CBabyCrab::CheckRangeAttack1(float flDot, float flDist)
+bool CBabyCrab::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (pev->flags & FL_ONGROUND)
 	{
 		if (pev->groundentity && (pev->groundentity->v.flags & (FL_CLIENT | FL_MONSTER)))
-			return TRUE;
+			return true;
 
 		// A little less accurate, but jump from closer
 		if (flDist <= 180 && flDot >= 0.55)
-			return TRUE;
+			return true;
 	}
 
-	return FALSE;
+	return false;
 }
-
 
 Schedule_t* CBabyCrab::GetScheduleOfType(int Type)
 {

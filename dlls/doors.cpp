@@ -382,7 +382,7 @@ void CBaseDoor::Spawn()
 	}
 
 	pev->movetype = MOVETYPE_PUSH;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 	UTIL_SetOrigin(this, pev->origin);
 
 	if (pev->speed == 0)
@@ -1085,7 +1085,7 @@ void CRotDoor::Spawn(void)
 
 	pev->movetype = MOVETYPE_PUSH;
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	if (pev->speed == 0)
 		pev->speed = 100;
@@ -1178,7 +1178,7 @@ void CMomentaryDoor::Spawn(void)
 	pev->movetype = MOVETYPE_PUSH;
 
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	//	if (pev->speed == 0)
 	//		pev->speed = 100;
@@ -1431,7 +1431,7 @@ void CBaseTrainDoor::Spawn()
 	pev->movetype = MOVETYPE_PUSH;
 	pev->solid = SOLID_BSP;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 	UTIL_SetOrigin(this, pev->origin);
 
 	// only yaw can be changed

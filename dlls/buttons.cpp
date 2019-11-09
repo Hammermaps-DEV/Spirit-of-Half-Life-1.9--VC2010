@@ -753,7 +753,7 @@ void CBaseButton::Spawn()
 	{
 		pev->solid = SOLID_BSP;
 	}
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	//LRC
 	if (m_iStyle >= 32) LIGHT_STYLE(m_iStyle, "z");
@@ -1199,7 +1199,7 @@ void CRotButton::Spawn(void)
 	else
 		pev->solid = SOLID_BSP;
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	if (pev->speed == 0)
 		pev->speed = 40;
@@ -1325,7 +1325,7 @@ void CMomentaryRotButton::Spawn(void)
 
 	pev->movetype = MOVETYPE_PUSH;
 	UTIL_SetOrigin(this, pev->origin);
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	char *pszSound = ButtonSound(m_sounds);
 	PRECACHE_SOUND(pszSound);
@@ -1633,7 +1633,7 @@ void CButtonTarget::Spawn(void)
 {
 	pev->movetype = MOVETYPE_PUSH;
 	pev->solid = SOLID_BSP;
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 	pev->takedamage = DAMAGE_YES;
 
 	if (FBitSet(pev->spawnflags, SF_BTARGET_ON))

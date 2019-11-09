@@ -106,6 +106,7 @@ int PRECACHE_MODEL(string_t s, char *e)//precache default model if not found
 {
 	if (FStringNull(s))
 		return PRECACHE_MODEL(e);
+	
 	return PRECACHE_MODEL(s);
 }
 int PRECACHE_MODEL(string_t s) { return PRECACHE_MODEL((char*)STRING(s)); }

@@ -208,9 +208,9 @@ public:
 	void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	void HandleAnimEvent(MonsterEvent_t *pEvent);
 
-	BOOL CheckMeleeAttack1(float flDot, float flDist);		// Swipe
-	BOOL CheckMeleeAttack2(float flDot, float flDist);		// Flames
-	BOOL CheckRangeAttack1(float flDot, float flDist);		// Stomp attack
+	bool CheckMeleeAttack1(float flDot, float flDist);		// Swipe
+	bool CheckMeleeAttack2(float flDot, float flDist);		// Flames
+	bool CheckRangeAttack1(float flDot, float flDist);		// Stomp attack
 	void SetObjectCollisionBox(void)
 	{
 		pev->absmin = pev->origin + Vector(-80, -80, 0);
@@ -755,7 +755,7 @@ void CGargantua::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/garg.mdl");
 	UTIL_SetSize(this, Vector(-32, -32, 0), Vector(32, 32, 64));
@@ -788,7 +788,7 @@ void CGargantua::Precache()
 	int i;
 
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/garg.mdl");
 	PRECACHE_MODEL(GARG_EYE_SPRITE_NAME);
@@ -925,23 +925,21 @@ void CGargantua::Killed(entvars_t *pevAttacker, int iGib)
 //=========================================================
 // CheckMeleeAttack1
 // Garg swipe attack
-// 
 //=========================================================
-BOOL CGargantua::CheckMeleeAttack1(float flDot, float flDist)
+bool CGargantua::CheckMeleeAttack1(float flDot, float flDist)
 {
 	//	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
-
 	if (flDot >= 0.7)
 	{
 		if (flDist <= GARG_ATTACKDIST)
-			return TRUE;
+			return true;
 	}
-	return FALSE;
+	return false;
 }
 
 
 // Flame thrower madness!
-BOOL CGargantua::CheckMeleeAttack2(float flDot, float flDist)
+bool CGargantua::CheckMeleeAttack2(float flDot, float flDist)
 {
 	//	ALERT(at_aiconsole, "CheckMelee(%f, %f)\n", flDot, flDist);
 
@@ -950,10 +948,11 @@ BOOL CGargantua::CheckMeleeAttack2(float flDot, float flDist)
 		if (flDot >= 0.8 && flDist > GARG_ATTACKDIST)
 		{
 			if (flDist <= GARG_FLAME_LENGTH)
-				return TRUE;
+				return true;
 		}
 	}
-	return FALSE;
+	
+	return false;
 }
 
 
@@ -961,21 +960,17 @@ BOOL CGargantua::CheckMeleeAttack2(float flDot, float flDist)
 // CheckRangeAttack1
 // flDot is the cos of the angle of the cone within which
 // the attack can occur.
-//=========================================================
-//
 // Stomp attack
-//
 //=========================================================
-BOOL CGargantua::CheckRangeAttack1(float flDot, float flDist)
+bool CGargantua::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (gpGlobals->time > m_seeTime)
 	{
 		if (flDot >= 0.7 && flDist > GARG_ATTACKDIST)
-		{
-			return TRUE;
-		}
+			return true;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 

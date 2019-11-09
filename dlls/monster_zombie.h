@@ -32,8 +32,8 @@ class CZombie : public CBaseMonster {
 		virtual void AttackSound(void);
 		virtual void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 
-		virtual BOOL CheckRangeAttack1(float flDot, float flDist) { return FALSE; }
-		virtual BOOL CheckRangeAttack2(float flDot, float flDist) { return FALSE; }
+		virtual bool CheckRangeAttack1(float flDot, float flDist) { return false; }
+		virtual bool CheckRangeAttack2(float flDot, float flDist) { return false; }
 
 		virtual int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
 		virtual int IgnoreConditions(void);

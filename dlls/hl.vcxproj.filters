@@ -21,9 +21,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="aflock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="agrunt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -340,6 +337,9 @@
       <Filter>Source Files\NPCs</Filter>
     </ClCompile>
     <ClCompile Include="monster_barney_dead.cpp">
+      <Filter>Source Files\NPCs</Filter>
+    </ClCompile>
+    <ClCompile Include="monster_flyer.cpp">
       <Filter>Source Files\NPCs</Filter>
     </ClCompile>
   </ItemGroup>

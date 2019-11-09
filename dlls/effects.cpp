@@ -107,7 +107,7 @@ IMPLEMENT_SAVERESTORE(CBubbling, CBaseEntity);
 void CBubbling::Spawn(void)
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));		// Set size
+	SET_MODEL(ENT(pev), pev->model);		// Set size
 
 	pev->solid = SOLID_NOT;							// Remove model & collisions
 	pev->renderamt = 0;								// The engine won't draw this model if this is set to 0 and blending is on
@@ -1474,7 +1474,7 @@ void CGlow::Spawn(void)
 	pev->frame = 0;
 
 	PRECACHE_MODEL((char *)STRING(pev->model));
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 	if (m_maxFrame > 1.0 && pev->framerate != 0)
@@ -1518,7 +1518,7 @@ void CSprite::Spawn(void)
 	pev->frame = 0;
 
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	m_maxFrame = (float)MODEL_FRAMES(pev->modelindex) - 1;
 	if (pev->targetname && !(pev->spawnflags & SF_SPRITE_STARTON))
@@ -1755,7 +1755,7 @@ void CEnvModel::KeyValue(KeyValueData *pkvd)
 void CEnvModel::Spawn(void)
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 	UTIL_SetOrigin(this, pev->origin);
 
 	if (pev->spawnflags & SF_ENVMODEL_SOLID)
@@ -3582,7 +3582,7 @@ void CEnvRain::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useTy
 void CEnvRain::Spawn(void)
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));		// Set size
+	SET_MODEL(ENT(pev), pev->model);		// Set size
 	pev->solid = SOLID_NOT;
 	pev->effects = EF_NODRAW;
 
@@ -4754,7 +4754,7 @@ void CEnvMirror::Spawn(void)
 	pev->impulse = TRUE;//enable mirror
 	Precache();
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 	pev->body = pev->rendermode;//save current rendermode
 
 	//Smart field system ©

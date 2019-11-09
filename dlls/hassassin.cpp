@@ -72,10 +72,9 @@ public:
 	void HandleAnimEvent(MonsterEvent_t *pEvent);
 	Schedule_t* GetSchedule(void);
 	Schedule_t* GetScheduleOfType(int Type);
-	BOOL CheckMeleeAttack1(float flDot, float flDist);	// jump
-	// BOOL CheckMeleeAttack2 ( float flDot, float flDist );
-	BOOL CheckRangeAttack1(float flDot, float flDist);	// shoot
-	BOOL CheckRangeAttack2(float flDot, float flDist);	// throw grenade
+	bool CheckMeleeAttack1(float flDot, float flDist);	// jump
+	bool CheckRangeAttack1(float flDot, float flDist);	// shoot
+	bool CheckRangeAttack2(float flDot, float flDist);	// throw grenade
 	void StartTask(Task_t *pTask);
 	void RunAI(void);
 	void RunTask(Task_t *pTask);
@@ -95,7 +94,7 @@ public:
 
 	float m_flNextGrenadeCheck;
 	Vector	m_vecTossVelocity;
-	BOOL	m_fThrowGrenade;
+	bool	m_fThrowGrenade;
 
 	int		m_iTargetRanderamt;
 
@@ -273,7 +272,7 @@ void CHAssassin::HandleAnimEvent(MonsterEvent_t *pEvent)
 			CGrenade::ShootTimed(pev, vecGunPosition, m_vecTossVelocity, 2.0);
 
 		m_flNextGrenadeCheck = gpGlobals->time + 6;// wait six seconds before even looking again to see if a grenade can be thrown.
-		m_fThrowGrenade = FALSE;
+		m_fThrowGrenade = false;
 		// !!!LATER - when in a group, only try to throw grenade if ordered.
 	}
 	break;
@@ -325,7 +324,7 @@ void CHAssassin::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/hassassin.mdl");
 	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
@@ -356,7 +355,7 @@ void CHAssassin::Spawn()
 void CHAssassin::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/hassassin.mdl");
 
@@ -673,7 +672,7 @@ IMPLEMENT_CUSTOM_SCHEDULES(CHAssassin, CBaseMonster);
 //=========================================================
 // CheckMeleeAttack1 - jump like crazy if the enemy gets too close. 
 //=========================================================
-BOOL CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
+bool CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 {
 	if (m_flNextJump < gpGlobals->time && (flDist <= 128 || HasMemory(bits_MEMORY_BADJUMP)) && m_hEnemy != NULL)
 	{
@@ -685,7 +684,7 @@ BOOL CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 
 		if (tr.fStartSolid || tr.flFraction < 1.0)
 		{
-			return FALSE;
+			return false;
 		}
 
 		float flGravity = g_psv_gravity->value;
@@ -694,49 +693,48 @@ BOOL CHAssassin::CheckMeleeAttack1(float flDot, float flDist)
 		float speed = flGravity * time / 160;
 		m_vecJumpVelocity = (vecDest - pev->origin) * speed;
 
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack1  - drop a cap in their ass
 //
 //=========================================================
-BOOL CHAssassin::CheckRangeAttack1(float flDot, float flDist)
+bool CHAssassin::CheckRangeAttack1(float flDot, float flDist)
 {
-	if (!HasConditions(bits_COND_ENEMY_OCCLUDED) && flDist > 64 && flDist <= 2048 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */)
+	if (!HasConditions(bits_COND_ENEMY_OCCLUDED) && flDist > 64 && flDist <= 2048)
 	{
 		TraceResult	tr;
 
-		Vector vecSrc = GetGunPosition();
+		const Vector vecSrc = GetGunPosition();
 
 		// verify that a bullet fired from the gun will hit the enemy before the world.
 		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), dont_ignore_monsters, ENT(pev), &tr);
 
 		if (tr.flFraction == 1 || tr.pHit == m_hEnemy->edict())
-		{
-			return TRUE;
-		}
+			return true;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack2 - toss grenade is enemy gets in the way and is too close. 
 //=========================================================
-BOOL CHAssassin::CheckRangeAttack2(float flDot, float flDist)
+bool CHAssassin::CheckRangeAttack2(float flDot, float flDist)
 {
-	m_fThrowGrenade = FALSE;
+	m_fThrowGrenade = false;
 	if (!FBitSet(m_hEnemy->pev->flags, FL_ONGROUND))
 	{
 		// don't throw grenades at anything that isn't on the ground!
-		return FALSE;
+		return false;
 	}
 
 	// don't get grenade happy unless the player starts to piss you off
 	if (m_iFrustration <= 2)
-		return FALSE;
+		return false;
 
 	if (m_flNextGrenadeCheck < gpGlobals->time && !HasConditions(bits_COND_ENEMY_OCCLUDED) && flDist <= 512 /* && flDot >= 0.5 */ /* && NoFriendlyFire() */)
 	{
@@ -747,15 +745,14 @@ BOOL CHAssassin::CheckRangeAttack2(float flDot, float flDist)
 			m_vecTossVelocity = vecToss;
 
 			// throw a hand grenade
-			m_fThrowGrenade = TRUE;
+			m_fThrowGrenade = true;
 
-			return TRUE;
+			return true;
 		}
 	}
 
-	return FALSE;
+	return true;
 }
-
 
 //=========================================================
 // RunAI

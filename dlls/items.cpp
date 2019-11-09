@@ -215,7 +215,7 @@ class CItemBattery : public CItem
 	{
 		Precache();
 		if (pev->model)
-			SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+			SET_MODEL(ENT(pev), pev->model); //LRC
 		else
 			SET_MODEL(ENT(pev), "models/w_battery.mdl");
 		CItem::Spawn();
@@ -223,7 +223,7 @@ class CItemBattery : public CItem
 	void Precache(void)
 	{
 		if (pev->model)
-			PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+			PRECACHE_MODEL(pev->model); //LRC
 		else
 			PRECACHE_MODEL("models/w_battery.mdl");
 

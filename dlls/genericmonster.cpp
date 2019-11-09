@@ -194,7 +194,7 @@ void CGenericMonster::Spawn()
 
 	Precache();
 
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	if (vecSize != g_vecZero)
 	{
@@ -384,7 +384,7 @@ void CDeadGenericMonster::KeyValue(KeyValueData *pkvd)
 void CDeadGenericMonster::Spawn(void)
 {
 	Precache();
-	SET_MODEL(ENT(pev), STRING(pev->model));
+	SET_MODEL(ENT(pev), pev->model);
 
 	pev->effects = 0;
 	pev->yaw_speed = 8; //LRC -- what?
@@ -420,7 +420,7 @@ void CDeadGenericMonster::Spawn(void)
 
 void CDeadGenericMonster::Precache()
 {
-	PRECACHE_MODEL((char*)STRING(pev->model));
+	PRECACHE_MODEL(pev->model);
 	if (m_iszGibModel)
 		PRECACHE_MODEL((char*)STRING(m_iszGibModel)); //LRC
 }

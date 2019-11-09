@@ -93,7 +93,7 @@ public:
 	void PrescheduleThink(void);
 	void SetActivity(Activity NewActivity);
 	void WriteBeamColor(void);
-	BOOL CheckRangeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
 	BOOL FValidateHintType(short sHint);
 	BOOL FCanActiveIdle(void);
 	Schedule_t *GetScheduleOfType(int Type);
@@ -191,13 +191,12 @@ BOOL CHoundeye::FCanActiveIdle(void)
 // try to get within half of their max attack radius before
 // attacking, so as to increase their chances of doing damage.
 //=========================================================
-BOOL CHoundeye::CheckRangeAttack1(float flDot, float flDist)
+bool CHoundeye::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (flDist <= (HOUNDEYE_MAX_ATTACK_RADIUS * 0.5) && flDot >= 0.3)
-	{
-		return TRUE;
-	}
-	return FALSE;
+		return true;
+	
+	return false;
 }
 
 //=========================================================
@@ -331,7 +330,7 @@ void CHoundeye::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/houndeye.mdl");
 	UTIL_SetSize(this, Vector(-16, -16, 0), Vector(16, 16, 36));
@@ -358,7 +357,7 @@ void CHoundeye::Spawn()
 void CHoundeye::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/houndeye.mdl");
 

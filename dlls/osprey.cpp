@@ -149,7 +149,7 @@ void COsprey::Spawn(void)
 	pev->solid = SOLID_BBOX;
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/osprey.mdl");
 	UTIL_SetSize(this, Vector(-400, -400, -100), Vector(400, 400, 32));
@@ -192,7 +192,7 @@ void COsprey::Precache(void)
 	UTIL_PrecacheOther("monster_human_grunt");
 
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/osprey.mdl");
 	PRECACHE_MODEL("models/HVR.mdl");

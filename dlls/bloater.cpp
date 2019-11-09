@@ -44,8 +44,8 @@ public:
 	void AttackSnd(void);
 
 	// No range attacks
-	BOOL CheckRangeAttack1(float flDot, float flDist) { return FALSE; }
-	BOOL CheckRangeAttack2(float flDot, float flDist) { return FALSE; }
+	bool CheckRangeAttack1(float flDot, float flDist) { return false; }
+	bool CheckRangeAttack2(float flDot, float flDist) { return false; }
 	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
 };
 
@@ -191,7 +191,7 @@ void CBloater::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/floater.mdl");
 	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
@@ -214,7 +214,7 @@ void CBloater::Spawn()
 void CBloater::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/floater.mdl");
 }

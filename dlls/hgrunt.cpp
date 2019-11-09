@@ -132,9 +132,9 @@ public:
 	int ISoundMask(void);
 	void HandleAnimEvent(MonsterEvent_t *pEvent);
 	BOOL FCanCheckAttacks(void);
-	BOOL CheckMeleeAttack1(float flDot, float flDist);
-	BOOL CheckRangeAttack1(float flDot, float flDist);
-	BOOL CheckRangeAttack2(float flDot, float flDist);
+	bool CheckMeleeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack2(float flDot, float flDist);
 	void CheckAmmo(void);
 	void SetActivity(Activity NewActivity);
 	void StartTask(Task_t *pTask);
@@ -174,7 +174,7 @@ public:
 
 	Vector	m_vecTossVelocity;
 
-	BOOL	m_fThrowGrenade;
+	bool	m_fThrowGrenade;
 	BOOL	m_fStanding;
 	BOOL	m_fFirstEncounter;// only put on the handsign show in the squad's first encounter.
 	int		m_cClipSize;
@@ -413,27 +413,25 @@ BOOL CHGrunt::FCanCheckAttacks(void)
 //=========================================================
 // CheckMeleeAttack1
 //=========================================================
-BOOL CHGrunt::CheckMeleeAttack1(float flDot, float flDist)
+bool CHGrunt::CheckMeleeAttack1(float flDot, float flDist)
 {
 	CBaseMonster *pEnemy = 0;
 
 	if (m_hEnemy != NULL)
 	{
 		pEnemy = m_hEnemy->MyMonsterPointer();
-
 		if (!pEnemy)
-		{
-			return FALSE;
-		}
+			return false;
 	}
 
 	if (flDist <= 64 && flDot >= 0.7	&&
 		pEnemy->Classify() != CLASS_ALIEN_BIOWEAPON &&
 		pEnemy->Classify() != CLASS_PLAYER_BIOWEAPON)
 	{
-		return TRUE;
+		return true;
 	}
-	return FALSE;
+	
+	return false;
 }
 
 //=========================================================
@@ -444,7 +442,7 @@ BOOL CHGrunt::CheckMeleeAttack1(float flDot, float flDist)
 // occluded (throw grenade over wall, etc). We must 
 // disqualify the machine gun attack if the enemy is occluded.
 //=========================================================
-BOOL CHGrunt::CheckRangeAttack1(float flDot, float flDist)
+bool CHGrunt::CheckRangeAttack1(float flDot, float flDist)
 {
 	if (!HasConditions(bits_COND_ENEMY_OCCLUDED) && flDist <= 2048 && flDot >= 0.5 && NoFriendlyFire())
 	{
@@ -453,7 +451,7 @@ BOOL CHGrunt::CheckRangeAttack1(float flDot, float flDist)
 		if (!m_hEnemy->IsPlayer() && flDist <= 64)
 		{
 			// kick nonclients who are close enough, but don't shoot at them.
-			return FALSE;
+			return false;
 		}
 
 		Vector vecSrc = GetGunPosition();
@@ -462,29 +460,27 @@ BOOL CHGrunt::CheckRangeAttack1(float flDot, float flDist)
 		UTIL_TraceLine(vecSrc, m_hEnemy->BodyTarget(vecSrc), ignore_monsters, ignore_glass, ENT(pev), &tr);
 
 		if (tr.flFraction == 1.0)
-		{
-			return TRUE;
-		}
+			return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
 //=========================================================
 // CheckRangeAttack2 - this checks the Grunt's grenade
 // attack. 
 //=========================================================
-BOOL CHGrunt::CheckRangeAttack2(float flDot, float flDist)
+bool CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 {
 	if (!FBitSet(pev->weapons, (HGRUNT_HANDGRENADE | HGRUNT_GRENADELAUNCHER)))
 	{
-		return FALSE;
+		return false;
 	}
 
 	// if the grunt isn't moving, it's ok to check.
 	if (m_flGroundSpeed != 0)
 	{
-		m_fThrowGrenade = FALSE;
+		m_fThrowGrenade = false;
 		return m_fThrowGrenade;
 	}
 
@@ -499,7 +495,7 @@ BOOL CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 		//!!!BUGBUG - we should make this check movetype and make sure it isn't FLY? Players who jump a lot are unlikely to 
 		// be grenaded.
 		// don't throw grenades at anything that isn't on the ground!
-		m_fThrowGrenade = FALSE;
+		m_fThrowGrenade = false;
 		return m_fThrowGrenade;
 	}
 
@@ -539,7 +535,7 @@ BOOL CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 		{
 			// crap, I might blow my own guy up. Don't throw a grenade and don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
-			m_fThrowGrenade = FALSE;
+			m_fThrowGrenade = false;
 		}
 	}
 
@@ -547,28 +543,28 @@ BOOL CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 	{
 		// crap, I don't want to blow myself up
 		m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
-		m_fThrowGrenade = FALSE;
+		m_fThrowGrenade = false;
 		return m_fThrowGrenade;
 	}
 
 
 	if (FBitSet(pev->weapons, HGRUNT_HANDGRENADE))
 	{
-		Vector vecToss = VecCheckToss(pev, GetGunPosition(), vecTarget, 0.5);
+		const Vector vecToss = VecCheckToss(pev, GetGunPosition(), vecTarget, 0.5);
 
 		if (vecToss != g_vecZero)
 		{
 			m_vecTossVelocity = vecToss;
 
 			// throw a hand grenade
-			m_fThrowGrenade = TRUE;
+			m_fThrowGrenade = true;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time; // 1/3 second.
 		}
 		else
 		{
 			// don't throw
-			m_fThrowGrenade = FALSE;
+			m_fThrowGrenade = false;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
 		}
@@ -582,20 +578,18 @@ BOOL CHGrunt::CheckRangeAttack2(float flDot, float flDist)
 			m_vecTossVelocity = vecToss;
 
 			// throw a hand grenade
-			m_fThrowGrenade = TRUE;
+			m_fThrowGrenade = true;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 0.3; // 1/3 second.
 		}
 		else
 		{
 			// don't throw
-			m_fThrowGrenade = FALSE;
+			m_fThrowGrenade = false;
 			// don't check again for a while.
 			m_flNextGrenadeCheck = gpGlobals->time + 1; // one full second.
 		}
 	}
-
-
 
 	return m_fThrowGrenade;
 }
@@ -1058,7 +1052,7 @@ void CHGrunt::Spawn()
 	Precache();
 
 	if (pev->model)
-		SET_MODEL(ENT(pev), STRING(pev->model)); //LRC
+		SET_MODEL(ENT(pev), pev->model); //LRC
 	else
 		SET_MODEL(ENT(pev), "models/hgrunt.mdl");
 	UTIL_SetSize(this, VEC_HUMAN_HULL_MIN, VEC_HUMAN_HULL_MAX);
@@ -1127,7 +1121,7 @@ void CHGrunt::Spawn()
 void CHGrunt::Precache()
 {
 	if (pev->model)
-		PRECACHE_MODEL((char*)STRING(pev->model)); //LRC
+		PRECACHE_MODEL(pev->model); //LRC
 	else
 		PRECACHE_MODEL("models/hgrunt.mdl");
 

@@ -36,9 +36,9 @@ extern DLL_GLOBAL int			g_iSkillLevel;
 
 static DLL_FUNCTIONS gFunctionTable =
 {
-	GameDLLInit,				//pfnGameInit
+	GameDLLInit,		//pfnGameInit
 	DispatchSpawn,				//pfnSpawn
-	DispatchThink,				//pfnThink
+	DispatchThink,		//pfnThink
 	DispatchUse,				//pfnUse
 	DispatchTouch,				//pfnTouch
 	DispatchBlocked,			//pfnBlocked
@@ -73,9 +73,9 @@ static DLL_FUNCTIONS gFunctionTable =
 	GetGameDescription,         //pfnGetGameDescription    Returns string describing current .dll game.
 	PlayerCustomization,        //pfnPlayerCustomization   Notifies .dll of new customization for player.
 
-	SpectatorConnect,			//pfnSpectatorConnect      Called when spectator joins server
-	SpectatorDisconnect,        //pfnSpectatorDisconnect   Called when spectator leaves the server
-	SpectatorThink,				//pfnSpectatorThink        Called when spectator sends a command packet (usercmd_t)
+	SpectatorConnect,		//pfnSpectatorConnect      Called when spectator joins server
+	SpectatorDisconnect,   //pfnSpectatorDisconnect   Called when spectator leaves the server
+	SpectatorThink,			//pfnSpectatorThink        Called when spectator sends a command packet (usercmd_t)
 
 	Sys_Error,					//pfnSys_Error				Called when engine has encountered an error
 
@@ -131,10 +131,9 @@ extern "C" {
 }
 #endif
 
-
 int DispatchSpawn(edict_t *pent)
 {
-	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pent);
+	CBaseEntity *pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pent));
 
 	if (pEntity)
 	{
@@ -148,7 +147,7 @@ int DispatchSpawn(edict_t *pent)
 		// Try to get the pointer again, in case the spawn function deleted the entity.
 		// UNDONE: Spawn() should really return a code to ask that the entity be deleted, but
 		// that would touch too much code for me to do that right now.
-		pEntity = (CBaseEntity *)GET_PRIVATE(pent);
+		pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pent));
 
 		if (pEntity)
 		{
@@ -186,7 +185,6 @@ int DispatchSpawn(edict_t *pent)
 				//				ALERT( at_console, "Added global entity %s (%s)\n", STRING(pEntity->pev->classname), STRING(pEntity->pev->globalname) );
 			}
 		}
-
 	}
 
 	return 0;
@@ -205,7 +203,7 @@ void DispatchKeyValue(edict_t *pentKeyvalue, KeyValueData *pkvd)
 		return;
 
 	// Get the actualy entity object
-	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pentKeyvalue);
+	CBaseEntity *pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pentKeyvalue));
 
 	if (!pEntity)
 		return;
@@ -222,8 +220,8 @@ void DispatchTouch(edict_t *pentTouched, edict_t *pentOther)
 	if (gTouchDisabled)
 		return;
 
-	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pentTouched);
-	CBaseEntity *pOther = (CBaseEntity *)GET_PRIVATE(pentOther);
+	CBaseEntity *pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pentTouched));
+	CBaseEntity *pOther = static_cast<CBaseEntity*>(GET_PRIVATE(pentOther));
 
 	if (pEntity && pOther && !((pEntity->pev->flags | pOther->pev->flags) & FL_KILLME))
 		pEntity->Touch(pOther);
@@ -232,8 +230,8 @@ void DispatchTouch(edict_t *pentTouched, edict_t *pentOther)
 
 void DispatchUse(edict_t *pentUsed, edict_t *pentOther)
 {
-	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pentUsed);
-	CBaseEntity *pOther = (CBaseEntity *)GET_PRIVATE(pentOther);
+	CBaseEntity *pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pentUsed));
+	CBaseEntity *pOther = static_cast<CBaseEntity*>(GET_PRIVATE(pentOther));
 
 	if (pEntity && !(pEntity->pev->flags & FL_KILLME))
 		pEntity->Use(pOther, pOther, USE_TOGGLE, 0);
@@ -241,7 +239,7 @@ void DispatchUse(edict_t *pentUsed, edict_t *pentOther)
 
 void DispatchThink(edict_t *pent)
 {
-	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pent);
+	CBaseEntity *pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pent));
 
 	if (pEntity)
 	{
@@ -255,8 +253,8 @@ void DispatchThink(edict_t *pent)
 
 void DispatchBlocked(edict_t *pentBlocked, edict_t *pentOther)
 {
-	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pentBlocked);
-	CBaseEntity *pOther = (CBaseEntity *)GET_PRIVATE(pentOther);
+	CBaseEntity *pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pentBlocked));
+	CBaseEntity *pOther = static_cast<CBaseEntity*>(GET_PRIVATE(pentOther));
 
 	if (pEntity)
 		pEntity->Blocked(pOther);
@@ -264,7 +262,7 @@ void DispatchBlocked(edict_t *pentBlocked, edict_t *pentOther)
 
 void DispatchSave(edict_t *pent, SAVERESTOREDATA *pSaveData)
 {
-	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pent);
+	CBaseEntity *pEntity = static_cast<CBaseEntity*>(GET_PRIVATE(pent));
 
 	if (pEntity && pSaveData)
 	{
@@ -303,6 +301,7 @@ void DispatchSave(edict_t *pent, SAVERESTOREDATA *pSaveData)
 CBaseEntity *FindGlobalEntity(string_t classname, string_t globalname)
 {
 	CBaseEntity *pReturn = UTIL_FindEntityByString(NULL, "globalname", STRING(globalname));
+
 	if (pReturn)
 	{
 		if (!FClassnameIs(pReturn->pev, STRING(classname)))
@@ -367,7 +366,6 @@ int DispatchRestore(edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity)
 				// or call EntityUpdate() to move it to this level, we haven't changed global state at all.
 				return 0;
 			}
-
 		}
 
 		if (pEntity->ObjectCaps() & FCAP_MUST_SPAWN)
@@ -411,7 +409,8 @@ int DispatchRestore(edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity)
 				// Already dead? delete
 				if (pGlobal->state == GLOBAL_DEAD)
 					return -1;
-				else if (!FStrEq(STRING(gpGlobals->mapname), pGlobal->levelName))
+
+				if (!FStrEq(STRING(gpGlobals->mapname), pGlobal->levelName))
 				{
 					pEntity->MakeDormant();	// Hasn't been moved to this level yet, wait but stay alive
 				}
@@ -428,7 +427,6 @@ int DispatchRestore(edict_t *pent, SAVERESTOREDATA *pSaveData, int globalEntity)
 	return 0;
 }
 
-
 void DispatchObjectCollsionBox(edict_t *pent)
 {
 	CBaseEntity *pEntity = (CBaseEntity *)GET_PRIVATE(pent);
@@ -439,7 +437,6 @@ void DispatchObjectCollsionBox(edict_t *pent)
 	else
 		SetObjectCollisionBox(&pent->v);
 }
-
 
 void SaveWriteFields(SAVERESTOREDATA *pSaveData, const char *pname, void *pBaseData, TYPEDESCRIPTION *pFields, int fieldCount)
 {
@@ -472,13 +469,15 @@ edict_t * EHANDLE::Set(edict_t *pent)
 	if (pent)
 	{
 		m_pent = pent;
-		m_serialnumber = m_pent->serialnumber;
+		if (pent)
+			m_serialnumber = m_pent->serialnumber;
 	}
 	else
 	{
 		m_pent = NULL;
 		m_serialnumber = 0;
 	}
+	
 	return pent;
 };
 
@@ -914,7 +913,7 @@ int CBaseEntity::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, flo
 
 		if (flForce > 1000.0)
 			flForce = 1000.0;
-		
+
 		SetVelocity(pev->velocity + vecDir * flForce);
 	}
 
@@ -1006,7 +1005,7 @@ int CBaseEntity::Restore(CRestore &restore)
 
 
 		PRECACHE_MODEL((char *)STRING(pev->model));
-		SET_MODEL(ENT(pev), STRING(pev->model));
+		SET_MODEL(ENT(pev), pev->model);
 		UTIL_SetSize(this, mins, maxs);	// Reset them
 	}
 
