@@ -342,6 +342,9 @@
     <ClCompile Include="monster_flyer.cpp">
       <Filter>Source Files\NPCs</Filter>
     </ClCompile>
+    <ClCompile Include="observer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation.h">

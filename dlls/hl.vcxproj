@@ -83,6 +83,7 @@
     <ClCompile Include="multiplay_gamerules.cpp" />
     <ClCompile Include="nihilanth.cpp" />
     <ClCompile Include="nodes.cpp" />
+    <ClCompile Include="observer.cpp" />
     <ClCompile Include="osprey.cpp" />
     <ClCompile Include="pathcorner.cpp" />
     <ClCompile Include="plane.cpp" />

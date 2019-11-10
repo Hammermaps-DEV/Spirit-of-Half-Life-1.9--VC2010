@@ -91,6 +91,12 @@ enum sbar_data
 class CBasePlayer : public CBaseMonster
 {
 public:
+	// Observer camera
+	EHANDLE				m_hObserverTarget;
+	float				m_flNextObserverInput;
+	int					m_iObservedWeaponId;
+	int					m_iObserverMode;
+	
 	int					random_seed;    // See that is shared between client & server for shared weapons code
 
 	int					m_iPlayerSound;// the index of the sound list slot reserved for this player
@@ -157,19 +163,19 @@ public:
 	EHANDLE				m_pTank;				// the tank which the player is currently controlling,  NULL if no tank
 	float				m_fDeadTime;			// the time at which the player died  (used in PlayerDeathThink())
 
-	BOOL			m_fNoPlayerSound;	// a debugging feature. Player makes no sound if this is true. 
-	BOOL			m_fLongJump; // does this player have the longjump module?
+	BOOL				m_fNoPlayerSound;	// a debugging feature. Player makes no sound if this is true. 
+	BOOL				m_fLongJump; // does this player have the longjump module?
 
-	float       m_tSneaking;
-	int	m_iUpdateTime;	 // stores the number of frame ticks before sending HUD update messages
-	int	m_iClientHealth;	 // the health currently known by the client.  If this changes, send a new
-	int	m_iClientBattery;	 // the Battery currently known by the client.  If this changes, send a new
-	int	m_iClientFlashlight; // the FlashLight Battery currently known by the client.
-	int	m_iClientFlashState; // the falshlight status
-	int	m_iHideHUD;	 // the players hud weapon info is to be hidden
-	int	m_iClientHideHUD;
-	int	m_iFOV;		// field of view
-	int	m_iClientFOV;	// client's known FOV
+	float				m_tSneaking;
+	int					m_iUpdateTime;	 // stores the number of frame ticks before sending HUD update messages
+	int					m_iClientHealth;	 // the health currently known by the client.  If this changes, send a new
+	int					m_iClientBattery;	 // the Battery currently known by the client.  If this changes, send a new
+	int					m_iClientFlashlight; // the FlashLight Battery currently known by the client.
+	int					m_iClientFlashState; // the falshlight status
+	int					m_iHideHUD;	 // the players hud weapon info is to be hidden
+	int					m_iClientHideHUD;
+	int					m_iFOV;		// field of view
+	int					m_iClientFOV;	// client's known FOV
 
 	// usable player items 
 	CBasePlayerItem	*m_rgpPlayerItems[MAX_ITEM_TYPES];
@@ -177,21 +183,22 @@ public:
 	CBasePlayerItem *m_pClientActiveItem;  // client version of the active item
 	CBasePlayerItem *m_pLastItem;
 	CBasePlayerItem *m_pNextItem;
+	
 	// shared ammo slots
 	int	m_rgAmmo[MAX_AMMO_SLOTS];
 	int	m_rgAmmoLast[MAX_AMMO_SLOTS];
 
-	Vector		m_vecAutoAim;
-	BOOL		m_fOnTarget;
-	int			m_iDeaths;
-	float		m_flDeathAnimationStartTime;
+	Vector				m_vecAutoAim;
+	BOOL				m_fOnTarget;
+	int					m_iDeaths;
+	float				m_flDeathAnimationStartTime;
 
-	int m_lastx, m_lasty;  // These are the previous update's crosshair angles, DON"T SAVE/RESTORE
+	int					m_lastx, m_lasty;  // These are the previous update's crosshair angles, DON"T SAVE/RESTORE
 
-	int m_nCustomSprayFrames;// Custom clan logo frames for this player
-	float	m_flNextDecalTime;// next time this player can spray a decal
+	int					m_nCustomSprayFrames;// Custom clan logo frames for this player
+	float				m_flNextDecalTime;// next time this player can spray a decal
 
-	char m_szTeamName[MAX_TEAM_NAME];
+	char				m_szTeamName[MAX_TEAM_NAME];
 
 	virtual void Spawn(void);
 	void Pain(void);
@@ -206,7 +213,7 @@ public:
 	virtual int TakeArmor(float flArmor);
 	virtual void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
 	virtual int TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float flDamage, int bitsDamageType);
-	virtual void	Killed(entvars_t *pevAttacker, int iGib);
+	virtual void Killed(entvars_t *pevAttacker, int iGib);
 	virtual Vector BodyTarget(const Vector &posSrc) { return Center() + pev->view_ofs * RANDOM_FLOAT(0.5, 1.1); };		// position to shoot at
 	virtual void StartSneaking(void) { m_tSneaking = gpGlobals->time - 1; }
 	virtual void StopSneaking(void) { m_tSneaking = gpGlobals->time + 30; }
@@ -221,6 +228,7 @@ public:
 
 	virtual int	Save(CSave &save);
 	virtual int	Restore(CRestore &restore);
+	
 	void RenewItems(void);
 	void PackDeadPlayerItems(void);
 	void RemoveAllItems(bool removeSuit);
@@ -244,17 +252,24 @@ public:
 	void UpdatePlayerSound(void);
 	void DeathSound(void);
 
-	int Classify(void);
+	int Classify(void) override { return CLASS_PLAYER; };
 	void SetAnimation(PLAYER_ANIM playerAnim);
-	void SetWeaponAnimType(const char *szExtention);
 	char m_szAnimExtention[32];
 
 	// custom player functions
 	virtual void ImpulseCommands(void);
 	void CheatImpulseCommands(int iImpulse);
 
-	void StartDeathCam(void);
-	void StartObserver(Vector vecPosition, Vector vecViewAngle);
+	void StartDeathCam( void );
+	void StartObserver( void );
+	void StopObserver( void );
+	
+	void Observer_FindNextPlayer( bool bReverse, bool bOverview );
+	void Observer_FindNextSpot( bool bReverse );
+	void Observer_HandleButtons();
+	void Observer_SetMode( int iMode );
+	void Observer_CheckTarget();
+	int IsObserver() { return pev->iuser1; };
 
 	void AddPoints(int score, BOOL bAllowNegativeScore) override;
 	void AddPointsToTeam(int score, BOOL bAllowNegativeScore) override;
@@ -304,7 +319,7 @@ public:
 	void SetCustomDecalFrames(int nFrames);
 	int GetCustomDecalFrames(void);
 
-	void CBasePlayer::TabulateAmmo(void);
+	void TabulateAmmo(void);
 
 	//Player ID
 	void InitStatusBar(void);
@@ -314,15 +329,28 @@ public:
 	float m_flStatusBarDisappearDelay;
 	char m_SbarString0[SBAR_STRING_SIZE];
 	char m_SbarString1[SBAR_STRING_SIZE];
+
+	int m_iChatFlood;
+	float m_flNextChatTime;
+	float m_flNextSpectatorCommand;
+	float m_flNextFullupdate[2];
+
+	BOOL m_bConnected;		// we set it in Spawn() so it will be TRUE only after player was spawned
+	BOOL m_bPutInServer;	// we set it after PutInServer finished
+	BOOL m_bIsBot;			// we set it at PutInServer start
+	BOOL IsConnected() { return m_bConnected; }
+	void Disconnect() { m_bConnected = FALSE; m_bPutInServer = FALSE; m_bIsBot = FALSE; }
+
+	int m_iAutoWeaponSwitch;
+
+	BOOL m_bInWelcomeCam;
+	void StartWelcomeCam(void);
+	void StopWelcomeCam(void);
+	
 	// for trigger_viewset
 	int		viewEntity; // string
 	int		viewFlags;	// 1-active, 2-draw hud
 	int		viewNeedsUpdate; // precache sets to 1, UpdateClientData() sets to 0	
-	float 	m_flNextChatTime;
-
-	BOOL m_bConnected;	// we set it in Spawn() so it will be TRUE only after player was spawned
-	BOOL IsConnected() { return m_bConnected; }
-	void Disconnect() { m_bConnected = FALSE; }
 	
 	int		Rain_dripsPerSecond;
 	float	Rain_windX, Rain_windY;
@@ -343,13 +371,13 @@ public:
 #define AUTOAIM_8DEGREES  0.1391731009601
 #define AUTOAIM_10DEGREES 0.1736481776669
 
-
 extern int	gmsgHudText;
 extern int	gmsgParticle; // LRC
 extern int	gmsgSetBody;
 extern int	gmsgSetSkin;
 extern int	gmsgSetMirror;
 extern int	gmsgFsound;
+
 extern BOOL gInitHUD;
 
 #endif // PLAYER_H
