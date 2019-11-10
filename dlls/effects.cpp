@@ -823,18 +823,23 @@ CBaseEntity* CBeam::GetTripEntity(TraceResult *ptr)
 
 void CBeam::BeamDamage(TraceResult *ptr)
 {
+	CBeam::BeamDamage(ptr, pev);
+}
+
+void CBeam::BeamDamage(TraceResult *ptr, entvars_t *pevAttacker)
+{
 	RelinkBeam();
 	if (ptr->flFraction != 1.0 && ptr->pHit != NULL)
 	{
-		CBaseEntity *pHit = CBaseEntity::Instance(ptr->pHit);
+		CBaseEntity *pHit = Instance(ptr->pHit);
 		if (pHit)
 		{
 			if (pev->dmg > 0)
 			{
 				if (pev->frags == 0)pev->frags = DMG_ENERGYBEAM;
 				ClearMultiDamage();
-				pHit->TraceAttack(pev, pev->dmg * (gpGlobals->time - pev->dmgtime), (ptr->vecEndPos - pev->origin).Normalize(), ptr, pev->frags);
-				ApplyMultiDamage(pev, pev);
+				pHit->TraceAttack(pevAttacker, pev->dmg * (gpGlobals->time - pev->dmgtime), (ptr->vecEndPos - pev->origin).Normalize(), ptr, pev->frags);
+				ApplyMultiDamage(pev, pevAttacker);
 				if (pev->spawnflags & SF_BEAM_DECALS)
 				{
 					if (pHit->IsBSPModel())
@@ -1342,8 +1347,12 @@ void CLaser::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType
 	RelinkBeam();
 }
 
-
 void CLaser::FireAtPoint(Vector startpos, TraceResult &tr)
+{
+	FireAtPoint(startpos, tr, NULL);
+}
+
+void CLaser::FireAtPoint(Vector startpos, TraceResult &tr, entvars_t *pevAttacker)
 {
 	if (pev->spawnflags & SF_LASER_INTERPOLATE && m_pStartSprite && m_pEndSprite)
 	{
@@ -1362,7 +1371,7 @@ void CLaser::FireAtPoint(Vector startpos, TraceResult &tr)
 		SetEndPos(tr.vecEndPos);
 	}
 
-	BeamDamage(&tr);
+	BeamDamage(&tr, pevAttacker);
 	DoSparks(startpos, tr.vecEndPos);
 }
 

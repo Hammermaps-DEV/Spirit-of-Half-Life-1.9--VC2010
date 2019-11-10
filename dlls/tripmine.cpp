@@ -17,10 +17,8 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "nodes.h"
 #include "player.h"
 #include "effects.h"
-#include "gamerules.h"
 
 #define	TRIPMINE_PRIMARY_VOLUME		450
 
@@ -423,19 +421,17 @@ BOOL CTripmine::Deploy()
 void CTripmine::Holster()
 {
 	//don't play holster animation if ammo is out
-	if (m_iBody)m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase();
-	else m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
+	if (m_iBody)
+		m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase();
+	else 
+		m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 
-	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
-	{
-		// out of mines
-		m_pPlayer->pev->weapons &= ~(1 << WEAPON_TRIPMINE);
-		SetThink(&CTripmine::DestroyItem);
-		SetNextThink(0.1);
-	}
-
-	SendWeaponAnim(TRIPMINE_HOLSTER);
 	EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);
+
+	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
+		SendWeaponAnim(TRIPMINE_HOLSTER);
+	else
+		DestroyItem();
 }
 
 void CTripmine::PrimaryAttack(void)

@@ -131,10 +131,16 @@ void ClientDisconnect(edict_t *pEntity)
 	// since the edict doesn't get deleted, fix it so it doesn't interfere.
 	pEntity->v.takedamage = DAMAGE_NO;// don't attract autoaim
 	pEntity->v.solid = SOLID_NOT;// nonsolid
+	pEntity->v.flags = 0;	// clear client flags, because engine doesn't clear them before calling ClientConnect, but only before ClientPutInServer, on next connection to this slot
 	pEntity->v.effects = 0;// clear any effects
 	UTIL_SetEdictOrigin(pEntity, pEntity->v.origin);
 
 	g_pGameRules->ClientDisconnected(pEntity);
+
+	// mark player as disconnected
+	entvars_t *pev = &pEntity->v;
+	CBasePlayer *pl = (CBasePlayer*)CBasePlayer::Instance(pev);
+	pl->Disconnect();
 }
 
 
@@ -171,20 +177,31 @@ void ClientKill(edict_t *pEntity)
 {
 	entvars_t *pev = &pEntity->v;
 
+	// prevent death in spectator mode
+	if (pev->iuser1 != OBS_NONE)
+	{
+		ClientPrint(pev, HUD_PRINTCONSOLE, UTIL_VarArgs("Can't suicide while in spectator mode!\n"));
+		return;
+	}
+
+	// prevent death if already dead
+	if (pev->deadflag != DEAD_NO)
+	{
+		ClientPrint(pev, HUD_PRINTCONSOLE, UTIL_VarArgs("Can't suicide -- already dead!\n"));
+		return;
+	}
+	
 	CBasePlayer *pl = (CBasePlayer*)CBasePlayer::Instance(pev);
 
+	// prevent suiciding too often
 	if (pl->m_fNextSuicideTime > gpGlobals->time)
-		return;  // prevent suiciding too ofter
+		return;
 
 	pl->m_fNextSuicideTime = gpGlobals->time + 1;  // don't let them suicide for 5 seconds after suiciding
 
 	// have the player kill themself
 	pev->health = 0;
 	pl->Killed(pev, GIB_NEVER);
-
-	//	pev->modelindex = g_ulModelIndexPlayer;
-	//	pev->frags -= 2;		// extra penalty
-	//	respawn( pev );
 }
 
 /*
@@ -205,6 +222,9 @@ void ClientPutInServer(edict_t *pEntity)
 
 	// Allocate a CBasePlayer for pev, and call spawn
 	pPlayer->Spawn();
+
+	// Setup some fields initially
+	pPlayer->m_fNextSuicideTime = 0;
 
 	// Reset interpolation during first frame
 	pPlayer->pev->effects |= EF_NOINTERP;
@@ -540,6 +560,13 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 	if (!pEntity->pvPrivateData)
 		return;
 
+
+	char text[256];
+	CBasePlayer *pPlayer = GetClassPtr((CBasePlayer *)&pEntity->v);
+
+	if (!pPlayer->IsConnected())
+		return;
+
 	// msg everyone if someone changes their name,  and it isn't the first time (changing no name to current name)
 	if (pEntity->v.netname && STRING(pEntity->v.netname)[0] != 0 && !FStrEq(STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name")))
 	{
@@ -559,12 +586,8 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 		// Set the name
 		g_engfuncs.pfnSetClientKeyValue(ENTINDEX(pEntity), infobuffer, "name", sName);
 
-		char text[256];
 		snprintf(text, sizeof(text), "* %s changed name to %s\n", STRING(pEntity->v.netname), g_engfuncs.pfnInfoKeyValue(infobuffer, "name"));
-		MESSAGE_BEGIN(MSG_ALL, gmsgSayText, NULL);
-		WRITE_BYTE(ENTINDEX(pEntity));
-		WRITE_STRING(text);
-		MESSAGE_END();
+		UTIL_SayTextAll(text, pPlayer);
 
 		// team match?
 		if (g_teamplay)
@@ -587,7 +610,34 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 		}
 	}
 
-	g_pGameRules->ClientUserInfoChanged(GetClassPtr((CBasePlayer *)&pEntity->v), infobuffer);
+	// Check for incorrect player model
+	char *mdls = g_engfuncs.pfnInfoKeyValue(infobuffer, "model");
+	if (_stricmp(mdls, pPlayer->m_szTeamName))	// Yes m_szTeamName will be always "" in non-teamplay, so we will do some extra unneeded checks to model, but it is not hard.
+	{
+		char model[256];
+		strncpy(model, mdls, sizeof(model) - 1);
+		model[sizeof(model) - 1] = '\0';
+		char *p = model;
+		while (*p != NULL)
+		{
+			if (*p < 32 ||
+				*p == '<' || *p == '>' || *p == ':' || *p == ';' ||
+				*p == '%' || *p == '?' || *p == '*' || *p == '"' ||
+				*p == '|' || *p == '/' || *p == '\\')
+				*p = ' ';
+			p++;
+		}
+		if (_stricmp(mdls, model))
+		{
+			int clientIndex = pPlayer->entindex();
+			g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "model", model);
+			g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "team", model);
+			sprintf(text, "* Model can't contain special characters like: <>:;%%?*\"|/\\\n");
+			UTIL_SayText(text, pPlayer);
+		}
+	}
+
+	g_pGameRules->ClientUserInfoChanged(pPlayer, infobuffer);
 }
 
 void ServerDeactivate(void)

@@ -527,7 +527,7 @@ BOOL CFuncTank::StartControl(CBasePlayer* pController, CFuncTankControls *pContr
 
 	m_iActive = 1;
 	m_pControls = pControls;
-
+	
 	if (m_pSpot) m_pSpot->Revive();
 	//	if (m_pViewTarg) m_pViewTarg->Revive();
 
@@ -1423,7 +1423,7 @@ void CFuncTankLaser::Fire(const Vector &barrelEnd, const Vector &forward, entvar
 				m_laserTime = gpGlobals->time;
 				m_pLaser->TurnOn();
 				m_pLaser->pev->dmgtime = gpGlobals->time - 1.0;
-				m_pLaser->FireAtPoint(barrelEnd, tr);
+				m_pLaser->FireAtPoint(barrelEnd, tr, pevAttacker);
 
 				//LRC - tripbeams
 				CBaseEntity* pTrip;
@@ -1432,12 +1432,12 @@ void CFuncTankLaser::Fire(const Vector &barrelEnd, const Vector &forward, entvar
 
 				m_pLaser->DontThink();
 			}
-			CFuncTank::Fire(barrelEnd, forward, pev);
+			CFuncTank::Fire(barrelEnd, forward, pevAttacker);
 		}
 	}
 	else
 	{
-		CFuncTank::Fire(barrelEnd, forward, pev);
+		CFuncTank::Fire(barrelEnd, forward, pevAttacker);
 	}
 }
 
@@ -1460,23 +1460,20 @@ void CFuncTankRocket::Precache(void)
 void CFuncTankRocket::Fire(const Vector &barrelEnd, const Vector &forward, entvars_t *pevAttacker)
 {
 	//	ALERT(at_console, "FuncTankRocket::Fire\n");
-
-	int i;
-
 	if (m_fireLast != 0)
 	{
 		int bulletCount = (gpGlobals->time - m_fireLast) * m_fireRate;
 		if (bulletCount > 0)
 		{
-			for (i = 0; i < bulletCount; i++)
+			for (int i = 0; i < bulletCount; i++)
 			{
-				CBaseEntity *pRocket = CBaseEntity::Create("rpg_rocket", barrelEnd, pev->angles, edict());
+				CBaseEntity *pRocket = Create("rpg_rocket", barrelEnd, pev->angles, ENT(pevAttacker));
 			}
-			CFuncTank::Fire(barrelEnd, forward, pev);
+			CFuncTank::Fire(barrelEnd, forward, pevAttacker);
 		}
 	}
 	else
-		CFuncTank::Fire(barrelEnd, forward, pev);
+		CFuncTank::Fire(barrelEnd, forward, pevAttacker);
 }
 
 
@@ -1517,13 +1514,13 @@ void CFuncTankMortar::Fire(const Vector &barrelEnd, const Vector &forward, entva
 
 			TankTrace(barrelEnd, forward, gTankSpread[m_spread], tr);
 
-			ExplosionCreate(tr.vecEndPos, pev->angles, edict(), pev->impulse, TRUE);
+			ExplosionCreate(tr.vecEndPos, pev->angles, edict(), ENT(pevAttacker), pev->impulse, TRUE);
 
-			CFuncTank::Fire(barrelEnd, forward, pev);
+			CFuncTank::Fire(barrelEnd, forward, pevAttacker);
 		}
 	}
 	else
-		CFuncTank::Fire(barrelEnd, forward, pev);
+		CFuncTank::Fire(barrelEnd, forward, pevAttacker);
 }
 
 

@@ -107,11 +107,12 @@ struct skilldata_t
 	float plrDmgMP5;
 	float plrDmgM203Grenade;
 	float plrDmgBuckshot;
-	float plrDmgCrossbowClient;
+	float plrDmgCrossbowScope;	// normal bolt (used only in multiplayer)
+	float plrDmgCrossbowNoScope;	// explosive bolt (used only in multiplayer)
 	float plrDmgCrossbowMonster;
 	float plrDmgRPG;
 	float plrDmgGauss;
-	float plrDmgEgonNarrow;
+	float plrDmgGaussSecondary;
 	float plrDmgEgonWide;
 	float plrDmgHornet;
 	float plrDmgHandGrenade;

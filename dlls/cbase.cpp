@@ -795,7 +795,9 @@ void CBaseEntity::SetNextThink(float delay, BOOL correctSpeed)
 			m_fNextThink = pev->ltime + delay;
 		else
 			m_fNextThink = gpGlobals->time + delay;
+		
 		SetEternalThink();
+		
 		UTIL_MarkForAssist(this, correctSpeed);
 
 		//		ALERT(at_console, "SetAssistedThink for %s: %f\n", STRING(pev->targetname), m_fNextThink);

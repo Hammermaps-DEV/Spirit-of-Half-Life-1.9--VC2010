@@ -195,8 +195,6 @@ void CSqueakGrenade::GibMonster(void)
 	EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "common/bodysplat.wav", 0.75, ATTN_NORM, 0, 200);
 }
 
-
-
 void CSqueakGrenade::HuntThink(void)
 {
 	if (!IsInWorld())
@@ -430,7 +428,9 @@ BOOL CSqueak::Deploy()
 	float flRndSound = RANDOM_FLOAT(0, 1);
 	if (flRndSound <= 0.5)
 		EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "squeek/sqk_hunt2.wav", 1, ATTN_NORM, 0, 100);
-	else 	EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "squeek/sqk_hunt3.wav", 1, ATTN_NORM, 0, 100);
+	else 	
+		EMIT_SOUND_DYN(ENT(pev), CHAN_VOICE, "squeek/sqk_hunt3.wav", 1, ATTN_NORM, 0, 100);
+	
 	m_pPlayer->m_iWeaponVolume = QUIET_GUN_VOLUME;
 
 	return DefaultDeploy("models/v_squeak.mdl", "models/p_squeak.mdl", SQUEAK_UP, "squeak", 1.3);
@@ -439,16 +439,13 @@ BOOL CSqueak::Deploy()
 void CSqueak::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 1.4;
-	SendWeaponAnim(SQUEAK_DOWN);
+	
 	EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);
 
-	if (!m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
-	{
-		m_pPlayer->pev->weapons &= ~(1 << WEAPON_SNARK);
-		SetThink(&CSqueak::DestroyItem);
-		SetNextThink(0.1);
-		return;
-	}
+	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
+		SendWeaponAnim(SQUEAK_DOWN);
+	else
+		DestroyItem();
 }
 
 
@@ -504,7 +501,7 @@ void CSqueak::WeaponIdle(void)
 	{
 		m_fJustThrown = 0;
 
-		if (!m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()])
+		if (m_pPlayer->m_rgAmmo[PrimaryAmmoIndex()] <= 0)
 		{
 			RetireWeapon();
 			return;

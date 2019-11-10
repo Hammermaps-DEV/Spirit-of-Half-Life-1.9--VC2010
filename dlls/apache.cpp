@@ -12,14 +12,11 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#ifndef OEM_BUILD
-
 #include "extdll.h"
 #include "util.h"
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "nodes.h"
 #include "effects.h"
 
 extern DLL_GLOBAL int		g_iSkillLevel;
@@ -1052,6 +1049,3 @@ void CApacheHVR::AccelerateThink(void)
 
 	SetNextThink(0.1);
 }
-
-
-#endif

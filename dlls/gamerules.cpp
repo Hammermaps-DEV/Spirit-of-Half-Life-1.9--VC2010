@@ -257,7 +257,8 @@ void CGameRules::RefreshSkillData(void)
 	gSkillData.plrDmgBuckshot = GetSkillCvar("sk_plr_buckshot");
 
 	// Crossbow
-	gSkillData.plrDmgCrossbowClient = GetSkillCvar("sk_plr_xbow_bolt_client");
+	gSkillData.plrDmgCrossbowScope = GetSkillCvar("sk_plr_xbow_bolt_client");
+	gSkillData.plrDmgCrossbowNoScope = GetSkillCvar("sk_plr_xbow_bolt_client");
 	gSkillData.plrDmgCrossbowMonster = GetSkillCvar("sk_plr_xbow_bolt_monster");
 
 	// RPG
@@ -265,9 +266,9 @@ void CGameRules::RefreshSkillData(void)
 
 	// Gauss gun
 	gSkillData.plrDmgGauss = GetSkillCvar("sk_plr_gauss");
+	gSkillData.plrDmgGaussSecondary = 200;
 
 	// Egon Gun
-	gSkillData.plrDmgEgonNarrow = GetSkillCvar("sk_plr_egon_narrow");
 	gSkillData.plrDmgEgonWide = GetSkillCvar("sk_plr_egon_wide");
 
 	// Hand Grendade

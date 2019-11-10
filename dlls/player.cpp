@@ -178,6 +178,7 @@ int gmsgTeamNames = 0;
 int gmsgStatusIcon = 0;
 int gmsgStatusText = 0;
 int gmsgStatusValue = 0;
+int gmsgViewMode = 0;
 int gmsgCamData; // for trigger_viewset
 int gmsgRainData = 0;
 int gmsgSetBody = 0;//change body for view weapon model
@@ -235,6 +236,7 @@ void LinkUserMessages(void)
 	gmsgAmmoX = REG_USER_MSG("AmmoX", 2);
 	gmsgTeamNames = REG_USER_MSG("TeamNames", -1);
 	gmsgStatusIcon = REG_USER_MSG("StatusIcon", -1);
+	gmsgViewMode = REG_USER_MSG("ViewMode", 0);		// Switches client to first person mode
 
 	gmsgStatusText = REG_USER_MSG("StatusText", -1);
 	gmsgStatusValue = REG_USER_MSG("StatusValue", 3);
@@ -686,8 +688,8 @@ int CBasePlayer::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, flo
 void CBasePlayer::PackDeadPlayerItems(void)
 {
 	int i;
-	CBasePlayerWeapon *rgpPackWeapons[20];// 20 hardcoded for now. How to determine exactly how many weapons we have?
-	int iPackAmmo[MAX_AMMO_SLOTS + 1];
+	CBasePlayerWeapon *rgpPackWeapons[MAX_WEAPONS];
+	int iPackAmmo[MAX_AMMO_SLOTS];
 	int iPW = 0;// index into packweapons array
 	int iPA = 0;// index into packammo array
 
@@ -706,14 +708,14 @@ void CBasePlayer::PackDeadPlayerItems(void)
 	}
 
 	// go through all of the weapons and make a list of the ones to pack
-	for (i = 0; i < MAX_ITEM_TYPES; i++)
+	for (i = 0; i < MAX_ITEM_TYPES && iPW < MAX_WEAPONS; i++)
 	{
 		if (m_rgpPlayerItems[i])
 		{
 			// there's a weapon here. Should I pack it?
 			CBasePlayerItem *pPlayerItem = m_rgpPlayerItems[i];
 
-			while (pPlayerItem)
+			while (pPlayerItem && iPW < MAX_WEAPONS)
 			{
 				switch (iWeaponRules)
 				{
@@ -1027,7 +1029,7 @@ void CBasePlayer::Killed(entvars_t *pevAttacker, int iGib)
 
 	SetAnimation(PLAYER_DIE);
 
-	m_iRespawnFrames = 0;
+	m_flDeathAnimationStartTime = gpGlobals->time;
 
 	pev->modelindex = g_ulModelIndexPlayer;    // don't use eyes
 
@@ -1066,12 +1068,14 @@ void CBasePlayer::Killed(entvars_t *pevAttacker, int iGib)
 	WRITE_BYTE(0);
 	MESSAGE_END();
 
+	// Make dead player not solid so it will not lag other players passing over it
+	pev->solid = SOLID_NOT;
+	
 	//this will cause problems
 	//UTIL_ScreenFade( this, Vector(128,0,0), 6, 15, 255, FFADE_OUT | FFADE_MODULATE | FFADE_STAYOUT );
 
 	if ((pev->health < -40 && iGib != GIB_NEVER) || iGib == GIB_ALWAYS)
 	{
-		pev->solid = SOLID_NOT;
 		GibMonster();	// This clears pev->model
 		pev->effects |= EF_NODRAW;
 		return;
@@ -1431,8 +1435,7 @@ void CBasePlayer::PlayerDeathThink(void)
 	{
 		StudioFrameAdvance();
 
-		m_iRespawnFrames++;				// Note, these aren't necessarily real "frames", so behavior is dependent on # of client movement commands
-		if (m_iRespawnFrames < 120)   // Animations should be no longer than this
+		if (gpGlobals->time < m_flDeathAnimationStartTime + 1.5)	// time given to animate corpse
 			return;
 	}
 
@@ -1447,7 +1450,7 @@ void CBasePlayer::PlayerDeathThink(void)
 	StopAnimation();
 
 	pev->effects |= EF_NOINTERP;
-	pev->framerate = 0.0;
+	pev->effects &= ~EF_DIMLIGHT;
 
 	BOOL fAnyButtonDown = (pev->button & ~IN_SCORE);
 
@@ -1481,7 +1484,7 @@ void CBasePlayer::PlayerDeathThink(void)
 		return;
 
 	pev->button = 0;
-	m_iRespawnFrames = 0;
+	m_flDeathAnimationStartTime = 0;
 
 	//ALERT(at_console, "Respawn\n");
 
@@ -2741,8 +2744,14 @@ void CBasePlayer::PostThink()
 	m_afButtonLast = pev->button;
 
 pt_end:
-	if (pev->deadflag == DEAD_NO)
-		return;
+	// Track button info so we can detect 'pressed' and 'released' buttons next frame
+	m_afButtonLast = pev->button;
+
+	// Don't allow dead model to rotate until DeathCam or Spawn happen (CopyToBodyQue)
+	if (pev->deadflag == DEAD_NO || (m_afPhysicsFlags & PFLAG_OBSERVER) || pev->fixangle)
+		m_vecLastViewAngles = pev->angles;
+	else
+		pev->angles = m_vecLastViewAngles;
 }
 
 // checks if the spot is clear of players
@@ -2871,6 +2880,8 @@ void CBasePlayer::Spawn(void)
 {
 	//	ALERT(at_console, "PLAYER spawns at time %f\n", gpGlobals->time);
 
+	m_bConnected = TRUE;
+	
 	pev->classname = MAKE_STRING("player");
 	pev->health = 100;
 	pev->armorvalue = 0;
@@ -2950,6 +2961,9 @@ void CBasePlayer::Spawn(void)
 	viewFlags = 0;
 	Precache();
 	m_HackedGunPos = Vector(0, 32, 0);
+
+	// Reset view entity
+	SET_VIEW(edict(), edict());
 
 	if (m_iPlayerSound == SOUNDLIST_EMPTY)
 	{
@@ -3055,6 +3069,8 @@ int CBasePlayer::Restore(CRestore &restore)
 
 	int status = restore.ReadFields("PLAYER", this, m_playerSaveData, HL_ARRAYSIZE(m_playerSaveData));
 
+	m_bConnected = TRUE;
+	
 	SAVERESTOREDATA *pSaveData = (SAVERESTOREDATA *)gpGlobals->pSaveData;
 	// landmark isn't present.
 	if (!pSaveData->fUseLandmark)
@@ -3817,12 +3833,17 @@ int CBasePlayer::AddPlayerItem(CBasePlayerItem *pItem)
 
 int CBasePlayer::RemovePlayerItem(CBasePlayerItem *pItem)
 {
+	pItem->DontThink();// crowbar may be trying to swing again, etc.
+	pItem->SetThink(NULL);
+	pItem->SetTouch(NULL);
+	
 	if (m_pActiveItem == pItem)
 	{
 		ResetAutoaim();
-		pItem->Holster();
-		pItem->DontThink();// crowbar may be trying to swing again, etc.
-		pItem->SetThink(NULL);
+		
+		if (pItem->m_pPlayer)	// Ugly way to distinguish between calls from PackWeapon and DestroyItem
+			pItem->Holster();
+
 		m_pActiveItem = NULL;
 		pev->viewmodel = 0;
 		pev->weaponmodel = 0;
@@ -3830,11 +3851,15 @@ int CBasePlayer::RemovePlayerItem(CBasePlayerItem *pItem)
 	else if (m_pLastItem == pItem)
 		m_pLastItem = NULL;
 
-	CBasePlayerItem *pPrev = m_rgpPlayerItems[pItem->iItemSlot()];
+	pItem->m_pPlayer = NULL;
+
+	int slotId = pItem->iItemSlot();
+	CBasePlayerItem *pPrev = m_rgpPlayerItems[slotId];
 
 	if (pPrev == pItem)
 	{
-		m_rgpPlayerItems[pItem->iItemSlot()] = pItem->m_pNext;
+		pev->weapons &= ~(1 << pItem->m_iId);	// take item off hud
+		m_rgpPlayerItems[slotId] = pItem->m_pNext;
 		return TRUE;
 	}
 	else
@@ -3843,8 +3868,10 @@ int CBasePlayer::RemovePlayerItem(CBasePlayerItem *pItem)
 		{
 			pPrev = pPrev->m_pNext;
 		}
+		
 		if (pPrev)
 		{
+			pev->weapons &= ~(1 << pItem->m_iId);	// take item off hud
 			pPrev->m_pNext = pItem->m_pNext;
 			return TRUE;
 		}
@@ -4033,6 +4060,10 @@ void CBasePlayer::UpdateClientData(void)
 			MESSAGE_BEGIN(MSG_ONE, gmsgInitHUD, NULL, pev);
 			MESSAGE_END();
 
+			// Switch to first person mode
+			MESSAGE_BEGIN(MSG_ONE, gmsgViewMode, NULL, pev);
+			MESSAGE_END();
+
 			g_pGameRules->InitHUD(this);
 			m_fGameHUDInitialized = TRUE;
 			if (g_pGameRules->IsMultiplayer())
@@ -4081,8 +4112,6 @@ void CBasePlayer::UpdateClientData(void)
 			}
 			pFind = FIND_ENTITY_BY_CLASSNAME(pFind, "env_mirror");
 		}
-
-		FireTargets("game_playerspawn", this, this, USE_TOGGLE, 0);
 
 		InitStatusBar();
 	}
@@ -4840,18 +4869,13 @@ void CBasePlayer::DropPlayerItem(char *pszItemName)
 
 			UTIL_MakeVectors(pev->angles);
 
-			pev->weapons &= ~(1 << pWeapon->m_iId);// take item off hud
-
-			CWeaponBox *pWeaponBox = (CWeaponBox *)CBaseEntity::Create("weaponbox", pev->origin + gpGlobals->v_forward * 10, pev->angles, edict());
+			CWeaponBox *pWeaponBox = (CWeaponBox *)Create("weaponbox", pev->origin + gpGlobals->v_forward * 10, pev->angles, edict());
 			pWeaponBox->pev->angles.x = 0;
 			pWeaponBox->pev->angles.z = 0;
 			pWeaponBox->PackWeapon(pWeapon);
 			pWeaponBox->SetVelocity(gpGlobals->v_forward * 300 + gpGlobals->v_forward * 100);
 
-			// drop half of the ammo for this weapon.
-			int	iAmmoIndex;
-
-			iAmmoIndex = GetAmmoIndex(pWeapon->pszAmmo1()); // ???
+			int iAmmoIndex = GetAmmoIndex(pWeapon->pszAmmo1()); // ???
 
 			if (iAmmoIndex != -1)
 			{
@@ -4866,8 +4890,9 @@ void CBasePlayer::DropPlayerItem(char *pszItemName)
 				else
 				{
 					// pack half of the ammo
-					pWeaponBox->PackAmmo(MAKE_STRING(pWeapon->pszAmmo1()), m_rgAmmo[iAmmoIndex] / 2);
-					m_rgAmmo[iAmmoIndex] /= 2;
+					int ammoDrop = m_rgAmmo[iAmmoIndex] / 2;
+					pWeaponBox->PackAmmo(MAKE_STRING(pWeapon->pszAmmo1()), ammoDrop);
+					m_rgAmmo[iAmmoIndex] -= ammoDrop;
 				}
 
 			}
@@ -4940,6 +4965,8 @@ BOOL CBasePlayer::SwitchWeapon(CBasePlayerItem *pWeapon)
 
 	QueueItem(pWeapon);
 
+	m_pLastItem = m_pActiveItem;
+	
 	if (m_pActiveItem)// XWider: QueueItem sets it if we have no current weapopn
 	{
 		m_pActiveItem->Deploy();

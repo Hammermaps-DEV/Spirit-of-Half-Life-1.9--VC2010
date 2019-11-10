@@ -137,44 +137,48 @@ void CHalfLifeMultiplay::RefreshSkillData(void)
 	gSkillData.suitchargerCapacity = 30;
 
 	// Crowbar whack
-	gSkillData.plrDmgCrowbar = 25;
+	gSkillData.plrDmgCrowbar = mp_dmg_crowbar.value;
 
 	// Glock Round
-	gSkillData.plrDmg9MM = 12;
+	gSkillData.plrDmg9MM = mp_dmg_glock.value;
 
 	// 357 Round
-	gSkillData.plrDmg357 = 40;
+	gSkillData.plrDmg357 = mp_dmg_357.value;
 
 	// MP5 Round
-	gSkillData.plrDmgMP5 = 12;
+	gSkillData.plrDmgMP5 = mp_dmg_mp5.value;
 
 	// M203 grenade
-	gSkillData.plrDmgM203Grenade = 100;
+	gSkillData.plrDmgM203Grenade = mp_dmg_m203.value;
 
 	// Shotgun buckshot
-	gSkillData.plrDmgBuckshot = 20;// fewer pellets in deathmatch
+	gSkillData.plrDmgBuckshot = mp_dmg_shotgun.value;
 
 	// Crossbow
-	gSkillData.plrDmgCrossbowClient = 20;
+	gSkillData.plrDmgCrossbowScope = mp_dmg_xbow_scope.value;
+	gSkillData.plrDmgCrossbowNoScope = mp_dmg_xbow_noscope.value;
 
 	// RPG
-	gSkillData.plrDmgRPG = 120;
+	gSkillData.plrDmgRPG = mp_dmg_rpg.value;
 
 	// Egon
-	gSkillData.plrDmgEgonWide = 20;
-	gSkillData.plrDmgEgonNarrow = 10;
+	gSkillData.plrDmgEgonWide = mp_dmg_egon.value;
 
 	// Hand Grendade
-	gSkillData.plrDmgHandGrenade = 100;
+	gSkillData.plrDmgHandGrenade = mp_dmg_hgrenade.value;
 
 	// Satchel Charge
-	gSkillData.plrDmgSatchel = 120;
+	gSkillData.plrDmgSatchel = mp_dmg_satchel.value;
 
 	// Tripmine
-	gSkillData.plrDmgTripmine = 150;
+	gSkillData.plrDmgTripmine = mp_dmg_tripmine.value;
 
 	// hornet
-	gSkillData.plrDmgHornet = 10;
+	gSkillData.plrDmgHornet = mp_dmg_hornet.value;
+
+	// gauss
+	gSkillData.plrDmgGauss = mp_dmg_gauss_primary.value;
+	gSkillData.plrDmgGaussSecondary = mp_dmg_gauss_secondary.value;
 }
 
 // longest the intermission can last, in seconds
@@ -232,13 +236,15 @@ void CHalfLifeMultiplay::Think(void)
 
 	if (flFragLimit)
 	{
-		int bestfrags = 9999;
+		bool first = true;
+		int bestfrags = flFragLimit;
 		int remain;
 
 		// check if any player is over the frag limit
 		for (int i = 1; i <= gpGlobals->maxClients; i++)
 		{
 			CBaseEntity *pPlayer = UTIL_PlayerByIndex(i);
+			if (pPlayer == NULL) continue;
 
 			if (pPlayer && pPlayer->pev->frags >= flFragLimit)
 			{
@@ -246,17 +252,20 @@ void CHalfLifeMultiplay::Think(void)
 				return;
 			}
 
-
-			if (pPlayer)
+			remain = flFragLimit - pPlayer->pev->frags;
+			if (first)
 			{
-				remain = flFragLimit - pPlayer->pev->frags;
-				if (remain < bestfrags)
-				{
-					bestfrags = remain;
-				}
+				bestfrags = remain;
+				first = false;
+				continue;
 			}
-
+			
+			if (remain < bestfrags)
+			{
+				bestfrags = remain;
+			}
 		}
+		
 		frags_remaining = bestfrags;
 	}
 
@@ -459,7 +468,7 @@ void CHalfLifeMultiplay::InitHUD(CBasePlayer *pl)
 
 		if (plr)
 		{
-			MESSAGE_BEGIN(MSG_ONE, gmsgScoreInfo, NULL, pl->edict());
+			MESSAGE_BEGIN(MSG_ALL, gmsgScoreInfo, NULL, pl->edict());
 			WRITE_BYTE(i);	// client number
 			WRITE_SHORT(plr->pev->frags);
 			WRITE_SHORT(plr->m_iDeaths);
@@ -506,6 +515,12 @@ void CHalfLifeMultiplay::ClientDisconnected(edict_t *pClient)
 					GETPLAYERUSERID(pPlayer->edict()));
 			}
 
+			if (pPlayer->m_pTank != NULL)
+			{
+				// Stop controlling the tank
+				pPlayer->m_pTank->Use(pPlayer, pPlayer, USE_OFF, 0);
+			}
+			
 			pPlayer->RemoveAllItems(TRUE);// destroy all of the players weapons and items
 		}
 	}
@@ -577,6 +592,8 @@ void CHalfLifeMultiplay::PlayerSpawn(CBasePlayer *pPlayer)
 		pPlayer->GiveNamedItem("weapon_9mmhandgun");
 		pPlayer->GiveAmmo(68, "9mm", _9MM_MAX_CARRY);// 4 full reloads
 	}
+
+	FireTargets("game_playerspawn", pPlayer, pPlayer, USE_TOGGLE, 0);
 }
 
 //=========================================================

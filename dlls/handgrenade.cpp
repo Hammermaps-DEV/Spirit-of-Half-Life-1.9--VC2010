@@ -104,16 +104,12 @@ void CHandGrenade::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);
+
+	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
 		SendWeaponAnim(HANDGRENADE_HOLSTER);
 	else
-	{
-		// no more grenades!
-		m_pPlayer->pev->weapons &= ~(1 << WEAPON_HANDGRENADE);
-		SetThink(&CHandGrenade::DestroyItem);
-		SetNextThink(0.1);
-	}
-	EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);
+		DestroyItem();
 }
 
 void CHandGrenade::PrimaryAttack()
@@ -195,7 +191,8 @@ void CHandGrenade::WeaponIdle(void)
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3.0;
 		return;
 	}
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType])
+	
+	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
 	{
 		int iAnim;
 		float flRand = RANDOM_FLOAT(0, 1);

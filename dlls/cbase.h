@@ -194,7 +194,7 @@ public:
 	virtual void		SetNextThink(float delay, BOOL correctSpeed);
 	virtual void		AbsoluteNextThink(float time) { AbsoluteNextThink(time, FALSE); }
 	virtual void		AbsoluteNextThink(float time, BOOL correctSpeed);
-	void			SetEternalThink();
+	void				SetEternalThink();
 
 	void	DontThink(void);
 	virtual void ThinkCorrection(void);

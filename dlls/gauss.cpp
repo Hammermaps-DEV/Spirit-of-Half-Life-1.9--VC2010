@@ -18,11 +18,9 @@
 #include "cbase.h"
 #include "monsters.h"
 #include "weapons.h"
-#include "nodes.h"
 #include "player.h"
 #include "soundent.h"
 #include "shake.h"
-#include "gamerules.h"
 
 
 #define PRIMARY_CHARGE_VOLUME	256// how loud gauss is while charging
@@ -245,7 +243,8 @@ void CGauss::SecondaryAttack()
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.0;
 		m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 1.0;
 
-		m_pPlayer->TakeDamage(VARS(eoNullEntity), VARS(eoNullEntity), 50, DMG_SHOCK);
+		m_pPlayer->TakeDamage(VARS(eoNullEntity), VARS(eoNullEntity), gSkillData.plrDmgGaussSecondary, DMG_SHOCK);
+		
 		UTIL_ScreenFade(m_pPlayer, Vector(255, 128, 0), 2, 0.5, 128, FFADE_IN);
 
 		SendWeaponAnim(GAUSS_IDLE);

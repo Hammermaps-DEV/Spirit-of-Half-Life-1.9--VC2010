@@ -51,6 +51,23 @@ cvar_t	defaultteam = { "mp_defaultteam","0" };
 cvar_t	allowmonsters = { "mp_allowmonsters","0", FCVAR_SERVER };
 cvar_t	bhopcap = { "mp_bhopcap", "1", FCVAR_SERVER };
 
+cvar_t	mp_dmg_crowbar = { "mp_dmg_crowbar", "25", FCVAR_SERVER };
+cvar_t	mp_dmg_glock = { "mp_dmg_glock", "12", FCVAR_SERVER };
+cvar_t	mp_dmg_357 = { "mp_dmg_357", "40", FCVAR_SERVER };
+cvar_t	mp_dmg_mp5 = { "mp_dmg_mp5", "12", FCVAR_SERVER };
+cvar_t	mp_dmg_shotgun = { "mp_dmg_shotgun", "20", FCVAR_SERVER };
+cvar_t	mp_dmg_xbow_scope = { "mp_dmg_xbow_scope", "120", FCVAR_SERVER };
+cvar_t	mp_dmg_xbow_noscope = { "mp_dmg_xbow_noscope", "40", FCVAR_SERVER };
+cvar_t	mp_dmg_rpg = { "mp_dmg_rpg", "120", FCVAR_SERVER };
+cvar_t	mp_dmg_gauss_primary = { "mp_dmg_gauss_primary", "20", FCVAR_SERVER };
+cvar_t	mp_dmg_gauss_secondary = { "mp_dmg_gauss_secondary", "200", FCVAR_SERVER };
+cvar_t	mp_dmg_egon = { "mp_dmg_egon", "20", FCVAR_SERVER };
+cvar_t	mp_dmg_hornet = { "mp_dmg_hornet", "10", FCVAR_SERVER };
+cvar_t	mp_dmg_hgrenade = { "mp_dmg_hgrenade", "100", FCVAR_SERVER };
+cvar_t	mp_dmg_satchel = { "mp_dmg_satchel", "120", FCVAR_SERVER };
+cvar_t	mp_dmg_tripmine = { "mp_dmg_tripmine", "150", FCVAR_SERVER };
+cvar_t	mp_dmg_m203 = { "mp_dmg_m203", "100", FCVAR_SERVER };
+
 cvar_t	impulsetarget = { "sohl_impulsetarget","0", FCVAR_SERVER }; //LRC - trigger ents manually
 cvar_t	mw_debug = { "sohl_mwdebug","0", FCVAR_SERVER }; //LRC - debug info. for MoveWith. (probably not useful for most people.)
 
@@ -270,6 +287,23 @@ void GameDLLInit(void)
 	CVAR_REGISTER(&impulsetarget); //LRC
 	CVAR_REGISTER(&mw_debug); //LRC
 	CVAR_REGISTER(&mp_chattime);
+
+	CVAR_REGISTER(&mp_dmg_crowbar);
+	CVAR_REGISTER(&mp_dmg_glock);
+	CVAR_REGISTER(&mp_dmg_357);
+	CVAR_REGISTER(&mp_dmg_mp5);
+	CVAR_REGISTER(&mp_dmg_shotgun);
+	CVAR_REGISTER(&mp_dmg_xbow_scope);
+	CVAR_REGISTER(&mp_dmg_xbow_noscope);
+	CVAR_REGISTER(&mp_dmg_rpg);
+	CVAR_REGISTER(&mp_dmg_gauss_primary);
+	CVAR_REGISTER(&mp_dmg_gauss_secondary);
+	CVAR_REGISTER(&mp_dmg_egon);
+	CVAR_REGISTER(&mp_dmg_hornet);
+	CVAR_REGISTER(&mp_dmg_hgrenade);
+	CVAR_REGISTER(&mp_dmg_satchel);
+	CVAR_REGISTER(&mp_dmg_tripmine);
+	CVAR_REGISTER(&mp_dmg_m203);
 
 	// REGISTER CVARS FOR SKILL LEVEL STUFF
 

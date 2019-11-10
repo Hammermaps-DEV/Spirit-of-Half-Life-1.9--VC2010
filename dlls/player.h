@@ -17,6 +17,7 @@
 
 
 #include "pm_materials.h"
+#include "pm_shared.h"
 
 #define PLAYER_FATAL_FALL_SPEED		1024// approx 60 feet
 #define PLAYER_MAX_SAFE_FALL_SPEED	580// approx 20 feet
@@ -119,6 +120,7 @@ public:
 	unsigned int		m_afPhysicsFlags;	// physics flags - set when 'normal' physics should be revisited or overriden
 	float				m_fNextSuicideTime; // the time after which the player can next use the suicide command
 
+	Vector				m_vecLastViewAngles;
 
 // these are time-sensitive things that we keep track of
 	float				m_flTimeStepSound;	// when the last stepping sound was made
@@ -179,10 +181,10 @@ public:
 	int	m_rgAmmo[MAX_AMMO_SLOTS];
 	int	m_rgAmmoLast[MAX_AMMO_SLOTS];
 
-	Vector				m_vecAutoAim;
-	BOOL				m_fOnTarget;
-	int					m_iDeaths;
-	float				m_iRespawnFrames;	// used in PlayerDeathThink() to make sure players can always respawn
+	Vector		m_vecAutoAim;
+	BOOL		m_fOnTarget;
+	int			m_iDeaths;
+	float		m_flDeathAnimationStartTime;
 
 	int m_lastx, m_lasty;  // These are the previous update's crosshair angles, DON"T SAVE/RESTORE
 
@@ -254,10 +256,10 @@ public:
 	void StartDeathCam(void);
 	void StartObserver(Vector vecPosition, Vector vecViewAngle);
 
-	void AddPoints(int score, BOOL bAllowNegativeScore);
-	void AddPointsToTeam(int score, BOOL bAllowNegativeScore);
-	BOOL AddPlayerItem(CBasePlayerItem *pItem);
-	BOOL RemovePlayerItem(CBasePlayerItem *pItem);
+	void AddPoints(int score, BOOL bAllowNegativeScore) override;
+	void AddPointsToTeam(int score, BOOL bAllowNegativeScore) override;
+	BOOL AddPlayerItem(CBasePlayerItem *pItem) override;
+	BOOL RemovePlayerItem(CBasePlayerItem *pItem) override;
 	void DropPlayerItem(char *pszItemName);
 	BOOL HasPlayerItem(CBasePlayerItem *pCheckItem);
 	BOOL HasNamedPlayerItem(const char *pszItemName);
@@ -316,8 +318,13 @@ public:
 	int		viewEntity; // string
 	int		viewFlags;	// 1-active, 2-draw hud
 	int		viewNeedsUpdate; // precache sets to 1, UpdateClientData() sets to 0	
-	float 		m_flNextChatTime;
-	int	Rain_dripsPerSecond;
+	float 	m_flNextChatTime;
+
+	BOOL m_bConnected;	// we set it in Spawn() so it will be TRUE only after player was spawned
+	BOOL IsConnected() { return m_bConnected; }
+	void Disconnect() { m_bConnected = FALSE; }
+	
+	int		Rain_dripsPerSecond;
 	float	Rain_windX, Rain_windY;
 	float	Rain_randX, Rain_randY;
 

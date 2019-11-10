@@ -12,15 +12,12 @@
 *   use or distribution of this code by or to any unlicensed person is illegal.
 *
 ****/
-#ifndef OEM_BUILD
-
 //=========================================================
 // Gargantua
 //=========================================================
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
-#include	"nodes.h"
 #include	"monsters.h"
 #include	"schedule.h"
 #include	"customentity.h"
@@ -1404,7 +1401,3 @@ void SpawnExplosion(Vector center, float randomRange, float time, int magnitude)
 	pExplosion->SetThink(&CBaseEntity::SUB_CallUseToggle);
 	pExplosion->SetNextThink(time);
 }
-
-
-
-#endif

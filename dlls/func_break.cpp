@@ -675,6 +675,9 @@ int CBreakable::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 {
 	Vector	vecTemp;
 
+	if (!IsBreakable())
+		return 0;
+
 	// if Attacker == Inflictor, the attack was a melee or other instant-hit attack.
 	// (that is, no actual entity projectile was involved in the attack so use the shooter's origin).
 	if (pevAttacker == pevInflictor)
@@ -692,9 +695,6 @@ int CBreakable::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 		vecTemp = pevInflictor->origin - (pev->absmin + (pev->size * 0.5));
 	}
 
-	if (!IsBreakable())
-		return 0;
-
 	// Breakables take double damage from the crowbar
 	if (bitsDamageType & DMG_CLUB)
 		flDamage *= 2;
@@ -710,12 +710,7 @@ int CBreakable::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 	pev->health -= flDamage;
 	if (pev->health <= 0)
 	{
-		// LRC - Die() does everything necessary
-		//		if (!m_iRespawnTime)
-		//		{
-		//			Killed( pevAttacker, GIB_NORMAL );
-		//		}
-		Die();
+		DieActivator(Instance(pevAttacker));
 		return 0;
 	}
 
@@ -727,8 +722,12 @@ int CBreakable::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, floa
 	return 1;
 }
 
-
 void CBreakable::Die(void)
+{
+	DieActivator(NULL);
+}
+
+void CBreakable::DieActivator(CBaseEntity *pActivator)
 {
 	Vector vecSpot;// shard origin
 	Vector vecVelocity;// shard velocity
@@ -749,7 +748,6 @@ void CBreakable::Die(void)
 
 	if (fvol > 1.0)
 		fvol = 1.0;
-
 
 	switch (m_Material)
 	{
@@ -816,7 +814,6 @@ void CBreakable::Die(void)
 	default:
 		break;
 	}
-
 
 	if (m_Explosion == expDirected)
 		vecVelocity = g_vecAttackDir * 200;
@@ -932,12 +929,12 @@ void CBreakable::Die(void)
 	}
 
 	if (m_iszSpawnObject)
-		CBaseEntity::Create((char *)STRING(m_iszSpawnObject), VecBModelOrigin(pev), pev->angles, edict());
+		Create((char *)STRING(m_iszSpawnObject), VecBModelOrigin(pev), pev->angles, edict());
 
 
 	if (Explodable())
 	{
-		ExplosionCreate(Center(), pev->angles, edict(), ExplosionMagnitude(), TRUE);
+		ExplosionCreate(Center(), pev->angles, edict(), pActivator->edict(), ExplosionMagnitude(), TRUE);
 	}
 }
 

@@ -956,6 +956,7 @@ void CBaseDoor::Blocked(CBaseEntity *pOther)
 	{
 		if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
 			STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving));
+		
 		if (m_toggle_state == TS_GOING_DOWN) DoorGoUp();
 		else DoorGoDown();
 	}
@@ -997,9 +998,9 @@ void CBaseDoor::Blocked(CBaseEntity *pOther)
 						UTIL_SetAvelocity(pDoor, g_vecZero);
 					}
 
-					if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
-						STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving));
-
+					if (!FBitSet(pDoor->pev->spawnflags, SF_DOOR_SILENT))
+						STOP_SOUND(ENT(pDoor->pev), CHAN_STATIC, (char*)STRING(pDoor->pev->noiseMoving));
+					
 					if (pDoor->m_toggle_state == TS_GOING_DOWN)
 						pDoor->DoorGoUp();
 					else pDoor->DoorGoDown();
