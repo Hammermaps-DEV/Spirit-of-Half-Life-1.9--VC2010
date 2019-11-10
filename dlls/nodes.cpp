@@ -1649,14 +1649,14 @@ void CTestHull::BuildNodeGraph(void)
 
 	// make sure directories have been made
 	GET_GAME_DIR(szNrpFilename);
-	strcat(szNrpFilename, "/maps");
+	strcat_s(szNrpFilename, "/maps");
 	CreateDirectory(szNrpFilename, NULL);
-	strcat(szNrpFilename, "/graphs");
+	strcat_s(szNrpFilename, "/graphs");
 	CreateDirectory(szNrpFilename, NULL);
 
-	strcat(szNrpFilename, "/");
-	strcat(szNrpFilename, STRING(gpGlobals->mapname));
-	strcat(szNrpFilename, ".nrp");
+	strcat_s(szNrpFilename, "/");
+	strcat_s(szNrpFilename, STRING(gpGlobals->mapname));
+	strcat_s(szNrpFilename, ".nrp");
 
 	file = fopen(szNrpFilename, "w+");
 
@@ -2320,14 +2320,14 @@ int CGraph::FLoadGraph(char *szMapName)
 	// make sure the directories have been made
 	char	szDirName[MAX_PATH];
 	GET_GAME_DIR(szDirName);
-	strcat(szDirName, "/maps");
+	strcat_s(szDirName, "/maps");
 	CreateDirectory(szDirName, NULL);
-	strcat(szDirName, "/graphs");
+	strcat_s(szDirName, "/graphs");
 	CreateDirectory(szDirName, NULL);
 
-	strcpy(szFilename, "maps/graphs/");
-	strcat(szFilename, szMapName);
-	strcat(szFilename, ".nod");
+	strcpy_s(szFilename, "maps/graphs/");
+	strcat_s(szFilename, szMapName);
+	strcat_s(szFilename, ".nod");
 
 	pMemFile = aMemFile = LOAD_FILE_FOR_ME(szFilename, &length);
 
@@ -2498,14 +2498,14 @@ int CGraph::FSaveGraph(char *szMapName)
 
 	// make sure directories have been made
 	GET_GAME_DIR(szFilename);
-	strcat(szFilename, "/maps");
+	strcat_s(szFilename, "/maps");
 	CreateDirectory(szFilename, NULL);
-	strcat(szFilename, "/graphs");
+	strcat_s(szFilename, "/graphs");
 	CreateDirectory(szFilename, NULL);
 
-	strcat(szFilename, "/");
-	strcat(szFilename, szMapName);
-	strcat(szFilename, ".nod");
+	strcat_s(szFilename, "/");
+	strcat_s(szFilename, szMapName);
+	strcat_s(szFilename, ".nod");
 
 	file = fopen(szFilename, "wb");
 
@@ -2622,13 +2622,13 @@ int CGraph::CheckNODFile(char *szMapName)
 	char		szGraphFilename[MAX_PATH];
 
 
-	strcpy(szBspFilename, "maps/");
-	strcat(szBspFilename, szMapName);
-	strcat(szBspFilename, ".bsp");
+	strcpy_s(szBspFilename, "maps/");
+	strcat_s(szBspFilename, szMapName);
+	strcat_s(szBspFilename, ".bsp");
 
-	strcpy(szGraphFilename, "maps/graphs/");
-	strcat(szGraphFilename, szMapName);
-	strcat(szGraphFilename, ".nod");
+	strcpy_s(szGraphFilename, "maps/graphs/");
+	strcat_s(szGraphFilename, szMapName);
+	strcat_s(szGraphFilename, ".nod");
 
 	retValue = TRUE;
 

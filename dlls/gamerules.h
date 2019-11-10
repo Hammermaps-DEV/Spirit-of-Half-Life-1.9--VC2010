@@ -352,6 +352,8 @@ public:
 	// Immediately end a multiplayer game
 	virtual void EndMultiplayerGame(void) { GoToIntermission(); }
 
+	char *DTOS(int data) const;
+
 protected:
 	virtual void ChangeLevel(void);
 	virtual void GoToIntermission(void);

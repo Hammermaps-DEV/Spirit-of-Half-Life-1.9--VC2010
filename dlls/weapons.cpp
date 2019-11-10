@@ -713,7 +713,7 @@ void CBasePlayerItem::DefaultTouch(CBaseEntity *pOther)
 			int i;
 			char sample[32];
 			char weapon_name[32];
-			strcpy(weapon_name, STRING(pev->classname));
+			strcpy_s(weapon_name, STRING(pev->classname));
 
 			if (strncmp(weapon_name, "weapon_", 7) == 0)
 				i = 7;
@@ -721,7 +721,7 @@ void CBasePlayerItem::DefaultTouch(CBaseEntity *pOther)
 				i = 5;
 			else i = 0; // for cycler_weapon
 
-			sprintf(sample, "!%s", weapon_name + i);
+			sprintf_s(sample, "!%s", weapon_name + i);
 			pPlayer->SetSuitUpdate(sample, FALSE, SUIT_NEXT_IN_30SEC);
 		}
 	}
@@ -1112,7 +1112,7 @@ BOOL CBasePlayerWeapon::DefaultDeploy(char *szViewModel, char *szWeaponModel, in
 	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = MAKE_STRING(szViewModel);
 	m_pPlayer->pev->weaponmodel = MAKE_STRING(szWeaponModel);
-	strcpy(m_pPlayer->m_szAnimExtention, szAnimExt);
+	strcpy_s(m_pPlayer->m_szAnimExtention, szAnimExt);
 	SendWeaponAnim(iAnim);
 
 	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + fDrawTime;//Custom time for deploy
@@ -1134,7 +1134,7 @@ BOOL CBasePlayerWeapon::DefaultDeploy(string_t iViewModel, string_t iWeaponModel
 	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = iViewModel;
 	m_pPlayer->pev->weaponmodel = iWeaponModel;
-	strcpy(m_pPlayer->m_szAnimExtention, szAnimExt);
+	strcpy_s(m_pPlayer->m_szAnimExtention, szAnimExt);
 	SendWeaponAnim(iAnim);
 
 	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + fDrawTime;//Custom time for deploy
@@ -1196,9 +1196,6 @@ void CBasePlayerWeapon::RestoreBody(void)
 
 		//restore idle animation and hands position
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase();
-
-		//saved in CBasePlayer
-		//strcpy( m_pPlayer->m_szAnimExtention, szAnimExt );
 
 		b_Restored = TRUE;//reset after next save/load
 	}

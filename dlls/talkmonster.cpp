@@ -796,8 +796,8 @@ void CTalkMonster::TalkInit(void)
 	if (m_iszSpeakAs) //LRC: changing voice groups for monsters
 	{
 		char szBuf[64];
-		strcpy(szBuf, STRING(m_iszSpeakAs));
-		strcat(szBuf, "_");
+		strcpy_s(szBuf, STRING(m_iszSpeakAs));
+		strcat_s(szBuf, "_");
 		char *szAssign = &(szBuf[strlen(szBuf)]);
 
 		//LRC - this is pretty dodgy; test with save/restore.

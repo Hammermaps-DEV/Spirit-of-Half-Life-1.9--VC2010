@@ -59,7 +59,7 @@ CHalfLifeTeamplay::CHalfLifeTeamplay()
 
 	// Copy all of the teams from the teamlist
 	// make a copy because strtok is destructive
-	strcpy(temp, m_szTeamList);
+	strcpy_s(temp, m_szTeamList);
 	// loop through all teams
 	num_teams = 0;
 	pName = strtok(temp, ";");
@@ -235,11 +235,11 @@ void CHalfLifeTeamplay::InitHUD(CBasePlayer *pPlayer)
 	char *mdls = g_engfuncs.pfnInfoKeyValue(g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "model");
 	if (!strcmp(mdls, pPlayer->m_szTeamName))
 	{
-		sprintf(text, "* you are on team \'%s\'\n", pPlayer->m_szTeamName);
+		sprintf_s(text, "* you are on team \'%s\'\n", pPlayer->m_szTeamName);
 	}
 	else
 	{
-		sprintf(text, "* assigned to team %s\n", pPlayer->m_szTeamName);
+		sprintf_s(text, "* assigned to team %s\n", pPlayer->m_szTeamName);
 	}
 
 	UTIL_SayText(text, pPlayer);
@@ -335,7 +335,7 @@ void CHalfLifeTeamplay::ClientUserInfoChanged(CBasePlayer *pPlayer, char *infobu
 
 		g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "model", pPlayer->m_szTeamName);
 		g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "team", pPlayer->m_szTeamName);
-		sprintf(text, "* Not allowed to change teams in this game!\n");
+		sprintf_s(text, "* Not allowed to change teams in this game!\n");
 		UTIL_SayText(text, pPlayer);
 		return;
 	}
@@ -345,14 +345,14 @@ void CHalfLifeTeamplay::ClientUserInfoChanged(CBasePlayer *pPlayer, char *infobu
 		int clientIndex = pPlayer->entindex();
 
 		g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "team", pPlayer->m_szTeamName);
-		sprintf(text, "* Can't change team to \'%s\'\n", mdls);
+		sprintf_s(text, "* Can't change team to \'%s\'\n", mdls);
 		UTIL_SayText(text, pPlayer);
-		sprintf(text, "* Server limits teams to \'%s\'\n", m_szTeamList);
+		sprintf_s(text, "* Server limits teams to \'%s\'\n", m_szTeamList);
 		UTIL_SayText(text, pPlayer);
 		return;
 	}
 	// notify everyone of the team change
-	sprintf(text, "* %s has changed to team \'%s\'\n", STRING(pPlayer->pev->netname), mdls);
+	sprintf_s(text, "* %s has changed to team \'%s\'\n", STRING(pPlayer->pev->netname), mdls);
 	UTIL_SayTextAll(text, pPlayer);
 
 	UTIL_LogPrintf("\"%s<%i><%s><%s>\" joined team \"%s\"\n",

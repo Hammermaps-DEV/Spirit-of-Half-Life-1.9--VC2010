@@ -386,12 +386,6 @@ typedef struct hudtextparms_s
 extern void			UTIL_HudMessageAll(const hudtextparms_t &textparms, const char *pMessage);
 extern void			UTIL_HudMessage(CBaseEntity *pEntity, const hudtextparms_t &textparms, const char *pMessage);
 
-// for handy use with ClientPrint params
-extern char *UTIL_dtos1(int d);
-extern char *UTIL_dtos2(int d);
-extern char *UTIL_dtos3(int d);
-extern char *UTIL_dtos4(int d);
-
 // Writes message to console with timestamp and FragLog header.
 extern void			UTIL_LogPrintf(char *fmt, ...);
 

@@ -2680,7 +2680,7 @@ void CTriggerHevCharge::AnnounceThink()
 	if (pct > 0)
 		pct--;
 
-	sprintf(szcharge, "!HEV_%1dP", pct);
+	sprintf_s(szcharge, "!HEV_%1dP", pct);
 	//ALERT(at_debug, "Announce %s\n", szcharge);
 
 	((CBasePlayer*)pPlayer)->SetSuitUpdate(szcharge, FALSE, SUIT_REPEAT_OK);
@@ -2923,7 +2923,7 @@ void PlayCDTrack(int iTrack)
 	{
 		char string[64];
 
-		sprintf(string, "cd play %3d\n", iTrack);
+		sprintf_s(string, "cd play %3d\n", iTrack);
 		CLIENT_COMMAND(pClient, string);
 	}
 }
@@ -3535,7 +3535,7 @@ void CChangeLevel::KeyValue(KeyValueData *pkvd)
 		if (strlen(pkvd->szValue) >= cchMapNameMost)
 			ALERT(at_error, "Map name '%s' too long (32 chars)\n", pkvd->szValue);
 
-		strcpy(m_szMapName, pkvd->szValue);
+		strcpy_s(m_szMapName, pkvd->szValue);
 
 		//LRC -- don't allow changelevels to contain capital letters; it causes problems
 //		ALERT(at_console, "MapName %s ", m_szMapName);
@@ -3548,7 +3548,7 @@ void CChangeLevel::KeyValue(KeyValueData *pkvd)
 	{
 		if (strlen(pkvd->szValue) >= cchMapNameMost)
 			ALERT(at_error, "Landmark name '%s' too long (32 chars)\n", pkvd->szValue);
-		strcpy(m_szLandmarkName, pkvd->szValue);
+		strcpy_s(m_szLandmarkName, pkvd->szValue);
 		pkvd->fHandled = TRUE;
 	}
 	else if (FStrEq(pkvd->szKeyName, "changetarget"))
@@ -3667,7 +3667,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity *pActivator)
 		}
 	}
 	// This object will get removed in the call to CHANGE_LEVEL, copy the params into "safe" memory
-	strcpy(st_szNextMap, m_szMapName);
+	strcpy_s(st_szNextMap, m_szMapName);
 
 	m_hActivator = pActivator;
 	SUB_UseTargets(pActivator, USE_TOGGLE, 0);
@@ -3677,7 +3677,7 @@ void CChangeLevel::ChangeLevelNow(CBaseEntity *pActivator)
 	pentLandmark = FindLandmark(m_szLandmarkName);
 	if (!FNullEnt(pentLandmark))
 	{
-		strcpy(st_szNextSpot, m_szLandmarkName);
+		strcpy_s(st_szNextSpot, m_szLandmarkName);
 		gpGlobals->vecLandmarkOffset = VARS(pentLandmark)->origin;
 	}
 	//	ALERT( at_console, "Level touches %d levels\n", ChangeList( levels, 16 ) );
@@ -3711,8 +3711,8 @@ int CChangeLevel::AddTransitionToList(LEVELLIST *pLevelList, int listCount, cons
 		if (pLevelList[i].pentLandmark == pentLandmark && strcmp(pLevelList[i].mapName, pMapName) == 0)
 			return 0;
 	}
-	strcpy(pLevelList[listCount].mapName, pMapName);
-	strcpy(pLevelList[listCount].landmarkName, pLandmarkName);
+	strcpy_s(pLevelList[listCount].mapName, pMapName);
+	strcpy_s(pLevelList[listCount].landmarkName, pLandmarkName);
 	pLevelList[listCount].pentLandmark = pentLandmark;
 	pLevelList[listCount].vecLandmarkOrigin = VARS(pentLandmark)->origin;
 
@@ -3886,12 +3886,12 @@ void NextLevel(void)
 	{
 		gpGlobals->mapname = MAKE_STRING("start");
 		pChange = GetClassPtr((CChangeLevel *)NULL);
-		strcpy(pChange->m_szMapName, "start");
+		strcpy_s(pChange->m_szMapName, "start");
 	}
 	else
 		pChange = GetClassPtr((CChangeLevel *)pEnt->pev);
 
-	strcpy(st_szNextMap, pChange->m_szMapName);
+	strcpy_s(st_szNextMap, pChange->m_szMapName);
 	g_fGameOver = true;
 
 	pChange->SetNextThink(0);
@@ -5195,7 +5195,7 @@ void CTriggerCommand::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYP
 
 	if (pev->netname)
 	{
-		sprintf(szCommand, "%s\n", STRING(pev->netname));
+		sprintf_s(szCommand, "%s\n", STRING(pev->netname));
 		SERVER_COMMAND(szCommand);
 	}
 }
@@ -5237,13 +5237,13 @@ void CTriggerChangeCVar::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_
 	{
 		if (pev->spawnflags & SF_CVAR_ACTIVE)
 		{
-			sprintf(szCommand, "%s \"%s\"\n", STRING(pev->netname), m_szStoredString);
+			sprintf_s(szCommand, "%s \"%s\"\n", STRING(pev->netname), m_szStoredString);
 			pev->spawnflags &= ~SF_CVAR_ACTIVE;
 		}
 		else
 		{
-			strncpy(m_szStoredString, CVAR_GET_STRING(STRING(pev->netname)), 256);
-			sprintf(szCommand, "%s \"%s\"\n", STRING(pev->netname), STRING(pev->message));
+			strncpy_s(m_szStoredString, CVAR_GET_STRING(STRING(pev->netname)), 256);
+			sprintf_s(szCommand, "%s \"%s\"\n", STRING(pev->netname), STRING(pev->message));
 			pev->spawnflags |= SF_CVAR_ACTIVE;
 
 			if (pev->armorvalue >= 0)
@@ -5261,7 +5261,7 @@ void CTriggerChangeCVar::Think(void)
 
 	if (pev->spawnflags & SF_CVAR_ACTIVE)
 	{
-		sprintf(szCommand, "%s %s\n", STRING(pev->netname), m_szStoredString);
+		sprintf_s(szCommand, "%s %s\n", STRING(pev->netname), m_szStoredString);
 		SERVER_COMMAND(szCommand);
 		pev->spawnflags &= ~SF_CVAR_ACTIVE;
 	}

@@ -351,11 +351,11 @@ void CWeaponCycler::Spawn()
 		if ((c == 'v' || c == 'p' || c == 'w') && basemodel[i + 1] == '_')
 		{
 			basemodel[i] = 'v';
-			strcpy(v_path, basemodel);
+			strcpy_s(v_path, basemodel);
 			basemodel[i] = 'p';
-			strcpy(p_path, basemodel);
+			strcpy_s(p_path, basemodel);
 			basemodel[i] = 'w';
-			strcpy(w_path, basemodel);
+			strcpy_s(w_path, basemodel);
 
 			// create wepon model pathes
 			m_iPlayerModel = ALLOC_STRING(p_path);

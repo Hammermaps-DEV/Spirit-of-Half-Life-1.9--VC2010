@@ -281,12 +281,12 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	{
 		if (CMD_ARGC() >= 2)
 		{
-			sprintf(szTemp, "%s %s", (char *)pcmd, (char *)CMD_ARGS());
+			sprintf_s(szTemp, "%s %s", (char *)pcmd, (char *)CMD_ARGS());
 		}
 		else
 		{
 			// Just a one word command, use the first word...sigh
-			sprintf(szTemp, "%s", (char *)pcmd);
+			sprintf_s(szTemp, "%s", (char *)pcmd);
 		}
 		p = szTemp;
 	}
@@ -313,16 +313,16 @@ void Host_Say(edict_t *pEntity, int teamonly)
 
 // turn on color set 2  (color on,  no sound)
 	if (teamonly)
-		sprintf(text, "%c(TEAM) %s: ", 2, STRING(pEntity->v.netname));
+		sprintf_s(text, "%c(TEAM) %s: ", 2, STRING(pEntity->v.netname));
 	else
-		sprintf(text, "%c%s: ", 2, STRING(pEntity->v.netname));
+		sprintf_s(text, "%c%s: ", 2, STRING(pEntity->v.netname));
 
 	j = sizeof(text) - 2 - strlen(text);  // -2 for /n and null terminator
 	if ((int)strlen(p) > j)
 		p[j] = 0;
 
-	strcat(text, p);
-	strcat(text, "\n");
+	strcat_s(text, p);
+	strcat_s(text, "\n");
 
 
 	player->m_flNextChatTime = gpGlobals->time + CHAT_INTERVAL;
@@ -639,7 +639,7 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 			int clientIndex = pPlayer->entindex();
 			g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "model", model);
 			g_engfuncs.pfnSetClientKeyValue(clientIndex, g_engfuncs.pfnGetInfoKeyBuffer(pPlayer->edict()), "team", model);
-			sprintf(text, "* Model can't contain special characters like: <>:;%%?*\"|/\\\n");
+			sprintf_s(text, "* Model can't contain special characters like: <>:;%%?*\"|/\\\n");
 			UTIL_SayText(text, pPlayer);
 		}
 	}
@@ -1634,7 +1634,7 @@ void UpdateClientData(const struct edict_s *ent, int sendweapons, struct clientd
 	cd->flSwimTime = ent->v.flSwimTime;
 	cd->waterjumptime = ent->v.teleport_time;
 
-	strcpy(cd->physinfo, ENGINE_GETPHYSINFO(ent));
+	strcpy_s(cd->physinfo, ENGINE_GETPHYSINFO(ent));
 
 	cd->maxspeed = ent->v.maxspeed;
 	cd->fov = ent->v.fov;

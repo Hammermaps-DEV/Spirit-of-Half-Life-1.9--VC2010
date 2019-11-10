@@ -2679,7 +2679,7 @@ void CBaseMonster::StepSound(void)
 		if (*pTextureName == '{' || *pTextureName == '!' || *pTextureName == '~' || *pTextureName == ' ')
 			pTextureName++;
 		// '}}' 
-		strcpy(szbuffer, pTextureName);
+		strcpy_s(szbuffer, pTextureName);
 		szbuffer[CBTEXTURENAMEMAX - 1] = 0;
 
 		// get texture type 

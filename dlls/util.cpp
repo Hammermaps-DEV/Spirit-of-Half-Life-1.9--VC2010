@@ -168,7 +168,7 @@ int PRECACHE_SOUND(char* s)
 	char *sound = s;		//sounds from model events can contains a symbol '*'.
 				//remove this for sucessfully loading a sound	
 	if (sound[0] == '*')sound++;	//only for fake path, engine needs this prefix!
-	sprintf(path, "sound/%s", sound);
+	sprintf_s(path, "sound/%s", sound);
 
 	//verify file exists
 	byte *data = LOAD_FILE_FOR_ME(path, NULL);
@@ -518,9 +518,9 @@ DBG_AssertFunction(
 		return;
 	char szOut[512];
 	if (szMessage != NULL)
-		sprintf(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n%s", szExpr, szFile, szLine, szMessage);
+		sprintf_s(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n%s", szExpr, szFile, szLine, szMessage);
 	else
-		sprintf(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n", szExpr, szFile, szLine);
+		sprintf_s(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n", szExpr, szFile, szLine);
 	ALERT(at_debug, szOut);
 }
 #endif	// DEBUG
@@ -1357,35 +1357,6 @@ void UTIL_SayTextAll(const char *pText, CBaseEntity *pEntity)
 	MESSAGE_END();
 }
 
-
-char *UTIL_dtos1(int d)
-{
-	static char buf[8];
-	sprintf(buf, "%d", d);
-	return buf;
-}
-
-char *UTIL_dtos2(int d)
-{
-	static char buf[8];
-	sprintf(buf, "%d", d);
-	return buf;
-}
-
-char *UTIL_dtos3(int d)
-{
-	static char buf[8];
-	sprintf(buf, "%d", d);
-	return buf;
-}
-
-char *UTIL_dtos4(int d)
-{
-	static char buf[8];
-	sprintf(buf, "%d", d);
-	return buf;
-}
-
 void UTIL_ShowMessage(const char *pString, CBaseEntity *pEntity)
 {
 	if (!pEntity || !pEntity->IsNetClient())
@@ -1560,7 +1531,7 @@ char* UTIL_VarArgs(char *format, ...)
 	static char		string[1024];
 
 	va_start(argptr, format);
-	vsprintf(string, format, argptr);
+	sprintf_s(string, format, argptr);
 	va_end(argptr);
 
 	return string;
@@ -1920,11 +1891,11 @@ BOOL UTIL_IsFacing(entvars_t *pevTest, const Vector &reference)
 
 void UTIL_StringToVector(float *pVector, const char *pString)
 {
-	char *pstr, *pfront, tempString[128];
+	char *pfront, tempString[128];
 	int	j;
 
-	strcpy(tempString, pString);
-	pstr = pfront = tempString;
+	strcpy_s(tempString, pString);
+	char* pstr = pfront = tempString;
 
 	for (j = 0; j < 3; j++)			// lifted from pr_edict.c
 	{
@@ -1956,7 +1927,7 @@ void UTIL_StringToRandomVector(float *pVector, const char *pString)
 	int	j;
 	float pAltVec[3];
 
-	strcpy(tempString, pString);
+	strcpy_s(tempString, pString);
 	pstr = pfront = tempString;
 
 	for (j = 0; j < 3; j++)			// lifted from pr_edict.c
@@ -1998,7 +1969,7 @@ void UTIL_StringToIntArray(int *pVector, int count, const char *pString)
 	char *pstr, *pfront, tempString[128];
 	int	j;
 
-	strcpy(tempString, pString);
+	strcpy_s(tempString, pString);
 	pstr = pfront = tempString;
 
 	for (j = 0; j < count; j++)			// lifted from pr_edict.c
@@ -2183,7 +2154,7 @@ void UTIL_LogPrintf(char *fmt, ...)
 	static char		string[1024];
 
 	va_start(argptr, fmt);
-	vsprintf(string, fmt, argptr);
+	sprintf_s(string, fmt, argptr);
 	va_end(argptr);
 
 	// Print to server console
