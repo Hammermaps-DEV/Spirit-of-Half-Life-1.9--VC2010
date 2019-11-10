@@ -30,6 +30,10 @@ CVAR_REGISTER( &sk_##name##3 )
 
 cvar_t	displaysoundlist = { "displaysoundlist","0" };
 
+// Spectator settings
+cvar_t	allow_spectators = { "allow_spectators","1", FCVAR_SERVER };
+cvar_t	spectator_cmd_delay = { "spectator_cmd_delay","5" };
+
 // multiplayer server rules
 cvar_t	fragsleft = { "mp_fragsleft","0", FCVAR_SERVER | FCVAR_UNLOGGED };	  // Don't spam console/log files/users with this changing
 cvar_t	timeleft = { "mp_timeleft","0" , FCVAR_SERVER | FCVAR_UNLOGGED };	  // "      "
@@ -72,6 +76,12 @@ cvar_t	impulsetarget = { "sohl_impulsetarget","0", FCVAR_SERVER }; //LRC - trigg
 cvar_t	mw_debug = { "sohl_mwdebug","0", FCVAR_SERVER }; //LRC - debug info. for MoveWith. (probably not useful for most people.)
 
 cvar_t  mp_chattime = { "mp_chattime","10", FCVAR_SERVER };
+cvar_t  mp_notify_player_status = { "mp_notify_player_status","7" };	// Notifications about join/leave/spectate
+
+cvar_t	mp_welcomecam = { "mp_welcomecam", "1", FCVAR_SERVER };
+
+cvar_t  motdfile_unicode = { "motdfile_unicode", "motd_unicode.txt", FCVAR_SERVER };
+cvar_t  motdfile_html = { "motdfile_html", "motd.html", FCVAR_SERVER };
 
 // Engine Cvars
 cvar_t 	*g_psv_gravity = NULL;
@@ -287,6 +297,10 @@ void GameDLLInit(void)
 	CVAR_REGISTER(&impulsetarget); //LRC
 	CVAR_REGISTER(&mw_debug); //LRC
 	CVAR_REGISTER(&mp_chattime);
+	CVAR_REGISTER(&mp_notify_player_status);
+	CVAR_REGISTER(&mp_welcomecam);
+	CVAR_REGISTER(&motdfile_unicode);
+	CVAR_REGISTER(&motdfile_html);
 
 	CVAR_REGISTER(&mp_dmg_crowbar);
 	CVAR_REGISTER(&mp_dmg_glock);
@@ -481,4 +495,3 @@ void GameDLLInit(void)
 	SERVER_COMMAND("exec skill_opfor.cfg\n"); // Opposing-Force
 	SERVER_COMMAND("exec skill_hitgroups.cfg\n"); // Hitgroups
 }
-

@@ -250,7 +250,7 @@ public:
 	void			FlashlightTurnOff(void);
 
 	void UpdatePlayerSound(void);
-	void DeathSound(void);
+	void DeathSound(void) override;
 
 	int Classify(void) override { return CLASS_PLAYER; };
 	void SetAnimation(PLAYER_ANIM playerAnim);

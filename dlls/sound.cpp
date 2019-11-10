@@ -1717,7 +1717,7 @@ void TEXTURETYPE_Init()
 	char buffer[512];
 	int i, j;
 	byte *pMemFile;
-	int fileSize, filePos;
+	int fileSize, filePos = 0;
 
 	if (fTextureTypeInit)
 		return;
@@ -1731,8 +1731,6 @@ void TEXTURETYPE_Init()
 	pMemFile = g_engfuncs.pfnLoadFileForMe("sound/materials.txt", &fileSize);
 	if (!pMemFile)
 		return;
-
-	filePos = 0;
 
 	// for each line in the file...
 	while (memfgets(pMemFile, fileSize, filePos, buffer, 511) != NULL && (gcTextures < CTEXTURESMAX))

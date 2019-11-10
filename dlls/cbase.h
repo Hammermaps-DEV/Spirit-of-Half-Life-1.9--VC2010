@@ -366,10 +366,10 @@ public:
 
 	void SUB_UseTargets(CBaseEntity *pActivator, USE_TYPE useType, float value);
 	// Do the bounding boxes of these two intersect?
-	int		Intersects(CBaseEntity *pOther);
-	void	MakeDormant(void);
-	int		IsDormant(void);
-	BOOL    IsLockedByMaster(void) { return FALSE; }
+	int	Intersects(CBaseEntity *pOther);
+	void MakeDormant(void);
+	int	IsDormant(void);
+	virtual BOOL IsLockedByMaster(void) { return FALSE; }
 
 	static CBaseEntity *Instance(edict_t *pent)
 	{
