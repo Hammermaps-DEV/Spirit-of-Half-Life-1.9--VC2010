@@ -191,7 +191,7 @@ public:
 	int m_nCustomSprayFrames;// Custom clan logo frames for this player
 	float	m_flNextDecalTime;// next time this player can spray a decal
 
-	char m_szTeamName[TEAM_NAME_LENGTH];
+	char m_szTeamName[MAX_TEAM_NAME];
 
 	virtual void Spawn(void);
 	void Pain(void);

@@ -187,7 +187,7 @@ public:
 	//	BOOL OnControls( entvars_t *pevTest );
 	BOOL StartControl(CBasePlayer* pController, CFuncTankControls* pControls);
 	void StopControl(CFuncTankControls* pControls);
-	//	void ControllerPostFrame( void );
+	virtual void StopFire(void) { }
 
 	CFuncTankControls* m_pControls; //LRC - tankcontrols is used as a go-between.
 
@@ -271,8 +271,6 @@ TYPEDESCRIPTION	CFuncTank::m_SaveData[] =
 	DEFINE_FIELD(CFuncTank, m_pSequence, FIELD_CLASSPTR), //LRC
 	DEFINE_FIELD(CFuncTank, m_pSequenceEnemy, FIELD_CLASSPTR), //LRC
 	DEFINE_FIELD(CFuncTank, m_pSpot, FIELD_CLASSPTR), //LRC
-//LRC	DEFINE_FIELD( CFuncTank, m_pController, FIELD_CLASSPTR ),
-//LRC	DEFINE_FIELD( CFuncTank, m_vecControllerUsePos, FIELD_VECTOR ),
 	DEFINE_FIELD(CFuncTank, m_flNextAttack, FIELD_TIME),
 	DEFINE_FIELD(CFuncTank, m_iBulletDamage, FIELD_INTEGER),
 	DEFINE_FIELD(CFuncTank, m_iszMaster, FIELD_STRING),
@@ -487,22 +485,6 @@ void CFuncTank::KeyValue(KeyValueData *pkvd)
 		CBaseEntity::KeyValue(pkvd);
 }
 
-//==================================================================================
-// TANK CONTROLLING
-/*LRC- TankControls checks this instead
-BOOL CFuncTank :: OnControls( entvars_t *pevTest )
-{
-	if ( !(pev->spawnflags & SF_TANK_CANCONTROL) )
-		return FALSE;
-
-	Vector offset = pevTest->origin - pev->origin;
-
-	if ( (m_vecControllerUsePos - pevTest->origin).Length() < 30 )
-		return TRUE;
-
-	return FALSE;
-} */
-
 BOOL CFuncTank::StartControl(CBasePlayer* pController, CFuncTankControls *pControls)
 {
 	//	ALERT(at_console, "StartControl\n");
@@ -538,6 +520,8 @@ BOOL CFuncTank::StartControl(CBasePlayer* pController, CFuncTankControls *pContr
 
 void CFuncTank::StopControl(CFuncTankControls* pControls)
 {
+	StopFire();
+	
 	//LRC- various commands moved from here to FuncTankControls
 	if (!m_pControls || m_pControls != pControls)
 	{
@@ -594,62 +578,11 @@ void CFuncTank::UpdateSpot(void)
 	}
 }
 
-// Called each frame by PostThink, via Use.
-// all we do here is handle firing.
-// LRC- this is now never called. Think functions are handling it all.
-/*void CFuncTank :: ControllerPostFrame( void )
-{
-	ASSERT(m_pController != NULL);
-
-	if ( gpGlobals->time < m_flNextAttack )
-		return;
-
-	if ( m_pController->pev->button & IN_ATTACK )
-	{
-		Vector vecForward;
-		UTIL_MakeVectorsPrivate( pev->angles, vecForward, NULL, NULL );
-
-		m_fireLast = gpGlobals->time - (1/m_fireRate) - 0.01;  // to make sure the gun doesn't fire too many bullets
-
-		Fire( BarrelPosition(), vecForward, m_pController->pev );
-
-		// HACKHACK -- make some noise (that the AI can hear)
-		if ( m_pController && m_pController->IsPlayer() )
-			((CBasePlayer *)m_pController)->m_iWeaponVolume = LOUD_GUN_VOLUME;
-
-		m_flNextAttack = gpGlobals->time + (1/m_fireRate);
-	}
-}*/
-////////////// END NEW STUFF //////////////
-
-
 void CFuncTank::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
 	if (pev->spawnflags & SF_TANK_CANCONTROL)
 	{  // player controlled turret
 
-		if (pActivator->Classify() != CLASS_PLAYER)
-			return;
-
-		// from Player::PostThink. ("try fire the gun")
-		if (value == 2 && useType == USE_SET)
-		{
-			// LRC- actually, we handle firing with TrackTarget, to support multitank.
-			//			ControllerPostFrame();
-		}
-
-		// LRC- tankcontrols handles all this
-		//		else if ( !m_pController && useType != USE_OFF )
-		//		{
-		//			// LRC- add one more tank to the ones the player's using
-		//			((CBasePlayer*)pActivator)->m_pTank = this;
-		//			StartControl( (CBasePlayer*)pActivator );
-		//		}
-		//		else
-		//		{
-		//		// probably from Player::PostThink- player stopped using tank.
-		//			StopControl();
-		//		}
 	}
 	else
 	{
@@ -1322,6 +1255,7 @@ public:
 	void	Fire(const Vector &barrelEnd, const Vector &forward, entvars_t *pevAttacker);
 	void	Think(void);
 	CLaser *GetLaser(void);
+	virtual void StopFire(void);
 
 	virtual int	Save(CSave &save);
 	virtual int	Restore(CRestore &restore);
@@ -1439,6 +1373,12 @@ void CFuncTankLaser::Fire(const Vector &barrelEnd, const Vector &forward, entvar
 	{
 		CFuncTank::Fire(barrelEnd, forward, pevAttacker);
 	}
+}
+
+void CFuncTankLaser::StopFire(void)
+{
+	if (m_pLaser)
+		m_pLaser->TurnOff();
 }
 
 class CFuncTankRocket : public CFuncTank

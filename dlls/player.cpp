@@ -179,6 +179,7 @@ int gmsgStatusIcon = 0;
 int gmsgStatusText = 0;
 int gmsgStatusValue = 0;
 int gmsgViewMode = 0;
+int gmsgVGUIMenu = 0;
 int gmsgCamData; // for trigger_viewset
 int gmsgRainData = 0;
 int gmsgSetBody = 0;//change body for view weapon model
@@ -237,6 +238,7 @@ void LinkUserMessages(void)
 	gmsgTeamNames = REG_USER_MSG("TeamNames", -1);
 	gmsgStatusIcon = REG_USER_MSG("StatusIcon", -1);
 	gmsgViewMode = REG_USER_MSG("ViewMode", 0);		// Switches client to first person mode
+	gmsgVGUIMenu = REG_USER_MSG("VGUIMenu", 1);		// Opens team selection menu with map briefing
 
 	gmsgStatusText = REG_USER_MSG("StatusText", -1);
 	gmsgStatusValue = REG_USER_MSG("StatusValue", 3);
@@ -1430,7 +1432,9 @@ void CBasePlayer::PlayerDeathThink(void)
 		PackDeadPlayerItems();
 	}
 
-
+	// Clear inclination came from client view
+	pev->angles.x = 0;
+	
 	if (pev->modelindex && (!m_fSequenceFinished) && (pev->deadflag == DEAD_DYING))
 	{
 		StudioFrameAdvance();
@@ -4182,28 +4186,29 @@ void CBasePlayer::UpdateClientData(void)
 		gDisplayTitle = 0;
 	}
 
-	if (pev->health != m_iClientHealth)
+	float fHealth = pev->health;
+	int iHealth = fHealth <= 0.0 ? 0 : (fHealth <= 1.0 ? 1 : (fHealth > 255.0 ? 255 : (int)fHealth));
+	if (iHealth != m_iClientHealth)
 	{
-		int iHealth = max(pev->health, 0);  // make sure that no negative health values are sent
-
 		// send "health" update message
 		MESSAGE_BEGIN(MSG_ONE, gmsgHealth, NULL, pev);
 		WRITE_BYTE(iHealth);
 		MESSAGE_END();
 
-		m_iClientHealth = pev->health;
+		m_iClientHealth = iHealth;
 	}
 
-
-	if (pev->armorvalue != m_iClientBattery)
+	float fArmor = pev->armorvalue;
+	int iArmor = fArmor <= 0.0 ? 0 : (fArmor <= 1.0 ? 1 : (fArmor > 32767.0 ? 32767 : (int)fArmor));
+	if (iArmor != m_iClientBattery)
 	{
 		ASSERT(gmsgBattery > 0);
-		// send "health" update message
+		// send "armor" update message
 		MESSAGE_BEGIN(MSG_ONE, gmsgBattery, NULL, pev);
-		WRITE_SHORT((int)pev->armorvalue);
+		WRITE_SHORT(iArmor);
 		MESSAGE_END();
 
-		m_iClientBattery = pev->armorvalue;
+		m_iClientBattery = iArmor;
 	}
 
 	if (pev->dmg_take || pev->dmg_save || m_bitsHUDDamage != m_bitsDamageType)

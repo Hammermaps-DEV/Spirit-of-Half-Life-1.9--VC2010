@@ -785,7 +785,7 @@ void CBasePlayerWeapon::ItemPostFrame(void)
 	}
 	else if ((pPlayer->pev->button & IN_ATTACK) && CanAttack(m_flNextPrimaryAttack, gpGlobals->time, 0))
 	{
-		if ((m_iClip == 0 && pszAmmo1()) || (iMaxClip() == -1 && !pPlayer->m_rgAmmo[PrimaryAmmoIndex()]))
+		if ((m_iClip == 0 && pszAmmo1()) || (iMaxClip() == WEAPON_NOCLIP && !pPlayer->m_rgAmmo[PrimaryAmmoIndex()]))
 		{
 			m_fFireOnEmpty = TRUE;
 		}

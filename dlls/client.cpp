@@ -140,7 +140,8 @@ void ClientDisconnect(edict_t *pEntity)
 	// mark player as disconnected
 	entvars_t *pev = &pEntity->v;
 	CBasePlayer *pl = (CBasePlayer*)CBasePlayer::Instance(pev);
-	pl->Disconnect();
+	if (pl)
+		pl->Disconnect();
 }
 
 
@@ -512,6 +513,13 @@ void ClientCommand(edict_t *pEntity)
 	{
 		GetClassPtr((CBasePlayer *)pev)->SelectLastItem();
 	}
+	else if (FStrEq(pcmd, "specmode"))
+	{
+	/*	if (pPlayer->IsObserver())
+		{
+			pPlayer->Observer_SetMode(atoi(CMD_ARGV(1)));
+		} */
+	}
 	else if (FStrEq(pcmd, "spectate") && (pev->flags & FL_PROXY))	// added for proxy support
 	{
 		CBasePlayer * pPlayer = GetClassPtr((CBasePlayer *)pev);
@@ -559,7 +567,6 @@ void ClientUserInfoChanged(edict_t *pEntity, char *infobuffer)
 	// Is the client spawned yet?
 	if (!pEntity->pvPrivateData)
 		return;
-
 
 	char text[256];
 	CBasePlayer *pPlayer = GetClassPtr((CBasePlayer *)&pEntity->v);
@@ -1360,6 +1367,20 @@ void Entity_FieldInit(struct delta_s *pFields)
 	entity_field_alias[FIELD_ANGLES2].field = DELTA_FINDFIELD(pFields, entity_field_alias[FIELD_ANGLES2].name);
 }
 
+static entity_field_alias_t player_field_alias[] =
+{
+	{ "origin[0]",			0 },
+	{ "origin[1]",			0 },
+	{ "origin[2]",			0 },
+};
+
+void Player_FieldInit(struct delta_s *pFields)
+{
+	player_field_alias[FIELD_ORIGIN0].field = DELTA_FINDFIELD(pFields, player_field_alias[FIELD_ORIGIN0].name);
+	player_field_alias[FIELD_ORIGIN1].field = DELTA_FINDFIELD(pFields, player_field_alias[FIELD_ORIGIN1].name);
+	player_field_alias[FIELD_ORIGIN2].field = DELTA_FINDFIELD(pFields, player_field_alias[FIELD_ORIGIN2].name);
+}
+
 /*
 ==================
 Entity_Encode
@@ -1416,20 +1437,6 @@ void Entity_Encode(struct delta_s *pFields, const unsigned char *from, const uns
 		DELTA_SETBYINDEX(pFields, entity_field_alias[FIELD_ORIGIN1].field);
 		DELTA_SETBYINDEX(pFields, entity_field_alias[FIELD_ORIGIN2].field);
 	}
-}
-
-static entity_field_alias_t player_field_alias[] =
-{
-	{ "origin[0]",			0 },
-	{ "origin[1]",			0 },
-	{ "origin[2]",			0 },
-};
-
-void Player_FieldInit(struct delta_s *pFields)
-{
-	player_field_alias[FIELD_ORIGIN0].field = DELTA_FINDFIELD(pFields, player_field_alias[FIELD_ORIGIN0].name);
-	player_field_alias[FIELD_ORIGIN1].field = DELTA_FINDFIELD(pFields, player_field_alias[FIELD_ORIGIN1].name);
-	player_field_alias[FIELD_ORIGIN2].field = DELTA_FINDFIELD(pFields, player_field_alias[FIELD_ORIGIN2].name);
 }
 
 /*
@@ -1598,7 +1605,16 @@ engine sets cd to 0 before calling.
 void UpdateClientData(const struct edict_s *ent, int sendweapons, struct clientdata_s *cd)
 {
 	cd->flags = ent->v.flags;
-	cd->health = ent->v.health;
+	
+	// Clamp value for delta compression
+	if (ent->v.health <= 0.0)
+		cd->health = 0.0;
+	else if (ent->v.health <= 1.0)
+		cd->health = 1.0;
+	else if ((int)ent->v.health < 0)
+		cd->health = 0x7FFFFF00;
+	else
+		cd->health = ent->v.health;
 
 	cd->viewmodel = MODEL_INDEX(STRING(ent->v.viewmodel));
 

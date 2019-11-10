@@ -66,7 +66,7 @@ cvar_t		*sensitivity;
 int			mouse_buttons;
 int			mouse_oldbuttonstate;
 POINT		current_pos;
-int			mouse_x, mouse_y, old_mouse_x, old_mouse_y, mx_accum, my_accum;
+float		mouse_x, mouse_y, old_mouse_x, old_mouse_y, mx_accum, my_accum;
 
 static int	restore_spi;
 static int	originalmouseparms[3], newmouseparms[3] = {0, 0, 1};
@@ -299,7 +299,6 @@ IN_MouseMove
 */
 void IN_MouseMove ( float frametime, usercmd_t *cmd)
 {
-	int		mx, my;
 	vec3_t viewangles;
 
 	gEngfuncs.GetViewAngles( (float *)viewangles );
@@ -315,8 +314,8 @@ void IN_MouseMove ( float frametime, usercmd_t *cmd)
 	{
 		GetCursorPos (&current_pos);
 
-		mx = current_pos.x - gEngfuncs.GetWindowCenterX() + mx_accum;
-		my = current_pos.y - gEngfuncs.GetWindowCenterY() + my_accum;
+		float mx = current_pos.x - gEngfuncs.GetWindowCenterX() + mx_accum;
+		float my = current_pos.y - gEngfuncs.GetWindowCenterY() + my_accum;
 
 		mx_accum = 0;
 		my_accum = 0;
