@@ -1359,21 +1359,18 @@ void CMomentaryRotButton::PlaySound(void)
 	EMIT_SOUND(ENT(pev), CHAN_VOICE, (char*)STRING(pev->noise), 1, ATTN_NORM);
 }
 
-// BUGBUG: This design causes a latentcy.  When the button is retriggered, the first impulse
-// will send the target in the wrong direction because the parameter is calculated based on the
-// current, not future position.
 void CMomentaryRotButton::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
 	if (IsLockedByMaster()) return; //LRC
 	// the distance between the current angle and the "base" angle.
-	pev->ideal_yaw = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles, m_start) / m_flMoveDistance;
+	pev->ideal_yaw = AxisDelta(pev->spawnflags, pev->angles, m_start) / m_flMoveDistance;
 
 	UpdateAllButtons(pev->ideal_yaw, 1);
 
-	float f = m_fNextThink - pev->ltime;
-	f = CBaseToggle::AxisDelta(pev->spawnflags, pev->angles + pev->avelocity*f, m_start) / m_flMoveDistance;
-	//	ALERT(at_console,"sending update = %f\n", f);
-	UpdateTarget(f);
+	// Calculate destination angle and use it to predict value, this prevents sending target in wrong direction on retriggering
+	Vector dest = pev->angles + pev->avelocity * (m_fNextThink - pev->ltime);
+	float value1 = AxisDelta(pev->spawnflags, dest, m_start) / m_flMoveDistance;
+	UpdateTarget(value1);
 }
 
 void CMomentaryRotButton::UpdateAllButtons(float value, int start)
