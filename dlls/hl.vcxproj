@@ -175,7 +175,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1C9F46EB-3FE6-41D1-9108-B30FCA334712}</ProjectGuid>
     <ProjectName>Server</ProjectName>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

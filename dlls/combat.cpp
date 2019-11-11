@@ -53,18 +53,9 @@ void CGib::LimitVelocity(void)
 		SetVelocity(pev->velocity.Normalize() * 1500);		// This should really be sv_maxvelocity * 0.75 or something
 }
 
-
 void CGib::SpawnStickyGibs(entvars_t *pevVictim, Vector vecOrigin, int cGibs)
 {
-	int i;
-
-	if (g_Language == LANGUAGE_GERMAN)
-	{
-		// no sticky gibs in germany right now!
-		return;
-	}
-
-	for (i = 0; i < cGibs; i++)
+	for (int i = 0; i < cGibs; i++)
 	{
 		CGib *pGib = GetClassPtr((CGib *)NULL);
 
@@ -125,10 +116,7 @@ void CGib::SpawnStickyGibs(entvars_t *pevVictim, Vector vecOrigin, int cGibs)
 
 void CGib::SpawnHeadGib(entvars_t *pevVictim)
 {
-	if (g_Language == LANGUAGE_GERMAN)
-		SpawnHeadGib(pevVictim, "models/germangibs.mdl");// throw one head
-	else
-		SpawnHeadGib(pevVictim, "models/hgibs.mdl");
+	SpawnHeadGib(pevVictim, "models/hgibs.mdl");
 }
 
 void CGib::SpawnHeadGib(entvars_t *pevVictim, const char* szGibModel)
@@ -180,9 +168,7 @@ void CGib::SpawnHeadGib(entvars_t *pevVictim, const char* szGibModel)
 
 void CGib::SpawnRandomGibs(entvars_t *pevVictim, int cGibs, int human)
 {
-	if (g_Language == LANGUAGE_GERMAN)
-		SpawnRandomGibs(pevVictim, cGibs, 1, "models/germangibs.mdl");
-	else if (human)
+	if (human)
 		SpawnRandomGibs(pevVictim, cGibs, 1, "models/hgibs.mdl");
 	else
 		SpawnRandomGibs(pevVictim, cGibs, 0, "models/agibs.mdl");
@@ -765,7 +751,7 @@ void CGib::BounceGibTouch(CBaseEntity *pOther)
 	}
 	else
 	{
-		if (g_Language != LANGUAGE_GERMAN && m_cBloodDecals > 0 && m_bloodColor != DONT_BLEED)
+		if (m_cBloodDecals > 0 && m_bloodColor != DONT_BLEED)
 		{
 			vecSpot = pev->origin + Vector(0, 0, 8);//move up a bit, and trace down.
 			UTIL_TraceLine(vecSpot, vecSpot + Vector(0, 0, -24), ignore_monsters, ENT(pev), &tr);
@@ -812,12 +798,13 @@ void CGib::StickyGibTouch(CBaseEntity *pOther)
 
 	UTIL_TraceLine(pev->origin, pev->origin + pev->velocity * 32, ignore_monsters, ENT(pev), &tr);
 
-	//UTIL_BloodDecalTrace( &tr, m_bloodColor );
-
 	int blood;
-	if (m_bloodColor == BLOOD_COLOR_RED)blood = 1;
-	else if (m_bloodColor == BLOOD_COLOR_YELLOW)blood = 2;
-	CBaseEntity *pHit = CBaseEntity::Instance(tr.pHit);
+	if (m_bloodColor == BLOOD_COLOR_RED)
+		blood = 1;
+	else if (m_bloodColor == BLOOD_COLOR_YELLOW)
+		blood = 2;
+	
+	CBaseEntity *pHit = Instance(tr.pHit);
 	PLAYBACK_EVENT_FULL(FEV_RELIABLE | FEV_GLOBAL, edict(), m_usDecals, 0.0, (float *)&tr.vecEndPos, (float *)&g_vecZero, 0.0, 0.0, pHit->entindex(), blood, 0, 0);
 
 	SetVelocity(tr.vecPlaneNormal * -1);
