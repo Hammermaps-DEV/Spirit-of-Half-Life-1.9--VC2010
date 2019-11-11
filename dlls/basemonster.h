@@ -321,16 +321,17 @@ public:
 
 	void RadiusDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 	void RadiusDamage(Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
-	virtual int		IsMoving(void) { return m_movementGoal != MOVEGOAL_NONE; }
+	virtual int	IsMoving(void) { return m_movementGoal != MOVEGOAL_NONE; }
 
 	void RouteClear(void);
 	void RouteNew(void);
 
-	virtual void DeathSound(void) { return; };
-	virtual void AlertSound(void) { return; };
-	virtual void IdleSound(void) { return; };
-	virtual void PainSound(void) { return; };
-	virtual void StepSound(void);
+	virtual void DeathSound(){ };
+	virtual void AlertSound() { };
+	virtual void IdleSound() { };
+	virtual void PainSound() { };
+	virtual void StepSound();
+	virtual void AttackSound() { };
 
 	virtual void StopFollowing(BOOL clearSchedule) {}
 

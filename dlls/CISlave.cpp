@@ -156,7 +156,8 @@ int CISlave::IRelationship(CBaseEntity *pTarget)
 	if ((pTarget->IsPlayer()))
 		if ((pev->spawnflags & SF_MONSTER_WAIT_UNTIL_PROVOKED) && !(m_afMemory & bits_MEMORY_PROVOKED))
 			return R_NO;
-	return CBaseMonster::IRelationship(pTarget);
+	
+	return CSquadMonster::IRelationship(pTarget);
 }
 
 
@@ -678,7 +679,7 @@ Schedule_t *CISlave::GetSchedule(void)
 		if (HasConditions(bits_COND_ENEMY_DEAD))
 		{
 			// call base class, all code to handle dead enemies is centralized there.
-			return CBaseMonster::GetSchedule();
+			return CSquadMonster::GetSchedule();
 		}
 
 		if (pev->health < 20 || m_iBravery < 0)

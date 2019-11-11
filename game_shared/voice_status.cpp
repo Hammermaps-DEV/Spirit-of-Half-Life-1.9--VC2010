@@ -253,7 +253,7 @@ int CVoiceStatus::Init(
 }
 
 
-int CVoiceStatus::VidInit()
+void CVoiceStatus::VidInit()
 {
 	FreeBitmaps();
 
@@ -309,9 +309,7 @@ int CVoiceStatus::VidInit()
 	}
 
 	m_VoiceHeadModel = gEngfuncs.pfnSPR_Load("sprites/voiceicon.spr");
-	return TRUE;
 }
-
 
 void CVoiceStatus::Frame(double frametime)
 {

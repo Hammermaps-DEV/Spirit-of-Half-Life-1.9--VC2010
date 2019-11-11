@@ -259,7 +259,7 @@ DECLARE_COMMAND(m_Ammo, PrevWeapon);
 
 #define HISTORY_DRAW_TIME	"5"
 
-int CHudAmmo::Init(void)
+void CHudAmmo::Init(void)
 {
 	gHUD.AddHudElem(this);
 
@@ -294,8 +294,6 @@ int CHudAmmo::Init(void)
 
 	gWR.Init();
 	gHR.Init();
-
-	return 1;
 };
 
 void CHudAmmo::Reset(void)
@@ -318,7 +316,7 @@ void CHudAmmo::Reset(void)
 
 }
 
-int CHudAmmo::VidInit(void)
+void CHudAmmo::VidInit(void)
 {
 	// Load sprites for buckets (top row of weapon menu)
 	m_HUD_bucket0 = gHUD.GetSpriteIndex( "bucket1" );
@@ -343,8 +341,6 @@ int CHudAmmo::VidInit(void)
 		giABWidth = 10;
 		giABHeight = 2;
 	}
-
-	return 1;
 }
 
 //
@@ -849,16 +845,16 @@ void CHudAmmo::UserCmd_PrevWeapon(void)
 // Drawing code
 //-------------------------------------------------------------------------
 
-int CHudAmmo::Draw(float flTime)
+void CHudAmmo::Draw(float flTime)
 {
-	int a, x, y, r, g, b;
+	int a, x, r, g, b;
 	int AmmoWidth;
 
 	if (!(gHUD.m_iHideHUDDisplay & ITEM_SUIT ))
-		return 1;
+		return;
 
 	if ( (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL )) )
-		return 1;
+		return;
 
 	// Draw Weapon Menu
 	DrawWList(flTime);
@@ -867,12 +863,12 @@ int CHudAmmo::Draw(float flTime)
 	gHR.DrawAmmoHistory( flTime );
 
 	if (!(m_iFlags & HUD_ACTIVE))
-		return 0;
+		return;
 
 	if (!m_pWeapon)
 	{
 //		CONPRINT("AmmoDraw: NO pWeapon\n");
-		return 0;
+		return;
 	}
 //	CONPRINT("AmmoDraw: pWeapon ok\n");
 
@@ -880,7 +876,7 @@ int CHudAmmo::Draw(float flTime)
 
 	// SPR_Draw Ammo
 	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0))
-		return 0;
+		return;
 
 
 	int iFlags = DHN_DRAWZERO; // draw 0 values
@@ -897,7 +893,7 @@ int CHudAmmo::Draw(float flTime)
 	ScaleColors(r, g, b, a );
 
 	// Does this weapon have a clip?
-	y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight/2;
+	int y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight / 2;
 
 	// Does weapon have any ammo at all?
 	if (m_pWeapon->iAmmoType > 0)
@@ -907,15 +903,8 @@ int CHudAmmo::Draw(float flTime)
 		if (pw->iClip >= 0)
 		{
 			// room for the number and the '|' and the current ammo
-			
 			x = ScreenWidth - (8 * AmmoWidth) - iIconWidth;
 			x = gHUD.DrawHudNumber(x, y, iFlags | DHN_3DIGITS, pw->iClip, r, g, b);
-
-			wrect_t rc;
-			rc.top = 0;
-			rc.left = 0;
-			rc.right = AmmoWidth;
-			rc.bottom = 100;
 
 			int iBarWidth =  AmmoWidth/10;
 
@@ -965,9 +954,7 @@ int CHudAmmo::Draw(float flTime)
 			SPR_DrawAdditive(0, x, y - iOffset, &m_pWeapon->rcAmmo2);
 		}
 	}
-	return 1;
 }
-
 
 //
 // Draws the ammo bar on the hud

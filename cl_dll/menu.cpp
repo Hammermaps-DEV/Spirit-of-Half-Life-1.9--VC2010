@@ -34,15 +34,13 @@ int KB_ConvertString( char *in, char **ppout );
 
 DECLARE_MESSAGE( m_Menu, ShowMenu );
 
-int CHudMenu :: Init( void )
+void CHudMenu :: Init( void )
 {
 	gHUD.AddHudElem( this );
 
 	HOOK_MESSAGE( ShowMenu );
 
 	InitHUDData();
-
-	return 1;
 }
 
 void CHudMenu :: InitHUDData( void )
@@ -59,12 +57,7 @@ void CHudMenu :: Reset( void )
 	m_fWaitingForMore = FALSE;
 }
 
-int CHudMenu :: VidInit( void )
-{
-	return 1;
-}
-
-int CHudMenu :: Draw( float flTime )
+void CHudMenu :: Draw( float flTime )
 {
 	// check for if menu is set to disappear
 	if ( m_flShutoffTime > 0 )
@@ -73,13 +66,13 @@ int CHudMenu :: Draw( float flTime )
 		{  // times up, shutoff
 			m_fMenuDisplayed = 0;
 			m_iFlags &= ~HUD_ACTIVE;
-			return 1;
+			return;
 		}
 	}
 
 	// don't draw the menu if the scoreboard is being shown
 	if ( gViewPort && gViewPort->IsScoreBoardVisible() )
-		return 1;
+		return;
 
 	// draw the menu, along the left-hand side of the screen
 
@@ -106,8 +99,6 @@ int CHudMenu :: Draw( float flTime )
 		if ( g_szMenuString[i] == '\n' )
 			i++;
 	}
-	
-	return 1;
 }
 
 // selects an item from the menu

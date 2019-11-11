@@ -181,7 +181,6 @@ public:
 	float		m_fNextThink; // LRC - for SetNextThink and SetPhysThink. Marks the time when a think will be performed - not necessarily the same as pev->nextthink!
 	float		m_fPevNextThink; // LRC - always set equal to pev->nextthink, so that we can tell when the latter gets changed by the @#$^¬! engine.
 	int		m_iLFlags; // LRC- a new set of flags. (pev->spawnflags and pev->flags are full...)
-	virtual void	DesiredAction(void) {}; // LRC - for postponing stuff until PostThink time, not as a think.
 	int		m_iStyle; // LRC - almost anything can have a lightstyle these days...
 
 	Vector		m_vecSpawnOffset; // LRC- To fix things which (for example) MoveWith a door which Starts Open.
@@ -190,14 +189,15 @@ public:
 
 	//LRC - decent mechanisms for setting think times!
 	// this should have been done a long time ago, but MoveWith finally forced me.
-	virtual void		SetNextThink(float delay) { SetNextThink(delay, FALSE); }
-	virtual void		SetNextThink(float delay, BOOL correctSpeed);
-	virtual void		AbsoluteNextThink(float time) { AbsoluteNextThink(time, FALSE); }
-	virtual void		AbsoluteNextThink(float time, BOOL correctSpeed);
-	void				SetEternalThink();
+	virtual void SetNextThink(float delay) { SetNextThink(delay, FALSE); }
+	virtual void SetNextThink(float delay, BOOL correctSpeed);
+	virtual void AbsoluteNextThink(float time) { AbsoluteNextThink(time, FALSE); }
+	virtual void AbsoluteNextThink(float time, BOOL correctSpeed);
+	virtual void SetEternalThink();
 
-	void	DontThink(void);
-	virtual void ThinkCorrection(void);
+	virtual void DontThink();
+	virtual void ThinkCorrection();
+	virtual void DesiredAction() {}; // LRC - for postponing stuff until PostThink time, not as a think.
 
 	//LRC - loci
 	virtual Vector	CalcPosition(CBaseEntity *pLocus) { return pev->origin; }
@@ -208,9 +208,9 @@ public:
 	virtual BOOL IsAlias(void) { return FALSE; }
 
 	// initialization functions
-	virtual void	Spawn(void) { return; }
-	virtual void	Precache(void) { return; }
-	virtual void	KeyValue(KeyValueData* pkvd)
+	virtual void Spawn() { }
+	virtual void Precache() { }
+	virtual void KeyValue(KeyValueData* pkvd)
 	{
 		//LRC - MoveWith for all!
 		if (FStrEq(pkvd->szKeyName, "movewith"))
@@ -233,20 +233,20 @@ public:
 	virtual int		Save(CSave &save);
 	virtual int		Restore(CRestore &restore);
 	//LRC - if I MoveWith something, then only cross transitions if the MoveWith entity does too.
-	virtual int	ObjectCaps(void) { return m_pMoveWith ? m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION : FCAP_ACROSS_TRANSITION; }
-	virtual void	Activate(void); //LRC
-	void		InitMoveWith(void); //LRC - called by Activate() to set up moveWith values
+	virtual int	ObjectCaps() { return m_pMoveWith ? m_pMoveWith->ObjectCaps()&FCAP_ACROSS_TRANSITION : FCAP_ACROSS_TRANSITION; }
+	virtual void	Activate(); //LRC
+	void		InitMoveWith(); //LRC - called by Activate() to set up moveWith values
 	void		SetParent(int m_iNewParent, int m_iAttachment = 0);//g-cont. two version of SetParent. from xash 0.4
 	void		SetParent(CBaseEntity *pParent, int m_iAttachment = 0);//g-cont. dynamiclly link parents
-	void		ResetParent(void);
-	virtual void	ClearPointers(void); //g-cont. directly clear all movewith pointer before changelevel
-	virtual void	PostSpawn(void) {} //LRC - called by Activate() to handle entity-specific initialisation.
+	void		ResetParent();
+	virtual void	ClearPointers(); //g-cont. directly clear all movewith pointer before changelevel
+	virtual void	PostSpawn() {} //LRC - called by Activate() to handle entity-specific initialisation.
 	// (mostly setting positions, for MoveWith support)
 
 	// Setup the object->object collision box (pev->mins / pev->maxs is the object->world collision box)
-	virtual void	SetObjectCollisionBox(void);
+	virtual void	SetObjectCollisionBox();
 
-	void UTIL_AutoSetSize(void)//automatically set collision box
+	void UTIL_AutoSetSize()//automatically set collision box
 	{
 		studiohdr_t *pstudiohdr;
 		pstudiohdr = (studiohdr_t*)GET_MODEL_PTR(ENT(pev));
@@ -263,13 +263,13 @@ public:
 
 	// Classify - returns the type of group (e.g., "alien monster", or "human military" so that monsters
 	// on the same side won't attack each other, even if they have different classnames.
-	virtual int Classify(void) { return CLASS_NONE; };
+	virtual int Classify() { return CLASS_NONE; };
 	virtual void DeathNotice(entvars_t *pevChild) {}// monster maker children use this to tell the monster maker that they have died.
 
 
 // LRC- this supports a global concept of "entities with states", so that state_watchers and
 // mastership (mastery? masterhood?) can work universally.
-	virtual STATE GetState(void) { return STATE_OFF; };
+	virtual STATE GetState() { return STATE_OFF; };
 
 	// For team-specific doors in multiplayer, etc: a master's state depends on who wants to know.
 	virtual STATE GetState(CBaseEntity* pEnt) { return GetState(); };
@@ -281,19 +281,19 @@ public:
 	virtual int		TakeHealth(float flHealth, int bitsDamageType);
 	virtual int		TakeArmor(float flArmor);
 	virtual void	Killed(entvars_t *pevAttacker, int iGib);
-	virtual int		BloodColor(void) { return DONT_BLEED; }
+	virtual int		BloodColor() { return DONT_BLEED; }
 	virtual void	TraceBleed(float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
-	virtual CBaseMonster *MyMonsterPointer(void) { return NULL; }
-	virtual CSquadMonster *MySquadMonsterPointer(void) { return NULL; }
-	virtual	int		GetToggleState(void) { return TS_AT_TOP; }
+	virtual CBaseMonster *MyMonsterPointer() { return NULL; }
+	virtual CSquadMonster *MySquadMonsterPointer() { return NULL; }
+	virtual	int		GetToggleState() { return TS_AT_TOP; }
 	virtual void	AddPoints(int score, BOOL bAllowNegativeScore) {}
 	virtual void	AddPointsToTeam(int score, BOOL bAllowNegativeScore) {}
 	virtual BOOL	AddPlayerItem(CBasePlayerItem *pItem) { return 0; }
 	virtual BOOL	RemovePlayerItem(CBasePlayerItem *pItem) { return 0; }
 	virtual int 	GiveAmmo(int iAmount, char *szName, int iMax) { return -1; };
-	virtual float	GetDelay(void) { return 0; }
-	virtual int		IsMoving(void) { return pev->velocity != g_vecZero; }
-	virtual void	OverrideReset(void) {}
+	virtual float	GetDelay() { return 0; }
+	virtual int		IsMoving() { return pev->velocity != g_vecZero; }
+	virtual void	OverrideReset() {}
 	virtual int		DamageDecal(int bitsDamageType);
 
 	virtual void	SetVelocity(const Vector velocity) { pev->velocity = velocity; }
@@ -301,35 +301,31 @@ public:
 	
 	// This is ONLY used by the node graph to test movement through a door
 	virtual void	SetToggleState(int state) {}
-	virtual void    StartSneaking(void) {}
-	virtual void    StopSneaking(void) {}
+	virtual void    StartSneaking() {}
+	virtual void    StopSneaking() {}
 	virtual BOOL	OnControls(entvars_t *pev) { return FALSE; }
-	virtual BOOL    IsSneaking(void) { return FALSE; }
-	virtual BOOL	IsAlive(void) { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
-	virtual BOOL	IsBSPModel(void) { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
-	virtual BOOL	ReflectGauss(void) { return (IsBSPModel() && !pev->takedamage); }
+	virtual BOOL    IsSneaking() { return FALSE; }
+	virtual BOOL	IsAlive() { return (pev->deadflag == DEAD_NO) && pev->health > 0; }
+	virtual BOOL	IsBSPModel() { return pev->solid == SOLID_BSP || pev->movetype == MOVETYPE_PUSHSTEP; }
+	virtual BOOL	ReflectGauss() { return (IsBSPModel() && !pev->takedamage); }
 	virtual BOOL	HasTarget(string_t targetname) { return FStrEq(STRING(targetname), STRING(pev->targetname)); }
-	virtual BOOL    IsInWorld(void);
-	virtual	BOOL	IsPlayer(void) { return FALSE; }
-	virtual BOOL	IsNetClient(void) { return FALSE; }
-	virtual const char *TeamID(void) { return ""; }
+	virtual BOOL    IsInWorld();
+	virtual	BOOL	IsPlayer() { return FALSE; }
+	virtual BOOL	IsNetClient() { return FALSE; }
+	virtual const char *TeamID() { return ""; }
 	
 	//	virtual void	SetActivator( CBaseEntity *pActivator ) {}
-	virtual CBaseEntity *GetNextTarget(void);
+	virtual CBaseEntity *GetNextTarget();
 
 	// fundamental callbacks
-	void (CBaseEntity ::*m_pfnThink)(void);
+	void (CBaseEntity ::*m_pfnThink)();
 	void (CBaseEntity ::*m_pfnTouch)(CBaseEntity *pOther);
 	void (CBaseEntity ::*m_pfnUse)(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 	void (CBaseEntity ::*m_pfnBlocked)(CBaseEntity *pOther);
 
-	virtual void Think(void) { if (m_pfnThink) (this->*m_pfnThink)(); };
+	virtual void Think() { if (m_pfnThink) (this->*m_pfnThink)(); };
 	virtual void Touch(CBaseEntity *pOther) { if (m_pfnTouch) (this->*m_pfnTouch)(pOther); };
-	virtual void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
-	{
-		if (m_pfnUse)
-			(this->*m_pfnUse)(pActivator, pCaller, useType, value);
-	}
+	virtual void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
 	virtual void Blocked(CBaseEntity *pOther) { if (m_pfnBlocked) (this->*m_pfnBlocked)(pOther); };
 
 	// allow engine to allocate instance data
@@ -346,14 +342,14 @@ public:
 	};
 #endif
 
-	virtual void UpdateOnRemove(void);
+	virtual void UpdateOnRemove();
 
 	// common member functions
-	void EXPORT SUB_Remove(void);
-	void EXPORT SUB_DoNothing(void);
-	void EXPORT SUB_StartFadeOut(void);
-	void EXPORT SUB_FadeOut(void);
-	void EXPORT SUB_CallUseToggle(void) // a think function used at spawn time. Don't apply the moveWith fix to it.
+	void EXPORT SUB_Remove();
+	void EXPORT SUB_DoNothing();
+	void EXPORT SUB_StartFadeOut();
+	void EXPORT SUB_FadeOut();
+	void EXPORT SUB_CallUseToggle() // a think function used at spawn time. Don't apply the moveWith fix to it.
 	{
 		this->Use(this, this, USE_TOGGLE, 0);
 	}
@@ -362,19 +358,21 @@ public:
 	void		FireBullets(ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL);
 	Vector		FireBulletsPlayer(ULONG	cShots, Vector  vecSrc, Vector	vecDirShooting, Vector	vecSpread, float flDistance, int iBulletType, int iTracerFreq = 4, int iDamage = 0, entvars_t *pevAttacker = NULL, int shared_rand = 0);
 
-	virtual CBaseEntity *Respawn(void) { return NULL; }
+	virtual CBaseEntity *Respawn() { return NULL; }
 
-	void SUB_UseTargets(CBaseEntity *pActivator, USE_TYPE useType, float value);
+	virtual void SUB_UseTargets(CBaseEntity *pActivator, USE_TYPE useType, float value);
+	
 	// Do the bounding boxes of these two intersect?
 	int	Intersects(CBaseEntity *pOther);
-	void MakeDormant(void);
-	int	IsDormant(void);
-	virtual BOOL IsLockedByMaster(void) { return FALSE; }
+	void MakeDormant();
+	int	IsDormant();
+	virtual BOOL IsLockedByMaster() { return FALSE; }
 
 	static CBaseEntity *Instance(edict_t *pent)
 	{
 		if (!pent)
 			pent = ENT(0);
+		
 		CBaseEntity *pEnt = (CBaseEntity *)GET_PRIVATE(pent);
 		return pEnt;
 	}
@@ -504,11 +502,9 @@ inline BOOL FNullEnt(CBaseEntity *ent) { return ent == NULL || FNullEnt(ent->edi
 class CPointEntity : public CBaseEntity
 {
 public:
-	void	Spawn(void);
-	virtual int	ObjectCaps(void) { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
-private:
+	void	Spawn();
+	virtual int	ObjectCaps() { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 };
-
 
 typedef struct locksounds			// sounds that doors and buttons make when locked/unlocked
 {

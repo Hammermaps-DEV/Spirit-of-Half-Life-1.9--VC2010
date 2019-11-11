@@ -67,15 +67,13 @@ float *GetClientColor( int clientIndex )
 	return NULL;
 }
 
-int CHudDeathNotice :: Init( void )
+void CHudDeathNotice :: Init( void )
 {
 	gHUD.AddHudElem( this );
 
 	HOOK_MESSAGE( DeathMsg );
 
 	CVAR_CREATE( "hud_deathnotice_time", "6", 0 );
-
-	return 1;
 }
 
 
@@ -85,14 +83,12 @@ void CHudDeathNotice :: InitHUDData( void )
 }
 
 
-int CHudDeathNotice :: VidInit( void )
+void CHudDeathNotice :: VidInit( void )
 {
 	m_HUD_d_skull = gHUD.GetSpriteIndex( "d_skull" );
-
-	return 1;
 }
 
-int CHudDeathNotice :: Draw( float flTime )
+void CHudDeathNotice :: Draw( float flTime )
 {
 	int x, y, r, g, b;
 
@@ -151,8 +147,6 @@ int CHudDeathNotice :: Draw( float flTime )
 			}
 		}
 	}
-
-	return 1;
 }
 
 // This message handler may be better off elsewhere

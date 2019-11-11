@@ -91,7 +91,12 @@ STATE CBaseDMStart::GetState(CBaseEntity *pEntity)
 		return STATE_OFF;
 }
 
-// This updates global tables that need to know about entities being removed
+void CBaseEntity::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+{
+	if (m_pfnUse)
+		(this->*m_pfnUse)(pActivator, pCaller, useType, value);
+} // This updates global tables that need to know about entities being removed
+
 void CBaseEntity::UpdateOnRemove(void)
 {
 	int	i;

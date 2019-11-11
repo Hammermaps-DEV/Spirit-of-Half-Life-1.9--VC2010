@@ -34,7 +34,7 @@ DECLARE_MESSAGE( m_StatusBar, StatusValue );
 float *GetClientColor( int clientIndex );
 extern float g_ColorYellow[3];
 
-int CHudStatusBar :: Init( void )
+void CHudStatusBar :: Init( void )
 {
 	gHUD.AddHudElem( this );
 
@@ -44,15 +44,6 @@ int CHudStatusBar :: Init( void )
 	Reset();
 
 	CVAR_CREATE( "hud_centerid", "0", FCVAR_ARCHIVE );
-
-	return 1;
-}
-
-int CHudStatusBar :: VidInit( void )
-{
-	// Load sprites here
-
-	return 1;
 }
 
 void CHudStatusBar :: Reset( void )
@@ -172,7 +163,7 @@ void CHudStatusBar :: ParseStatusString( int line_num )
 	}
 }
 
-int CHudStatusBar :: Draw( float fTime )
+void CHudStatusBar :: Draw( float fTime )
 {
 	if ( m_bReparseString )
 	{
@@ -207,8 +198,6 @@ int CHudStatusBar :: Draw( float fTime )
 
 		DrawConsoleString( x, y, m_szStatusBar[i] );
 	}
-
-	return 1;
 }
 
 // Message handler for StatusText message

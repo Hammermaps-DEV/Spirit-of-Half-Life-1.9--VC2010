@@ -1272,7 +1272,7 @@ Schedule_t *CHoundeye::GetSchedule(void)
 		if (HasConditions(bits_COND_ENEMY_DEAD))
 		{
 			// call base class, all code to handle dead enemies is centralized there.
-			return CBaseMonster::GetSchedule();
+			return CSquadMonster::GetSchedule();
 		}
 
 		if (HasConditions(bits_COND_LIGHT_DAMAGE | bits_COND_HEAVY_DAMAGE))
