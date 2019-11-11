@@ -809,7 +809,7 @@ Schedule_t slTeleportToScript[] =
 {
 	{
 		tlScriptedTeleport,
-		HL_ARRAYSIZE(tlScriptedTeleport),
+		ARRAYSIZE(tlScriptedTeleport),
 		SCRIPT_BREAK_CONDITIONS,
 		0,
 		"TeleportToScript"
@@ -1034,6 +1034,7 @@ Schedule_t *CBaseMonster::m_scheduleList[] =
 	slBarnacleVictimGrab,
 	slBarnacleVictimChomp,
 	slError,
+	slTeleportToScript,
 	slWalkToScript,
 	slRunToScript,
 	slWaitScript,
