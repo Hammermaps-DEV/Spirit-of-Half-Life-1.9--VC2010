@@ -46,6 +46,7 @@ public:
 
 	void Spawn() override;
 	void Precache() override;
+	void UpdateOnRemove() override;
 	void SetYawSpeed() override;
 	int  Classify() override;
 	void HandleAnimEvent(MonsterEvent_t *pEvent) override;
@@ -219,18 +220,32 @@ void CController::GibMonster(void)
 	if (m_pBall[0])
 	{
 		UTIL_Remove(m_pBall[0]);
-		m_pBall[0] = NULL;
+		m_pBall[0] = nullptr;
 	}
 	if (m_pBall[1])
 	{
 		UTIL_Remove(m_pBall[1]);
-		m_pBall[1] = NULL;
+		m_pBall[1] = nullptr;
 	}
 	CSquadMonster::GibMonster();
 }
 
+void CController::UpdateOnRemove()
+{
+	CBaseEntity::UpdateOnRemove();
 
+	if (m_pBall[0])
+	{
+		UTIL_Remove(m_pBall[0]);
+		m_pBall[0] = nullptr;
+	}
 
+	if (m_pBall[1])
+	{
+		UTIL_Remove(m_pBall[1]);
+		m_pBall[1] = nullptr;
+	}
+}
 
 void CController::PainSound(void)
 {

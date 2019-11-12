@@ -35,6 +35,9 @@
 #include "rain.h"
 #include "com_weapons.h"
 
+cvar_t* hud_textmode;
+float g_hud_text_color[3];
+
 class CHLVoiceStatusHelper : public IVoiceStatusHelper
 {
 public:
@@ -399,6 +402,8 @@ void CHud :: Init( void )
 	CVAR_CREATE( "hud_classautokill", "1", FCVAR_ARCHIVE | FCVAR_USERINFO );		// controls whether or not to suicide immediately on TF class switch
 	CVAR_CREATE( "hud_takesshots", "0", FCVAR_ARCHIVE );		// controls whether or not to automatically take screenshots at the end of a round
 
+	hud_textmode = CVAR_CREATE("hud_textmode", "0", FCVAR_ARCHIVE);
+	
 	viewEntityIndex = 0; // trigger_viewset stuff
 	viewFlags = 0;
 	m_iLogo = 0;

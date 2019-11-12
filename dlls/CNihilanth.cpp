@@ -32,6 +32,7 @@ public:
 
 	void Spawn(void);
 	void Precache(void);
+	void UpdateOnRemove();
 	int  Classify(void) { return CLASS_ALIEN_MILITARY; };
 	int  BloodColor(void) { return BLOOD_COLOR_YELLOW; }
 	void Killed(entvars_t *pevAttacker, int iGib);
@@ -227,6 +228,26 @@ TYPEDESCRIPTION	CNihilanthHVR::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CNihilanthHVR, CBaseMonster);
 
+
+void CNihilanth::UpdateOnRemove()
+{
+	CBaseEntity::UpdateOnRemove();
+
+	if (m_pBall)
+	{
+		UTIL_Remove(m_pBall);
+		m_pBall = 0;
+	}
+
+	for (int i = 0; i < N_SPHERES; i++)
+	{
+		if (CBaseEntity* pSphere = (CBaseEntity*)m_hSphere[i])
+		{
+			UTIL_Remove(pSphere);
+			m_hSphere[i] = 0;
+		}
+	}
+}
 
 //=========================================================
 // Nihilanth, final Boss monster
@@ -1195,8 +1216,22 @@ void CNihilanth::CommandUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	case USE_OFF:
 	{
 		CBaseEntity *pTouch = UTIL_FindEntityByTargetname(NULL, m_szDeadTouch);
-		if (pTouch && m_hEnemy != NULL)
-			pTouch->Touch(m_hEnemy);
+		if (pTouch)
+		{
+			if (m_hEnemy != NULL)
+			{
+				pTouch->Touch(m_hEnemy);
+			}
+			// if the player is using "notarget", the ending sequence won't fire unless we catch it here
+			else
+			{
+				CBaseEntity* pEntity = UTIL_FindEntityByClassname(NULL, "player");
+				if (pEntity != NULL && pEntity->IsAlive())
+				{
+					pTouch->Touch(pEntity);
+				}
+			}
+		}
 	}
 	break;
 	case USE_ON:

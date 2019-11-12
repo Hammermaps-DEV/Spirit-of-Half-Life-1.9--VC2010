@@ -119,7 +119,7 @@ void CShotgun::PrimaryAttack()
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound(4);
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -154,7 +154,7 @@ void CShotgun::PrimaryAttack()
 		// HEV suit - indicate out of ammo condition
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
-	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.0;
+	m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
 	m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.0;
 
 	if (m_iClip != 0) m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 5.0;
@@ -169,7 +169,7 @@ void CShotgun::SecondaryAttack(void)
 	if (m_pPlayer->pev->waterlevel == 3)
 	{
 		PlayEmptySound(4);
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.15;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.15);
 		return;
 	}
 
@@ -213,7 +213,7 @@ void CShotgun::SecondaryAttack(void)
 		m_pPlayer->SetSuitUpdate("!HEV_AMO0", FALSE, 0);
 
 
-	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.5;
+	m_flNextPrimaryAttack = GetNextAttackDelay(1.5);
 	m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.5;
 
 	if (m_iClip != 0) m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 6.0;

@@ -330,7 +330,7 @@ public:
 	virtual void AlertSound() { };
 	virtual void IdleSound() { };
 	virtual void PainSound() { };
-	virtual void StepSound();
+	virtual void StepSound(); 
 	virtual void AttackSound() { };
 
 	virtual void StopFollowing(BOOL clearSchedule) {}

@@ -53,6 +53,7 @@ public:
 	void Holster();
 	void Reload(void);
 	void WeaponIdle(void);
+	
 	float m_flNextAnimTime;
 
 	float m_flRechargeTime;
@@ -133,10 +134,10 @@ void CHgun::PrimaryAttack()
 	// player "shoot" animation
 	m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
-	m_flNextPrimaryAttack = m_flNextPrimaryAttack + 0.25;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.25);
 
 	if (m_flNextPrimaryAttack < UTIL_GlobalTimeBase())
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.25;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.25);
 	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 15);
 }
 
@@ -203,7 +204,7 @@ void CHgun::SecondaryAttack(void)
 	// player "shoot" animation
 	m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
-	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.1;
+	m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(0.1);
 	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_LONG(10, 15);
 	m_pPlayer->pev->punchangle.x = RANDOM_FLOAT(0, 2);
 }

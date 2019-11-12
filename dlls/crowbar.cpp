@@ -247,7 +247,7 @@ int CCrowbar::Swing(int fFirst)
 			}
 		}
 		m_pPlayer->m_iWeaponVolume = flVol * CROWBAR_WALLHIT_VOLUME;
-		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.25;
+		m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(0.25);
 		m_flTimeUpdate = UTIL_GlobalTimeBase() + 0.2;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + UTIL_SharedRandomFloat(m_pPlayer->random_seed, 10, 15);
 	}

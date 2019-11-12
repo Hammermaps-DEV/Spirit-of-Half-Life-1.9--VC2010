@@ -483,7 +483,7 @@ void CWorld::Precache(void)
 	if (g_pGameRules)
 	{
 		delete g_pGameRules;
-		g_pGameRules = 0;
+		g_pGameRules = NULL;
 	}
 
 	g_pGameRules = InstallGameRules();

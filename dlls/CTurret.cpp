@@ -56,6 +56,7 @@ class CBaseTurret : public CBaseMonster
 public:
 	void Spawn(void);
 	virtual void Precache(void);
+	void UpdateOnRemove();
 	void KeyValue(KeyValueData *pkvd);
 	void EXPORT TurretUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
@@ -409,6 +410,17 @@ void CBaseTurret::Initialize(void)
 	}
 	else
 		SetThink(&CBaseTurret::SUB_DoNothing);
+}
+
+void CBaseTurret::UpdateOnRemove()
+{
+	CBaseEntity::UpdateOnRemove();
+
+	if (m_pEyeGlow)
+	{
+		UTIL_Remove(m_pEyeGlow);
+		m_pEyeGlow = 0;
+	}
 }
 
 void CBaseTurret::TurretUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)

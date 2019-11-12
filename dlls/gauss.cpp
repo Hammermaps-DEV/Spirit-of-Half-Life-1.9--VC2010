@@ -162,7 +162,7 @@ void CGauss::SecondaryAttack()
 		}
 		else	PlayEmptySound(1);
 
-		m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 		return;
 	}
 

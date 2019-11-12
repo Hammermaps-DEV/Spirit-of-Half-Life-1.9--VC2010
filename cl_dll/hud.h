@@ -590,6 +590,7 @@ public:
 	int DrawHudStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b );
 	int DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b );
 	int GetNumWidth(int iNumber, int iFlags);
+	int DrawHudStringLen(char* szIt);
 	int viewEntityIndex; // for trigger_viewset
 	int viewFlags;
 	struct cl_mirror_s Mirrors[32]; //Limit - 32 mirrors!

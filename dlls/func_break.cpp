@@ -1121,11 +1121,12 @@ void CPushable::Move(CBaseEntity *pOther, int push)
 		return;
 	}
 
-
+	// g-cont. fix pushable acceleration bug (reverted as it used in mods)
 	if (pOther->IsPlayer())
 	{
 		if (push && !(pevToucher->button & (IN_FORWARD | IN_USE)))	// Don't push unless the player is pushing forward and NOT use (pull)
 			return;
+		
 		playerTouch = 1;
 	}
 

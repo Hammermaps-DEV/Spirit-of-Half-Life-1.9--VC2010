@@ -135,16 +135,16 @@ void CMP5::PrimaryAttack()
 
 		PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usMP5, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, pev->body, 0, 0, 0);
 
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.1;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.1);
 
 		if (m_flNextPrimaryAttack < UTIL_GlobalTimeBase())
-			m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.2;
+			m_flNextPrimaryAttack = GetNextAttackDelay(0.2);
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 	}
 }
 
@@ -174,19 +174,19 @@ void CMP5::SecondaryAttack(void)
 		SendWeaponAnim(MP5_LAUNCH);
 		m_pPlayer->pev->punchangle.x -= 10;
 
-		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1;
+		m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(1.0);
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 5;
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 	}
 }
 
 void CMP5::Reload(void)
 {
-	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0) return;
+	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] <= 0 || m_iClip == MP5_MAX_CLIP) return;
 	DefaultReload(MP5_MAX_CLIP, MP5_RELOAD, 1.5);
 }
 

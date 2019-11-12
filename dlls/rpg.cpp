@@ -380,13 +380,13 @@ void CRpg::PrimaryAttack()
 		// Ken signed up for this as a global change (sjb)
 
 		m_iClip--;
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.5;
+		m_flNextPrimaryAttack = GetNextAttackDelay(1.5);
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.7;//no longer indicate fps :)
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.7); //no longer indicate fps :)
 	}
 	UpdateSpot();
 }
@@ -396,14 +396,14 @@ void CRpg::SecondaryAttack()
 	m_iOverloadLevel = !m_iOverloadLevel;
 	if (!m_iOverloadLevel && m_pSpot) ShutdownScreen();//simply call shutdown function
 
-	m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.3;
+	m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 }
 
 void CRpg::Reload(void)
 {
 	if ((m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] == 0) || (m_iClip == 1)) return;
 
-	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 
 	if (m_iChargeLevel && m_iOverloadLevel) return;
 

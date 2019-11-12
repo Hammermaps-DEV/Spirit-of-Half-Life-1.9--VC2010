@@ -30,6 +30,17 @@ int grgLogoFrame[MAX_LOGO_FRAMES] =
 	29, 29, 29, 29, 29, 28, 27, 26, 25, 24, 30, 31 
 };
 
+const unsigned char colors[8][3] =
+{
+{127, 127, 127}, // additive cannot be black
+{255,   0,   0},
+{  0, 255,   0},
+{255, 255,   0},
+{  0,   0, 255},
+{  0, 255, 255},
+{255,   0, 255},
+{240, 180,  24}
+};
 
 extern int g_iVisibleMouse;
 
@@ -236,18 +247,47 @@ void ScaleColors( int &r, int &g, int &b, int a )
 
 int CHud :: DrawHudString(int xpos, int ypos, int iMaxX, char *szIt, int r, int g, int b )
 {
+	if (hud_textmode->value == 2)
+	{
+		gEngfuncs.pfnDrawSetTextColor(r / 255.0, g / 255.0, b / 255.0);
+		return gEngfuncs.pfnDrawConsoleString(xpos, ypos, (char*)szIt);
+	}
+	
+	// reset unicode state
+	TextMessageDrawChar(0, 0, 0, 0, 0, 0);
+	
 	// draw the string until we hit the null character or a newline character
 	for ( ; *szIt != 0 && *szIt != '\n'; szIt++ )
 	{
-		int next = xpos + gHUD.m_scrinfo.charWidths[ *szIt ]; // variable-width fonts look cool
-		if ( next > iMaxX )
+		int w = gHUD.m_scrinfo.charWidths['M'];
+		if (xpos + w > iMaxX)
 			return xpos;
+		if ((*szIt == '^') && (*(szIt + 1) >= '0') && (*(szIt + 1) <= '7'))
+		{
+			szIt++;
+			r = colors[*szIt - '0'][0];
+			g = colors[*szIt - '0'][1];
+			b = colors[*szIt - '0'][2];
+			if (!*(++szIt))
+				return xpos;
+		}
 
 		TextMessageDrawChar( xpos, ypos, *szIt, r, g, b );
-		xpos = next;		
+		int c = (unsigned int)(unsigned char)*szIt;
+		xpos += TextMessageDrawChar(xpos, ypos, c, r, g, b);
 	}
 
 	return xpos;
+}
+
+int CHud::DrawHudStringLen(char* szIt)
+{
+	int l = 0;
+	for (; *szIt != 0 && *szIt != '\n'; szIt++)
+	{
+		l += gHUD.m_scrinfo.charWidths[(unsigned char)*szIt];
+	}
+	return l;
 }
 
 int CHud :: DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int r, int g, int b )
@@ -261,22 +301,11 @@ int CHud :: DrawHudNumberString( int xpos, int ypos, int iMinX, int iNumber, int
 // draws a string from right to left (right-aligned)
 int CHud :: DrawHudStringReverse( int xpos, int ypos, int iMinX, char *szString, int r, int g, int b )
 {
-	// find the end of the string
-	char* szIt;
-	for ( szIt = szString; *szIt != 0; szIt++ )
-	{ // we should count the length?		
-	}
-
-	// iterate throug the string in reverse
-	for ( szIt--;  szIt != (szString-1);  szIt-- )	
-	{
-		int next = xpos - gHUD.m_scrinfo.charWidths[ *szIt ]; // variable-width fonts look cool
-		if ( next < iMinX )
-			return xpos;
-		xpos = next;
-
-		TextMessageDrawChar( xpos, ypos, *szIt, r, g, b );
-	}
+	for (char* szIt = szString; *szIt != 0; szIt++)
+		xpos -= gHUD.m_scrinfo.charWidths[(unsigned char)*szIt];
+	if (xpos < iMinX)
+		xpos = iMinX;
+	DrawHudString(xpos, ypos, gHUD.m_scrinfo.iWidth, szString, r, g, b);
 
 	return xpos;
 }

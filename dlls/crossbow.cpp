@@ -320,7 +320,7 @@ void CCrossbow::PrimaryAttack(void)
 // this function only gets called in multiplayer
 void CCrossbow::FireSniperBolt()
 {
-	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.75;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.75);
 
 	if (m_iClip == 0)
 	{

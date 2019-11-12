@@ -44,6 +44,7 @@ class CISlave : public CSquadMonster
 public:
 	void Spawn(void);
 	void Precache(void);
+	void UpdateOnRemove();
 	void SetYawSpeed(void);
 	int	 ISoundMask(void);
 	int  Classify(void);
@@ -140,6 +141,13 @@ const char *CISlave::pDeathSounds[] =
 	"aslave/slv_die1.wav",
 	"aslave/slv_die2.wav",
 };
+
+void CISlave::UpdateOnRemove()
+{
+	CBaseEntity::UpdateOnRemove();
+
+	ClearBeams();
+}
 
 //=========================================================
 // Classify - indicates this monster's place in the 

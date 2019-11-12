@@ -199,6 +199,7 @@ class CGargantua : public CBaseMonster
 public:
 	void Spawn(void);
 	void Precache(void);
+	void UpdateOnRemove();
 	void SetYawSpeed(void);
 	int  Classify(void);
 	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
@@ -545,6 +546,18 @@ void CGargantua::FlameControls(float angleX, float angleY)
 	SetBoneController(1, m_flameX);
 }
 
+void CGargantua::UpdateOnRemove()
+{
+	CBaseEntity::UpdateOnRemove();
+
+	if (m_pEyeGlow)
+	{
+		UTIL_Remove(m_pEyeGlow);
+		m_pEyeGlow = 0;
+	}
+
+	FlameDestroy();
+}
 
 void CGargantua::FlameUpdate(void)
 {

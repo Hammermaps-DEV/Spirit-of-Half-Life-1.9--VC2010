@@ -486,7 +486,7 @@ void CSqueak::PrimaryAttack()
 			m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
 			m_fJustThrown = 1;
 
-			m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.3;
+			m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.0;
 		}
 	}

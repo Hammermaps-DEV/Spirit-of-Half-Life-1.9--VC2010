@@ -37,13 +37,14 @@ class CTripmineGrenade : public CGrenade
 	void Spawn(void);
 	void Precache(void);
 
-	virtual int		Save(CSave &save);
-	virtual int		Restore(CRestore &restore);
+	virtual int	Save(CSave &save);
+	virtual int	Restore(CRestore &restore);
 
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
-
+	void UpdateOnRemove();
+	
 	void EXPORT WarningThink(void);
 	void EXPORT PowerupThink(void);
 	void EXPORT BeamBreakThink(void);
@@ -96,6 +97,13 @@ TYPEDESCRIPTION	CTripmineGrenade::m_SaveData[] =
 };
 
 IMPLEMENT_SAVERESTORE(CTripmineGrenade, CGrenade);
+
+void CTripmineGrenade::UpdateOnRemove()
+{
+	CBaseEntity::UpdateOnRemove();
+
+	KillBeam();
+}
 
 void CTripmineGrenade::AutoSetSize(void)
 {
@@ -465,7 +473,7 @@ void CTripmine::PrimaryAttack(void)
 		}
 	}
 
-	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.3;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
 	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	m_flTimeUpdate = UTIL_GlobalTimeBase() + RANDOM_FLOAT(0.5, 1.0); //time to deploy next tripmine
 }

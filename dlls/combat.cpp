@@ -1278,6 +1278,12 @@ BOOL CBaseEntity::FVisible(CBaseEntity *pEntity)
 	Vector		vecLookerOrigin;
 	Vector		vecTargetOrigin;
 
+	if (!pEntity)
+		return FALSE;
+	
+	if (!pEntity->pev)
+		return FALSE;
+
 	if (FBitSet(pEntity->pev->flags, FL_NOTARGET))
 		return FALSE;
 

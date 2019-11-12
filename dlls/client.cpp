@@ -39,6 +39,7 @@
 #include "usercmd.h"
 #include "netadr.h"
 #include "movewith.h"
+#include "weapons.h"
 
 extern DLL_GLOBAL ULONG		g_ulModelIndexPlayer;
 extern DLL_GLOBAL bool		g_fGameOver;
@@ -133,8 +134,7 @@ void ClientDisconnect(edict_t *pEntity)
 	g_pGameRules->ClientDisconnected(pEntity);
 
 	// mark player as disconnected
-	entvars_t *pev = &pEntity->v;
-	CBasePlayer *pl = (CBasePlayer*)CBasePlayer::Instance(pev);
+	CBasePlayer *pl = (CBasePlayer*)CBasePlayer::Instance(pEntity);
 	if (pl)
 		pl->Disconnect();
 
@@ -334,7 +334,7 @@ void Host_Say(edict_t *pEntity, int teamonly)
 	}
 
 	// remove quotes if present
-	if (*p == '"')
+	if (p && *p == '"')
 	{
 		p++;
 		p[strlen(p) - 1] = 0;

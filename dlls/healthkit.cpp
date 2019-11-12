@@ -204,7 +204,7 @@ void CWallHealth::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE us
 	CBasePlayer *pPlayer = (CBasePlayer *)pActivator;
 
 	// if the player doesn't have the suit, or there is no juice left, make the deny noise
-	if ((m_iJuice <= 0) || (!(pPlayer->m_iHideHUD & ITEM_SUIT)))
+	if ((m_iJuice <= 0) || (!(pPlayer->m_iHideHUD & ITEM_SUIT)) || (pActivator->pev->health == 100))
 	{
 		if (m_flSoundTime <= gpGlobals->time)
 		{

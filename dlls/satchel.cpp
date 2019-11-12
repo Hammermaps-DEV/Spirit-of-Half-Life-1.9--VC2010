@@ -337,7 +337,7 @@ void CSatchel::PrimaryAttack()
 			SendWeaponAnim(SATCHEL_RADIO_FIRE);
 			m_chargeReady = SATCHEL_RELOAD;
 			m_iChargeLevel = 1;
-			m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+			m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 			m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.5;
 			m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
 			m_flTimeUpdate = UTIL_GlobalTimeBase() + RANDOM_FLOAT(0.3, 0.5);
@@ -379,7 +379,7 @@ void CSatchel::Throw()
 		m_pPlayer->SetAnimation(PLAYER_ATTACK1);
 
 		m_iOverloadLevel = 0;//reset
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.0;
+		m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
 		m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.5;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
 	}
@@ -437,7 +437,7 @@ void CSatchel::WeaponIdle()
 		// use tripmine animations
 		strcpy_s(m_pPlayer->m_szAnimExtention, "trip");
 
-		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
+		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 		m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.5;
 		m_chargeReady = SATCHEL_IDLE;
 		break;

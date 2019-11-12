@@ -367,7 +367,8 @@ public:
 
 	//LRC - used by weaponstrip
 	void DrainClip(CBasePlayer* pPlayer, BOOL keep, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iUranium, int iSatchel, int iSnark, int iTrip, int iGren);
-
+	float GetNextAttackDelay(float delay);
+	
 	int	PrimaryAmmoIndex();
 	int	SecondaryAmmoIndex();
 
@@ -399,6 +400,10 @@ public:
 	BOOL		b_Restored;//restore body and skin after save/load
 	BOOL		AnimRestore;//restore sound and animation after save/load
 	BOOL		m_iPlayEmptySound;
+
+	// hle time creep vars
+	float	m_flPrevPrimaryAttack;
+	float	m_flLastFireTime;
 };
 
 

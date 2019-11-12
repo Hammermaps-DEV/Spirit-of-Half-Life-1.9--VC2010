@@ -614,7 +614,7 @@ void CBaseDoor::DoorTouch(CBaseEntity *pOther)
 	entvars_t*	pevToucher = pOther->pev;
 
 	// Ignore touches by anything but players
-	if (!FClassnameIs(pevToucher, "player"))
+	if (!pOther->IsPlayer())
 		return;
 
 	// If door has master, and it's not ready to trigger, 
@@ -731,7 +731,8 @@ void CBaseDoor::DoorGoUp(void)
 	// emit door moving and stop sounds on CHAN_STATIC so that the multicast doesn't
 	// filter them out and leave a client stuck with looping door sounds!
 	if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
-		EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving), 1, ATTN_NORM);
+		if (m_toggle_state != TS_GOING_UP && m_toggle_state != TS_GOING_DOWN)
+			EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving), 1, ATTN_NORM);
 
 	//	ALERT(at_debug, "%s go up (was %d)\n", STRING(pev->targetname), m_toggle_state);
 	m_toggle_state = TS_GOING_UP;
@@ -840,7 +841,8 @@ void CBaseDoor::DoorHitTop(void)
 void CBaseDoor::DoorGoDown(void)
 {
 	if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
-		EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving), 1, ATTN_NORM);
+		if (m_toggle_state != TS_GOING_UP && m_toggle_state != TS_GOING_DOWN)
+			EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving), 1, ATTN_NORM);
 
 	//	ALERT(at_debug, "%s go down (was %d)\n", STRING(pev->targetname), m_toggle_state);
 
@@ -950,15 +952,23 @@ void CBaseDoor::Blocked(CBaseEntity *pOther)
 	if (gpGlobals->time < m_flBlockedTime) return;
 	m_flBlockedTime = gpGlobals->time + 0.5;
 
-	if (pev->dmg) pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
+	if (pev->dmg) 
+		pOther->TakeDamage(pev, pev, pev->dmg, DMG_CRUSH);
 
+	// Detonate satchels
+	if (!strcmp("monster_satchel", STRING(pOther->pev->classname)))
+		pOther->Use(this, this, USE_ON, 0);
+	
 	if (m_flWait >= 0)
 	{
+		//Door sound fix
 		if (!FBitSet(pev->spawnflags, SF_DOOR_SILENT))
 			STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving));
 		
-		if (m_toggle_state == TS_GOING_DOWN) DoorGoUp();
-		else DoorGoDown();
+		if (m_toggle_state == TS_GOING_DOWN) 
+			DoorGoUp();
+		else 
+			DoorGoDown();
 	}
 
 	//what the hell does this ?
@@ -1140,6 +1150,7 @@ public:
 	void	Spawn(void);
 	void Precache(void);
 	void EXPORT MomentaryMoveDone(void);
+	void EXPORT StopMoveSound(void);
 
 	void	KeyValue(KeyValueData *pkvd);
 	void	Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
@@ -1384,9 +1395,16 @@ void CMomentaryDoor::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE
 
 void CMomentaryDoor::MomentaryMoveDone(void)
 {
+	SetThink(&CMomentaryDoor::StopMoveSound);
+	SetNextThink(0.1);
+}
+
+void CMomentaryDoor::StopMoveSound()
+{
 	m_iState = STATE_OFF;
 	STOP_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseMoving));
 	EMIT_SOUND(ENT(pev), CHAN_STATIC, (char*)STRING(pev->noiseArrived), 1, ATTN_NORM);
+	DontThink();
 }
 
 #define SF_TRAINDOOR_INVERSE		1

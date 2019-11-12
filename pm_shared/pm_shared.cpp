@@ -198,7 +198,6 @@ void PM_InitTextureTypes()
 	char buffer[512];
 	int i, j;
 	byte *pMemFile;
-	int fileSize, filePos;
 	static qboolean bTextureTypeInit = false;
 
 	if (bTextureTypeInit)
@@ -210,12 +209,12 @@ void PM_InitTextureTypes()
 	gcTextures = 0;
 	memset(buffer, 0, 512);
 
-	fileSize = pmove->COM_FileSize("sound/materials.txt");
+	int fileSize = pmove->COM_FileSize("sound/materials.txt");
 	pMemFile = pmove->COM_LoadFile("sound/materials.txt", 5, NULL);
 	if (!pMemFile)
 		return;
 
-	filePos = 0;
+	int filePos = 0;
 	// for each line in the file...
 	while (pmove->memfgets(pMemFile, fileSize, &filePos, buffer, 511) != NULL && (gcTextures < CTEXTURESMAX))
 	{
@@ -2214,16 +2213,21 @@ void PM_LadderMove(physent_t *pLadder)
 	{
 		float forward = 0, right = 0;
 		vec3_t vpn, v_right;
+		float flSpeed = MAX_CLIMB_SPEED;
+
+		// they shouldn't be able to move faster than their maxspeed
+		if (flSpeed > pmove->maxspeed)
+			flSpeed = pmove->maxspeed;
 
 		AngleVectors(pmove->angles, vpn, v_right, NULL);
 		if (pmove->cmd.buttons & IN_BACK)
-			forward -= MAX_CLIMB_SPEED;
+			forward -= flSpeed;
 		if (pmove->cmd.buttons & IN_FORWARD)
-			forward += MAX_CLIMB_SPEED;
+			forward += flSpeed;
 		if (pmove->cmd.buttons & IN_MOVELEFT)
-			right -= MAX_CLIMB_SPEED;
+			right -= flSpeed;
 		if (pmove->cmd.buttons & IN_MOVERIGHT)
-			right += MAX_CLIMB_SPEED;
+			right += flSpeed;
 
 		if (pmove->cmd.buttons & IN_JUMP)
 		{

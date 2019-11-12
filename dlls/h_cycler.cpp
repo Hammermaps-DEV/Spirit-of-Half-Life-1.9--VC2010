@@ -446,7 +446,7 @@ void CWeaponCycler::PrimaryAttack()
 {
 	SendWeaponAnim(pev->sequence);
 
-	m_flNextPrimaryAttack = gpGlobals->time + 0.5;
+	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
 }
 
 
