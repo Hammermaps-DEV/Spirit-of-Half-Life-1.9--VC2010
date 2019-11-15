@@ -1333,7 +1333,8 @@ void CBasePlayerAmmo::DefaultTouch(CBaseEntity *pOther)
 			SetThink(&CBasePlayerAmmo::SUB_Remove);
 			SetNextThink(0.1);
 		}
-		SUB_UseTargets(pOther, USE_TOGGLE, 0);
+		
+		SUB_UseTargets(pOther, USE_TOGGLE, 0);	//AJH now ammo can trigger stuff too
 	}
 	else if (gEvilImpulse101)
 	{

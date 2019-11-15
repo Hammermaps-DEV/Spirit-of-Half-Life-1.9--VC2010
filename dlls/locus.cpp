@@ -12,8 +12,6 @@
 #include "locus.h"
 #include "../engine/customentity.h"
 #include "effects.h"
-#include "decals.h"
-
 
 Vector CalcLocus_Position(CBaseEntity *pEntity, CBaseEntity *pLocus, const char *szText)
 {
@@ -53,21 +51,30 @@ Vector CalcLocus_Velocity(CBaseEntity *pEntity, CBaseEntity *pLocus, const char 
 	return g_vecZero;
 }
 
-float CalcLocus_Ratio(CBaseEntity *pLocus, const char *szText)
+float CalcLocus_Ratio(CBaseEntity* pLocus, const char* szText, int mode)	//AJH added 'mode' = ratio to return
 {
 	if ((*szText >= '0' && *szText <= '9') || *szText == '-')
 	{ // assume it's a float
 		return atof(szText);
 	}
 
-	CBaseEntity *pCalc = UTIL_FindEntityByTargetname(NULL, szText, pLocus);
+	CBaseEntity* pCalc = UTIL_FindEntityByTargetname(NULL, szText, pLocus);
 
-	if (pCalc != NULL)
-		return pCalc->CalcRatio(pLocus);
-
-	ALERT(at_error, "Bad or missing calc_ratio entity \"%s\"\n", szText);
-	return 0; // we need some signal for "fail". NaN, maybe?
+	if (pCalc != NULL) {
+		//ALERT(at_debug,"Entity \"%s\" found, calling CalcRatio, mode %i.\n",szText,mode);
+		return pCalc->CalcRatio(pLocus, mode);
+	}
+	else {
+		ALERT(at_aiconsole, "Bad or missing calc_ratio entity \"%s\", mode %i\n", szText, mode); // MJB/AJH - might need to be supressed; this error is often returned when there is no error
+		return 0; // we need some signal for "fail". NaN, maybe?	
+	}
 }
+
+float CalcLocus_Ratio(CBaseEntity* pLocus, const char* szText)	//AJH calls new CalcLocusRatio
+{
+	return CalcLocus_Ratio(pLocus, szText, 0);
+}
+
 
 //=============================================
 //locus_x effects

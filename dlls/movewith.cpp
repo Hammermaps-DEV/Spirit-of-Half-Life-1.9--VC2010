@@ -2,8 +2,6 @@
 #include	"util.h"
 #include	"cbase.h"
 #include	"movewith.h"
-#include	"saverestore.h"
-#include	"player.h"
 
 CWorld *g_pWorld = NULL; //LRC
 
@@ -62,6 +60,7 @@ void HandlePostAssist(CBaseEntity *pEnt)
 		pEnt->m_vecPostAssistVel = g_vecZero;
 		pEnt->m_iLFlags &= ~LF_POSTASSISTVEL;
 	}
+	
 	if (pEnt->m_iLFlags & LF_POSTASSISTAVEL)
 	{
 		//		ALERT(at_console, "RestoreVel %s: orign %f %f %f, velocity was %f %f %f, back to %f %f %f\n",
@@ -74,6 +73,7 @@ void HandlePostAssist(CBaseEntity *pEnt)
 		pEnt->m_vecPostAssistAVel = g_vecZero;
 		pEnt->m_iLFlags &= ~LF_POSTASSISTAVEL;
 	}
+	
 	CBaseEntity *pChild;
 	for (pChild = pEnt->m_pChildMoveWith; pChild != NULL; pChild = pChild->m_pSiblingMoveWith)
 		HandlePostAssist(pChild);
@@ -165,13 +165,14 @@ int TryAssistEntity(CBaseEntity *pEnt)
 	}
 
 	// not flagged as needing assistance?
-	//if (!(pEnt->m_iLFlags & LF_DOASSIST)) return 0;
+	if (!(pEnt->m_iLFlags & LF_DOASSIST))
+		return 0;
 
 //	ALERT(at_console, "AssistList: %s\n", STRING(pEnt->pev->classname));
 
 	if (pEnt->m_fNextThink <= 0)
 	{
-		//		ALERT(at_console, "Cancelling assist for %s, %f\n", STRING(pEnt->pev->targetname), pEnt->pev->origin.x);
+		//	ALERT(at_console, "Cancelling assist for %s, %f\n", STRING(pEnt->pev->targetname), pEnt->pev->origin.x);
 		pEnt->m_iLFlags &= ~LF_DOASSIST;
 		return 0; // the think has been cancelled. Oh well...
 	}
@@ -251,6 +252,7 @@ void CheckAssistList(void)
 		return;
 	}
 
+	/*
 	int count = 0;
 
 	for (pListMember = g_pWorld; pListMember; pListMember = pListMember->m_pAssistLink)
@@ -259,7 +261,10 @@ void CheckAssistList(void)
 			count++;
 	}
 
-	count = 0;
+		if (count)
+		ALERT(at_console, "CheckAssistList begins, length is %d\n", count);
+	*/
+	
 	pListMember = g_pWorld;
 
 	while (pListMember->m_pAssistLink) // handle the remaining entries in the list
@@ -267,11 +272,13 @@ void CheckAssistList(void)
 		TryAssistEntity(pListMember->m_pAssistLink);
 		if (!(pListMember->m_pAssistLink->m_iLFlags & LF_ASSISTLIST))
 		{
+			//ALERT(at_console, "Removing %s \"%s\" from assistList\n", STRING(pListMember->m_pAssistLink->pev->classname), STRING(pListMember->m_pAssistLink->pev->targetname));
 			CBaseEntity *pTemp = pListMember->m_pAssistLink;
 			pListMember->m_pAssistLink = pListMember->m_pAssistLink->m_pAssistLink;
 			pTemp->m_pAssistLink = NULL;
 		}
-		else pListMember = pListMember->m_pAssistLink;
+		else 
+			pListMember = pListMember->m_pAssistLink;
 	}
 }
 
@@ -279,7 +286,8 @@ void CheckAssistList(void)
 void CheckDesiredList(void)
 {
 	CBaseEntity *pListMember;
-	int loopbreaker = 1024; //max edicts
+	int loopbreaker = 1000; //assume this is the max. number of entities which will use DesiredList in any one frame
+//	BOOL liststart = FALSE;
 
 	if (g_doingDesired) ALERT(at_debug, "CheckDesiredList: doingDesired is already set!?\n");
 	g_doingDesired = TRUE;
@@ -290,7 +298,6 @@ void CheckDesiredList(void)
 		return;
 	}
 
-	pListMember = g_pWorld;
 	CBaseEntity *pNext;
 	pListMember = g_pWorld->m_pAssistLink;
 
@@ -310,8 +317,6 @@ void CheckDesiredList(void)
 
 	g_doingDesired = FALSE;
 }
-
-
 
 void UTIL_MarkForAssist(CBaseEntity *pEnt, BOOL correctSpeed)
 {
@@ -365,8 +370,6 @@ void UTIL_DesiredThink(CBaseEntity *pEnt)
 	UTIL_MarkForDesired(pEnt);
 }
 
-
-
 // LRC- change the origin to the given position, and bring any movewiths along too.
 void UTIL_AssignOrigin(CBaseEntity *pEntity, const Vector vecOrigin)
 {
@@ -376,7 +379,10 @@ void UTIL_AssignOrigin(CBaseEntity *pEntity, const Vector vecOrigin)
 // LRC- bInitiator is true if this is being called directly, rather than because pEntity is moving with something else.
 void UTIL_AssignOrigin(CBaseEntity *pEntity, const Vector vecOrigin, BOOL bInitiator)
 {
+	//	ALERT(at_console, "AssignOrigin before %f, after %f\n", pEntity->pev->origin.x, vecOrigin.x);
 	Vector vecDiff = vecOrigin - pEntity->pev->origin;
+	if (vecDiff.Length() > 0.01 && CVAR_GET_FLOAT("sohl_mwdebug"))
+		ALERT(at_debug, "AssignOrigin %s %s: (%f %f %f) goes to (%f %f %f)\n", STRING(pEntity->pev->classname), STRING(pEntity->pev->targetname), pEntity->pev->origin.x, pEntity->pev->origin.y, pEntity->pev->origin.z, vecOrigin.x, vecOrigin.y, vecOrigin.z);
 
 	UTIL_SetOrigin(pEntity, vecOrigin);
 

@@ -202,7 +202,7 @@ public:
 	//LRC - loci
 	virtual Vector	CalcPosition(CBaseEntity *pLocus) { return pev->origin; }
 	virtual Vector	CalcVelocity(CBaseEntity *pLocus) { return pev->velocity; }
-	virtual float	CalcRatio(CBaseEntity *pLocus) { return 0; }
+	virtual float	CalcRatio(CBaseEntity* pLocus, int mode) { return 0; }	//AJH added 'mode' = ratio to return
 
 	//LRC - aliases
 	virtual BOOL IsAlias(void) { return FALSE; }

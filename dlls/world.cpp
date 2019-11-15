@@ -27,13 +27,9 @@
 #include "soundent.h"
 #include "client.h"
 #include "decals.h"
-#include "skill.h"
 #include "effects.h"
 #include "player.h"
-#include "weapons.h"
 #include "gamerules.h"
-#include "teamplay_gamerules.h"
-#include "movewith.h" //LRC
 
 extern CGraph WorldGraph;
 extern CSoundEnt *pSoundEnt;
@@ -104,16 +100,16 @@ BODY QUE
 class CDecal : public CBaseEntity
 {
 public:
-	void	Spawn(void);
-	void	KeyValue(KeyValueData *pkvd);
-	void	EXPORT StaticDecal(void);
+	void	Spawn() override;
+	void	KeyValue(KeyValueData *pkvd) override;
+	void	EXPORT StaticDecal();
 	void	EXPORT TriggerDecal(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 };
 
 LINK_ENTITY_TO_CLASS(infodecal, CDecal);
 
 // UNDONE:  These won't get sent to joining players in multi-player
-void CDecal::Spawn(void)
+void CDecal::Spawn()
 {
 	if (pev->skin < 0 || (gpGlobals->deathmatch && FBitSet(pev->spawnflags, SF_DECAL_NOTINDEATHMATCH)))
 	{
@@ -220,7 +216,6 @@ static void InitBodyQue(void)
 	pev->owner = g_pBodyQueueHead;
 }
 
-
 //
 // make a body que entry for the given ent so the ent can be respawned elsewhere
 //
@@ -246,9 +241,6 @@ void CopyToBodyQue(entvars_t *pev)
 	pevHead->renderamt = ENTINDEX(ENT(pev));
 
 	pevHead->effects = pev->effects | EF_NOINTERP;
-	//pevHead->goalstarttime = pev->goalstarttime;
-	//pevHead->goalframe	= pev->goalframe;
-	//pevHead->goalendtime = pev->goalendtime ;
 
 	pevHead->sequence = pev->sequence;
 	pevHead->animtime = pev->animtime;
@@ -273,11 +265,11 @@ globalentity_t *CGlobalState::Find(string_t globalname)
 {
 	if (!globalname)
 		return NULL;
-
-	const char *pEntityName = STRING(globalname);
-
-
-	globalentity_t* pTest = m_pList;
+	
+	globalentity_t* pTest;
+	const char* pEntityName = STRING(globalname);
+	pTest = m_pList;
+	
 	while (pTest)
 	{
 		if (FStrEq(pEntityName, pTest->name))

@@ -195,6 +195,7 @@ typedef enum
 
 } MONSTERSTATE;
 
+//LRC- added USE_SAME, USE_NOT, and USE_KILL
 typedef enum
 {
 	USE_OFF = 0,
@@ -202,6 +203,7 @@ typedef enum
 	USE_SET = 2,
 	USE_TOGGLE = 3,
 	USE_KILL = 4,
+	USE_SPAWN = 7,  //AJH
 	// special signals, never actually get sent:
 	USE_SAME = 5,
 	USE_NOT = 6,
