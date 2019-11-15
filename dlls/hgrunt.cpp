@@ -16,7 +16,20 @@
 // hgrunt
 //=========================================================
 
+//=========================================================
+// Hit groups!	
+//=========================================================
+/*
+
+  1 - Head
+  2 - Stomach
+  3 - Gun
+
+*/
+
+
 #include	"extdll.h"
+#include	"plane.h"
 #include	"util.h"
 #include	"cbase.h"
 #include	"monsters.h"
@@ -112,40 +125,40 @@ enum
 class CHGrunt : public CSquadMonster
 {
 public:
-	void Spawn(void) override;
-	void Precache(void) override;
-	void SetYawSpeed(void) override;
-	int  Classify(void) override;
-	int ISoundMask(void) override;
-	void HandleAnimEvent(MonsterEvent_t *pEvent) override;
-	BOOL FCanCheckAttacks(void) override;
-	bool CheckMeleeAttack1(float flDot, float flDist) override;
-	bool CheckRangeAttack1(float flDot, float flDist) override;
-	bool CheckRangeAttack2(float flDot, float flDist) override;
-	void CheckAmmo(void) override;
-	void SetActivity(Activity NewActivity) override;
-	void StartTask(Task_t *pTask) override;
-	void RunTask(Task_t *pTask) override;
-	void DeathSound(void) override;
-	void PainSound(void) override;
-	void IdleSound(void) override;
-	Vector GetGunPosition(void) override;
+	void Spawn(void);
+	void Precache(void);
+	void SetYawSpeed(void);
+	int  Classify(void);
+	int ISoundMask(void);
+	void HandleAnimEvent(MonsterEvent_t *pEvent);
+	BOOL FCanCheckAttacks(void);
+	bool CheckMeleeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack1(float flDot, float flDist);
+	bool CheckRangeAttack2(float flDot, float flDist);
+	void CheckAmmo(void);
+	void SetActivity(Activity NewActivity);
+	void StartTask(Task_t *pTask);
+	void RunTask(Task_t *pTask);
+	void DeathSound(void);
+	void PainSound(void);
+	void IdleSound(void);
+	Vector GetGunPosition(void);
 	void Shoot(void);
 	void Shotgun(void);
-	void PrescheduleThink(void) override;
-	void GibMonster(void) override;
+	void PrescheduleThink(void);
+	void GibMonster(void);
 	void SpeakSentence(void);
 
 	int	Save(CSave &save);
 	int Restore(CRestore &restore);
 
 	CBaseEntity	*Kick(void);
-	Schedule_t	*GetSchedule(void) override;
-	Schedule_t  *GetScheduleOfType(int Type) override;
-	void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType) override;
-	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType) override;
+	Schedule_t	*GetSchedule(void);
+	Schedule_t  *GetScheduleOfType(int Type);
+	void TraceAttack(entvars_t *pevAttacker, float flDamage, Vector vecDir, TraceResult *ptr, int bitsDamageType);
+	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
 
-	int IRelationship(CBaseEntity *pTarget) override;
+	int IRelationship(CBaseEntity *pTarget);
 
 	BOOL FOkToSpeak(void);
 	void JustSpoke(void);
@@ -182,13 +195,16 @@ TYPEDESCRIPTION	CHGrunt::m_SaveData[] =
 {
 	DEFINE_FIELD(CHGrunt, m_flNextGrenadeCheck, FIELD_TIME),
 	DEFINE_FIELD(CHGrunt, m_flNextPainTime, FIELD_TIME),
-	DEFINE_FIELD(CHGrunt, m_vecTossVelocity, FIELD_VECTOR),
-	DEFINE_FIELD(CHGrunt, m_fThrowGrenade, FIELD_BOOLEAN),
-	DEFINE_FIELD(CHGrunt, m_fStanding, FIELD_BOOLEAN),
-	DEFINE_FIELD(CHGrunt, m_fFirstEncounter, FIELD_BOOLEAN),
-	DEFINE_FIELD(CHGrunt, m_cClipSize, FIELD_INTEGER),
-	DEFINE_FIELD(CHGrunt, m_voicePitch, FIELD_INTEGER),
-	DEFINE_FIELD(CHGrunt, m_iSentence, FIELD_INTEGER),
+	//	DEFINE_FIELD( CHGrunt, m_flLastEnemySightTime, FIELD_TIME ), // don't save, go to zero
+		DEFINE_FIELD(CHGrunt, m_vecTossVelocity, FIELD_VECTOR),
+		DEFINE_FIELD(CHGrunt, m_fThrowGrenade, FIELD_BOOLEAN),
+		DEFINE_FIELD(CHGrunt, m_fStanding, FIELD_BOOLEAN),
+		DEFINE_FIELD(CHGrunt, m_fFirstEncounter, FIELD_BOOLEAN),
+		DEFINE_FIELD(CHGrunt, m_cClipSize, FIELD_INTEGER),
+		DEFINE_FIELD(CHGrunt, m_voicePitch, FIELD_INTEGER),
+		//  DEFINE_FIELD( CShotgun, m_iBrassShell, FIELD_INTEGER ),
+		//  DEFINE_FIELD( CShotgun, m_iShotgunShell, FIELD_INTEGER ),
+			DEFINE_FIELD(CHGrunt, m_iSentence, FIELD_INTEGER),
 };
 
 IMPLEMENT_SAVERESTORE(CHGrunt, CSquadMonster);
@@ -296,7 +312,7 @@ void CHGrunt::GibMonster(void)
 		}
 	}
 
-	CSquadMonster::GibMonster();
+	CBaseMonster::GibMonster();
 }
 
 //=========================================================
@@ -1227,6 +1243,18 @@ void CHGrunt::PainSound(void)
 {
 	if (gpGlobals->time > m_flNextPainTime)
 	{
+#if 0
+		if (RANDOM_LONG(0, 99) < 5)
+		{
+			// pain sentences are rare
+			if (FOkToSpeak())
+			{
+				SENTENCEG_PlayRndSz(ENT(pev), "HG_PAIN", HGRUNT_SENTENCE_VOLUME, ATTN_NORM, 0, PITCH_NORM);
+				JustSpoke();
+				return;
+			}
+		}
+#endif 
 		switch (RANDOM_LONG(0, 6))
 		{
 		case 0:
@@ -2096,7 +2124,7 @@ Schedule_t *CHGrunt::GetSchedule(void)
 		if (HasConditions(bits_COND_ENEMY_DEAD))
 		{
 			// call base class, all code to handle dead enemies is centralized there.
-			return CSquadMonster::GetSchedule();
+			return CBaseMonster::GetSchedule();
 		}
 
 		// new enemy
@@ -2486,6 +2514,8 @@ void CHGruntRepel::RepelUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 
 	UTIL_Remove(this);
 }
+
+
 
 //=========================================================
 // DEAD HGRUNT PROP

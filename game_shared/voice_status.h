@@ -77,8 +77,11 @@ class VoiceImagePanel : public vgui::ImagePanel
 class CVoiceStatus : public CHudBase, public vgui::CDefaultInputSignal
 {
 public:
-	CVoiceStatus();
+				CVoiceStatus();
 	virtual		~CVoiceStatus();
+
+// CHudBase overrides.
+public:
 	
 	// Initialize the cl_dll's voice manager.
 	virtual int Init(
@@ -86,7 +89,10 @@ public:
 		vgui::Panel **pParentPanel);
 	
 	// ackPosition is the bottom position of where CVoiceStatus will draw the voice acknowledgement labels.
-	virtual void VidInit();
+	virtual int VidInit();
+
+
+public:
 	
 	// Call from HUD_Frame each frame.
 	void	Frame(double frametime);
@@ -109,6 +115,10 @@ public:
 	// The server sends this message initially to tell the client to send their state.
 	void	HandleReqStateMsg(int iSize, void *pbuf);
 
+
+// Squelch mode functions.
+public:
+
 	// When you enter squelch mode, pass in 
 	void	StartSquelchMode();
 	void	StopSquelchMode();
@@ -124,6 +134,8 @@ public:
 	// blocks the target client from being heard
 	void	SetPlayerBlockedState(int iPlayerIndex, bool blocked);
 
+public:
+
 	CVoiceLabel*	FindVoiceLabel(int clientindex);	// Find a CVoiceLabel representing the specified speaker. 
 													// Returns NULL if none.
 													// entindex can be -1 if you want a currently-unused voice label.
@@ -137,6 +149,9 @@ public:
 
 	// Update the button artwork to reflect the client's current state.
 	void			UpdateBanButton(int iClient);
+
+
+public:
 
 	enum			{MAX_VOICE_SPEAKERS=7};
 
@@ -190,7 +205,11 @@ public:
 	bool				m_bTalking;				// Set to true when the client thinks it's talking.
 	bool				m_bServerAcked;			// Set to true when the server knows the client is talking.
 
+public:
+	
 	CVoiceBanMgr		m_BanMgr;				// Tracks which users we have squelched and don't want to hear.
+
+public:
 
 	bool				m_bBanMgrInitialized;
 

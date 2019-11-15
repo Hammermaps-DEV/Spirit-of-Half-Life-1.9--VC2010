@@ -33,7 +33,7 @@
 #define HIDEHUD_FLASHLIGHT		( 1<<1 )
 #define HIDEHUD_ALL			( 1<<2 )
 #define HIDEHUD_HEALTH		( 1<<3 )
-#define HIDEHUD_CROSSHAIR	( 1<<4 ) //LRC - probably not the right way to do this, but it's just an experiment.
+#define HIDEHUD_CROSSHAIR		( 1<<4 ) //LRC - probably not the right way to do this, but it's just an experiment.
 #define ITEM_SUIT			( 1<<5 ) //g-cont. move suit flag here
 
 #define MAX_AMMO_TYPES		32		// ???
@@ -44,10 +44,6 @@
 #define HUD_PRINTTALK		3
 #define HUD_PRINTCENTER		4
 
-#define MAX_PLAYERS			32
-#define MAX_PLAYER_NAME		32
-#define MAX_TEAMS			32
-#define MAX_TEAM_NAME		16
 
 #define WEAPON_SUIT			31
 

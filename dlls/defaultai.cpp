@@ -22,6 +22,7 @@
 #include	"schedule.h"
 #include	"defaultai.h"
 #include	"soundent.h"
+#include	"nodes.h"
 #include	"scripted.h"
 
 //=========================================================
@@ -809,7 +810,7 @@ Schedule_t slTeleportToScript[] =
 {
 	{
 		tlScriptedTeleport,
-		ARRAYSIZE(tlScriptedTeleport),
+		HL_ARRAYSIZE(tlScriptedTeleport),
 		SCRIPT_BREAK_CONDITIONS,
 		0,
 		"TeleportToScript"
@@ -1003,7 +1004,7 @@ Schedule_t	slTakeCoverFromEnemy[] =
 	},
 };
 
-Schedule_t* CBaseMonster::m_scheduleList[] =
+Schedule_t *CBaseMonster::m_scheduleList[] =
 {
 	slIdleStand,
 	slIdleTrigger,
@@ -1046,13 +1047,13 @@ Schedule_t* CBaseMonster::m_scheduleList[] =
 	slFail
 };
 
-Schedule_t* CBaseMonster::ScheduleFromName(const char* pName)
+Schedule_t *CBaseMonster::ScheduleFromName(const char *pName)
 {
 	return ScheduleInList(pName, m_scheduleList, HL_ARRAYSIZE(m_scheduleList));
 }
 
 
-Schedule_t* CBaseMonster::ScheduleInList(const char* pName, Schedule_t** pList, int listCount)
+Schedule_t *CBaseMonster::ScheduleInList(const char *pName, Schedule_t **pList, int listCount)
 {
 	int i;
 

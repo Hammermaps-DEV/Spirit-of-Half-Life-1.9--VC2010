@@ -630,7 +630,7 @@ void TeamFortressViewport::Initialize( void )
 
 	strcpy(m_sMapName, "");
 	strcpy(m_szServerName, "");
-	for (int i = 0; i < MAX_TEAMS + 1; i++)
+	for (int i = 0; i < 5; i++)
 	{
 		m_iValidClasses[i] = 0;
 		strcpy(m_sTeamNames[i], "");
@@ -943,25 +943,24 @@ CommandButton *TeamFortressViewport::CreateCustomButton( char *pButtonText, char
 		m_iNumMenus++;
 
 		// ChangeTeam buttons
-		char sz[256];
-		for (int i = 0; i < MAX_TEAMS_IN_MENU; i++)
+		for (int i = 0; i < 4; i++)
 		{
-			sprintf(sz, "jointeam %d", i + 1);
-			m_pTeamButtons[i] = new TeamButton(i + 1, "teamname", 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y);
+			char sz[256]; 
+			sprintf(sz, "jointeam %d", i+1);
+			m_pTeamButtons[i] = new TeamButton(i+1, "teamname", 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y);
 			m_pTeamButtons[i]->addActionSignal(new CMenuHandler_StringCommandWatch( sz ));
 			pMenu->AddButton( m_pTeamButtons[i] ); 
 		}
 
 		// Auto Assign button
-		sprintf(sz, "jointeam %d", MAX_TEAMS_IN_MENU + 1);
-		m_pTeamButtons[MAX_TEAMS_IN_MENU] = new TeamButton(MAX_TEAMS_IN_MENU + 1, gHUD.m_TextMessage.BufferedLocaliseTextString("#Team_AutoAssign"), 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y);
-		m_pTeamButtons[MAX_TEAMS_IN_MENU]->addActionSignal(new CMenuHandler_StringCommand(sz));
-		pMenu->AddButton(m_pTeamButtons[MAX_TEAMS_IN_MENU]);
+		m_pTeamButtons[4] = new TeamButton(5, gHUD.m_TextMessage.BufferedLocaliseTextString( "#Team_AutoAssign" ), 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y);
+		m_pTeamButtons[4]->addActionSignal(new CMenuHandler_StringCommand( "jointeam 5" ));
+		pMenu->AddButton( m_pTeamButtons[4] ); 
 
 		// Spectate button
-		m_pTeamButtons[MAX_TEAMS_IN_MENU + 1] = new SpectateButton(CHudTextMessage::BufferedLocaliseTextString("#Menu_Spectate"), 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y, false);
-		m_pTeamButtons[MAX_TEAMS_IN_MENU + 1]->addActionSignal(new CMenuHandler_StringCommand("spectate"));
-		pMenu->AddButton(m_pTeamButtons[MAX_TEAMS_IN_MENU + 1]);
+		m_pTeamButtons[5] = new SpectateButton( CHudTextMessage::BufferedLocaliseTextString( "#Menu_Spectate" ), 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y, false);
+		m_pTeamButtons[5]->addActionSignal(new CMenuHandler_StringCommand( "spectate" ));
+		pMenu->AddButton( m_pTeamButtons[5] ); 
 	}
 	// ChangeClass
 	else if ( !strcmp( pButtonName, "!CHANGECLASS" ) )
@@ -1061,10 +1060,10 @@ CommandButton *TeamFortressViewport::CreateCustomButton( char *pButtonText, char
 		m_iNumMenus++;
 
 		// Disguise Enemy submenu buttons
-		for (int i = 1; i <= MAX_TEAMS_IN_MENU; i++)
+		for ( int i = 1; i <= 4; i++ )
 		{
 			// only show the 4th disguise button if we have 4 teams
-			m_pDisguiseButtons[i] = new DisguiseButton(((i < MAX_TEAMS_IN_MENU) ? DISGUISE_TEAM3 : 0) | DISGUISE_TEAM4, "Disguise", 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y);
+			m_pDisguiseButtons[i] = new DisguiseButton( ((i < 4) ? DISGUISE_TEAM3 : 0) | DISGUISE_TEAM4, "Disguise", 0, BUTTON_SIZE_Y, CMENU_SIZE_X, BUTTON_SIZE_Y);
 
 			pDisguiseMenu->AddButton( m_pDisguiseButtons[i] );
 			m_pDisguiseButtons[i]->setParentMenu( pDisguiseMenu );
@@ -1558,7 +1557,7 @@ CMenuPanel* TeamFortressViewport::CreateTextWindow( int iTextToShow )
 	char sz[256];
 	char *cText;
 	char *pfile = NULL;
-	static const int MAX_TITLE_LENGTH = 64;
+	static const int MAX_TITLE_LENGTH = 32;
 	char cTitle[MAX_TITLE_LENGTH];
 
 	if ( iTextToShow == SHOW_MOTD )
@@ -2138,17 +2137,18 @@ int TeamFortressViewport::MsgFunc_TeamNames(const char *pszName, int iSize, void
 	{
 		int teamNum = i + 1;
 
-		gHUD.m_TextMessage.LocaliseTextString(READ_STRING(), m_sTeamNames[teamNum], MAX_TEAM_NAME);
+		gHUD.m_TextMessage.LocaliseTextString( READ_STRING(), m_sTeamNames[teamNum], MAX_TEAMNAME_SIZE );
 
-		if (i < MAX_TEAMS_IN_MENU)
+		// Set the team name buttons
+		if (m_pTeamButtons[i])
+			m_pTeamButtons[i]->setText( m_sTeamNames[teamNum] );
+
+		// range check this value...m_pDisguiseButtons[5];
+		if ( teamNum < 5 )
 		{
-			// Set the team name buttons
-			if (m_pTeamButtons[i])
-				m_pTeamButtons[i]->setText(m_sTeamNames[teamNum]);
-
 			// Set the disguise buttons
-			if (m_pDisguiseButtons[teamNum])
-				m_pDisguiseButtons[teamNum]->setText(m_sTeamNames[teamNum]);
+			if ( m_pDisguiseButtons[teamNum] )
+				m_pDisguiseButtons[teamNum]->setText( m_sTeamNames[teamNum] );
 		}
 	}
 
@@ -2252,8 +2252,6 @@ int TeamFortressViewport::MsgFunc_ServerName( const char *pszName, int iSize, vo
 
 	strncpy( m_szServerName, READ_STRING(), MAX_SERVERNAME_LENGTH );
 
-	m_szServerName[MAX_SERVERNAME_LENGTH - 1] = 0;
-	
 	return 1;
 }
 

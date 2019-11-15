@@ -35,6 +35,7 @@ extern float *GetClientColor( int clientIndex );
 // allow 20 pixels on either side of the text
 #define MAX_LINE_WIDTH  ( ScreenWidth - 40 )
 #define LINE_START  10
+static float SCROLL_SPEED = 5;
 
 static char g_szLineBuffer[ MAX_LINES + 1 ][ MAX_CHARS_PER_LINE ];
 static float *g_pflNameColors[ MAX_LINES + 1 ];
@@ -46,7 +47,7 @@ static int line_height = 0;
 
 DECLARE_MESSAGE( m_SayText, SayText );
 
-void CHudSayText :: Init( void )
+int CHudSayText :: Init( void )
 {
 	gHUD.AddHudElem( this );
 
@@ -58,7 +59,10 @@ void CHudSayText :: Init( void )
 	m_HUD_saytext_time =	gEngfuncs.pfnRegisterVariable( "hud_saytext_time", "5", 0 );
 
 	m_iFlags |= HUD_INTERMISSION; // is always drawn during an intermission
+
+	return 1;
 }
+
 
 void CHudSayText :: InitHUDData( void )
 {
@@ -66,6 +70,12 @@ void CHudSayText :: InitHUDData( void )
 	memset( g_pflNameColors, 0, sizeof g_pflNameColors );
 	memset( g_iNameLengths, 0, sizeof g_iNameLengths );
 }
+
+int CHudSayText :: VidInit( void )
+{
+	return 1;
+}
+
 
 int ScrollTextUp( void )
 {
@@ -85,12 +95,12 @@ int ScrollTextUp( void )
 	return 1;
 }
 
-void CHudSayText :: Draw( float flTime )
+int CHudSayText :: Draw( float flTime )
 {
 	int y = Y_START;
 
 	if ( ( gViewPort && gViewPort->AllowedToPrintText() == FALSE) || !m_HUD_saytext->value )
-		return;
+		return 1;
 
 	// make sure the scrolltime is within reasonable bounds,  to guard against the clock being reset
 	flScrollTime = min( flScrollTime, flTime + m_HUD_saytext_time->value );
@@ -119,12 +129,12 @@ void CHudSayText :: Draw( float flTime )
 			if ( *g_szLineBuffer[i] == 2 && g_pflNameColors[i] )
 			{
 				// it's a saytext string
-				static char buf[MAX_PLAYER_NAME + 32];
+				static char buf[MAX_PLAYER_NAME_LENGTH+32];
 
 				// draw the first x characters in the player color
-				strncpy(buf, g_szLineBuffer[i], min(g_iNameLengths[i], MAX_PLAYER_NAME + 32));
-				buf[min(g_iNameLengths[i], MAX_PLAYER_NAME + 31)] = 0;
-				DrawSetTextColor(g_pflNameColors[i][0], g_pflNameColors[i][1], g_pflNameColors[i][2]);
+				strncpy( buf, g_szLineBuffer[i], min(g_iNameLengths[i], MAX_PLAYER_NAME_LENGTH+32) );
+				buf[ min(g_iNameLengths[i], MAX_PLAYER_NAME_LENGTH+31) ] = 0;
+				gEngfuncs.pfnDrawSetTextColor( g_pflNameColors[i][0], g_pflNameColors[i][1], g_pflNameColors[i][2] );
 				int x = DrawConsoleString( LINE_START, y, buf );
 
 				// color is reset after each string draw
@@ -139,6 +149,9 @@ void CHudSayText :: Draw( float flTime )
 
 		y += line_height;
 	}
+
+
+	return 1;
 }
 
 int CHudSayText :: MsgFunc_SayText( const char *pszName, int iSize, void *pbuf )

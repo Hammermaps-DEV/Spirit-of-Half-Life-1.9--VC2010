@@ -660,12 +660,11 @@ bool ParticleSystem::ParticleIsVisible( particle* part )
 
 bool ParticleSystem::UpdateParticle(particle *part, float frametime)
 {
-	if (frametime == 0) 
-		return true;
+	if (frametime == 0) return true;
 
 	part->age += frametime;
 
-	cl_entity_t* source = gEngfuncs.GetEntityByIndex(m_iEntIndex);  //AJH moved here
+          cl_entity_t *source = GetClientEntityWithServerIndex( m_iEntIndex );
 	
 	// is this particle bound to an entity?
 	if (part->m_iEntIndex)

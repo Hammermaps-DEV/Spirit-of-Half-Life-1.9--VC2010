@@ -266,7 +266,6 @@ extern void	UTIL_FlushAliases(void);
 extern CBaseEntity	*UTIL_FindEntityInSphere(CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius);
 extern CBaseEntity	*UTIL_FindEntityByString(CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue);
 extern CBaseEntity	*UTIL_FindEntityByClassname(CBaseEntity *pStartEntity, const char *szName);
-extern CBaseEntity  *UTIL_FindEntityByClassname(CBaseEntity *pStartEntity, const char *szName, bool bLoop, bool bReverse);
 extern CBaseEntity	*UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *szName);
 extern CBaseEntity	*UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *szName, CBaseEntity *pActivator); //LRC - for $locus references
 extern CBaseEntity	*UTIL_FindEntityByTarget(CBaseEntity *pStartEntity, const char *szName);
@@ -278,11 +277,11 @@ extern CBaseEntity	*UTIL_FindEntityGeneric(const char *szName, Vector &vecSrc, f
 extern CBaseEntity	*UTIL_PlayerByIndex(int playerIndex);
 
 #define UTIL_EntitiesInPVS(pent)			(*g_engfuncs.pfnEntitiesInPVS)(pent)
-extern void	UTIL_MakeVectors(const Vector &vecAngles);
+extern void			UTIL_MakeVectors(const Vector &vecAngles);
 
 // Pass in an array of pointers and an array size, it fills the array and returns the number inserted
-extern int	UTIL_MonstersInSphere(CBaseEntity **pList, int listMax, const Vector &center, float radius);
-extern int	UTIL_EntitiesInBox(CBaseEntity **pList, int listMax, const Vector &mins, const Vector &maxs, int flagMask);
+extern int			UTIL_MonstersInSphere(CBaseEntity **pList, int listMax, const Vector &center, float radius);
+extern int			UTIL_EntitiesInBox(CBaseEntity **pList, int listMax, const Vector &mins, const Vector &maxs, int flagMask);
 
 inline void UTIL_MakeVectorsPrivate(const Vector &vecAngles, float *p_vForward, float *p_vRight, float *p_vUp)
 {
@@ -332,8 +331,8 @@ extern void			UTIL_StringToRandomVector(float *pVector, const char *pString); //
 extern void			UTIL_StringToIntArray(int *pVector, int count, const char *pString);
 extern Vector		UTIL_ClampVectorToBox(const Vector &input, const Vector &clampSize);
 extern float		UTIL_Approach(float target, float value, float speed);
-extern float UTIL_ApproachAngle(float target, float value, float speed);
-extern float UTIL_AngleDistance(float next, float cur);
+extern float		UTIL_ApproachAngle(float target, float value, float speed);
+extern float		UTIL_AngleDistance(float next, float cur);
 
 extern char			*UTIL_VarArgs(char *format, ...);
 extern void			UTIL_Remove(CBaseEntity *pEntity);
@@ -353,8 +352,8 @@ extern void			UTIL_BubbleTrail(Vector from, Vector to, int count);
 extern void			UTIL_PrecacheOther(const char *szClassname);
 
 // prints a message to each client
-extern void	UTIL_ClientPrintAll(int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL);
-inline void	UTIL_CenterPrintAll(const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL)
+extern void			UTIL_ClientPrintAll(int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL);
+inline void			UTIL_CenterPrintAll(const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL)
 {
 	UTIL_ClientPrintAll(HUD_PRINTCENTER, msg_name, param1, param2, param3, param4);
 }
@@ -367,9 +366,9 @@ extern BOOL UTIL_GetNextBestWeapon(CBasePlayer *pPlayer, CBasePlayerItem *pCurre
 extern void ClientPrint(entvars_t *client, int msg_dest, const char *msg_name, const char *param1 = NULL, const char *param2 = NULL, const char *param3 = NULL, const char *param4 = NULL);
 
 // prints a message to the HUD say (chat)
-extern void	UTIL_SayText(const char *pText, CBaseEntity *pEntity);
-extern void	UTIL_SayTextAll(const char *pText, CBaseEntity *pEntity);
-extern bool UTIL_IsValidFilename(const char* path);
+extern void			UTIL_SayText(const char *pText, CBaseEntity *pEntity);
+extern void			UTIL_SayTextAll(const char *pText, CBaseEntity *pEntity);
+
 
 typedef struct hudtextparms_s
 {
@@ -386,11 +385,17 @@ typedef struct hudtextparms_s
 } hudtextparms_t;
 
 // prints as transparent 'title' to the HUD
-extern void	UTIL_HudMessageAll(const hudtextparms_t &textparms, const char *pMessage);
-extern void	UTIL_HudMessage(CBaseEntity *pEntity, const hudtextparms_t &textparms, const char *pMessage);
+extern void			UTIL_HudMessageAll(const hudtextparms_t &textparms, const char *pMessage);
+extern void			UTIL_HudMessage(CBaseEntity *pEntity, const hudtextparms_t &textparms, const char *pMessage);
+
+// for handy use with ClientPrint params
+extern char *UTIL_dtos1(int d);
+extern char *UTIL_dtos2(int d);
+extern char *UTIL_dtos3(int d);
+extern char *UTIL_dtos4(int d);
 
 // Writes message to console with timestamp and FragLog header.
-extern void	UTIL_LogPrintf(char *fmt, ...);
+extern void			UTIL_LogPrintf(char *fmt, ...);
 
 // Sorta like FInViewCone, but for nonmonsters. 
 extern float UTIL_DotPoints(const Vector &vecSrc, const Vector &vecCheck, const Vector &vecDir);

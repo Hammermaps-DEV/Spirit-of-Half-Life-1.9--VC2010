@@ -40,44 +40,44 @@
 class CController : public CSquadMonster
 {
 public:
-	virtual int	Save(CSave &save);
-	virtual int	Restore(CRestore &restore);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 	static	TYPEDESCRIPTION m_SaveData[];
 
-	void Spawn() override;
-	void Precache() override;
-	void UpdateOnRemove() override;
-	void SetYawSpeed() override;
-	int  Classify() override;
-	void HandleAnimEvent(MonsterEvent_t *pEvent) override;
+	void Spawn(void);
+	void Precache(void);
+	void SetYawSpeed(void);
+	int  Classify(void);
+	void HandleAnimEvent(MonsterEvent_t *pEvent);
 
-	void RunAI() override;
-	bool CheckRangeAttack1(float flDot, float flDist) override;	// balls
-	bool CheckRangeAttack2(float flDot, float flDist) override;	// head
-	bool CheckMeleeAttack1(float flDot, float flDist) override;	// block, throw
-	Schedule_t* GetSchedule() override;
-	Schedule_t* GetScheduleOfType(int Type) override;
-	void StartTask(Task_t *pTask) override;
-	void RunTask(Task_t *pTask) override;
+	void RunAI(void);
+	bool CheckRangeAttack1(float flDot, float flDist);	// balls
+	bool CheckRangeAttack2(float flDot, float flDist);	// head
+	bool CheckMeleeAttack1(float flDot, float flDist);	// block, throw
+	Schedule_t* GetSchedule(void);
+	Schedule_t* GetScheduleOfType(int Type);
+	void StartTask(Task_t *pTask);
+	void RunTask(Task_t *pTask);
 	CUSTOM_SCHEDULES;
 
-	void Stop() override;
-	void Move(float flInterval) override;
-	int  CheckLocalMove(const Vector &vecStart, const Vector &vecEnd, CBaseEntity *pTarget, float *pflDist) override;
-	void MoveExecute(CBaseEntity *pTargetEnt, const Vector &vecDir, float flInterval) override;
-	void SetActivity(Activity NewActivity) override;
-	BOOL ShouldAdvanceRoute(float flWaypointDist) override;
+	void Stop(void);
+	void Move(float flInterval);
+	int  CheckLocalMove(const Vector &vecStart, const Vector &vecEnd, CBaseEntity *pTarget, float *pflDist);
+	void MoveExecute(CBaseEntity *pTargetEnt, const Vector &vecDir, float flInterval);
+	void SetActivity(Activity NewActivity);
+	BOOL ShouldAdvanceRoute(float flWaypointDist);
 	int LookupFloat();
 
 	float m_flNextFlinch;
+
 	float m_flShootTime;
 	float m_flShootEnd;
 
-	void PainSound() override;
-	void AlertSound() override;
-	void IdleSound() override;
-	void AttackSound() override;
-	void DeathSound() override;
+	void PainSound(void);
+	void AlertSound(void);
+	void IdleSound(void);
+	void AttackSound(void);
+	void DeathSound(void);
 
 	static const char *pAttackSounds[];
 	static const char *pIdleSounds[];
@@ -85,9 +85,9 @@ public:
 	static const char *pPainSounds[];
 	static const char *pDeathSounds[];
 
-	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType) override;
-	void Killed(entvars_t *pevAttacker, int iGib) override;
-	void GibMonster() override;
+	int TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int bitsDamageType);
+	void Killed(entvars_t *pevAttacker, int iGib);
+	void GibMonster(void);
 
 	CSprite *m_pBall[2];	// hand balls
 	int m_iBall[2];			// how bright it should be
@@ -183,8 +183,7 @@ int CController::TakeDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, flo
 	// HACK HACK -- until we fix this.
 	if (IsAlive())
 		PainSound();
-	
-	return CSquadMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
+	return CBaseMonster::TakeDamage(pevInflictor, pevAttacker, flDamage, bitsDamageType);
 }
 
 
@@ -220,32 +219,18 @@ void CController::GibMonster(void)
 	if (m_pBall[0])
 	{
 		UTIL_Remove(m_pBall[0]);
-		m_pBall[0] = nullptr;
+		m_pBall[0] = NULL;
 	}
 	if (m_pBall[1])
 	{
 		UTIL_Remove(m_pBall[1]);
-		m_pBall[1] = nullptr;
+		m_pBall[1] = NULL;
 	}
 	CSquadMonster::GibMonster();
 }
 
-void CController::UpdateOnRemove()
-{
-	CBaseEntity::UpdateOnRemove();
 
-	if (m_pBall[0])
-	{
-		UTIL_Remove(m_pBall[0]);
-		m_pBall[0] = nullptr;
-	}
 
-	if (m_pBall[1])
-	{
-		UTIL_Remove(m_pBall[1]);
-		m_pBall[1] = nullptr;
-	}
-}
 
 void CController::PainSound(void)
 {
@@ -375,7 +360,7 @@ void CController::HandleAnimEvent(MonsterEvent_t *pEvent)
 	}
 	break;
 	default:
-		CSquadMonster::HandleAnimEvent(pEvent);
+		CBaseMonster::HandleAnimEvent(pEvent);
 		break;
 	}
 }
@@ -828,7 +813,7 @@ Schedule_t* CController::GetScheduleOfType(int Type)
 		return slControllerFail;
 	}
 
-	return CSquadMonster::GetScheduleOfType(Type);
+	return CBaseMonster::GetScheduleOfType(Type);
 }
 
 //=========================================================
@@ -858,7 +843,7 @@ bool CController::CheckMeleeAttack1(float flDot, float flDist)
 
 void CController::SetActivity(Activity NewActivity)
 {
-	CSquadMonster::SetActivity(NewActivity);
+	CBaseMonster::SetActivity(NewActivity);
 
 	switch (m_Activity)
 	{
@@ -871,12 +856,14 @@ void CController::SetActivity(Activity NewActivity)
 	}
 }
 
+
+
 //=========================================================
 // RunAI
 //=========================================================
 void CController::RunAI(void)
 {
-	CSquadMonster::RunAI();
+	CBaseMonster::RunAI();
 	Vector vecStart, angleGun;
 
 	if (HasMemory(bits_MEMORY_KILLED))
@@ -921,12 +908,14 @@ void CController::RunAI(void)
 	}
 }
 
+
 extern void DrawRoute(entvars_t *pev, WayPoint_t *m_Route, int m_iRouteIndex, int r, int g, int b);
 
 void CController::Stop(void)
 {
 	m_IdealActivity = GetStoppedActivity();
 }
+
 
 #define DIST_TO_CHECK	200
 void CController::Move(float flInterval)
@@ -949,6 +938,22 @@ void CController::Move(float flInterval)
 
 	if (m_flMoveWaitFinished > gpGlobals->time)
 		return;
+
+	// Debug, test movement code
+#if 0
+//	if ( CVAR_GET_FLOAT("stopmove" ) != 0 )
+	{
+		if (m_movementGoal == MOVEGOAL_ENEMY)
+			RouteSimplify(m_hEnemy);
+		else
+			RouteSimplify(m_hTargetEnt);
+		FRefreshRoute();
+		return;
+	}
+#else
+// Debug, draw the route
+//	DrawRoute( pev, m_Route, m_iRouteIndex, 0, 0, 255 );
+#endif
 
 	// if the monster is moving directly towards an entity (enemy for instance), we'll set this pointer
 	// to that entity for the CheckLocalMove and Triangulate functions.
@@ -1147,6 +1152,9 @@ void CController::MoveExecute(CBaseEntity *pTargetEnt, const Vector &vecDir, flo
 	UTIL_MoveToOrigin(ENT(pev), pev->origin + m_velocity, m_velocity.Length() * flInterval, MOVE_STRAFE);
 }
 
+
+
+
 //=========================================================
 // Controller bouncy ball attack
 //=========================================================
@@ -1165,6 +1173,8 @@ class CControllerHeadBall : public CBaseMonster
 	EHANDLE m_hOwner;
 };
 LINK_ENTITY_TO_CLASS(controller_head_ball, CControllerHeadBall);
+
+
 
 void CControllerHeadBall::Spawn(void)
 {
@@ -1195,12 +1205,14 @@ void CControllerHeadBall::Spawn(void)
 	pev->dmgtime = gpGlobals->time;
 }
 
+
 void CControllerHeadBall::Precache(void)
 {
 	PRECACHE_MODEL("sprites/xspark1.spr");
 	PRECACHE_SOUND("debris/zap4.wav");
 	PRECACHE_SOUND("weapons/electro4.wav");
 }
+
 
 void CControllerHeadBall::HuntThink(void)
 {
@@ -1276,10 +1288,12 @@ void CControllerHeadBall::HuntThink(void)
 	// Crawl( );
 }
 
+
 void CControllerHeadBall::DieThink(void)
 {
 	UTIL_Remove(this);
 }
+
 
 void CControllerHeadBall::MovetoTarget(Vector vecTarget)
 {
@@ -1298,6 +1312,8 @@ void CControllerHeadBall::MovetoTarget(Vector vecTarget)
 	m_vecIdeal = m_vecIdeal + (vecTarget - pev->origin).Normalize() * 100;
 	SetVelocity(m_vecIdeal);
 }
+
+
 
 void CControllerHeadBall::Crawl(void)
 {
@@ -1325,6 +1341,7 @@ void CControllerHeadBall::Crawl(void)
 	MESSAGE_END();
 }
 
+
 void CControllerHeadBall::BounceTouch(CBaseEntity *pOther)
 {
 	Vector vecDir = m_vecIdeal.Normalize();
@@ -1338,6 +1355,9 @@ void CControllerHeadBall::BounceTouch(CBaseEntity *pOther)
 	m_vecIdeal = vecDir * m_vecIdeal.Length();
 }
 
+
+
+
 class CControllerZapBall : public CBaseMonster
 {
 	void Spawn(void);
@@ -1348,6 +1368,7 @@ class CControllerZapBall : public CBaseMonster
 	EHANDLE m_hOwner;
 };
 LINK_ENTITY_TO_CLASS(controller_energy_ball, CControllerZapBall);
+
 
 void CControllerZapBall::Spawn(void)
 {
@@ -1396,6 +1417,7 @@ void CControllerZapBall::AnimateThink(void)
 		UTIL_Remove(this);
 	}
 }
+
 
 void CControllerZapBall::ExplodeTouch(CBaseEntity *pOther)
 {

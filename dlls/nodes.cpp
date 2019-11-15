@@ -517,13 +517,13 @@ int CGraph::NextNodeInRoute(int iCurrentNode, int iDest, int iHull, int iCap)
 {
 	int iNext = iCurrentNode;
 	int nCount = iDest + 1;
-	signed char *pRoute = m_pRouteInfo + m_pNodes[iCurrentNode].m_pNextBestNode[iHull][iCap];
+	char *pRoute = m_pRouteInfo + m_pNodes[iCurrentNode].m_pNextBestNode[iHull][iCap];
 
 	// Until we decode the next best node
 	//
 	while (nCount > 0)
 	{
-		signed char ch = *pRoute++;
+		char ch = *pRoute++;
 		//ALERT(at_aiconsole, "C(%d)", ch);
 		if (ch < 0)
 		{
@@ -1649,14 +1649,14 @@ void CTestHull::BuildNodeGraph(void)
 
 	// make sure directories have been made
 	GET_GAME_DIR(szNrpFilename);
-	strcat_s(szNrpFilename, "/maps");
+	strcat(szNrpFilename, "/maps");
 	CreateDirectory(szNrpFilename, NULL);
-	strcat_s(szNrpFilename, "/graphs");
+	strcat(szNrpFilename, "/graphs");
 	CreateDirectory(szNrpFilename, NULL);
 
-	strcat_s(szNrpFilename, "/");
-	strcat_s(szNrpFilename, STRING(gpGlobals->mapname));
-	strcat_s(szNrpFilename, ".nrp");
+	strcat(szNrpFilename, "/");
+	strcat(szNrpFilename, STRING(gpGlobals->mapname));
+	strcat(szNrpFilename, ".nrp");
 
 	file = fopen(szNrpFilename, "w+");
 
@@ -2320,14 +2320,14 @@ int CGraph::FLoadGraph(char *szMapName)
 	// make sure the directories have been made
 	char	szDirName[MAX_PATH];
 	GET_GAME_DIR(szDirName);
-	strcat_s(szDirName, "/maps");
+	strcat(szDirName, "/maps");
 	CreateDirectory(szDirName, NULL);
-	strcat_s(szDirName, "/graphs");
+	strcat(szDirName, "/graphs");
 	CreateDirectory(szDirName, NULL);
 
-	strcpy_s(szFilename, "maps/graphs/");
-	strcat_s(szFilename, szMapName);
-	strcat_s(szFilename, ".nod");
+	strcpy(szFilename, "maps/graphs/");
+	strcat(szFilename, szMapName);
+	strcat(szFilename, ".nod");
 
 	pMemFile = aMemFile = LOAD_FILE_FOR_ME(szFilename, &length);
 
@@ -2422,7 +2422,7 @@ int CGraph::FLoadGraph(char *szMapName)
 		// Malloc for the routing info.
 		//
 		m_fRoutingComplete = FALSE;
-		m_pRouteInfo = (signed char*)calloc(sizeof(signed char), m_nRouteInfo);
+		m_pRouteInfo = (char *)calloc(sizeof(char), m_nRouteInfo);
 		if (!m_pRouteInfo)
 		{
 			ALERT(at_aiconsole, "***ERROR**\nCounldn't malloc %d route bytes!\n", m_nRouteInfo);
@@ -2498,14 +2498,14 @@ int CGraph::FSaveGraph(char *szMapName)
 
 	// make sure directories have been made
 	GET_GAME_DIR(szFilename);
-	strcat_s(szFilename, "/maps");
+	strcat(szFilename, "/maps");
 	CreateDirectory(szFilename, NULL);
-	strcat_s(szFilename, "/graphs");
+	strcat(szFilename, "/graphs");
 	CreateDirectory(szFilename, NULL);
 
-	strcat_s(szFilename, "/");
-	strcat_s(szFilename, szMapName);
-	strcat_s(szFilename, ".nod");
+	strcat(szFilename, "/");
+	strcat(szFilename, szMapName);
+	strcat(szFilename, ".nod");
 
 	file = fopen(szFilename, "wb");
 
@@ -2536,7 +2536,7 @@ int CGraph::FSaveGraph(char *szMapName)
 		//
 		if (m_pRouteInfo && m_nRouteInfo)
 		{
-			fwrite(m_pRouteInfo, sizeof(signed char), m_nRouteInfo, file);
+			fwrite(m_pRouteInfo, sizeof(char), m_nRouteInfo, file);
 		}
 
 		if (m_pHashLinks && m_nHashLinks)
@@ -2622,13 +2622,13 @@ int CGraph::CheckNODFile(char *szMapName)
 	char		szGraphFilename[MAX_PATH];
 
 
-	strcpy_s(szBspFilename, "maps/");
-	strcat_s(szBspFilename, szMapName);
-	strcat_s(szBspFilename, ".bsp");
+	strcpy(szBspFilename, "maps/");
+	strcat(szBspFilename, szMapName);
+	strcat(szBspFilename, ".bsp");
 
-	strcpy_s(szGraphFilename, "maps/graphs/");
-	strcat_s(szGraphFilename, szMapName);
-	strcat_s(szGraphFilename, ".nod");
+	strcpy(szGraphFilename, "maps/graphs/");
+	strcat(szGraphFilename, szMapName);
+	strcat(szGraphFilename, ".nod");
 
 	retValue = TRUE;
 
@@ -3042,7 +3042,7 @@ void CGraph::ComputeStaticRoutingTables(void)
 
 	int *pMyPath = new int[m_cNodes];
 	unsigned short *BestNextNodes = new unsigned short[m_cNodes];
-	signed char* pRoute = new signed char[m_cNodes * 2];
+	char *pRoute = new char[m_cNodes * 2];
 
 
 	if (Routes && pMyPath && BestNextNodes && pRoute)
@@ -3137,7 +3137,7 @@ void CGraph::ComputeStaticRoutingTables(void)
 					int cSequence = 0;
 					int cRepeats = 0;
 					int CompressedSize = 0;
-					signed char* p = pRoute;
+					char *p = pRoute;
 					for (int i = 0; i < m_cNodes; i++)
 					{
 						BOOL CanRepeat = ((BestNextNodes[i] == iLastNode) && cRepeats < 127);
@@ -3298,7 +3298,7 @@ void CGraph::ComputeStaticRoutingTables(void)
 						}
 						else
 						{
-							signed char* Tmp = (signed char*)calloc(sizeof(signed char), (m_nRouteInfo + nRoute));
+							char *Tmp = (char *)calloc(sizeof(char), (m_nRouteInfo + nRoute));
 							memcpy(Tmp, m_pRouteInfo, m_nRouteInfo);
 							free(m_pRouteInfo);
 							m_pRouteInfo = Tmp;
@@ -3311,7 +3311,7 @@ void CGraph::ComputeStaticRoutingTables(void)
 					else
 					{
 						m_nRouteInfo = nRoute;
-						m_pRouteInfo = (signed char*)calloc(sizeof(signed char), nRoute);
+						m_pRouteInfo = (char *)calloc(sizeof(char), nRoute);
 						memcpy(m_pRouteInfo, pRoute, nRoute);
 						m_pNodes[iFrom].m_pNextBestNode[iHull][iCap] = 0;
 						nTotalCompressedSize += CompressedSize;

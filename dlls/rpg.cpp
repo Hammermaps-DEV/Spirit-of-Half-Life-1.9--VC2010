@@ -333,7 +333,7 @@ int CRpg::GetItemInfo(ItemInfo *p)
 	p->pszAmmo1 = "rockets";
 	p->iMaxAmmo1 = ROCKET_MAX_CARRY;
 	p->pszAmmo2 = NULL;
-	p->iMaxAmmo2 = -1;
+	p->iMaxAmmo2 = WEAPON_NOCLIP;
 	p->iMaxClip = RPG_MAX_CLIP;
 	p->iSlot = 3;
 	p->iPosition = 0;
@@ -380,13 +380,13 @@ void CRpg::PrimaryAttack()
 		// Ken signed up for this as a global change (sjb)
 
 		m_iClip--;
-		m_flNextPrimaryAttack = GetNextAttackDelay(1.5);
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.5;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 1.5;
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = GetNextAttackDelay(0.7); //no longer indicate fps :)
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.7;//no longer indicate fps :)
 	}
 	UpdateSpot();
 }
@@ -396,14 +396,14 @@ void CRpg::SecondaryAttack()
 	m_iOverloadLevel = !m_iOverloadLevel;
 	if (!m_iOverloadLevel && m_pSpot) ShutdownScreen();//simply call shutdown function
 
-	m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(0.3);
+	m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.3;
 }
 
 void CRpg::Reload(void)
 {
 	if ((m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] == 0) || (m_iClip == 1)) return;
 
-	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
+	m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
 
 	if (m_iChargeLevel && m_iOverloadLevel) return;
 
@@ -544,7 +544,7 @@ class CRpgAmmo : public CBasePlayerAmmo
 		{
 			iGive = AMMO_RPGCLIP_GIVE;
 		}
-		if (pOther->GiveAmmo(iGive, "rockets", ROCKET_MAX_CARRY) != -1)
+		if (pOther->GiveAmmo(iGive, "rockets", ROCKET_MAX_CARRY) != WEAPON_NOCLIP)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
 			return TRUE;

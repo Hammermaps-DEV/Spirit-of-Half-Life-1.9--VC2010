@@ -52,7 +52,7 @@ int giDmgFlags[NUM_DMG_TYPES] =
 	DMG_HALLUC
 };
 
-void CHudHealth::Init(void)
+int CHudHealth::Init(void)
 {
 	HOOK_MESSAGE(Health);
 	HOOK_MESSAGE(Damage);
@@ -68,6 +68,7 @@ void CHudHealth::Init(void)
 
 
 	gHUD.AddHudElem(this);
+	return 1;
 }
 
 void CHudHealth::Reset( void )
@@ -84,7 +85,7 @@ void CHudHealth::Reset( void )
 	}
 }
 
-void CHudHealth::VidInit(void)
+int CHudHealth::VidInit(void)
 {
 	m_hSprite = 0;
 
@@ -93,6 +94,7 @@ void CHudHealth::VidInit(void)
 
 	giDmgHeight = gHUD.GetSpriteRect(m_HUD_dmg_bio).right - gHUD.GetSpriteRect(m_HUD_dmg_bio).left;
 	giDmgWidth = gHUD.GetSpriteRect(m_HUD_dmg_bio).bottom - gHUD.GetSpriteRect(m_HUD_dmg_bio).top;
+	return 1;
 }
 
 int CHudHealth:: MsgFunc_Health(const char *pszName,  int iSize, void *pbuf )
@@ -165,14 +167,14 @@ void CHudHealth::GetPainColor( int &r, int &g, int &b )
 #endif 
 }
 
-void CHudHealth::Draw(float flTime)
+int CHudHealth::Draw(float flTime)
 {
 	int r, g, b;
 	int a = 0, x, y;
 	int HealthWidth;
 
 	if ( (gHUD.m_iHideHUDDisplay & HIDEHUD_HEALTH) || gEngfuncs.IsSpectateOnly() )
-		return;
+		return 1;
 
 	if ( !m_hSprite )
 		m_hSprite = LoadSprite(PAIN_NAME);
@@ -228,7 +230,7 @@ void CHudHealth::Draw(float flTime)
 	}
 
 	DrawDamage(flTime);
-	DrawPain(flTime);
+	return DrawPain(flTime);
 }
 
 void CHudHealth::CalcDamageDirection(vec3_t vecFrom)

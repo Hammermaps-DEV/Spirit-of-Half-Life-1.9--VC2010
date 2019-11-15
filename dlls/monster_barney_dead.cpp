@@ -31,11 +31,11 @@ class CDeadBarney : public CBaseMonster
 {
 public:
 	void Spawn(void) override;
-	int	Classify(void) override { return CLASS_PLAYER_ALLY; }
+	int	Classify(void) override { return	CLASS_PLAYER_ALLY; }
 
 	void KeyValue(KeyValueData *pkvd) override;
 
-	int	m_iPose;
+	int	m_iPose;// which sequence to display	-- temporary, don't need to save
 	static char *m_szPoses[3];
 };
 

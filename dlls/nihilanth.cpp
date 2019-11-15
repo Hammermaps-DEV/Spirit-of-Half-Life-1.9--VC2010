@@ -32,7 +32,6 @@ public:
 
 	void Spawn(void);
 	void Precache(void);
-	void UpdateOnRemove();
 	int  Classify(void) { return CLASS_ALIEN_MILITARY; };
 	int  BloodColor(void) { return BLOOD_COLOR_YELLOW; }
 	void Killed(entvars_t *pevAttacker, int iGib);
@@ -229,26 +228,6 @@ TYPEDESCRIPTION	CNihilanthHVR::m_SaveData[] =
 IMPLEMENT_SAVERESTORE(CNihilanthHVR, CBaseMonster);
 
 
-void CNihilanth::UpdateOnRemove()
-{
-	CBaseEntity::UpdateOnRemove();
-
-	if (m_pBall)
-	{
-		UTIL_Remove(m_pBall);
-		m_pBall = 0;
-	}
-
-	for (int i = 0; i < N_SPHERES; i++)
-	{
-		if (CBaseEntity* pSphere = (CBaseEntity*)m_hSphere[i])
-		{
-			UTIL_Remove(pSphere);
-			m_hSphere[i] = 0;
-		}
-	}
-}
-
 //=========================================================
 // Nihilanth, final Boss monster
 //=========================================================
@@ -332,12 +311,12 @@ void CNihilanth::Spawn(void)
 	m_iLevel = 1;
 	m_iTeleport = 1;
 
-	if (m_szRechargerTarget[0] == '\0')	strcpy_s(m_szRechargerTarget, "n_recharger");
-	if (m_szDrawUse[0] == '\0')			strcpy_s(m_szDrawUse, "n_draw");
-	if (m_szTeleportUse[0] == '\0')		strcpy_s(m_szTeleportUse, "n_leaving");
-	if (m_szTeleportTouch[0] == '\0')	strcpy_s(m_szTeleportTouch, "n_teleport");
-	if (m_szDeadUse[0] == '\0')			strcpy_s(m_szDeadUse, "n_dead");
-	if (m_szDeadTouch[0] == '\0')		strcpy_s(m_szDeadTouch, "n_ending");
+	if (m_szRechargerTarget[0] == '\0')	strcpy(m_szRechargerTarget, "n_recharger");
+	if (m_szDrawUse[0] == '\0')			strcpy(m_szDrawUse, "n_draw");
+	if (m_szTeleportUse[0] == '\0')		strcpy(m_szTeleportUse, "n_leaving");
+	if (m_szTeleportTouch[0] == '\0')	strcpy(m_szTeleportTouch, "n_teleport");
+	if (m_szDeadUse[0] == '\0')			strcpy(m_szDeadUse, "n_dead");
+	if (m_szDeadTouch[0] == '\0')		strcpy(m_szDeadTouch, "n_ending");
 
 	// near death
 	/*
@@ -745,7 +724,7 @@ void CNihilanth::NextActivity()
 		CBaseEntity *pRecharger = NULL;
 		float flDist = 8192;
 
-		sprintf_s(szName, "%s%d", m_szRechargerTarget, m_iLevel);
+		sprintf(szName, "%s%d", m_szRechargerTarget, m_iLevel);
 
 		while ((pEnt = UTIL_FindEntityByTargetname(pEnt, szName)) != NULL)
 		{
@@ -789,7 +768,7 @@ void CNihilanth::NextActivity()
 			{
 				char szText[64];
 
-				sprintf_s(szText, "%s%d", m_szDrawUse, m_iLevel);
+				sprintf(szText, "%s%d", m_szDrawUse, m_iLevel);
 				FireTargets(szText, this, this, USE_ON, 1.0);
 
 				ALERT(at_debug, "fireing %s\n", szText);
@@ -837,10 +816,10 @@ void CNihilanth::NextActivity()
 				{
 					char szText[64];
 
-					sprintf_s(szText, "%s%d", m_szTeleportTouch, m_iTeleport);
+					sprintf(szText, "%s%d", m_szTeleportTouch, m_iTeleport);
 					CBaseEntity *pTouch = UTIL_FindEntityByTargetname(NULL, szText);
 
-					sprintf_s(szText, "%s%d", m_szTeleportUse, m_iTeleport);
+					sprintf(szText, "%s%d", m_szTeleportUse, m_iTeleport);
 					CBaseEntity *pTrigger = UTIL_FindEntityByTargetname(NULL, szText);
 
 					if (pTrigger != NULL || pTouch != NULL)
@@ -1121,10 +1100,10 @@ void CNihilanth::HandleAnimEvent(MonsterEvent_t *pEvent)
 		{
 			char szText[32];
 
-			sprintf_s(szText, "%s%d", m_szTeleportTouch, m_iTeleport);
+			sprintf(szText, "%s%d", m_szTeleportTouch, m_iTeleport);
 			CBaseEntity *pTouch = UTIL_FindEntityByTargetname(NULL, szText);
 
-			sprintf_s(szText, "%s%d", m_szTeleportUse, m_iTeleport);
+			sprintf(szText, "%s%d", m_szTeleportUse, m_iTeleport);
 			CBaseEntity *pTrigger = UTIL_FindEntityByTargetname(NULL, szText);
 
 			if (pTrigger != NULL || pTouch != NULL)
@@ -1216,22 +1195,8 @@ void CNihilanth::CommandUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_T
 	case USE_OFF:
 	{
 		CBaseEntity *pTouch = UTIL_FindEntityByTargetname(NULL, m_szDeadTouch);
-		if (pTouch)
-		{
-			if (m_hEnemy != NULL)
-			{
-				pTouch->Touch(m_hEnemy);
-			}
-			// if the player is using "notarget", the ending sequence won't fire unless we catch it here
-			else
-			{
-				CBaseEntity* pEntity = UTIL_FindEntityByClassname(NULL, "player");
-				if (pEntity != NULL && pEntity->IsAlive())
-				{
-					pTouch->Touch(pEntity);
-				}
-			}
-		}
+		if (pTouch && m_hEnemy != NULL)
+			pTouch->Touch(m_hEnemy);
 	}
 	break;
 	case USE_ON:

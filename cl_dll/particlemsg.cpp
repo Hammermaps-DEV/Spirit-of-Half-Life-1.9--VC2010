@@ -16,7 +16,7 @@ extern ParticleSystemManager* g_pParticleSystems;
 
 DECLARE_MESSAGE(m_Particle, Particle)
 
-void CHudParticle::Init(void)
+int CHudParticle::Init(void)
 {
 	HOOK_MESSAGE(Particle);
 	gHUD.AddHudElem(this);
@@ -28,11 +28,14 @@ void CHudParticle::Init(void)
 	}
 
 	g_pParticleSystems = new ParticleSystemManager();
+
+	return 1;
 };
 
-void CHudParticle::VidInit(void)
+int CHudParticle::VidInit(void)
 {
 	g_pParticleSystems->ClearSystems();
+	return 1;
 };
 
 int CHudParticle:: MsgFunc_Particle(const char *pszName,  int iSize, void *pbuf )
@@ -44,5 +47,10 @@ int CHudParticle:: MsgFunc_Particle(const char *pszName,  int iSize, void *pbuf 
 	ParticleSystem *pSystem = new ParticleSystem(entindex, sz);
 	g_pParticleSystems->AddSystem(pSystem);
 
+	return 1;
+}
+
+int CHudParticle::Draw(float flTime)
+{
 	return 1;
 }

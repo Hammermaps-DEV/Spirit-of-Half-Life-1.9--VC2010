@@ -328,8 +328,8 @@ void CBarney::AlertSound(void)
 			if (m_iszSpeakAs)
 			{
 				char szBuf[32];
-				strcpy_s(szBuf, STRING(m_iszSpeakAs));
-				strcat_s(szBuf, "_ATTACK");
+				strcpy(szBuf, STRING(m_iszSpeakAs));
+				strcat(szBuf, "_ATTACK");
 				PlaySentence(szBuf, RANDOM_FLOAT(2.8, 3.2), VOL_NORM, ATTN_IDLE);
 			}
 			else
@@ -635,8 +635,8 @@ int CBarney::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float f
 				if (m_iszSpeakAs)
 				{
 					char szBuf[32];
-					strcpy_s(szBuf, STRING(m_iszSpeakAs));
-					strcat_s(szBuf, "_MAD");
+					strcpy(szBuf, STRING(m_iszSpeakAs));
+					strcat(szBuf, "_MAD");
 					PlaySentence(szBuf, 4, VOL_NORM, ATTN_NORM);
 				}
 				else
@@ -653,8 +653,8 @@ int CBarney::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float f
 				if (m_iszSpeakAs)
 				{
 					char szBuf[32];
-					strcpy_s(szBuf, STRING(m_iszSpeakAs));
-					strcat_s(szBuf, "_SHOT");
+					strcpy(szBuf, STRING(m_iszSpeakAs));
+					strcat(szBuf, "_SHOT");
 					PlaySentence(szBuf, 4, VOL_NORM, ATTN_NORM);
 				}
 				else
@@ -669,8 +669,8 @@ int CBarney::TakeDamage(entvars_t* pevInflictor, entvars_t* pevAttacker, float f
 			if (m_iszSpeakAs)
 			{
 				char szBuf[32];
-				strcpy_s(szBuf, STRING(m_iszSpeakAs));
-				strcat_s(szBuf, "_SHOT");
+				strcpy(szBuf, STRING(m_iszSpeakAs));
+				strcat(szBuf, "_SHOT");
 				PlaySentence(szBuf, 4, VOL_NORM, ATTN_NORM);
 			}
 			else
@@ -839,8 +839,8 @@ Schedule_t *CBarney::GetSchedule(void)
 		if (m_iszSpeakAs)
 		{
 			char szBuf[32];
-			strcpy_s(szBuf, STRING(m_iszSpeakAs));
-			strcat_s(szBuf, "_KILL");
+			strcpy(szBuf, STRING(m_iszSpeakAs));
+			strcat(szBuf, "_KILL");
 			PlaySentence(szBuf, 4, VOL_NORM, ATTN_NORM);
 		}
 		else

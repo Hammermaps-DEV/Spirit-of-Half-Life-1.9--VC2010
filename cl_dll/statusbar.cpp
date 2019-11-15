@@ -34,7 +34,7 @@ DECLARE_MESSAGE( m_StatusBar, StatusValue );
 float *GetClientColor( int clientIndex );
 extern float g_ColorYellow[3];
 
-void CHudStatusBar :: Init( void )
+int CHudStatusBar :: Init( void )
 {
 	gHUD.AddHudElem( this );
 
@@ -44,6 +44,15 @@ void CHudStatusBar :: Init( void )
 	Reset();
 
 	CVAR_CREATE( "hud_centerid", "0", FCVAR_ARCHIVE );
+
+	return 1;
+}
+
+int CHudStatusBar :: VidInit( void )
+{
+	// Load sprites here
+
+	return 1;
 }
 
 void CHudStatusBar :: Reset( void )
@@ -125,14 +134,14 @@ void CHudStatusBar :: ParseStatusString( int line_num )
 						int indexval = m_iStatusValues[index];
 
 						// get the string to substitute in place of the %XX
-						char szRepString[MAX_PLAYER_NAME];
+						char szRepString[MAX_PLAYER_NAME_LENGTH];
 						switch ( valtype )
 						{
 						case 'p':  // player name
 							GetPlayerInfo( indexval, &g_PlayerInfoList[indexval] );
 							if ( g_PlayerInfoList[indexval].name != NULL )
 							{
-								strncpy( szRepString, g_PlayerInfoList[indexval].name, MAX_PLAYER_NAME);
+								strncpy( szRepString, g_PlayerInfoList[indexval].name, MAX_PLAYER_NAME_LENGTH );
 								m_pflNameColors[line_num] = GetClientColor( indexval );
 							}
 							else
@@ -163,7 +172,7 @@ void CHudStatusBar :: ParseStatusString( int line_num )
 	}
 }
 
-void CHudStatusBar :: Draw( float fTime )
+int CHudStatusBar :: Draw( float fTime )
 {
 	if ( m_bReparseString )
 	{
@@ -194,10 +203,12 @@ void CHudStatusBar :: Draw( float fTime )
 		}
 
 		if ( m_pflNameColors[i] )
-			DrawSetTextColor(m_pflNameColors[i][0], m_pflNameColors[i][1], m_pflNameColors[i][2]);
+			gEngfuncs.pfnDrawSetTextColor( m_pflNameColors[i][0], m_pflNameColors[i][1], m_pflNameColors[i][2] );
 
 		DrawConsoleString( x, y, m_szStatusBar[i] );
 	}
+
+	return 1;
 }
 
 // Message handler for StatusText message

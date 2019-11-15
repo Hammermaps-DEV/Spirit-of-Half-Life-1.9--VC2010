@@ -31,6 +31,7 @@
 #include "weapons.h"
 #include "gamerules.h"
 #include "movewith.h"
+#include "locus.h"
 
 //=================================
 //	string operations
@@ -167,7 +168,7 @@ int PRECACHE_SOUND(char* s)
 	char *sound = s;		//sounds from model events can contains a symbol '*'.
 				//remove this for sucessfully loading a sound	
 	if (sound[0] == '*')sound++;	//only for fake path, engine needs this prefix!
-	sprintf_s(path, "sound/%s", sound);
+	sprintf(path, "sound/%s", sound);
 
 	//verify file exists
 	byte *data = LOAD_FILE_FOR_ME(path, NULL);
@@ -208,11 +209,7 @@ unsigned short PRECACHE_EVENT(int type, const char* psz)
 
 float UTIL_GlobalTimeBase(void) 
 {
-#if defined( CLIENT_WEAPONS )
-	return 0.0;
-#else
 	return gpGlobals->time;
-#endif
 }
 
 BOOL IsMultiplayer(void)
@@ -264,15 +261,26 @@ UTIL_SharedRandomLong
 */
 int UTIL_SharedRandomLong(unsigned int seed, int low, int high)
 {
+	unsigned int range;
+
 	U_Srand((int)seed + low + high);
 
-	unsigned int range = high - low + 1;
+	range = high - low + 1;
 	if (!(range - 1))
+	{
 		return low;
+	}
+	else
+	{
+		int offset;
+		int rnum;
 
-	int rnum = U_Random();
-	int offset = rnum % range;
-	return (low + offset);
+		rnum = U_Random();
+
+		offset = rnum % range;
+
+		return (low + offset);
+	}
 }
 
 /*
@@ -282,19 +290,30 @@ UTIL_SharedRandomFloat
 */
 float UTIL_SharedRandomFloat(unsigned int seed, float low, float high)
 {
+	//
+	unsigned int range;
+
 	U_Srand((int)seed + *(int *)&low + *(int *)&high);
 
 	U_Random();
 	U_Random();
 
-	unsigned int range = high - low;
+	range = high - low;
 	if (!range)
+	{
 		return low;
+	}
+	else
+	{
+		int tensixrand;
+		float offset;
 
-	int tensixrand = U_Random() & 65535;
-	float offset = (float)tensixrand / 65536.0;
-	return (low + offset * range);
-	
+		tensixrand = U_Random() & 65535;
+
+		offset = (float)tensixrand / 65536.0;
+
+		return (low + offset * range);
+	}
 }
 
 void UTIL_ParametricRocket(entvars_t *pev, Vector vecOrigin, Vector vecAngles, edict_t *owner)
@@ -499,9 +518,9 @@ DBG_AssertFunction(
 		return;
 	char szOut[512];
 	if (szMessage != NULL)
-		sprintf_s(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n%s", szExpr, szFile, szLine, szMessage);
+		sprintf(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n%s", szExpr, szFile, szLine, szMessage);
 	else
-		sprintf_s(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n", szExpr, szFile, szLine);
+		sprintf(szOut, "ASSERT FAILED:\n %s \n(%s@%d)\n", szExpr, szFile, szLine);
 	ALERT(at_debug, szOut);
 }
 #endif	// DEBUG
@@ -593,9 +612,11 @@ void UTIL_MoveToOrigin(edict_t *pent, const Vector &vecGoal, float flDist, int i
 
 int UTIL_EntitiesInBox(CBaseEntity **pList, int listMax, const Vector &mins, const Vector &maxs, int flagMask)
 {
-	edict_t	*pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
+	edict_t		*pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
+	CBaseEntity *pEntity;
+	int			count;
 
-	int count = 0;
+	count = 0;
 
 	if (!pEdict)
 		return count;
@@ -616,7 +637,7 @@ int UTIL_EntitiesInBox(CBaseEntity **pList, int listMax, const Vector &mins, con
 			maxs.z < pEdict->v.absmin.z)
 			continue;
 
-		CBaseEntity* pEntity = CBaseEntity::Instance(pEdict);
+		pEntity = CBaseEntity::Instance(pEdict);
 		if (!pEntity)
 			continue;
 
@@ -632,9 +653,12 @@ int UTIL_EntitiesInBox(CBaseEntity **pList, int listMax, const Vector &mins, con
 
 int UTIL_MonstersInSphere(CBaseEntity **pList, int listMax, const Vector &center, float radius)
 {
-	edict_t	*pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
+	edict_t		*pEdict = g_engfuncs.pfnPEntityOfEntIndex(1);
+	CBaseEntity *pEntity;
+	int			count;
+	float		distance, delta;
 
-	int count = 0;
+	count = 0;
 	float radiusSquared = radius * radius;
 
 	if (!pEdict)
@@ -650,13 +674,12 @@ int UTIL_MonstersInSphere(CBaseEntity **pList, int listMax, const Vector &center
 
 		// Use origin for X & Y since they are centered for all monsters
 		// Now X
-		float delta = center.x - pEdict->v.origin.x;//(pEdict->v.absmin.x + pEdict->v.absmax.x)*0.5;
+		delta = center.x - pEdict->v.origin.x;//(pEdict->v.absmin.x + pEdict->v.absmax.x)*0.5;
 		delta *= delta;
 
 		if (delta > radiusSquared)
 			continue;
-		
-		float distance = delta;
+		distance = delta;
 
 		// Now Y
 		delta = center.y - pEdict->v.origin.y;//(pEdict->v.absmin.y + pEdict->v.absmax.y)*0.5;
@@ -674,7 +697,7 @@ int UTIL_MonstersInSphere(CBaseEntity **pList, int listMax, const Vector &center
 		if (distance > radiusSquared)
 			continue;
 
-		CBaseEntity* pEntity = CBaseEntity::Instance(pEdict);
+		pEntity = CBaseEntity::Instance(pEdict);
 		if (!pEntity)
 			continue;
 
@@ -685,12 +708,13 @@ int UTIL_MonstersInSphere(CBaseEntity **pList, int listMax, const Vector &center
 			return count;
 	}
 
+
 	return count;
 }
 
 CBaseEntity *UTIL_FindEntityInSphere(CBaseEntity *pStartEntity, const Vector &vecCenter, float flRadius)
 {
-	CBaseEntity *resultEntity;
+	CBaseEntity *resultEntity = NULL;
 	edict_t *pentEntity;
 
 	if (pStartEntity)
@@ -714,6 +738,7 @@ CBaseEntity *UTIL_FindEntityInSphere(CBaseEntity *pStartEntity, const Vector &ve
 CBaseEntity *UTIL_FindEntityByString(CBaseEntity *pStartEntity, const char *szKeyword, const char *szValue)
 {
 	edict_t	*pentEntity;
+	CBaseEntity *pEntity;
 
 	if (pStartEntity)
 		pentEntity = pStartEntity->edict();
@@ -727,82 +752,22 @@ CBaseEntity *UTIL_FindEntityByString(CBaseEntity *pStartEntity, const char *szKe
 
 		// if pentEntity (the edict) is null, we're at the end of the entities. Give up.
 		if (FNullEnt(pentEntity))
+		{
 			return NULL;
-
-		// ...but if only pEntity (the classptr) is null, we've just got one dud, so we try again.
-		CBaseEntity* pEntity = CBaseEntity::Instance(pentEntity);
-		if (pEntity)
-			return pEntity;
+		}
+		else
+		{
+			// ...but if only pEntity (the classptr) is null, we've just got one dud, so we try again.
+			pEntity = CBaseEntity::Instance(pentEntity);
+			if (pEntity)
+				return pEntity;
+		}
 	}
 }
 
 CBaseEntity *UTIL_FindEntityByClassname(CBaseEntity *pStartEntity, const char *szName)
 {
 	return UTIL_FindEntityByString(pStartEntity, "classname", szName);
-}
-
-// Finds next entity of a given class starting from given entity and looping and 
-// the end starting next from zero towards to given entity. Also can search in reverse direction.
-CBaseEntity *UTIL_FindEntityByClassname( CBaseEntity *pStartEntity, const char *szName, bool bLoop, bool bReverse )
-{
-	if (szName == NULL || *szName == 0)
-		return NULL;
-
-	CBaseEntity *pEntity;
-
-	if (!bReverse)
-	{
-		pEntity = UTIL_FindEntityByClassname(pStartEntity, szName);
-		if (pEntity == NULL && pStartEntity != NULL && bLoop)
-		{
-			pEntity = UTIL_FindEntityByClassname(NULL, szName);
-			if (pEntity == pStartEntity)
-				pEntity = NULL;
-		}
-		return pEntity;
-	}
-
-	// Do reverse search logic
-	edict_t *pEdictFound = NULL;
-	edict_t *pEdictStart = g_engfuncs.pfnPEntityOfEntIndex(0);
-	edict_t *pEdictEnd = pEdictStart + gpGlobals->maxEntities - 1;
-	edict_t *pEdictMiddle = pStartEntity == NULL ? pEdictStart : pStartEntity->edict();
-
-	edict_t *pEdict;
-	// Search from the middle to the start
-	for (pEdict = pEdictMiddle - 1; pEdict >= pEdictStart; pEdict--)
-	{
-		if ( pEdict->free )	// Not in use
-			continue;
-		if (pEdict->v.classname == NULL)
-			continue;
-		const char *name = STRING(pEdict->v.classname);
-		if (strcmp(szName, name))
-			continue;
-		pEdictFound = pEdict;
-		break;
-	}
-	if (!pEdictFound && bLoop)
-	{
-		// Loop: Search from the end to the middle
-		for (pEdict = pEdictEnd; pEdict > pEdictMiddle; pEdict--)
-		{
-			if ( pEdict->free )	// Not in use
-				continue;
-			if (pEdict->v.classname == NULL)
-				continue;
-			const char *name = STRING(pEdict->v.classname);
-			if (strcmp(szName, name))
-				continue;
-			pEdictFound = pEdict;
-			break;
-		}
-	}
-
-	if (!FNullEnt(pEdictFound))
-		return CBaseEntity::Instance(pEdictFound);
-	
-	return NULL;
 }
 
 #define MAX_ALIASNAME_LEN 80
@@ -873,20 +838,23 @@ void UTIL_AddToAliasList(CBaseAlias *pAlias)
 // and which is later than pStartEntity.
 CBaseEntity *UTIL_FollowAliasReference(CBaseEntity *pStartEntity, const char* szValue)
 {
+	CBaseEntity* pEntity;
 	CBaseEntity* pBestEntity = NULL; // the entity we're currently planning to return.
 	int iBestOffset = -1; // the offset of that entity.
+	CBaseEntity* pTempEntity;
+	int iTempOffset;
 
-	CBaseEntity* pEntity = UTIL_FindEntityByTargetname(NULL, szValue);
+	pEntity = UTIL_FindEntityByTargetname(NULL, szValue);
 
 	while (pEntity)
 	{
 		if (pEntity->IsAlias())
 		{
-			CBaseEntity* pTempEntity = ((CBaseAlias*)pEntity)->FollowAlias(pStartEntity);
+			pTempEntity = ((CBaseAlias*)pEntity)->FollowAlias(pStartEntity);
 			if (pTempEntity)
 			{
 				// We've found an entity; only use it if its offset is lower than the offset we've currently got.
-				int iTempOffset = OFFSET(pTempEntity->pev);
+				iTempOffset = OFFSET(pTempEntity->pev);
 				if (iBestOffset == -1 || iTempOffset < iBestOffset)
 				{
 					iBestOffset = iTempOffset;
@@ -904,15 +872,19 @@ CBaseEntity *UTIL_FollowAliasReference(CBaseEntity *pStartEntity, const char* sz
 // with the given membername and which is later than pStartEntity.
 CBaseEntity *UTIL_FollowGroupReference(CBaseEntity *pStartEntity, char* szGroupName, char* szMemberName)
 {
+	CBaseEntity* pEntity;
 	CBaseEntity* pBestEntity = NULL; // the entity we're currently planning to return.
 	int iBestOffset = -1; // the offset of that entity.
 	CBaseEntity* pTempEntity;
+	int iTempOffset;
 	char szBuf[MAX_ALIASNAME_LEN];
 	char* szThisMember = szMemberName;
 	char* szTail = NULL;
+	int iszMemberValue;
+	int i;
 
 	// find the first '.' in the membername and if there is one, split the string at that point.
-	for (int i = 0; szMemberName[i]; i++)
+	for (i = 0; szMemberName[i]; i++)
 	{
 		if (szMemberName[i] == '.')
 		{
@@ -926,12 +898,12 @@ CBaseEntity *UTIL_FollowGroupReference(CBaseEntity *pStartEntity, char* szGroupN
 		}
 	}
 
-	CBaseEntity* pEntity = UTIL_FindEntityByTargetname(NULL, szGroupName);
+	pEntity = UTIL_FindEntityByTargetname(NULL, szGroupName);
 	while (pEntity)
 	{
 		if (FStrEq(STRING(pEntity->pev->classname), "info_group"))
 		{
-			int iszMemberValue = ((CInfoGroup*)pEntity)->GetMember(szThisMember);
+			iszMemberValue = ((CInfoGroup*)pEntity)->GetMember(szThisMember);
 			//			ALERT(at_console,"survived getMember\n");
 			//			return NULL;
 			if (!FStringNull(iszMemberValue))
@@ -943,7 +915,7 @@ CBaseEntity *UTIL_FollowGroupReference(CBaseEntity *pStartEntity, char* szGroupN
 
 				if (pTempEntity)
 				{
-					int iTempOffset = OFFSET(pTempEntity->pev);
+					iTempOffset = OFFSET(pTempEntity->pev);
 					if (iBestOffset == -1 || iTempOffset < iBestOffset)
 					{
 						iBestOffset = iTempOffset;
@@ -967,6 +939,7 @@ CBaseEntity *UTIL_FollowGroupReference(CBaseEntity *pStartEntity, char* szGroupN
 CBaseEntity *UTIL_FollowReference(CBaseEntity *pStartEntity, const char* szName)
 {
 	char szRoot[MAX_ALIASNAME_LEN + 1]; // allow room for null-terminator
+	char* szMember;
 	int i;
 	CBaseEntity *pResult;
 
@@ -981,7 +954,7 @@ CBaseEntity *UTIL_FollowReference(CBaseEntity *pStartEntity, const char* szName)
 			// FIXME: we should probably check that i < MAX_ALIASNAME_LEN.
 			strncpy(szRoot, szName, i);
 			szRoot[i] = 0;
-			char* szMember = (char*)&szName[i + 1];
+			szMember = (char*)&szName[i + 1];
 			//ALERT(at_console,"Following reference- group %s with member %s\n",szRoot,szMember);
 			pResult = UTIL_FollowGroupReference(pStartEntity, szRoot, szMember);
 			//			if (pResult)
@@ -1016,8 +989,8 @@ CBaseEntity *UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *
 	CBaseEntity *pFound = UTIL_FollowReference(pStartEntity, szName);
 	if (pFound)
 		return pFound;
-
-	return UTIL_FindEntityByString(pStartEntity, "targetname", szName);
+	else
+		return UTIL_FindEntityByString(pStartEntity, "targetname", szName);
 }
 
 CBaseEntity *UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *szName, CBaseEntity *pActivator)
@@ -1026,11 +999,11 @@ CBaseEntity *UTIL_FindEntityByTargetname(CBaseEntity *pStartEntity, const char *
 	{
 		if (pActivator && (pStartEntity == NULL || pActivator->eoffset() > pStartEntity->eoffset()))
 			return pActivator;
-
-		return NULL;
+		else
+			return NULL;
 	}
-
-	return UTIL_FindEntityByTargetname(pStartEntity, szName);
+	else
+		return UTIL_FindEntityByTargetname(pStartEntity, szName);
 }
 
 CBaseEntity *UTIL_FindEntityByTarget(CBaseEntity *pStartEntity, const char *szName)
@@ -1066,30 +1039,30 @@ CBaseEntity *UTIL_FindEntityGeneric(const char *szWhatever, Vector &vecSrc, floa
 // Index is 1 based
 CBaseEntity	*UTIL_PlayerByIndex(int playerIndex)
 {
-	CBaseEntity* bEntity = nullptr;
+	CBasePlayer *pPlayer = NULL;
 
 	if (playerIndex > 0 && playerIndex <= gpGlobals->maxClients)
 	{
 		edict_t *pPlayerEdict = INDEXENT(playerIndex);
 		if (pPlayerEdict && !pPlayerEdict->free)
 		{
-			bEntity = CBaseEntity::Instance(pPlayerEdict);
-			auto pPlayer = static_cast<CBasePlayer*>(bEntity);
+			pPlayer = (CBasePlayer *)CBaseEntity::Instance(pPlayerEdict);
 			if (pPlayer && !pPlayer->IsConnected())
 			{
-				bEntity = nullptr;
-				pPlayer = nullptr;
+				pPlayer = NULL;
 			}
 		}
 	}
 
-	return bEntity;
+	return pPlayer;
 }
+
 
 void UTIL_MakeVectors(const Vector &vecAngles)
 {
 	MAKE_VECTORS(vecAngles);
 }
+
 
 void UTIL_MakeAimVectors(const Vector &vecAngles)
 {
@@ -1098,6 +1071,7 @@ void UTIL_MakeAimVectors(const Vector &vecAngles)
 	rgflVec[0] = -rgflVec[0];
 	MAKE_VECTORS(rgflVec);
 }
+
 
 #define SWAP(a,b,temp)	((temp)=(a),(a)=(b),(b)=(temp))
 
@@ -1112,6 +1086,7 @@ void UTIL_MakeInvVectors(const Vector &vec, globalvars_t *pgv)
 	SWAP(pgv->v_forward.z, pgv->v_up.x, tmp);
 	SWAP(pgv->v_right.z, pgv->v_up.y, tmp);
 }
+
 
 void UTIL_EmitAmbientSound(edict_t *entity, const Vector &vecOrigin, const char *samp, float vol, float attenuation, int fFlags, int pitch)
 {
@@ -1130,7 +1105,9 @@ void UTIL_EmitAmbientSound(edict_t *entity, const Vector &vecOrigin, const char 
 
 static unsigned short FixedUnsigned16(float value, float scale)
 {
-	int output = value * scale;
+	int output;
+
+	output = value * scale;
 	if (output < 0)
 		output = 0;
 	if (output > 0xFFFF)
@@ -1204,10 +1181,13 @@ void UTIL_ScreenShake(const Vector &center, float amplitude, float frequency, fl
 	}
 }
 
+
+
 void UTIL_ScreenShakeAll(const Vector &center, float amplitude, float frequency, float duration)
 {
 	UTIL_ScreenShake(center, amplitude, frequency, duration, 0);
 }
+
 
 void UTIL_ScreenFadeBuild(ScreenFade &fade, const Vector &color, float fadeTime, float fadeHold, int alpha, int flags)
 {
@@ -1219,6 +1199,7 @@ void UTIL_ScreenFadeBuild(ScreenFade &fade, const Vector &color, float fadeTime,
 	fade.a = alpha;
 	fade.fadeFlags = flags;
 }
+
 
 void UTIL_ScreenFadeWrite(const ScreenFade &fade, CBaseEntity *pEntity)
 {
@@ -1238,6 +1219,7 @@ void UTIL_ScreenFadeWrite(const ScreenFade &fade, CBaseEntity *pEntity)
 	MESSAGE_END();
 }
 
+
 void UTIL_ScreenFadeAll(const Vector &color, float fadeTime, float fadeHold, int alpha, int flags)
 {
 	int			i;
@@ -1252,6 +1234,7 @@ void UTIL_ScreenFadeAll(const Vector &color, float fadeTime, float fadeHold, int
 	}
 }
 
+
 void UTIL_ScreenFade(CBaseEntity *pEntity, const Vector &color, float fadeTime, float fadeHold, int alpha, int flags)
 {
 	ScreenFade	fade;
@@ -1259,6 +1242,7 @@ void UTIL_ScreenFade(CBaseEntity *pEntity, const Vector &color, float fadeTime, 
 	UTIL_ScreenFadeBuild(fade, color, fadeTime, fadeHold, alpha, flags);
 	UTIL_ScreenFadeWrite(fade, pEntity);
 }
+
 
 void UTIL_HudMessage(CBaseEntity *pEntity, const hudtextparms_t &textparms, const char *pMessage)
 {
@@ -1297,7 +1281,7 @@ void UTIL_HudMessage(CBaseEntity *pEntity, const hudtextparms_t &textparms, cons
 	else
 	{
 		char tmp[512];
-		strncpy_s(tmp, pMessage, 511);
+		strncpy(tmp, pMessage, 511);
 		tmp[511] = 0;
 		WRITE_STRING(tmp);
 	}
@@ -1306,13 +1290,16 @@ void UTIL_HudMessage(CBaseEntity *pEntity, const hudtextparms_t &textparms, cons
 
 void UTIL_HudMessageAll(const hudtextparms_t &textparms, const char *pMessage)
 {
-	for (int i = 1; i <= gpGlobals->maxClients; i++)
+	int			i;
+
+	for (i = 1; i <= gpGlobals->maxClients; i++)
 	{
 		CBaseEntity *pPlayer = UTIL_PlayerByIndex(i);
 		if (pPlayer)
 			UTIL_HudMessage(pPlayer, textparms, pMessage);
 	}
 }
+
 
 extern int gmsgTextMsg, gmsgSayText;
 void UTIL_ClientPrintAll(int msg_dest, const char *msg_name, const char *param1, const char *param2, const char *param3, const char *param4)
@@ -1370,6 +1357,35 @@ void UTIL_SayTextAll(const char *pText, CBaseEntity *pEntity)
 	MESSAGE_END();
 }
 
+
+char *UTIL_dtos1(int d)
+{
+	static char buf[8];
+	sprintf(buf, "%d", d);
+	return buf;
+}
+
+char *UTIL_dtos2(int d)
+{
+	static char buf[8];
+	sprintf(buf, "%d", d);
+	return buf;
+}
+
+char *UTIL_dtos3(int d)
+{
+	static char buf[8];
+	sprintf(buf, "%d", d);
+	return buf;
+}
+
+char *UTIL_dtos4(int d)
+{
+	static char buf[8];
+	sprintf(buf, "%d", d);
+	return buf;
+}
+
 void UTIL_ShowMessage(const char *pString, CBaseEntity *pEntity)
 {
 	if (!pEntity || !pEntity->IsNetClient())
@@ -1380,10 +1396,14 @@ void UTIL_ShowMessage(const char *pString, CBaseEntity *pEntity)
 	MESSAGE_END();
 }
 
+
 void UTIL_ShowMessageAll(const char *pString)
 {
+	int		i;
+
 	// loop through all players
-	for (int i = 1; i <= gpGlobals->maxClients; i++)
+
+	for (i = 1; i <= gpGlobals->maxClients; i++)
 	{
 		CBaseEntity *pPlayer = UTIL_PlayerByIndex(i);
 		if (pPlayer)
@@ -1482,6 +1502,7 @@ float UTIL_Approach(float target, float value, float speed)
 	return value;
 }
 
+
 float UTIL_ApproachAngle(float target, float value, float speed)
 {
 	target = UTIL_AngleMod(target);
@@ -1508,6 +1529,7 @@ float UTIL_ApproachAngle(float target, float value, float speed)
 	return value;
 }
 
+
 float UTIL_AngleDistance(float next, float cur)
 {
 	float delta = next - cur;
@@ -1521,6 +1543,7 @@ float UTIL_AngleDistance(float next, float cur)
 	return delta;
 }
 
+
 float UTIL_SplineFraction(float value, float scale)
 {
 	value = scale * value;
@@ -1530,13 +1553,14 @@ float UTIL_SplineFraction(float value, float scale)
 	return 3 * valueSquared - 2 * valueSquared * value;
 }
 
+
 char* UTIL_VarArgs(char *format, ...)
 {
 	va_list		argptr;
 	static char		string[1024];
 
 	va_start(argptr, format);
-	sprintf_s(string, format, argptr);
+	vsprintf(string, format, argptr);
 	va_end(argptr);
 
 	return string;
@@ -1551,32 +1575,35 @@ Vector UTIL_GetAimVector(edict_t *pent, float flSpeed)
 
 BOOL UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
 {
-	int i, found = false;
+	int i, j, found = false;
+	const char *szMaster;
 	char szBuf[80];
+	CBaseEntity *pMaster;
 	int reverse = false;
+
 
 	if (iszMaster)
 	{
 		//		ALERT(at_console, "IsMasterTriggered(%s, %s \"%s\")\n", STRING(iszMaster), STRING(pActivator->pev->classname), STRING(pActivator->pev->targetname));
-		const char* szMaster = STRING(iszMaster);
+		szMaster = STRING(iszMaster);
 		if (szMaster[0] == '~') //inverse master
 		{
 			reverse = true;
 			szMaster++;
 		}
 
-		CBaseEntity* pMaster = UTIL_FindEntityByTargetname(NULL, szMaster);
+		pMaster = UTIL_FindEntityByTargetname(NULL, szMaster);
 		if (!pMaster)
 		{
 			for (i = 0; szMaster[i]; i++)
 			{
 				if (szMaster[i] == '(')
 				{
-					for (int j = i + 1; szMaster[j]; j++)
+					for (j = i + 1; szMaster[j]; j++)
 					{
 						if (szMaster[j] == ')')
 						{
-							strncpy_s(szBuf, szMaster + i + 1, (j - i) - 1);
+							strncpy(szBuf, szMaster + i + 1, (j - i) - 1);
 							szBuf[(j - i) - 1] = 0;
 							pActivator = UTIL_FindEntityByTargetname(NULL, szBuf);
 							found = true;
@@ -1597,7 +1624,7 @@ BOOL UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
 				return TRUE;
 			}
 
-			strncpy_s(szBuf, szMaster, i);
+			strncpy(szBuf, szMaster, i);
 			szBuf[i] = 0;
 			pMaster = UTIL_FindEntityByTargetname(NULL, szBuf);
 		}
@@ -1606,8 +1633,8 @@ BOOL UTIL_IsMasterTriggered(string_t iszMaster, CBaseEntity *pActivator)
 		{
 			if (reverse)
 				return (pMaster->GetState(pActivator) != STATE_ON);
-
-			return (pMaster->GetState(pActivator) == STATE_ON);
+			else
+				return (pMaster->GetState(pActivator) == STATE_ON);
 		}
 	}
 
@@ -1643,6 +1670,10 @@ void UTIL_BloodStream(const Vector &origin, const Vector &direction, int color, 
 	if (!UTIL_ShouldShowBlood(color))
 		return;
 
+	if (g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED)
+		color = 0;
+
+
 	MESSAGE_BEGIN(MSG_PVS, SVC_TEMPENTITY, origin);
 	WRITE_BYTE(TE_BLOODSTREAM);
 	WRITE_COORD(origin.x);
@@ -1663,6 +1694,9 @@ void UTIL_BloodDrips(const Vector &origin, const Vector &direction, int color, i
 
 	if (color == DONT_BLEED || amount == 0)
 		return;
+
+	if (g_Language == LANGUAGE_GERMAN && color == BLOOD_COLOR_RED)
+		color = 0;
 
 	if (g_pGameRules->IsMultiplayer())
 	{
@@ -1696,6 +1730,7 @@ Vector UTIL_RandomBloodVector(void)
 	return direction;
 }
 
+
 void UTIL_BloodDecalTrace(TraceResult *pTrace, int bloodColor)
 {
 	if (UTIL_ShouldShowBlood(bloodColor))
@@ -1707,14 +1742,17 @@ void UTIL_BloodDecalTrace(TraceResult *pTrace, int bloodColor)
 	}
 }
 
+
 void UTIL_DecalTrace(TraceResult *pTrace, int decalNumber)
 {
 	short entityIndex;
+	int index;
+	int message;
 
 	if (decalNumber < 0)
 		return;
 
-	int index = gDecals[decalNumber].index;
+	index = gDecals[decalNumber].index;
 
 	if (index < 0)
 		return;
@@ -1733,7 +1771,7 @@ void UTIL_DecalTrace(TraceResult *pTrace, int decalNumber)
 	else
 		entityIndex = 0;
 
-	int message = TE_DECAL;
+	message = TE_DECAL;
 	if (entityIndex != 0)
 	{
 		if (index > 255)
@@ -1882,11 +1920,11 @@ BOOL UTIL_IsFacing(entvars_t *pevTest, const Vector &reference)
 
 void UTIL_StringToVector(float *pVector, const char *pString)
 {
-	char *pfront, tempString[128];
+	char *pstr, *pfront, tempString[128];
 	int	j;
 
-	strcpy_s(tempString, pString);
-	char* pstr = pfront = tempString;
+	strcpy(tempString, pString);
+	pstr = pfront = tempString;
 
 	for (j = 0; j < 3; j++)			// lifted from pr_edict.c
 	{
@@ -1918,7 +1956,7 @@ void UTIL_StringToRandomVector(float *pVector, const char *pString)
 	int	j;
 	float pAltVec[3];
 
-	strcpy_s(tempString, pString);
+	strcpy(tempString, pString);
 	pstr = pfront = tempString;
 
 	for (j = 0; j < 3; j++)			// lifted from pr_edict.c
@@ -1960,7 +1998,7 @@ void UTIL_StringToIntArray(int *pVector, int count, const char *pString)
 	char *pstr, *pfront, tempString[128];
 	int	j;
 
-	strcpy_s(tempString, pString);
+	strcpy(tempString, pString);
 	pstr = pfront = tempString;
 
 	for (j = 0; j < count; j++)			// lifted from pr_edict.c
@@ -2145,7 +2183,7 @@ void UTIL_LogPrintf(char *fmt, ...)
 	static char		string[1024];
 
 	va_start(argptr, fmt);
-	sprintf_s(string, fmt, argptr);
+	vsprintf(string, fmt, argptr);
 	va_end(argptr);
 
 	// Print to server console
@@ -3263,23 +3301,4 @@ void UTIL_DynamicMuzzleFlash(const Vector &vecShootOrigin, float radius, int col
 	WRITE_BYTE(time);		// time * 10 = Suggested 1
 	WRITE_BYTE(decay);		// decay * 0.1 - Suggested 00.1
 	MESSAGE_END();
-}
-
-bool UTIL_IsValidFilename(const char* path)
-{
-	if (path[0] == 0) return false;
-	const char* c = path;
-	const char* d = path;
-	bool haschars = false;
-	while (*c)
-	{
-		if (*c <= 31 || *c == '<' || *c == '>' || *c == '"' ||
-			*c == '/' || *c == '|' || *c == '?' || *c == '*' ||
-			*c == ':' || *c == '\\')
-			return false;
-		if (*c != ' ')
-			haschars = true;
-		c++;
-	}
-	return haschars;
 }

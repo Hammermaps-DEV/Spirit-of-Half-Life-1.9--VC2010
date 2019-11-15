@@ -31,14 +31,14 @@ Studio models are position independent, so the cache manager can move them.
 
 #define MAXSTUDIOTRIANGLES	20000	// TODO: tune this
 #define MAXSTUDIOVERTS		2048	// TODO: tune this
-#define MAXSTUDIOSEQUENCES	2048	// total animation sequences
+#define MAXSTUDIOSEQUENCES	256		// total animation sequences
 #define MAXSTUDIOSKINS		100		// total textures
 #define MAXSTUDIOSRCBONES	512		// bones allowed at source movement
 #define MAXSTUDIOBONES		128		// total bones actually used
 #define MAXSTUDIOMODELS		32		// sub-models per model
 #define MAXSTUDIOBODYPARTS	32
 #define MAXSTUDIOGROUPS		16
-#define MAXSTUDIOANIMATIONS	2048	// per sequence
+#define MAXSTUDIOANIMATIONS	512		// per sequence
 #define MAXSTUDIOMESHES		256
 #define MAXSTUDIOEVENTS		1024
 #define MAXSTUDIOPIVOTS		256

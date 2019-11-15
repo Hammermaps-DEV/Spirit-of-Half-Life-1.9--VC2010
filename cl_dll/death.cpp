@@ -27,8 +27,8 @@
 DECLARE_MESSAGE( m_DeathNotice, DeathMsg );
 
 struct DeathNoticeItem {
-	char szKiller[MAX_PLAYER_NAME];
-	char szVictim[MAX_PLAYER_NAME];
+	char szKiller[MAX_PLAYER_NAME_LENGTH*2];
+	char szVictim[MAX_PLAYER_NAME_LENGTH*2];
 	int iId;	// the index number of the associated sprite
 	int iSuicide;
 	int iTeamKill;
@@ -67,13 +67,15 @@ float *GetClientColor( int clientIndex )
 	return NULL;
 }
 
-void CHudDeathNotice :: Init( void )
+int CHudDeathNotice :: Init( void )
 {
 	gHUD.AddHudElem( this );
 
 	HOOK_MESSAGE( DeathMsg );
 
 	CVAR_CREATE( "hud_deathnotice_time", "6", 0 );
+
+	return 1;
 }
 
 
@@ -83,12 +85,14 @@ void CHudDeathNotice :: InitHUDData( void )
 }
 
 
-void CHudDeathNotice :: VidInit( void )
+int CHudDeathNotice :: VidInit( void )
 {
 	m_HUD_d_skull = gHUD.GetSpriteIndex( "d_skull" );
+
+	return 1;
 }
 
-void CHudDeathNotice :: Draw( float flTime )
+int CHudDeathNotice :: Draw( float flTime )
 {
 	int x, y, r, g, b;
 
@@ -122,7 +126,7 @@ void CHudDeathNotice :: Draw( float flTime )
 
 				// Draw killers name
 				if ( rgDeathNoticeList[i].KillerColor )
-					DrawSetTextColor(rgDeathNoticeList[i].KillerColor[0], rgDeathNoticeList[i].KillerColor[1], rgDeathNoticeList[i].KillerColor[2]);
+					gEngfuncs.pfnDrawSetTextColor( rgDeathNoticeList[i].KillerColor[0], rgDeathNoticeList[i].KillerColor[1], rgDeathNoticeList[i].KillerColor[2] );
 				x = 5 + DrawConsoleString( x, y, rgDeathNoticeList[i].szKiller );
 			}
 
@@ -142,11 +146,13 @@ void CHudDeathNotice :: Draw( float flTime )
 			if (rgDeathNoticeList[i].iNonPlayerKill == FALSE)
 			{
 				if ( rgDeathNoticeList[i].VictimColor )
-					DrawSetTextColor(rgDeathNoticeList[i].VictimColor[0], rgDeathNoticeList[i].VictimColor[1], rgDeathNoticeList[i].VictimColor[2]);
+					gEngfuncs.pfnDrawSetTextColor( rgDeathNoticeList[i].VictimColor[0], rgDeathNoticeList[i].VictimColor[1], rgDeathNoticeList[i].VictimColor[2] );
 				x = DrawConsoleString( x, y, rgDeathNoticeList[i].szVictim );
 			}
 		}
 	}
+
+	return 1;
 }
 
 // This message handler may be better off elsewhere
@@ -195,8 +201,8 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 	else
 	{
 		rgDeathNoticeList[i].KillerColor = GetClientColor( killer );
-		strncpy(rgDeathNoticeList[i].szKiller, killer_name, MAX_PLAYER_NAME);
-		rgDeathNoticeList[i].szKiller[MAX_PLAYER_NAME - 1] = 0;
+		strncpy( rgDeathNoticeList[i].szKiller, killer_name, MAX_PLAYER_NAME_LENGTH );
+		rgDeathNoticeList[i].szKiller[MAX_PLAYER_NAME_LENGTH-1] = 0;
 	}
 
 	// Get the Victim's name
@@ -212,8 +218,8 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 	else
 	{
 		rgDeathNoticeList[i].VictimColor = GetClientColor( victim );
-		strncpy(rgDeathNoticeList[i].szVictim, victim_name, MAX_PLAYER_NAME);
-		rgDeathNoticeList[i].szVictim[MAX_PLAYER_NAME - 1] = 0;
+		strncpy( rgDeathNoticeList[i].szVictim, victim_name, MAX_PLAYER_NAME_LENGTH );
+		rgDeathNoticeList[i].szVictim[MAX_PLAYER_NAME_LENGTH-1] = 0;
 	}
 
 	// Is it a non-player object kill?
@@ -222,7 +228,7 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 		rgDeathNoticeList[i].iNonPlayerKill = TRUE;
 
 		// Store the object's name in the Victim slot (skip the d_ bit)
-		strcpy(rgDeathNoticeList[i].szVictim, killedwith + 2);
+		strcpy( rgDeathNoticeList[i].szVictim, killedwith+2 );
 	}
 	else
 	{
@@ -277,7 +283,7 @@ int CHudDeathNotice :: MsgFunc_DeathMsg( const char *pszName, int iSize, void *p
 			ConsolePrint( rgDeathNoticeList[i].szVictim );
 		}
 
-		if (*killedwith && (*killedwith > 13) && strcmp(killedwith, "d_world") && !rgDeathNoticeList[i].iTeamKill)
+		if ( *killedwith && (*killedwith > 13 ) && strcmp( killedwith, "d_world" ) && !rgDeathNoticeList[i].iTeamKill )
 		{
 			ConsolePrint( " with " );
 

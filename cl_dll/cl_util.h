@@ -96,49 +96,30 @@ void* Sys_GetProcAddress (dllhandle_t handle, const char* name);
 #define SetCrosshair (*gEngfuncs.pfnSetCrosshair)
 #define AngleVectors (*gEngfuncs.pfnAngleVectors)
 
-extern cvar_t* hud_textmode;
-extern float g_hud_text_color[3];
-
-inline void DrawSetTextColor(float r, float g, float b)
-{
-	if (hud_textmode->value == 1)
-		g_hud_text_color[0] = r, g_hud_text_color[1] = g, g_hud_text_color[2] = b;
-	else
-		gEngfuncs.pfnDrawSetTextColor(r, g, b);
-}
 
 // Gets the height & width of a sprite,  at the specified frame
 inline int SPR_Height( HL_HSPRITE x, int f )	{ return gEngfuncs.pfnSPR_Height(x, f); }
 inline int SPR_Width( HL_HSPRITE x, int f )	{ return gEngfuncs.pfnSPR_Width(x, f); }
 
 inline 	client_textmessage_t	*TextMessageGet( const char *pName ) { return gEngfuncs.pfnTextMessageGet( pName ); }
-inline 	int	TextMessageDrawChar( int x, int y, int number, int r, int g, int b ) 
+inline 	int						TextMessageDrawChar( int x, int y, int number, int r, int g, int b ) 
 { 
 	return gEngfuncs.pfnDrawCharacter( x, y, number, r, g, b ); 
 }
 
-inline int DrawConsoleString(int x, int y, const char *string )
+inline int DrawConsoleString( int x, int y, const char *string )
 {
-	if (hud_textmode->value == 1)
-		return gHUD.DrawHudString((int)x, (int)y, 9999, (char*)string, (int)(255 * g_hud_text_color[0]), (int)(255 * g_hud_text_color[1]), (int)(255 * g_hud_text_color[2]));
-
-	return gEngfuncs.pfnDrawConsoleString((int)x, (int)y, (char*)string);
+	return gEngfuncs.pfnDrawConsoleString( x, y, (char*) string );
 }
 
 inline void GetConsoleStringSize( const char *string, int *width, int *height )
 {
-	if (hud_textmode->value == 1)
-		*height = 13, * width = gHUD.DrawHudStringLen((char*)string);
-	else
-		gEngfuncs.pfnDrawConsoleStringLen((char*)string, width, height);
+	gEngfuncs.pfnDrawConsoleStringLen( string, width, height );
 }
 
 inline int ConsoleStringLen( const char *string )
 {
-	int _width = 0, _height = 0;
-	if (hud_textmode->value == 1)
-		return gHUD.DrawHudStringLen((char*)string);
-	
+	int _width, _height;
 	GetConsoleStringSize( string, &_width, &_height );
 	return _width;
 }

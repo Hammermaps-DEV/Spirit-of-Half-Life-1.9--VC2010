@@ -2,13 +2,15 @@
 #include	"util.h"
 #include	"cbase.h"
 #include	"movewith.h"
+#include	"saverestore.h"
+#include	"player.h"
 
-CWorld *g_pWorld = NULL; //LRC
+CWorld* g_pWorld = NULL; //LRC
 
 BOOL g_doingDesired = FALSE; //LRC - marks whether the Desired functions are currently
-BOOL NeedUpdate(CBaseEntity *pEnt); //synchronization may be lost (e.g. after changelevel) merge it.									// being processed.
+BOOL NeedUpdate(CBaseEntity* pEnt); //synchronization may be lost (e.g. after changelevel) merge it.									// being processed.
 
-void UTIL_AddToAssistList(CBaseEntity *pEnt)
+void UTIL_AddToAssistList(CBaseEntity* pEnt)
 {
 	//	ALERT(at_console, "Add %s \"%s\" to AssistList\n", STRING(pEnt->pev->classname), STRING(pEnt->pev->targetname));
 
@@ -24,7 +26,7 @@ void UTIL_AddToAssistList(CBaseEntity *pEnt)
 		return;
 	}
 
-	CBaseEntity *pListMember = g_pWorld;
+	CBaseEntity* pListMember = g_pWorld;
 
 	// find the last entry in the list...
 	while (pListMember->m_pAssistLink != NULL)
@@ -46,7 +48,7 @@ void UTIL_AddToAssistList(CBaseEntity *pEnt)
 //	ALERT(at_console, "Added %s \"%s\" to AssistList, length now %d\n", STRING(pEnt->pev->classname), STRING(pEnt->pev->targetname), count);
 }
 
-void HandlePostAssist(CBaseEntity *pEnt)
+void HandlePostAssist(CBaseEntity* pEnt)
 {
 	if (pEnt->m_iLFlags & LF_POSTASSISTVEL)
 	{
@@ -60,7 +62,6 @@ void HandlePostAssist(CBaseEntity *pEnt)
 		pEnt->m_vecPostAssistVel = g_vecZero;
 		pEnt->m_iLFlags &= ~LF_POSTASSISTVEL;
 	}
-	
 	if (pEnt->m_iLFlags & LF_POSTASSISTAVEL)
 	{
 		//		ALERT(at_console, "RestoreVel %s: orign %f %f %f, velocity was %f %f %f, back to %f %f %f\n",
@@ -73,14 +74,13 @@ void HandlePostAssist(CBaseEntity *pEnt)
 		pEnt->m_vecPostAssistAVel = g_vecZero;
 		pEnt->m_iLFlags &= ~LF_POSTASSISTAVEL;
 	}
-	
-	CBaseEntity *pChild;
+	CBaseEntity* pChild;
 	for (pChild = pEnt->m_pChildMoveWith; pChild != NULL; pChild = pChild->m_pSiblingMoveWith)
 		HandlePostAssist(pChild);
 }
 
 // returns 0 if no desired settings needed, else returns 1
-int ApplyDesiredSettings(CBaseEntity *pListMember)
+int ApplyDesiredSettings(CBaseEntity* pListMember)
 {
 	if (pListMember->m_iLFlags & LF_DODESIRED)
 	{
@@ -125,9 +125,9 @@ int ApplyDesiredSettings(CBaseEntity *pListMember)
 	return 1;
 }
 
-void AssistChildren(CBaseEntity *pEnt, Vector vecAdjustVel, Vector vecAdjustAVel)
+void AssistChildren(CBaseEntity* pEnt, Vector vecAdjustVel, Vector vecAdjustAVel)
 {
-	CBaseEntity *pChild;
+	CBaseEntity* pChild;
 	for (pChild = pEnt->m_pChildMoveWith; pChild != NULL; pChild = pChild->m_pSiblingMoveWith)
 	{
 		if (!(pChild->m_iLFlags & LF_POSTASSISTVEL))
@@ -156,7 +156,7 @@ void AssistChildren(CBaseEntity *pEnt, Vector vecAdjustVel, Vector vecAdjustAVel
 // 3) this entity's non-PUSH children, if this entity will stop moving this turn.
 //
 // returns 0 if the entity wasn't flagged for DoAssist.
-int TryAssistEntity(CBaseEntity *pEnt)
+int TryAssistEntity(CBaseEntity* pEnt)
 {
 	if (gpGlobals->frametime == 0)
 	{
@@ -165,14 +165,13 @@ int TryAssistEntity(CBaseEntity *pEnt)
 	}
 
 	// not flagged as needing assistance?
-	if (!(pEnt->m_iLFlags & LF_DOASSIST))
-		return 0;
+	//if (!(pEnt->m_iLFlags & LF_DOASSIST)) return 0;
 
 //	ALERT(at_console, "AssistList: %s\n", STRING(pEnt->pev->classname));
 
 	if (pEnt->m_fNextThink <= 0)
 	{
-		//	ALERT(at_console, "Cancelling assist for %s, %f\n", STRING(pEnt->pev->targetname), pEnt->pev->origin.x);
+		//		ALERT(at_console, "Cancelling assist for %s, %f\n", STRING(pEnt->pev->targetname), pEnt->pev->origin.x);
 		pEnt->m_iLFlags &= ~LF_DOASSIST;
 		return 0; // the think has been cancelled. Oh well...
 	}
@@ -218,13 +217,13 @@ int TryAssistEntity(CBaseEntity *pEnt)
 
 			if (pEnt->m_pMoveWith)
 			{
-				pEnt->SetVelocity((pEnt->pev->velocity - pEnt->m_pMoveWith->pev->velocity)*fFraction + pEnt->m_pMoveWith->pev->velocity);
-				pEnt->pev->avelocity = (pEnt->pev->avelocity - pEnt->m_pMoveWith->pev->avelocity)*fFraction + pEnt->m_pMoveWith->pev->avelocity;
+				pEnt->SetVelocity((pEnt->pev->velocity - pEnt->m_pMoveWith->pev->velocity) * fFraction + pEnt->m_pMoveWith->pev->velocity);
+				pEnt->pev->avelocity = (pEnt->pev->avelocity - pEnt->m_pMoveWith->pev->avelocity) * fFraction + pEnt->m_pMoveWith->pev->avelocity;
 			}
 			else
 			{
-				pEnt->SetVelocity(pEnt->pev->velocity*fFraction);
-				pEnt->pev->avelocity = pEnt->pev->avelocity*fFraction;
+				pEnt->SetVelocity(pEnt->pev->velocity * fFraction);
+				pEnt->pev->avelocity = pEnt->pev->avelocity * fFraction;
 			}
 
 			//ALERT(at_console, "Assist %s: origin %f %f %f, old vel %f %f %f. fraction %f, new vel %f %f %f, dest %f %f %f\n", STRING(pEnt->pev->targetname), pEnt->pev->origin.x, pEnt->pev->origin.y, pEnt->pev->origin.z, pEnt->m_vecPostAssistVel.x, pEnt->m_vecPostAssistVel.y, pEnt->m_vecPostAssistVel.z, fFraction, pEnt->pev->velocity.x, pEnt->pev->velocity.y, pEnt->pev->velocity.z, pEnt->pev->origin.x + pEnt->pev->velocity.x*gpGlobals->frametime, pEnt->pev->origin.y + pEnt->pev->velocity.y*gpGlobals->frametime, pEnt->pev->origin.z + pEnt->pev->velocity.z*gpGlobals->frametime);
@@ -244,7 +243,7 @@ int TryAssistEntity(CBaseEntity *pEnt)
 // called every frame, by StartFrame
 void CheckAssistList(void)
 {
-	CBaseEntity *pListMember;
+	CBaseEntity* pListMember;
 
 	if (!g_pWorld)
 	{
@@ -252,7 +251,6 @@ void CheckAssistList(void)
 		return;
 	}
 
-	/*
 	int count = 0;
 
 	for (pListMember = g_pWorld; pListMember; pListMember = pListMember->m_pAssistLink)
@@ -261,10 +259,7 @@ void CheckAssistList(void)
 			count++;
 	}
 
-		if (count)
-		ALERT(at_console, "CheckAssistList begins, length is %d\n", count);
-	*/
-	
+	count = 0;
 	pListMember = g_pWorld;
 
 	while (pListMember->m_pAssistLink) // handle the remaining entries in the list
@@ -272,22 +267,19 @@ void CheckAssistList(void)
 		TryAssistEntity(pListMember->m_pAssistLink);
 		if (!(pListMember->m_pAssistLink->m_iLFlags & LF_ASSISTLIST))
 		{
-			//ALERT(at_console, "Removing %s \"%s\" from assistList\n", STRING(pListMember->m_pAssistLink->pev->classname), STRING(pListMember->m_pAssistLink->pev->targetname));
-			CBaseEntity *pTemp = pListMember->m_pAssistLink;
+			CBaseEntity* pTemp = pListMember->m_pAssistLink;
 			pListMember->m_pAssistLink = pListMember->m_pAssistLink->m_pAssistLink;
 			pTemp->m_pAssistLink = NULL;
 		}
-		else 
-			pListMember = pListMember->m_pAssistLink;
+		else pListMember = pListMember->m_pAssistLink;
 	}
 }
 
 // called every frame, by PostThink
 void CheckDesiredList(void)
 {
-	CBaseEntity *pListMember;
-	int loopbreaker = 1000; //assume this is the max. number of entities which will use DesiredList in any one frame
-//	BOOL liststart = FALSE;
+	CBaseEntity* pListMember;
+	int loopbreaker = 1024; //max edicts
 
 	if (g_doingDesired) ALERT(at_debug, "CheckDesiredList: doingDesired is already set!?\n");
 	g_doingDesired = TRUE;
@@ -298,7 +290,8 @@ void CheckDesiredList(void)
 		return;
 	}
 
-	CBaseEntity *pNext;
+	pListMember = g_pWorld;
+	CBaseEntity* pNext;
 	pListMember = g_pWorld->m_pAssistLink;
 
 	while (pListMember)
@@ -318,7 +311,9 @@ void CheckDesiredList(void)
 	g_doingDesired = FALSE;
 }
 
-void UTIL_MarkForAssist(CBaseEntity *pEnt, BOOL correctSpeed)
+
+
+void UTIL_MarkForAssist(CBaseEntity* pEnt, BOOL correctSpeed)
 {
 	pEnt->m_iLFlags |= LF_DOASSIST;
 
@@ -330,7 +325,7 @@ void UTIL_MarkForAssist(CBaseEntity *pEnt, BOOL correctSpeed)
 	UTIL_AddToAssistList(pEnt);
 }
 
-void UTIL_MarkForDesired(CBaseEntity *pEnt)
+void UTIL_MarkForDesired(CBaseEntity* pEnt)
 {
 	pEnt->m_iLFlags |= LF_DODESIRED;
 
@@ -344,25 +339,25 @@ void UTIL_MarkForDesired(CBaseEntity *pEnt)
 	UTIL_AddToAssistList(pEnt);
 }
 
-void UTIL_DesiredAction(CBaseEntity *pEnt)
+void UTIL_DesiredAction(CBaseEntity* pEnt)
 {
 	pEnt->m_iLFlags |= LF_DESIRED_ACTION;
 	UTIL_MarkForDesired(pEnt);
 }
 
-void UTIL_DesiredInfo(CBaseEntity *pEnt)
+void UTIL_DesiredInfo(CBaseEntity* pEnt)
 {
 	pEnt->m_iLFlags |= LF_DESIRED_INFO;
 	UTIL_MarkForDesired(pEnt);
 }
 
-void UTIL_DesiredPostAssist(CBaseEntity *pEnt)
+void UTIL_DesiredPostAssist(CBaseEntity* pEnt)
 {
 	pEnt->m_iLFlags |= LF_DESIRED_POSTASSIST;
 	UTIL_MarkForDesired(pEnt);
 }
 
-void UTIL_DesiredThink(CBaseEntity *pEnt)
+void UTIL_DesiredThink(CBaseEntity* pEnt)
 {
 	//	ALERT(at_console, "Setting DesiredThink %s\n", STRING(pEnt->pev->targetname));
 	pEnt->m_iLFlags |= LF_DESIRED_THINK;
@@ -370,19 +365,18 @@ void UTIL_DesiredThink(CBaseEntity *pEnt)
 	UTIL_MarkForDesired(pEnt);
 }
 
+
+
 // LRC- change the origin to the given position, and bring any movewiths along too.
-void UTIL_AssignOrigin(CBaseEntity *pEntity, const Vector vecOrigin)
+void UTIL_AssignOrigin(CBaseEntity* pEntity, const Vector vecOrigin)
 {
 	UTIL_AssignOrigin(pEntity, vecOrigin, TRUE);
 }
 
 // LRC- bInitiator is true if this is being called directly, rather than because pEntity is moving with something else.
-void UTIL_AssignOrigin(CBaseEntity *pEntity, const Vector vecOrigin, BOOL bInitiator)
+void UTIL_AssignOrigin(CBaseEntity* pEntity, const Vector vecOrigin, BOOL bInitiator)
 {
-	//	ALERT(at_console, "AssignOrigin before %f, after %f\n", pEntity->pev->origin.x, vecOrigin.x);
 	Vector vecDiff = vecOrigin - pEntity->pev->origin;
-	if (vecDiff.Length() > 0.01 && CVAR_GET_FLOAT("sohl_mwdebug"))
-		ALERT(at_debug, "AssignOrigin %s %s: (%f %f %f) goes to (%f %f %f)\n", STRING(pEntity->pev->classname), STRING(pEntity->pev->targetname), pEntity->pev->origin.x, pEntity->pev->origin.y, pEntity->pev->origin.z, vecOrigin.x, vecOrigin.y, vecOrigin.z);
 
 	UTIL_SetOrigin(pEntity, vecOrigin);
 
@@ -411,12 +405,12 @@ void UTIL_AssignOrigin(CBaseEntity *pEntity, const Vector vecOrigin, BOOL bIniti
 	}
 }
 
-void UTIL_AssignAngles(CBaseEntity *pEntity, const Vector vecAngles)
+void UTIL_AssignAngles(CBaseEntity* pEntity, const Vector vecAngles)
 {
 	UTIL_AssignAngles(pEntity, vecAngles, TRUE);
 }
 
-void UTIL_AssignAngles(CBaseEntity *pEntity, const Vector vecAngles, BOOL bInitiator)
+void UTIL_AssignAngles(CBaseEntity* pEntity, const Vector vecAngles, BOOL bInitiator)
 {
 	Vector vecDiff = vecAngles - pEntity->pev->angles;
 	if (vecDiff.Length() > 0.01 && CVAR_GET_FLOAT("sohl_mwdebug"))
@@ -456,7 +450,7 @@ void UTIL_AssignAngles(CBaseEntity *pEntity, const Vector vecAngles, BOOL bIniti
 
 //LRC- for use in supporting movewith. Tell the entity that whatever it's moving with is about to change velocity.
 // loopbreaker is there to prevent the game from hanging...
-void UTIL_SetMoveWithVelocity(CBaseEntity *pEnt, const Vector vecSet, int loopbreaker)
+void UTIL_SetMoveWithVelocity(CBaseEntity* pEnt, const Vector vecSet, int loopbreaker)
 {
 	if (loopbreaker <= 0)
 	{
@@ -503,7 +497,7 @@ void UTIL_SetMoveWithVelocity(CBaseEntity *pEnt, const Vector vecSet, int loopbr
 
 	if (pEnt->m_pChildMoveWith)
 	{
-		CBaseEntity *pMoving = pEnt->m_pChildMoveWith;
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
 		int sloopbreaker = MAX_MOVEWITH_DEPTH; // to prevent the game hanging...
 		while (pMoving)
 		{
@@ -517,12 +511,12 @@ void UTIL_SetMoveWithVelocity(CBaseEntity *pEnt, const Vector vecSet, int loopbr
 			}
 		}
 	}
-	
+
 	pEnt->SetVelocity(vecNew);
 }
 
 //LRC
-void UTIL_SetVelocity(CBaseEntity *pEnt, const Vector vecSet)
+void UTIL_SetVelocity(CBaseEntity* pEnt, const Vector vecSet)
 {
 	Vector vecNew;
 	if (pEnt->m_pMoveWith)
@@ -538,7 +532,7 @@ void UTIL_SetVelocity(CBaseEntity *pEnt, const Vector vecSet)
 
 	if (pEnt->m_pChildMoveWith)
 	{
-		CBaseEntity *pMoving = pEnt->m_pChildMoveWith;
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
 		int sloopbreaker = MAX_MOVEWITH_DEPTH; // LRC - to save us from infinite loops
 		while (pMoving)
 		{
@@ -559,7 +553,7 @@ void UTIL_SetVelocity(CBaseEntity *pEnt, const Vector vecSet)
 }
 
 //LRC - one more MoveWith utility. This one's for the simple version of RotWith.
-void UTIL_SetMoveWithAvelocity(CBaseEntity *pEnt, const Vector vecSet, int loopbreaker)
+void UTIL_SetMoveWithAvelocity(CBaseEntity* pEnt, const Vector vecSet, int loopbreaker)
 {
 	if (loopbreaker <= 0)
 	{
@@ -579,7 +573,7 @@ void UTIL_SetMoveWithAvelocity(CBaseEntity *pEnt, const Vector vecSet, int loopb
 
 	if (pEnt->m_pChildMoveWith)
 	{
-		CBaseEntity *pMoving = pEnt->m_pChildMoveWith;
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
 		int sloopbreaker = MAX_MOVEWITH_DEPTH; // to prevent the game hanging...
 		while (pMoving)
 		{
@@ -598,7 +592,7 @@ void UTIL_SetMoveWithAvelocity(CBaseEntity *pEnt, const Vector vecSet, int loopb
 	pEnt->pev->avelocity = vecNew;
 }
 
-void UTIL_SetAvelocity(CBaseEntity *pEnt, const Vector vecSet)
+void UTIL_SetAvelocity(CBaseEntity* pEnt, const Vector vecSet)
 {
 	Vector vecNew;
 	if (pEnt->m_pMoveWith)
@@ -610,7 +604,7 @@ void UTIL_SetAvelocity(CBaseEntity *pEnt, const Vector vecSet)
 
 	if (pEnt->m_pChildMoveWith)
 	{
-		CBaseEntity *pMoving = pEnt->m_pChildMoveWith;
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
 		int sloopbreaker = MAX_MOVEWITH_DEPTH; // LRC - to save us from infinite loops
 		while (pMoving)
 		{
@@ -630,7 +624,7 @@ void UTIL_SetAvelocity(CBaseEntity *pEnt, const Vector vecSet)
 	pEnt->pev->avelocity = vecNew;
 }
 
-void UTIL_MergePos(CBaseEntity *pEnt, int loopbreaker)
+void UTIL_MergePos(CBaseEntity* pEnt, int loopbreaker)
 {
 	if (loopbreaker <= 0)return;
 	if (!pEnt->m_pMoveWith)return;
@@ -647,7 +641,7 @@ void UTIL_MergePos(CBaseEntity *pEnt, int loopbreaker)
 
 	if (pEnt->m_pChildMoveWith)
 	{
-		CBaseEntity *pMoving = pEnt->m_pChildMoveWith;
+		CBaseEntity* pMoving = pEnt->m_pChildMoveWith;
 		int sloopbreaker = MAX_MOVEWITH_DEPTH;
 		while (pMoving)
 		{
@@ -673,7 +667,7 @@ void UTIL_MergePos(CBaseEntity *pEnt, int loopbreaker)
 	}
 }
 
-BOOL NeedUpdate(CBaseEntity *pEnt)
+BOOL NeedUpdate(CBaseEntity* pEnt)
 {
 	if (pEnt->m_pChildMoveWith && pEnt->m_pChildMoveWith->m_vecOffsetOrigin == g_vecZero)//potentially loser
 	{

@@ -202,7 +202,7 @@ static int CheckFormat( qboolean skip_buffer )
 	return false;
 }
 
-void CHudSound::Init( void )
+int CHudSound::Init( void )
 {
 	m_iStatus = 0;
 
@@ -212,8 +212,7 @@ void CHudSound::Init( void )
 	gHUD.AddHudElem(this);
 
 	// Already loaded?
-	if (fmod_dll) 
-		return;
+	if (fmod_dll) return 1;
 
 	if( Sys_LoadLibrary("fmod.dll", &fmod_dll, fmodfuncs ))
 	{
@@ -221,8 +220,8 @@ void CHudSound::Init( void )
 		{
 			CONPRINT( "Warning: Invalid fmod version: %g\n", qfmod_getversion( ));
 			Sys_UnloadLibrary( &fmod_dll ); // free library
-			return;
-        }
+			return 1;
+          	}
 
 		qfmod_setbuffersize( 100 );
           	qfmod_setoutput( FSOUND_OUTPUT_DSOUND );
@@ -232,15 +231,17 @@ void CHudSound::Init( void )
 		if( !qfmod_init( 44100, 32, 0 ))
 		{	
 			CONPRINT( "%s\n", FMOD_ErrorString( qfmod_geterror( )));
-			return;
+			return 1;
 		}
 
 		qfmod_setmixer( FSOUND_MIXER_AUTODETECT );
 	}
 	else CONPRINT( "fmod.dll not installed\n" );
+          
+	return 1;
 }
 
-void CHudSound::VidInit( void )
+int CHudSound::VidInit( void )
 {
 	if( fmod_dll )
 	{
@@ -255,6 +256,7 @@ void CHudSound::VidInit( void )
 	}
 
 	m_flVolume = -1.0f;
+	return 1;
 }
 
 int CHudSound::MsgFunc_Fsound( const char *pszName, int iSize, void *pbuf )
@@ -354,10 +356,10 @@ int CHudSound::PlayStream( const char* name )
 	return 1;
 }
 
-void CHudSound::Draw( float flTime )
+int CHudSound::Draw( float flTime )
 {
 	if( !fmod_dll || !fmod_data )
-		return;
+		return 0;
 
 	if (last_state != pause)
 	{
@@ -380,6 +382,8 @@ void CHudSound::Draw( float flTime )
 			qfmod_setvolume( FSOUND_ALL, (int)(vol * 256.f ));
 		m_flVolume = vol;
 	}
+
+	return 1;
 }
 
 int CHudSound::Close( void )

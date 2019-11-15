@@ -78,10 +78,10 @@ public:
 	void FindNextPlayer( bool bReverse );
 	void DirectorMessage( int iSize, void *pbuf );
 	void SetSpectatorStartPosition();
-	void Init();
-	void VidInit();
+	int Init();
+	int VidInit();
 
-	void Draw(float flTime);
+	int Draw(float flTime);
 
 	int m_iDrawCycle;
 	client_textmessage_t m_HUDMessages[MAX_SPEC_HUD_MESSAGES];

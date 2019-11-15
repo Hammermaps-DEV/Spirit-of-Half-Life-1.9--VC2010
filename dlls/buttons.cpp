@@ -949,7 +949,7 @@ CBaseButton::BUTTON_CODE CBaseButton::ButtonResponseToTouch(void)
 void CBaseButton::ButtonTouch(CBaseEntity *pOther)
 {
 	// Ignore touches by anything but players
-	if (!pOther->IsPlayer())
+	if (!FClassnameIs(pOther->pev, "player"))
 		return;
 
 	m_hActivator = pOther;
@@ -1359,6 +1359,9 @@ void CMomentaryRotButton::PlaySound(void)
 	EMIT_SOUND(ENT(pev), CHAN_VOICE, (char*)STRING(pev->noise), 1, ATTN_NORM);
 }
 
+// BUGBUG: This design causes a latentcy.  When the button is retriggered, the first impulse
+// will send the target in the wrong direction because the parameter is calculated based on the
+// current, not future position.
 void CMomentaryRotButton::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
 	if (IsLockedByMaster()) return; //LRC

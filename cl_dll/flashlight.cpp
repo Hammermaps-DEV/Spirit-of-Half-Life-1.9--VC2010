@@ -32,7 +32,7 @@ DECLARE_MESSAGE(m_Flash, Flashlight)
 
 #define BAT_NAME "sprites/%d_Flashlight.spr"
 
-void CHudFlashlight::Init(void)
+int CHudFlashlight::Init(void)
 {
 	m_fFade = 0;
 	m_fOn = 0;
@@ -43,6 +43,8 @@ void CHudFlashlight::Init(void)
 	m_iFlags |= HUD_ACTIVE;
 
 	gHUD.AddHudElem(this);
+
+	return 1;
 };
 
 void CHudFlashlight::Reset(void)
@@ -53,7 +55,7 @@ void CHudFlashlight::Reset(void)
  	m_flBat = 1.0;
 }
 
-void CHudFlashlight::VidInit(void)
+int CHudFlashlight::VidInit(void)
 {
 	int HUD_flash_empty = gHUD.GetSpriteIndex( "flash_empty" );
 	int HUD_flash_full = gHUD.GetSpriteIndex( "flash_full" );
@@ -66,6 +68,8 @@ void CHudFlashlight::VidInit(void)
 	m_prc2 = &gHUD.GetSpriteRect(HUD_flash_full);
 	m_prcBeam = &gHUD.GetSpriteRect(HUD_flash_beam);
 	m_iWidth = m_prc2->right - m_prc2->left;
+
+	return 1;
 };
 
 int CHudFlashlight:: MsgFunc_FlashBat(const char *pszName,  int iSize, void *pbuf )
@@ -92,16 +96,16 @@ int CHudFlashlight:: MsgFunc_Flashlight(const char *pszName,  int iSize, void *p
 	return 1;
 }
 
-void CHudFlashlight::Draw(float flTime)
+int CHudFlashlight::Draw(float flTime)
 {
 	if ( gHUD.m_iHideHUDDisplay & ( HIDEHUD_FLASHLIGHT | HIDEHUD_ALL ) )
-		return;
+		return 1;
 
 	int r, g, b, x, y, a;
 	wrect_t rc;
 
 	if (!(gHUD.m_iHideHUDDisplay & ITEM_SUIT ))
-		return;
+		return 1;
 
 	if (m_fOn)
 		a = 225;
@@ -141,4 +145,7 @@ void CHudFlashlight::Draw(float flTime)
 		SPR_Set(m_hSprite2, r, g, b );
 		SPR_DrawAdditive( 0, x + iOffset, y, &rc);
 	}
+
+
+	return 1;
 }

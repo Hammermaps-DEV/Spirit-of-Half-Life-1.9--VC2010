@@ -198,6 +198,7 @@ void PM_InitTextureTypes()
 	char buffer[512];
 	int i, j;
 	byte *pMemFile;
+	int fileSize, filePos;
 	static qboolean bTextureTypeInit = false;
 
 	if (bTextureTypeInit)
@@ -209,12 +210,12 @@ void PM_InitTextureTypes()
 	gcTextures = 0;
 	memset(buffer, 0, 512);
 
-	int fileSize = pmove->COM_FileSize("sound/materials.txt");
+	fileSize = pmove->COM_FileSize("sound/materials.txt");
 	pMemFile = pmove->COM_LoadFile("sound/materials.txt", 5, NULL);
 	if (!pMemFile)
 		return;
 
-	int filePos = 0;
+	filePos = 0;
 	// for each line in the file...
 	while (pmove->memfgets(pMemFile, fileSize, &filePos, buffer, 511) != NULL && (gcTextures < CTEXTURESMAX))
 	{
@@ -1701,11 +1702,9 @@ void PM_CatagorizePosition(void)
 		{
 			// Then we are not in water jump sequence
 			pmove->waterjumptime = 0;
-			
 			// If we could make the move, drop us down that 1 pixel
-			if (pmove->iuser1 != OBS_ROAMING)	// Skip for roaming mode so observer will not stick to a floor
-				if (pmove->waterlevel < 2 && !tr.startsolid && !tr.allsolid)
-					VectorCopy(tr.endpos, pmove->origin);
+			if (pmove->waterlevel < 2 && !tr.startsolid && !tr.allsolid)
+				VectorCopy(tr.endpos, pmove->origin);
 		}
 
 		// Standing on an entity other than the world
@@ -2213,21 +2212,16 @@ void PM_LadderMove(physent_t *pLadder)
 	{
 		float forward = 0, right = 0;
 		vec3_t vpn, v_right;
-		float flSpeed = MAX_CLIMB_SPEED;
-
-		// they shouldn't be able to move faster than their maxspeed
-		if (flSpeed > pmove->maxspeed)
-			flSpeed = pmove->maxspeed;
 
 		AngleVectors(pmove->angles, vpn, v_right, NULL);
 		if (pmove->cmd.buttons & IN_BACK)
-			forward -= flSpeed;
+			forward -= MAX_CLIMB_SPEED;
 		if (pmove->cmd.buttons & IN_FORWARD)
-			forward += flSpeed;
+			forward += MAX_CLIMB_SPEED;
 		if (pmove->cmd.buttons & IN_MOVELEFT)
-			right -= flSpeed;
+			right -= MAX_CLIMB_SPEED;
 		if (pmove->cmd.buttons & IN_MOVERIGHT)
-			right += flSpeed;
+			right += MAX_CLIMB_SPEED;
 
 		if (pmove->cmd.buttons & IN_JUMP)
 		{

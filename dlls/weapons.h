@@ -59,7 +59,7 @@ public:
 	void EXPORT ExplodeTouch(CBaseEntity *pOther);
 	void EXPORT DangerSoundThink(void);
 	void EXPORT PreDetonate(void);
-	void EXPORT Detonate(void);
+	virtual void EXPORT Detonate(void);
 	void EXPORT DetonateUse(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 	void EXPORT TumbleThink(void);
 
@@ -367,8 +367,7 @@ public:
 
 	//LRC - used by weaponstrip
 	void DrainClip(CBasePlayer* pPlayer, BOOL keep, int i9mm, int i357, int iBuck, int iBolt, int iARGren, int iRock, int iUranium, int iSatchel, int iSnark, int iTrip, int iGren);
-	float GetNextAttackDelay(float delay);
-	
+
 	int	PrimaryAmmoIndex();
 	int	SecondaryAmmoIndex();
 
@@ -400,10 +399,6 @@ public:
 	BOOL		b_Restored;//restore body and skin after save/load
 	BOOL		AnimRestore;//restore sound and animation after save/load
 	BOOL		m_iPlayEmptySound;
-
-	// hle time creep vars
-	float	m_flPrevPrimaryAttack;
-	float	m_flLastFireTime;
 };
 
 
@@ -426,7 +421,7 @@ extern DLL_GLOBAL	short		g_sModelIndexLaserDot;// holds the index for the laser 
 extern DLL_GLOBAL	short		g_sModelIndexFireball;// holds the index for the fireball
 extern DLL_GLOBAL	short		g_sModelIndexSmoke;// holds the index for the smoke cloud
 extern DLL_GLOBAL	short		g_sModelIndexWExplosion;// holds the index for the underwater explosion
-extern DLL_GLOBAL	short    		g_sModelIndexBubbles;// holds the index for the bubbles model
+extern DLL_GLOBAL	short    	g_sModelIndexBubbles;// holds the index for the bubbles model
 extern DLL_GLOBAL	short		g_sModelIndexBloodDrop;// holds the sprite index for blood drops
 extern DLL_GLOBAL	short		g_sModelIndexBloodSpray;// holds the sprite index for blood spray (bigger)
 extern DLL_GLOBAL	short		g_sModelIndexNullModel; //null model index
@@ -437,6 +432,7 @@ extern DLL_GLOBAL	short		g_sSoundIndexNullSound;//null sound index
 extern DLL_GLOBAL	unsigned short	g_usEventIndexNullEvent;//null event index
 extern DLL_GLOBAL 	unsigned short 	m_usDecals;	    //Decal event
 extern DLL_GLOBAL 	unsigned short 	m_usEfx;	    //special effects event (rocket trail, explosion e.t.c.)
+extern DLL_GLOBAL 	unsigned short 	m_usMirror;	//Mirror event
 
 extern void ClearMultiDamage(void);
 extern void ApplyMultiDamage(entvars_t* pevInflictor, entvars_t* pevAttacker);

@@ -1496,7 +1496,7 @@ int V_FindViewModelByWeaponModel(int weaponindex)
 
 		while (modelmap[i][0] != NULL)
 		{
-			if (!_strnicmp( weaponModel->name, modelmap[i][0], len ) )
+			if ( !strnicmp( weaponModel->name, modelmap[i][0], len ) )
 			{
 				return gEngfuncs.pEventAPI->EV_FindModelIndex( modelmap[i][1] );
 			}

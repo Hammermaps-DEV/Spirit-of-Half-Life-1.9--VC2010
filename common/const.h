@@ -711,7 +711,6 @@ enum
 	kRenderFxExplode,			// Scale up really big!
 	kRenderFxGlowShell,			// Glowing Shell
 	kRenderFxClampMinScale,		// Keep this sprite from getting very small (SPRITES only!)
-	kRenderFxLightMultiplier,	//CTM !!!CZERO added to tell the studiorender that the value in iuser2 is a lightmultiplier
 	kRenderFxReflection,		//LRC - draw a reflection under my feet
 	kRenderFxEntInPVS,			//G-Cont - this style for entity, which draw always
 	kRenderFxMirror,			//G-Cont - mirror transform

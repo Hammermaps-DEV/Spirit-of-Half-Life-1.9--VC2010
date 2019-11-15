@@ -41,7 +41,6 @@ extern int gmsgFade;
 #define FFADE_OUT			0x0001		// Fade out (not in)
 #define FFADE_MODULATE		0x0002		// Modulate (don't blend)
 #define FFADE_STAYOUT		0x0004		// ignores the duration, stays faded out until new ScreenFade message received
-#define FFADE_LONGFADE		0x0008
 
 // This structure is sent over the net to describe a screen fade event
 typedef struct

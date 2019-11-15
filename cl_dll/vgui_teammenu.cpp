@@ -103,7 +103,7 @@ CTeamMenuPanel::CTeamMenuPanel(int iTrans, int iRemoveMe, int x,int y,int wide,i
 	m_pBriefing->setText( gHUD.m_TextMessage.BufferedLocaliseTextString("#Map_Description_not_available") );
 	
 	// Team Menu buttons
-	for (int i = 1; i <= MAX_TEAMS_IN_MENU + 1; i++)
+	for (int i = 1; i <= 5; i++)
 	{
 		char sz[256]; 
 
@@ -116,15 +116,11 @@ CTeamMenuPanel::CTeamMenuPanel(int iTrans, int iRemoveMe, int x,int y,int wide,i
 		m_pButtons[i]->setVisible( false );
 
 		// AutoAssign button uses special case
-		if (i == MAX_TEAMS_IN_MENU + 1)
+		if (i == 5)
 		{
-			if (i < 10)
-				m_pButtons[i]->setBoundKey('0' + i);
-			else
-				m_pButtons[i]->setBoundKey('0');
-			
-			m_pButtons[i]->setText(gHUD.m_TextMessage.BufferedLocaliseTextString("#Team_AutoAssign"));
-			m_pButtons[i]->setVisible(true);
+			m_pButtons[5]->setBoundKey( '5' );
+			m_pButtons[5]->setText( gHUD.m_TextMessage.BufferedLocaliseTextString("#Team_AutoAssign") );
+			m_pButtons[5]->setVisible( true );
 		}
 
 		// Create the Signals
@@ -152,17 +148,8 @@ CTeamMenuPanel::CTeamMenuPanel(int iTrans, int iRemoveMe, int x,int y,int wide,i
 	m_pSpectateButton = new SpectateButton( CHudTextMessage::BufferedLocaliseTextString( "#Menu_Spectate" ), TEAMMENU_TOPLEFT_BUTTON_X, 0, TEAMMENU_BUTTON_SIZE_X, TEAMMENU_BUTTON_SIZE_Y, true);
 	m_pSpectateButton->setParent( this );
 	m_pSpectateButton->addActionSignal( new CMenuHandler_StringCommand( "spectate", true ) );
-	
-	if (MAX_TEAMS_IN_MENU + 2 < 10)
-	{
-		m_pSpectateButton->setBoundKey('0' + MAX_TEAMS_IN_MENU + 2);
-		m_pSpectateButton->addInputSignal(new CHandler_MenuButtonOver(this, MAX_TEAMS_IN_MENU + 2));
-	}
-	else
-	{
-		m_pSpectateButton->setBoundKey('0');
-		m_pSpectateButton->addInputSignal(new CHandler_MenuButtonOver(this, 0));
-	}
+	m_pSpectateButton->setBoundKey( '6' );
+	m_pSpectateButton->addInputSignal( new CHandler_MenuButtonOver(this, 6) );
 
 	Initialize();
 }
@@ -185,7 +172,7 @@ void CTeamMenuPanel::Update( void )
 	int	 iYPos = TEAMMENU_TOPLEFT_BUTTON_Y;
 
 	// Set the team buttons
-	for (int i = 1; i <= MAX_TEAMS_IN_MENU; i++)
+	for (int i = 1; i <= 4; i++)
 	{
 		if (m_pButtons[i])
 		{
@@ -206,7 +193,7 @@ void CTeamMenuPanel::Update( void )
 				if (!m_iCurrentInfo)
 					SetActiveInfo( i );
 
-				char szPlayerList[(MAX_PLAYER_NAME + 3) * 31];  // name + ", "
+				char szPlayerList[ (MAX_PLAYER_NAME_LENGTH + 3) * 31 ];  // name + ", "
 				strcpy(szPlayerList, "\n");
 				// Update the Team Info
 				// Now count the number of teammembers of this class
@@ -230,7 +217,7 @@ void CTeamMenuPanel::Update( void )
 				if (iTotal > 0)
 				{
 					// Set the text of the info Panel
-					char szText[((MAX_PLAYER_NAME + 3) * 31) + 256];
+					char szText[ ((MAX_PLAYER_NAME_LENGTH + 3) * 31) + 256 ]; 
 					if (iTotal == 1)
 						sprintf(szText, "%s: %d Player (%d points)", gViewPort->GetTeamName(i), iTotal, g_TeamInfo[i].frags );
 					else
@@ -254,7 +241,7 @@ void CTeamMenuPanel::Update( void )
 	}
 
 	// Move the AutoAssign button into place
-	m_pButtons[MAX_TEAMS_IN_MENU + 1]->setPos(TEAMMENU_TOPLEFT_BUTTON_X, iYPos);
+	m_pButtons[5]->setPos( TEAMMENU_TOPLEFT_BUTTON_X, iYPos );
 	iYPos += TEAMMENU_BUTTON_SIZE_Y + TEAMMENU_BUTTON_SPACER_Y;
 
 	// Spectate button
@@ -331,14 +318,14 @@ void CTeamMenuPanel::Update( void )
 bool CTeamMenuPanel::SlotInput( int iSlot )
 {
 	// Check for AutoAssign
-	if (iSlot == MAX_TEAMS_IN_MENU + 1)
+	if ( iSlot == 5)
 	{
-		m_pButtons[MAX_TEAMS_IN_MENU + 1]->fireActionSignal();
+		m_pButtons[5]->fireActionSignal();
 		return true;
 	}
 
 	// Spectate
-	if (iSlot == MAX_TEAMS_IN_MENU + 2)
+	if ( iSlot == 6)
 	{
 		m_pSpectateButton->fireActionSignal();
 		return true;
@@ -383,13 +370,14 @@ void CTeamMenuPanel::SetActiveInfo( int iInput )
 {
 	// Remove all the Info panels and bring up the specified one
 	m_pSpectateButton->setArmed( false );
-	for (int i = 1; i <= MAX_TEAMS_IN_MENU + 1; i++)
+	for (int i = 1; i <= 5; i++)
 	{
 		m_pButtons[i]->setArmed( false );
 		m_pTeamInfoPanel[i]->setVisible( false );
 	}
 
-	if (iInput == MAX_TEAMS_IN_MENU + 2)
+	// 6 is Spectate
+	if (iInput == 6)
 	{
 		m_pSpectateButton->setArmed( true );
 	}

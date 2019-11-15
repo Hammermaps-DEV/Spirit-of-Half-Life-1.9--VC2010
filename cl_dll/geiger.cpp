@@ -28,7 +28,7 @@
 
 DECLARE_MESSAGE(m_Geiger, Geiger )
 
-void CHudGeiger::Init(void)
+int CHudGeiger::Init(void)
 {
 	HOOK_MESSAGE( Geiger );
 
@@ -38,6 +38,13 @@ void CHudGeiger::Init(void)
 	gHUD.AddHudElem(this);
 
 	srand( (unsigned)time( NULL ) );
+
+	return 1;
+};
+
+int CHudGeiger::VidInit(void)
+{
+	return 1;
 };
 
 int CHudGeiger::MsgFunc_Geiger(const char *pszName,  int iSize, void *pbuf)
@@ -54,7 +61,7 @@ int CHudGeiger::MsgFunc_Geiger(const char *pszName,  int iSize, void *pbuf)
 	return 1;
 }
 
-void CHudGeiger::Draw (float flTime)
+int CHudGeiger::Draw (float flTime)
 {
 	int pct;
 	float flvol = 0.0f;
@@ -172,4 +179,6 @@ void CHudGeiger::Draw (float flTime)
 			
 		}
 	}
+
+	return 1;
 }

@@ -109,7 +109,7 @@ void WeaponsResource :: LoadWeaponSprites( WEAPON *pWeapon )
 		pWeapon->rcCrosshair = p->rc;
 	}
 	else
-		pWeapon->hCrosshair = 0;
+		pWeapon->hCrosshair = NULL;
 
 	p = GetSpriteList(pList, "autoaim", iRes, i);
 	if (p)
@@ -259,7 +259,7 @@ DECLARE_COMMAND(m_Ammo, PrevWeapon);
 
 #define HISTORY_DRAW_TIME	"5"
 
-void CHudAmmo::Init(void)
+int CHudAmmo::Init(void)
 {
 	gHUD.AddHudElem(this);
 
@@ -294,6 +294,8 @@ void CHudAmmo::Init(void)
 
 	gWR.Init();
 	gHR.Init();
+
+	return 1;
 };
 
 void CHudAmmo::Reset(void)
@@ -316,7 +318,7 @@ void CHudAmmo::Reset(void)
 
 }
 
-void CHudAmmo::VidInit(void)
+int CHudAmmo::VidInit(void)
 {
 	// Load sprites for buckets (top row of weapon menu)
 	m_HUD_bucket0 = gHUD.GetSpriteIndex( "bucket1" );
@@ -341,6 +343,8 @@ void CHudAmmo::VidInit(void)
 		giABWidth = 10;
 		giABHeight = 2;
 	}
+
+	return 1;
 }
 
 //
@@ -546,7 +550,7 @@ int CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
 	}
 	else if ( (m_pWeapon == NULL) || (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL )) )
 	{
-		wrect_t nullrc = {};
+		static wrect_t nullrc;
 		gpActiveSel = NULL;
 		SetCrosshair( 0, nullrc, 0, 0, 0 );
 //		CONPRINT("Blanking crosshair\n");
@@ -568,7 +572,7 @@ int CHudAmmo::MsgFunc_HideWeapon( const char *pszName, int iSize, void *pbuf )
 //
 int CHudAmmo::MsgFunc_CurWeapon(const char *pszName, int iSize, void *pbuf )
 {
-	wrect_t nullrc = {};
+	static wrect_t nullrc;
 	int fOnTarget = FALSE;
 
 	BEGIN_READ( pbuf, iSize );
@@ -845,16 +849,16 @@ void CHudAmmo::UserCmd_PrevWeapon(void)
 // Drawing code
 //-------------------------------------------------------------------------
 
-void CHudAmmo::Draw(float flTime)
+int CHudAmmo::Draw(float flTime)
 {
-	int a, x, r, g, b;
+	int a, x, y, r, g, b;
 	int AmmoWidth;
 
 	if (!(gHUD.m_iHideHUDDisplay & ITEM_SUIT ))
-		return;
+		return 1;
 
 	if ( (gHUD.m_iHideHUDDisplay & ( HIDEHUD_WEAPONS | HIDEHUD_ALL )) )
-		return;
+		return 1;
 
 	// Draw Weapon Menu
 	DrawWList(flTime);
@@ -863,12 +867,12 @@ void CHudAmmo::Draw(float flTime)
 	gHR.DrawAmmoHistory( flTime );
 
 	if (!(m_iFlags & HUD_ACTIVE))
-		return;
+		return 0;
 
 	if (!m_pWeapon)
 	{
 //		CONPRINT("AmmoDraw: NO pWeapon\n");
-		return;
+		return 0;
 	}
 //	CONPRINT("AmmoDraw: pWeapon ok\n");
 
@@ -876,7 +880,7 @@ void CHudAmmo::Draw(float flTime)
 
 	// SPR_Draw Ammo
 	if ((pw->iAmmoType < 0) && (pw->iAmmo2Type < 0))
-		return;
+		return 0;
 
 
 	int iFlags = DHN_DRAWZERO; // draw 0 values
@@ -893,7 +897,7 @@ void CHudAmmo::Draw(float flTime)
 	ScaleColors(r, g, b, a );
 
 	// Does this weapon have a clip?
-	int y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight / 2;
+	y = ScreenHeight - gHUD.m_iFontHeight - gHUD.m_iFontHeight/2;
 
 	// Does weapon have any ammo at all?
 	if (m_pWeapon->iAmmoType > 0)
@@ -903,8 +907,15 @@ void CHudAmmo::Draw(float flTime)
 		if (pw->iClip >= 0)
 		{
 			// room for the number and the '|' and the current ammo
+			
 			x = ScreenWidth - (8 * AmmoWidth) - iIconWidth;
 			x = gHUD.DrawHudNumber(x, y, iFlags | DHN_3DIGITS, pw->iClip, r, g, b);
+
+			wrect_t rc;
+			rc.top = 0;
+			rc.left = 0;
+			rc.right = AmmoWidth;
+			rc.bottom = 100;
 
 			int iBarWidth =  AmmoWidth/10;
 
@@ -954,7 +965,9 @@ void CHudAmmo::Draw(float flTime)
 			SPR_DrawAdditive(0, x, y - iOffset, &m_pWeapon->rcAmmo2);
 		}
 	}
+	return 1;
 }
+
 
 //
 // Draws the ammo bar on the hud

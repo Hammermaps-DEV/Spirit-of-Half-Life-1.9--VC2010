@@ -159,13 +159,13 @@ void CPython::PrimaryAttack()
 
 		PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usFirePython, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, pev->body, 0, 0, 0);
 
-		m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
+		m_flNextPrimaryAttack = gpGlobals->time + 1.0;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = GetNextAttackDelay(0.7);
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.7;
 	}
 }
 
@@ -289,7 +289,7 @@ class CPythonAmmo : public CBasePlayerAmmo
 	}
 	BOOL AddAmmo(CBaseEntity *pOther)
 	{
-		if (pOther->GiveAmmo(AMMO_357BOX_GIVE, "357", _357_MAX_CARRY) != -1)
+		if (pOther->GiveAmmo(AMMO_357BOX_GIVE, "357", _357_MAX_CARRY) != WEAPON_NOCLIP)
 		{
 			EMIT_SOUND(ENT(pev), CHAN_ITEM, "items/9mmclip1.wav", 1, ATTN_NORM);
 			return TRUE;

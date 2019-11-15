@@ -50,13 +50,13 @@ public:
 	void Spawn(void);
 	STATE GetState() { return (pev->spawnflags & SF_ALIAS_OFF) ? STATE_OFF : STATE_ON; }
 
-	CBaseEntity* FollowAlias(CBaseEntity* pFrom);
+	CBaseEntity *FollowAlias(CBaseEntity *pFrom);
 	void ChangeValue(int iszValue);
 	void FlushChanges(void);
-	void KeyValue(struct KeyValueData_s*); //AJH
+	void KeyValue(struct KeyValueData_s *); //AJH
 
-	virtual int		Save(CSave& save);
-	virtual int		Restore(CRestore& restore);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 	static	TYPEDESCRIPTION m_SaveData[];
 };
 
@@ -72,7 +72,7 @@ TYPEDESCRIPTION	CInfoAlias::m_SaveData[] = //AJH
 };
 IMPLEMENT_SAVERESTORE(CInfoAlias, CBaseAlias);
 
-void CInfoAlias::KeyValue(KeyValueData* pkvd) //AJH
+void CInfoAlias::KeyValue(KeyValueData *pkvd) //AJH
 {
 
 	if (FStrEq(pkvd->szKeyName, "mode"))
@@ -151,7 +151,7 @@ void CInfoAlias::Spawn(void)
 	}
 }
 
-void CInfoAlias::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CInfoAlias::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
 	if (m_iMode == 0) { //Old On/Off Code
 
@@ -192,9 +192,9 @@ void CInfoAlias::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE use
 	}
 }
 
-CBaseEntity* CInfoAlias::FollowAlias(CBaseEntity* pFrom)
+CBaseEntity *CInfoAlias::FollowAlias(CBaseEntity *pFrom)
 {
-	CBaseEntity* pFound = UTIL_FindEntityByTargetname(pFrom, STRING(pev->message));
+	CBaseEntity *pFound = UTIL_FindEntityByTargetname(pFrom, STRING(pev->message));
 
 	if (pev->spawnflags & SF_ALIAS_DEBUG) { // More excessive debug info
 		ALERT(at_debug, "DEBUG: info_alias %s  refers to target %d \n", STRING(pev->targetname), m_iCurrentTarget);
@@ -242,7 +242,7 @@ TYPEDESCRIPTION	CInfoGroup::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CInfoGroup, CBaseEntity);
 
-void CInfoGroup::KeyValue(KeyValueData* pkvd)
+void CInfoGroup::KeyValue(KeyValueData *pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "defaultmember"))
 	{
@@ -265,9 +265,9 @@ void CInfoGroup::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-void CInfoGroup::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CInfoGroup::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
-	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(NULL, STRING(pev->target));
+	CBaseEntity *pTarget = UTIL_FindEntityByTargetname(NULL, STRING(pev->target));
 
 	if (pTarget && pTarget->IsAlias())
 	{
@@ -333,7 +333,7 @@ TYPEDESCRIPTION	CMultiAlias::m_SaveData[] =
 
 IMPLEMENT_SAVERESTORE(CMultiAlias, CBaseAlias);
 
-void CMultiAlias::KeyValue(KeyValueData* pkvd)
+void CMultiAlias::KeyValue(KeyValueData *pkvd)
 {
 	if (FStrEq(pkvd->szKeyName, "m_iMode"))
 	{
@@ -360,7 +360,7 @@ void CMultiAlias::KeyValue(KeyValueData* pkvd)
 	}
 }
 
-CBaseEntity* CMultiAlias::FollowAlias(CBaseEntity* pStartEntity)
+CBaseEntity *CMultiAlias::FollowAlias(CBaseEntity *pStartEntity)
 {
 	CBaseEntity* pBestEntity = NULL; // the entity we're currently planning to return.
 	int iBestOffset = -1; // the offset of that entity.
@@ -442,7 +442,7 @@ class CTriggerChangeAlias : public CBaseEntity
 {
 public:
 	void Spawn(void);
-	void Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value);
+	void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
 	int ObjectCaps(void) { return CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION; }
 };
@@ -452,13 +452,13 @@ void CTriggerChangeAlias::Spawn(void)
 {
 }
 
-void CTriggerChangeAlias::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
+void CTriggerChangeAlias::Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value)
 {
-	CBaseEntity* pTarget = UTIL_FindEntityByTargetname(NULL, STRING(pev->target), pActivator);
+	CBaseEntity *pTarget = UTIL_FindEntityByTargetname(NULL, STRING(pev->target), pActivator);
 
 	if (pTarget && pTarget->IsAlias())
 	{
-		CBaseEntity* pValue;
+		CBaseEntity *pValue = 0;
 
 		if (FStrEq(STRING(pev->netname), "*locus"))
 		{

@@ -33,17 +33,24 @@
 // Try this on a bird
 // Try this on a model with hulls/tracehull?
 //
+
+
 #include	"float.h"
 #include	"extdll.h"
 #include	"util.h"
 #include	"cbase.h"
 #include	"monsters.h"
 
+
+
+
 // Animation events
 #define LEECH_AE_ATTACK		1
 #define LEECH_AE_FLOP		2
 
+
 // Movement constants
+
 #define		LEECH_ACCELERATE		10
 #define		LEECH_CHECK_DIST		45
 #define		LEECH_SWIM_SPEED		50
@@ -53,11 +60,14 @@
 #define		LEECH_SIZEX				10
 #define		LEECH_FRAMETIME			0.1
 
+
+
 #define DEBUG_BEAMS		0
 
 #if DEBUG_BEAMS
 #include "effects.h"
 #endif
+
 
 class CLeech : public CBaseMonster
 {

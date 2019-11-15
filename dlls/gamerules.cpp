@@ -118,7 +118,9 @@ BOOL CGameRules::CanHavePlayerItem(CBasePlayer *pPlayer, CBasePlayerItem *pWeapo
 //=========================================================
 void CGameRules::RefreshSkillData(void)
 {
-	int iSkill = (int)CVAR_GET_FLOAT("skill");
+	int	iSkill;
+
+	iSkill = (int)CVAR_GET_FLOAT("skill");
 	g_iSkillLevel = iSkill;
 
 	if (iSkill < 1)
@@ -132,8 +134,7 @@ void CGameRules::RefreshSkillData(void)
 
 	gSkillData.iSkillLevel = iSkill;
 
-	
-	ALERT(at_console, "\nGAME SKILL LEVEL:%d\n", iSkill);
+	ALERT(at_debug, "\nGAME SKILL LEVEL:%d\n", iSkill);
 
 	//Agrunt		
 	gSkillData.agruntHealth = GetSkillCvar("sk_agrunt_health");

@@ -44,7 +44,6 @@ class CISlave : public CSquadMonster
 public:
 	void Spawn(void);
 	void Precache(void);
-	void UpdateOnRemove();
 	void SetYawSpeed(void);
 	int	 ISoundMask(void);
 	int  Classify(void);
@@ -142,13 +141,6 @@ const char *CISlave::pDeathSounds[] =
 	"aslave/slv_die2.wav",
 };
 
-void CISlave::UpdateOnRemove()
-{
-	CBaseEntity::UpdateOnRemove();
-
-	ClearBeams();
-}
-
 //=========================================================
 // Classify - indicates this monster's place in the 
 // relationship table.
@@ -164,8 +156,7 @@ int CISlave::IRelationship(CBaseEntity *pTarget)
 	if ((pTarget->IsPlayer()))
 		if ((pev->spawnflags & SF_MONSTER_WAIT_UNTIL_PROVOKED) && !(m_afMemory & bits_MEMORY_PROVOKED))
 			return R_NO;
-	
-	return CSquadMonster::IRelationship(pTarget);
+	return CBaseMonster::IRelationship(pTarget);
 }
 
 
@@ -687,7 +678,7 @@ Schedule_t *CISlave::GetSchedule(void)
 		if (HasConditions(bits_COND_ENEMY_DEAD))
 		{
 			// call base class, all code to handle dead enemies is centralized there.
-			return CSquadMonster::GetSchedule();
+			return CBaseMonster::GetSchedule();
 		}
 
 		if (pev->health < 20 || m_iBravery < 0)

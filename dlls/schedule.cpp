@@ -92,13 +92,6 @@ void CBaseMonster::ChangeSchedule(Schedule_t *pNewSchedule)
 	{
 		ALERT(at_aiconsole, "Sound mask without COND_HEAR_SOUND!\n");
 	}
-
-#if _DEBUG
-	if (!ScheduleFromName(pNewSchedule->pName))
-	{
-		ALERT(at_console, "Schedule %s not in table!!!\n", pNewSchedule->pName);
-	}
-#endif
 }
 
 //=========================================================
@@ -175,9 +168,10 @@ BOOL CBaseMonster::FScheduleValid(void)
 void CBaseMonster::MaintainSchedule(void)
 {
 	Schedule_t	*pNewSchedule;
+	int			i;
 
 	// UNDONE: Tune/fix this 10... This is just here so infinite loops are impossible
-	for (int i = 0; i < 10; i++)
+	for (i = 0; i < 10; i++)
 	{
 		if (m_pSchedule != NULL && TaskIsComplete())
 		{
@@ -287,6 +281,7 @@ void CBaseMonster::RunTask(Task_t *pTask)
 		}
 		break;
 	}
+
 	case TASK_PLAY_SEQUENCE_FACE_ENEMY:
 	case TASK_PLAY_SEQUENCE_FACE_TARGET:
 	{
@@ -305,6 +300,7 @@ void CBaseMonster::RunTask(Task_t *pTask)
 			TaskComplete();
 	}
 	break;
+
 	case TASK_PLAY_SEQUENCE:
 	case TASK_PLAY_ACTIVE_IDLE:
 	{
@@ -314,6 +310,8 @@ void CBaseMonster::RunTask(Task_t *pTask)
 		}
 		break;
 	}
+
+
 	case TASK_FACE_ENEMY:
 	{
 		MakeIdealYaw(m_vecEnemyLKP);
@@ -375,11 +373,13 @@ void CBaseMonster::RunTask(Task_t *pTask)
 	}
 	case TASK_MOVE_TO_TARGET_RANGE:
 	{
+		float distance;
+
 		if (m_hTargetEnt == NULL)
 			TaskFail();
 		else
 		{
-			float distance = (m_vecMoveGoal - pev->origin).Length2D();
+			distance = (m_vecMoveGoal - pev->origin).Length2D();
 			// Re-evaluate when you think your finished, or the target has moved too far
 			if ((distance < pTask->flData) || (m_vecMoveGoal - m_hTargetEnt->pev->origin).Length() > pTask->flData * 0.5)
 			{
@@ -518,7 +518,8 @@ void CBaseMonster::RunTask(Task_t *pTask)
 //=========================================================
 void CBaseMonster::SetTurnActivity(void)
 {
-	float flYD = FlYawDiff();
+	float flYD;
+	flYD = FlYawDiff();
 
 	if (flYD <= -45 && LookupActivity(ACT_TURN_RIGHT) != ACTIVITY_NOT_AVAILABLE)
 	{// big right turn
@@ -541,14 +542,18 @@ void CBaseMonster::StartTask(Task_t *pTask)
 	{
 	case TASK_TURN_RIGHT:
 	{
-		float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+		float flCurrentYaw;
+
+		flCurrentYaw = UTIL_AngleMod(pev->angles.y);
 		pev->ideal_yaw = UTIL_AngleMod(flCurrentYaw - pTask->flData);
 		SetTurnActivity();
 		break;
 	}
 	case TASK_TURN_LEFT:
 	{
-		float flCurrentYaw = UTIL_AngleMod(pev->angles.y);
+		float flCurrentYaw;
+
+		flCurrentYaw = UTIL_AngleMod(pev->angles.y);
 		pev->ideal_yaw = UTIL_AngleMod(flCurrentYaw + pTask->flData);
 		SetTurnActivity();
 		break;
@@ -624,7 +629,10 @@ void CBaseMonster::StartTask(Task_t *pTask)
 	}
 	case TASK_SET_SCHEDULE:
 	{
-		Schedule_t* pNewSchedule = GetScheduleOfType((int)pTask->flData);
+		Schedule_t *pNewSchedule;
+
+		pNewSchedule = GetScheduleOfType((int)pTask->flData);
+
 		if (pNewSchedule)
 		{
 			ChangeSchedule(pNewSchedule);
@@ -746,7 +754,10 @@ void CBaseMonster::StartTask(Task_t *pTask)
 	break;
 	case TASK_FIND_COVER_FROM_BEST_SOUND:
 	{
-		CSound* pBestSound = PBestSound();
+		CSound *pBestSound;
+
+		pBestSound = PBestSound();
+
 		ASSERT(pBestSound != NULL);
 		/*
 		if ( pBestSound && FindLateralCover( pBestSound->m_vecOrigin, g_vecZero ) )
@@ -865,7 +876,8 @@ void CBaseMonster::StartTask(Task_t *pTask)
 			{
 				if (m_pGoalEnt != NULL)
 				{
-					Vector vecDest = m_pGoalEnt->pev->origin;
+					Vector vecDest;
+					vecDest = m_pGoalEnt->pev->origin;
 
 					if (!MoveToLocation(newActivity, 2, vecDest))
 					{
@@ -1387,8 +1399,10 @@ Task_t	*CBaseMonster::GetTask(void)
 		// m_iScheduleIndex is not within valid range for the monster's current schedule.
 		return NULL;
 	}
-
-	return &m_pSchedule->pTasklist[m_iScheduleIndex];
+	else
+	{
+		return &m_pSchedule->pTasklist[m_iScheduleIndex];
+	}
 }
 
 //=========================================================
@@ -1447,6 +1461,7 @@ Schedule_t *CBaseMonster::GetSchedule(void)
 				return GetScheduleOfType(SCHED_ALERT_SMALL_FLINCH);
 			}
 		}
+
 		else if (HasConditions(bits_COND_HEAR_SOUND))
 		{
 			return GetScheduleOfType(SCHED_ALERT_FACE);

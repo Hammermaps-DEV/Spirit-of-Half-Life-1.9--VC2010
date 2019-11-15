@@ -91,21 +91,18 @@ STATE CBaseDMStart::GetState(CBaseEntity *pEntity)
 		return STATE_OFF;
 }
 
-void CBaseEntity::Use(CBaseEntity* pActivator, CBaseEntity* pCaller, USE_TYPE useType, float value)
-{
-	if (m_pfnUse)
-		(this->*m_pfnUse)(pActivator, pCaller, useType, value);
-} // This updates global tables that need to know about entities being removed
-
+// This updates global tables that need to know about entities being removed
 void CBaseEntity::UpdateOnRemove(void)
 {
+	int	i;
+
 	ResetParent();
 
 	if (FBitSet(pev->flags, FL_GRAPHED))
 	{
 		// this entity was a LinkEnt in the world node graph, so we must remove it from
 		// the graph since we are removing it from the world.
-		for (int i = 0; i < WorldGraph.m_cLinks; i++)
+		for (i = 0; i < WorldGraph.m_cLinks; i++)
 		{
 			if (WorldGraph.m_pLinkPool[i].m_pLinkEnt == pev)
 			{
@@ -114,16 +111,8 @@ void CBaseEntity::UpdateOnRemove(void)
 			}
 		}
 	}
-	
 	if (pev->globalname)
 		gGlobalState.EntitySetState(pev->globalname, GLOBAL_DEAD);
-	
-	// tell owner ( if any ) that we're dead.This is mostly for MonsterMaker functionality.
-	//Killtarget didn't do this before, so the counter broke. - Solokiller
-	if (CBaseEntity* pOwner = pev->owner ? Instance(pev->owner) : 0)
-	{
-		pOwner->DeathNotice(pev);
-	}
 }
 
 // Convenient way to delay removing oneself
@@ -259,7 +248,7 @@ void FireTargets(const char *targetName, CBaseEntity *pActivator, CBaseEntity *p
 			if (targetName[i] == '.')//value specifier
 			{
 				value = atof(&targetName[i + 1]);
-				sprintf_s(szBuf, targetName);
+				sprintf(szBuf, targetName);
 				szBuf[i] = 0;
 				targetName = szBuf;
 				pTarget = UTIL_FindEntityByTargetname(NULL, targetName, inputActivator);

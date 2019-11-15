@@ -351,11 +351,11 @@ void CWeaponCycler::Spawn()
 		if ((c == 'v' || c == 'p' || c == 'w') && basemodel[i + 1] == '_')
 		{
 			basemodel[i] = 'v';
-			strcpy_s(v_path, basemodel);
+			strcpy(v_path, basemodel);
 			basemodel[i] = 'p';
-			strcpy_s(p_path, basemodel);
+			strcpy(p_path, basemodel);
 			basemodel[i] = 'w';
-			strcpy_s(w_path, basemodel);
+			strcpy(w_path, basemodel);
 
 			// create wepon model pathes
 			m_iPlayerModel = ALLOC_STRING(p_path);
@@ -446,7 +446,7 @@ void CWeaponCycler::PrimaryAttack()
 {
 	SendWeaponAnim(pev->sequence);
 
-	m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
+	m_flNextPrimaryAttack = gpGlobals->time + 0.5;
 }
 
 

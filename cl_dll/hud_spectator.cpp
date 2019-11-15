@@ -134,7 +134,7 @@ void ToggleScores( void )
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void CHudSpectator::Init()
+int CHudSpectator::Init()
 {
 	gHUD.AddHudElem(this);
 
@@ -164,8 +164,12 @@ void CHudSpectator::Init()
 	if ( !m_drawnames || !m_drawcone || !m_drawstatus || !m_autoDirector || !m_pip)
 	{
 		gEngfuncs.Con_Printf("ERROR! Couldn't register all spectator variables.\n");
+		return 0;
 	}
+
+	return 1;
 }
+
 
 //-----------------------------------------------------------------------------
 // UTIL_StringToVector originally from ..\dlls\util.cpp, slightly changed
@@ -358,7 +362,7 @@ void CHudSpectator::SetSpectatorStartPosition()
 //-----------------------------------------------------------------------------
 // Purpose: Loads new icons
 //-----------------------------------------------------------------------------
-void CHudSpectator::VidInit()
+int CHudSpectator::VidInit()
 {
 	m_hsprPlayer		= SPR_Load("sprites/iplayer.spr");
 	m_hsprPlayerBlue	= SPR_Load("sprites/iplayerblue.spr");
@@ -368,6 +372,8 @@ void CHudSpectator::VidInit()
 	m_hsprBeam			= SPR_Load("sprites/laserbeam.spr");
 	m_hsprCamera		= SPR_Load("sprites/camera.spr");
 	m_hCrosshair		= SPR_Load("sprites/crosshairs.spr");
+	
+	return 1;
 }
 
 //-----------------------------------------------------------------------------
@@ -375,7 +381,7 @@ void CHudSpectator::VidInit()
 // Input  : flTime - 
 //			intermission - 
 //-----------------------------------------------------------------------------
-void CHudSpectator::Draw(float flTime)
+int CHudSpectator::Draw(float flTime)
 {
 	int lx;
 
@@ -384,7 +390,7 @@ void CHudSpectator::Draw(float flTime)
 
 	// draw only in spectator mode
 	if ( !g_iUser1  )
-		return;
+		return 0;
 
 	// if user pressed zoom, aplly changes
 	if ( (m_zoomDelta != 0.0f) && (	g_iUser1 == OBS_MAP_FREE ) )
@@ -412,10 +418,10 @@ void CHudSpectator::Draw(float flTime)
 	
 	// Only draw the icon names only if map mode is in Main Mode
 	if ( g_iUser1 < OBS_MAP_FREE  ) 
-		return;
+		return 1;
 	
 	if ( !m_drawnames->value )
-		return;
+		return 1;
 	
 	// make sure we have player info
 	gViewPort->GetAllPlayersInfo();
@@ -445,10 +451,12 @@ void CHudSpectator::Draw(float flTime)
 		
 		lx = strlen(string)*3; // 3 is avg. character length :)
 
-		DrawSetTextColor(color[0], color[1], color[2]);
+		gEngfuncs.pfnDrawSetTextColor( color[0], color[1], color[2] );
 		DrawConsoleString( m_vPlayerPos[i][0]-lx,m_vPlayerPos[i][1], string);
 		
 	}
+
+	return 1;
 }
 
 
@@ -799,10 +807,6 @@ void CHudSpectator::SetModes(int iNewMainMode, int iNewInsetMode)
 		// if we are NOT in HLTV mode, main spectator mode is set on server
 		if ( !gEngfuncs.IsSpectateOnly() )
 		{
-			char cmdstring[32];
-			// forward command to server
-			sprintf(cmdstring, "specmode %i", iNewMainMode);
-			gEngfuncs.pfnServerCmd(cmdstring);
 			return;
 		}
 

@@ -321,17 +321,16 @@ public:
 
 	void RadiusDamage(entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
 	void RadiusDamage(Vector vecSrc, entvars_t *pevInflictor, entvars_t *pevAttacker, float flDamage, int iClassIgnore, int bitsDamageType);
-	virtual int	IsMoving(void) { return m_movementGoal != MOVEGOAL_NONE; }
+	virtual int		IsMoving(void) { return m_movementGoal != MOVEGOAL_NONE; }
 
 	void RouteClear(void);
 	void RouteNew(void);
 
-	virtual void DeathSound(){ };
-	virtual void AlertSound() { };
-	virtual void IdleSound() { };
-	virtual void PainSound() { };
-	virtual void StepSound(); 
-	virtual void AttackSound() { };
+	virtual void DeathSound(void) { return; };
+	virtual void AlertSound(void) { return; };
+	virtual void IdleSound(void) { return; };
+	virtual void PainSound(void) { return; };
+	virtual void StepSound(void);
 
 	virtual void StopFollowing(BOOL clearSchedule) {}
 
@@ -348,14 +347,9 @@ public:
 	CBaseEntity* DropItem(char *pszItemName, const Vector &vecPos, const Vector &vecAng);// drop an item.
 
 	//LRC
-	virtual float	CalcRatio(CBaseEntity* pLocus, int mode)//AJH added 'mode' = ratio to return
+	float	CalcRatio(CBaseEntity *pLocus)
 	{
-		//ALERT(at_console, "monster CR: %f/%f = %f\n", pev->health, pev->max_health, pev->health / pev->max_health);
-		switch (mode) {	//AJH pretty trivial switch statement! Add more cases later.
-		case 1: {
-			return pev->velocity.Length();
-		}break;
-		}
+		/*ALERT(at_console, "monster CR: %f/%f = %f\n", pev->health, pev->max_health, pev->health / pev->max_health);*/
 		return pev->health / pev->max_health;
 	}
 };

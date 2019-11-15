@@ -38,7 +38,7 @@ extern int gEvilImpulse101;
 #define NOT_USED 255
 
 DLL_GLOBAL	short		g_sModelIndexLaser;// holds the index for the laser beam
-DLL_GLOBAL  	const char 	*g_pModelNameLaser = "sprites/laserbeam.spr";
+DLL_GLOBAL  const char 	*g_pModelNameLaser = "sprites/laserbeam.spr";
 DLL_GLOBAL	short    		g_sModelIndexLaserDot;// holds the index for the laser beam dot
 DLL_GLOBAL	short    		g_sModelIndexFireball;// holds the index for the fireball
 DLL_GLOBAL	short    		g_sModelIndexSmoke;// holds the index for the smoke cloud
@@ -55,6 +55,7 @@ DLL_GLOBAL	unsigned short	g_usEventIndexNullEvent;//null event index
 DLL_GLOBAL 	unsigned short 	m_usDecals;	//Decal event
 DLL_GLOBAL 	unsigned short 	m_usEfx;		//special effects event (rocket trail, explosion e.t.c.)	
 DLL_GLOBAL	unsigned short	m_usPlayEmptySound;	//play empty sound on client side
+DLL_GLOBAL 	unsigned short 	m_usMirror;
 
 ItemInfo CBasePlayerItem::ItemInfoArray[MAX_WEAPONS];
 AmmoInfo CBasePlayerItem::AmmoInfoArray[MAX_AMMO_SLOTS];
@@ -409,6 +410,7 @@ void W_Precache(void)
 	g_sModelIndexErrorSprite = g_engfuncs.pfnPrecacheModel("sprites/error.spr");
 
 	// custom items...
+	m_usMirror = PRECACHE_EVENT(1, "events/mirror.sc");
 
 	// common world objects
 	UTIL_PrecacheOther("item_suit");
@@ -713,7 +715,7 @@ void CBasePlayerItem::DefaultTouch(CBaseEntity *pOther)
 			int i;
 			char sample[32];
 			char weapon_name[32];
-			strcpy_s(weapon_name, STRING(pev->classname));
+			strcpy(weapon_name, STRING(pev->classname));
 
 			if (strncmp(weapon_name, "weapon_", 7) == 0)
 				i = 7;
@@ -721,7 +723,7 @@ void CBasePlayerItem::DefaultTouch(CBaseEntity *pOther)
 				i = 5;
 			else i = 0; // for cycler_weapon
 
-			sprintf_s(sample, "!%s", weapon_name + i);
+			sprintf(sample, "!%s", weapon_name + i);
 			pPlayer->SetSuitUpdate(sample, FALSE, SUIT_NEXT_IN_30SEC);
 		}
 	}
@@ -772,11 +774,6 @@ void CBasePlayerWeapon::ItemPostFrame(void)
 		m_fInReload = FALSE;
 	}
 
-	if (!(m_pPlayer->pev->button & IN_ATTACK))
-	{
-		m_flLastFireTime = 0.0f;
-	}
-
 	if ((pPlayer->pev->button & IN_ATTACK2) && CanAttack(m_flNextSecondaryAttack, gpGlobals->time, 0))
 	{
 		if (pszAmmo2() && !pPlayer->m_rgAmmo[SecondaryAmmoIndex()])
@@ -790,7 +787,7 @@ void CBasePlayerWeapon::ItemPostFrame(void)
 	}
 	else if ((pPlayer->pev->button & IN_ATTACK) && CanAttack(m_flNextPrimaryAttack, gpGlobals->time, 0))
 	{
-		if ((m_iClip == 0 && pszAmmo1()) || (iMaxClip() == WEAPON_NOCLIP && !pPlayer->m_rgAmmo[PrimaryAmmoIndex()]))
+		if ((m_iClip == 0 && pszAmmo1()) || (iMaxClip() == -1 && !pPlayer->m_rgAmmo[PrimaryAmmoIndex()]))
 		{
 			m_fFireOnEmpty = TRUE;
 		}
@@ -1117,7 +1114,7 @@ BOOL CBasePlayerWeapon::DefaultDeploy(char *szViewModel, char *szWeaponModel, in
 	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = MAKE_STRING(szViewModel);
 	m_pPlayer->pev->weaponmodel = MAKE_STRING(szWeaponModel);
-	strcpy_s(m_pPlayer->m_szAnimExtention, szAnimExt);
+	strcpy(m_pPlayer->m_szAnimExtention, szAnimExt);
 	SendWeaponAnim(iAnim);
 
 	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + fDrawTime;//Custom time for deploy
@@ -1139,46 +1136,13 @@ BOOL CBasePlayerWeapon::DefaultDeploy(string_t iViewModel, string_t iWeaponModel
 	m_pPlayer->TabulateAmmo();
 	m_pPlayer->pev->viewmodel = iViewModel;
 	m_pPlayer->pev->weaponmodel = iWeaponModel;
-	strcpy_s(m_pPlayer->m_szAnimExtention, szAnimExt);
+	strcpy(m_pPlayer->m_szAnimExtention, szAnimExt);
 	SendWeaponAnim(iAnim);
 
 	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + fDrawTime;//Custom time for deploy
 	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + fDrawTime + 0.5; //Make half-second delay beetwen draw and idle animation
-	m_flLastFireTime = 0.0f;
-	
+
 	return TRUE;
-}
-
-//=========================================================================
-// GetNextAttackDelay - An accurate way of calcualting the next attack time.
-//=========================================================================
-float CBasePlayerWeapon::GetNextAttackDelay(float delay)
-{
-	if (m_flLastFireTime == 0 || m_flNextPrimaryAttack == -1)
-	{
-		// At this point, we are assuming that the client has stopped firing
-		// and we are going to reset our book keeping variables.
-		m_flLastFireTime = gpGlobals->time;
-		m_flPrevPrimaryAttack = delay;
-	}
-	
-	// calculate the time between this shot and the previous
-	float flTimeBetweenFires = gpGlobals->time - m_flLastFireTime;
-	float flCreep = 0.0f;
-	if (flTimeBetweenFires > 0)
-		flCreep = flTimeBetweenFires - m_flPrevPrimaryAttack; // postive or negative
-
-	// save the last fire time
-	m_flLastFireTime = gpGlobals->time;
-
-	float flNextAttack = UTIL_GlobalTimeBase() + delay - flCreep;
-	// we need to remember what the m_flNextPrimaryAttack time is set to for each shot,
-	// store it as m_flPrevPrimaryAttack.
-	m_flPrevPrimaryAttack = flNextAttack - UTIL_GlobalTimeBase();
-	//char szMsg[256];
-	//_snprintf( szMsg, sizeof(szMsg), "next attack time: %0.4f\n", gpGlobals->time + flNextAttack );
-	//OutputDebugString( szMsg );
-	return flNextAttack;
 }
 
 BOOL CBasePlayerWeapon::DefaultReload(int iClipSize, int iAnim, float fDelay)
@@ -1234,6 +1198,9 @@ void CBasePlayerWeapon::RestoreBody(void)
 
 		//restore idle animation and hands position
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase();
+
+		//saved in CBasePlayer
+		//strcpy( m_pPlayer->m_szAnimExtention, szAnimExt );
 
 		b_Restored = TRUE;//reset after next save/load
 	}
@@ -1333,8 +1300,7 @@ void CBasePlayerAmmo::DefaultTouch(CBaseEntity *pOther)
 			SetThink(&CBasePlayerAmmo::SUB_Remove);
 			SetNextThink(0.1);
 		}
-		
-		SUB_UseTargets(pOther, USE_TOGGLE, 0);	//AJH now ammo can trigger stuff too
+		SUB_UseTargets(pOther, USE_TOGGLE, 0);
 	}
 	else if (gEvilImpulse101)
 	{

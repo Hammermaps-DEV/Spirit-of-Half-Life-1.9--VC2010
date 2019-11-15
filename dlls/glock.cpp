@@ -141,7 +141,7 @@ void CGlock::SecondaryAttack(void)
 		m_iOverloadLevel = 2;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3.0;
 	}
-	m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(4.0);
+	m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 4.0;
 }
 
 void CGlock::PrimaryAttack(void)
@@ -176,13 +176,13 @@ void CGlock::PrimaryAttack(void)
 
 		PLAYBACK_EVENT_FULL(0, m_pPlayer->edict(), m_usFireGlock, 0.0, (float *)&g_vecZero, (float *)&g_vecZero, vecDir.x, vecDir.y, pev->body, 0, (m_iClip == 0) ? 1 : 0, m_iBody);
 
-		m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(0.35);
+		m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.35;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + RANDOM_FLOAT(10, 15);
 	}
 	else
 	{
 		PlayEmptySound();
-		m_flNextPrimaryAttack = GetNextAttackDelay(0.7);
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.7;
 	}
 }
 

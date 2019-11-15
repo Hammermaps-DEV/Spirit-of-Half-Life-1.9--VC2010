@@ -195,7 +195,7 @@ void CEgon::PrimaryAttack(void)
 		if (m_fireState != FIRE_OFF || m_pBeam) EndAttack();
 		else PlayEmptySound(2);
 
-		m_flNextPrimaryAttack = GetNextAttackDelay(0.08);
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.08;
 		return;
 	}
 
@@ -209,7 +209,7 @@ void CEgon::PrimaryAttack(void)
 	{
 		if (!HasAmmo())
 		{
-			m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(0.08);
+			m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 0.08;
 			PlayEmptySound(1);
 			return;
 		}
@@ -280,7 +280,7 @@ void CEgon::SecondaryAttack(void)
 	}
 
 	m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3;
-	m_flNextPrimaryAttack = m_flNextSecondaryAttack = GetNextAttackDelay(1.5);
+	m_flNextPrimaryAttack = m_flNextSecondaryAttack = UTIL_GlobalTimeBase() + 1.5;
 }
 
 void CEgon::Fire(const Vector &vecOrigSrc, const Vector &vecDir)

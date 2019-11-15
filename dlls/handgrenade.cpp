@@ -104,12 +104,6 @@ void CHandGrenade::Holster()
 {
 	m_pPlayer->m_flNextAttack = UTIL_GlobalTimeBase() + 0.5;
 
-	if (m_flStartThrow)
-	{
-		m_flStartThrow = 0;
-		m_flReleaseThrow = 0;
-	}
-
 	EMIT_SOUND(ENT(m_pPlayer->pev), CHAN_WEAPON, "common/null.wav", 1.0, ATTN_NORM);
 
 	if (m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType] > 0)
@@ -181,7 +175,7 @@ void CHandGrenade::WeaponIdle(void)
 
 		m_flStartThrow = 0;
 		m_iChargeLevel = 1;
-		m_flNextPrimaryAttack = GetNextAttackDelay(0.5);
+		m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 0.5;
 
 		m_pPlayer->m_rgAmmo[m_iPrimaryAmmoType]--;
@@ -191,9 +185,9 @@ void CHandGrenade::WeaponIdle(void)
 			// just threw last grenade
 			// set attack times in the future, and weapon idle in the future so we can see the whole throw
 			// animation, weapon idle will automatically retire the weapon for us.
-			m_flTimeWeaponIdle = m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(0.5);// ensure that the animation can finish playing
+			m_flTimeWeaponIdle = m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 0.5;// ensure that the animation can finish playing
 		}
-		m_flTimeUpdate = m_flNextSecondaryAttack = m_flNextPrimaryAttack = GetNextAttackDelay(1.0);
+		m_flTimeUpdate = m_flNextSecondaryAttack = m_flNextPrimaryAttack = UTIL_GlobalTimeBase() + 1.0;
 		m_flTimeWeaponIdle = UTIL_GlobalTimeBase() + 3.0;
 		return;
 	}

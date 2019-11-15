@@ -203,16 +203,16 @@ public:
 	void	TurnOn(void);
 	void	TurnOff(void);
 	virtual STATE GetState(void) { return (pev->effects & EF_NODRAW) ? STATE_OFF : STATE_ON; };
-	void	Activate(void);
 
-	void	FireAtPoint(Vector startpos, TraceResult &point);
-	void	FireAtPoint(Vector startpos, TraceResult &tr, entvars_t *pevAttacker);
+	void	FireAtPoint(Vector startpos, TraceResult& point);
 
 	void	EXPORT StrikeThink(void);
 	void	Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
-	virtual int	Save(CSave &save);
-	virtual int	Restore(CRestore &restore);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 	static	TYPEDESCRIPTION m_SaveData[];
+
+	EHANDLE m_hActivator;	//AJH allow *locus start/end positions
 
 	CSprite	*m_pStartSprite;
 	CSprite	*m_pEndSprite;
@@ -228,13 +228,13 @@ public:
 class CRainSettings : public CBaseEntity
 {
 public:
-	void Spawn() override;
-	void KeyValue(KeyValueData *pkvd) override;
+	void	Spawn(void);
+	void	KeyValue(KeyValueData *pkvd);
 
-	int	ObjectCaps(void) override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
+	int	ObjectCaps(void) { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
-	virtual int	Save(CSave &save);
-	virtual int	Restore(CRestore &restore);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	float Rain_Distance;
@@ -244,14 +244,14 @@ public:
 class CRainModify : public CBaseEntity
 {
 public:
-	void Spawn() override;
-	void KeyValue(KeyValueData *pkvd) override;
-	void Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value) override;
+	void	Spawn(void);
+	void	KeyValue(KeyValueData *pkvd);
+	void	Use(CBaseEntity *pActivator, CBaseEntity *pCaller, USE_TYPE useType, float value);
 
-	int	ObjectCaps() override { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
+	int	ObjectCaps(void) { return (CBaseEntity::ObjectCaps() & ~FCAP_ACROSS_TRANSITION); }
 
-	virtual int	Save(CSave &save);
-	virtual int	Restore(CRestore &restore);
+	virtual int		Save(CSave &save);
+	virtual int		Restore(CRestore &restore);
 	static	TYPEDESCRIPTION m_SaveData[];
 
 	int Rain_Drips;
