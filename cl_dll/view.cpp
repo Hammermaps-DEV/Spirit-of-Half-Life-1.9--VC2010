@@ -385,6 +385,10 @@ void V_AddIdle ( struct ref_params_s *pparams )
 	pparams->viewangles[YAW] += v_idlescale * sin(pparams->time*v_iyaw_cycle.value) * v_iyaw_level.value;
 }
 
+//By Sabian Roberts (https://github.com/barney-heatwave)
+extern cvar_t* cl_rollangle;
+extern cvar_t* cl_rollspeed;
+extern cvar_t* cl_viewroll;
 
 /*
 ==============
@@ -401,6 +405,10 @@ void V_CalcViewRoll ( struct ref_params_s *pparams )
 	viewentity = gEngfuncs.GetEntityByIndex( pparams->viewentity );
 	if ( !viewentity )
 		return;
+
+	//By Sabian Roberts (https://github.com/barney-heatwave)
+	if (cl_viewroll->value == 1) 
+		pparams->viewangles[ROLL] = V_CalcRoll(pparams->viewangles, pparams->simvel, cl_rollangle->value, cl_rollspeed->value) * 4;
 
 	side = V_CalcRoll ( viewentity->angles, pparams->simvel, pparams->movevars->rollangle, pparams->movevars->rollspeed );
 
@@ -480,6 +488,7 @@ V_CalcRefdef
 ==================
 */
 extern void RenderFog( void ); //LRC
+extern cvar_t* cl_bobtilt;
 
 void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 {
@@ -709,6 +718,10 @@ void V_CalcNormalRefdef ( struct ref_params_s *pparams )
 	view->angles[YAW]   -= bob * 0.5;
 	view->angles[ROLL]  -= bob * 1;
 	view->angles[PITCH] -= bob * 0.3;
+
+	//By Sabian Roberts (https://github.com/barney-heatwave)
+	if (cl_bobtilt->value == 1) 
+		VectorCopy(view->angles, view->curstate.angles);
 
 	// pushing the view origin down off of the same X/Z plane as the ent's origin will give the
 	// gun a very nice 'shifting' effect when the player looks up/down. If there is a problem
