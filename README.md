@@ -7,3 +7,4 @@ Add snow step sounds, new texture types set 'N' for Snow.
 Add Weapon Muzzle Flash Lighting.
 Add Bullet FlyBy Sounds.
 Convert player movement code to C++
+Add viewroll and old viewmodel bob by Sabian Roberts
